@@ -1,1 +1,19 @@
 scraper.js
+node_modules/
+.env
+.env.*
+!.env.example
+
+# Saídas e arquivos locais do Android/Gradle
+AndroidTVApp/.gradle/
+AndroidTVApp/build/
+AndroidTVApp/app/build/
+AndroidTVApp/local.properties
+AndroidTVApp/.idea/
+*.apk
+
+# IDE e sistema operacional
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
