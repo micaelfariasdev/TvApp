@@ -5,6 +5,11 @@
     "type": "kick"
   },
   {
+    "name": "Allan",
+    "url": "https://kick.com/api/v2/channels/allanstag/playback-url",
+    "type": "kick"
+  },
+  {
     "name": "Canal IPTV",
     "url": "https://servidor.com/live/canal.m3u8",
     "type": "hls"
