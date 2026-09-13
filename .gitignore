@@ -6,9 +6,12 @@ node_modules/
 
 # Saídas e arquivos locais do Android/Gradle
 AndroidTVApp/.gradle/
+AndroidTVApp/.kotlin/
 AndroidTVApp/build/
 AndroidTVApp/app/build/
 AndroidTVApp/local.properties
+AndroidTVApp/*.log
+AndroidTVApp/tvbox-*.png
 AndroidTVApp/.idea/
 *.apk
 
