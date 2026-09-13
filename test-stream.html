@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WatchFooty — partidas populares</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; } * { box-sizing: border-box; }
+    body { margin: 0; background: #0b1020; color: #eef2ff; }
+    header { padding: 28px clamp(18px,4vw,56px); background: linear-gradient(115deg,#152754,#0b1020); }
+    h1 { margin: 0; font-size: clamp(24px,4vw,38px); } #status { margin: 8px 0 0; color: #aab7d5; }
+    main { padding: 24px clamp(18px,4vw,56px) 48px; } #player-area { display:none; margin-bottom:30px; background:#111a31; border-radius:14px; overflow:hidden; }
+    #player { width:100%; height:min(70vh,720px); border:0; background:#000; display:block; } #stream-options { padding:12px; display:flex; flex-wrap:wrap; gap:8px; }
+    button { border:0; border-radius:8px; padding:9px 13px; color:#fff; background:#263c75; cursor:pointer; font:inherit; }
+    button:hover,button:focus { background:#3b82f6; outline:2px solid #93c5fd; outline-offset:2px; }
+    #matches { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
+    .card { padding:0; overflow:hidden; text-align:left; background:#151d33; transition:transform .15s,background .15s; }.card:hover { transform:translateY(-3px); background:#1d2a4c; }
+    .poster { width:100%; height:135px; object-fit:cover; background:#202a42; display:block; }.info { padding:13px; }.league { color:#8bb5ff; font-size:12px; font-weight:650; }
+    .teams { margin:7px 0; font-weight:700; line-height:1.35; }.meta,.empty { color:#b8c3da; font-size:13px; }.empty { grid-column:1/-1; }
+  </style>
+</head>
+<body>
+  <header><h1>Partidas populares</h1><p id="status">Carregando partidas…</p></header>
+  <main>
+    <section id="player-area"><iframe id="player" title="Transmissão" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="origin"></iframe><div id="stream-options"></div></section>
+    <section id="matches" aria-live="polite"></section>
+  </main>
+  <script>
+    const apiOrigin = "https://api.watchfooty.st";
+    const apiUrl = `${apiOrigin}/api/v1/matches/live`;
+    const status = document.querySelector("#status"), matchesElement = document.querySelector("#matches");
+    const playerArea = document.querySelector("#player-area"), player = document.querySelector("#player"), streamOptions = document.querySelector("#stream-options");
+    const absoluteUrl = (url) => url ? new URL(url, apiOrigin).href : "";
+    function playStream(stream) {
+      playerArea.style.display = "block"; playerArea.scrollIntoView({behavior:"smooth",block:"start"});
+      const streamUrl = absoluteUrl(stream.url);
+      player.src = streamUrl;
+      status.textContent = `Abrindo ${stream.quality || "stream"} em player incorporado.`;
+    }
+    function showMatch(match) {
+      const card=document.createElement("button"); card.className="card"; card.type="button"; card.setAttribute("aria-label",`Assistir ${match.title}`);
+      if(match.poster){const poster=document.createElement("img");poster.className="poster";poster.src=absoluteUrl(match.poster);poster.alt="";card.append(poster);}
+      const info=document.createElement("div");info.className="info";
+      const league=document.createElement("div");league.className="league";league.textContent=match.league||"Futebol";
+      const teams=document.createElement("div");teams.className="teams";teams.textContent=`${match.teams.home.name} ${match.scores.home} × ${match.scores.away} ${match.teams.away.name}`;
+      const meta=document.createElement("div");meta.className="meta";meta.textContent=[match.status,match.currentMinute&&`${match.currentMinute}'`].filter(Boolean).join(" · ");
+      info.append(league,teams,meta);card.append(info);
+      card.addEventListener("click",()=>{const streams=match.streams.filter(s=>s.url&&!s.nsfw);if(!streams.length){status.textContent="Esta partida não possui stream disponível.";return;}streamOptions.replaceChildren();streams.forEach((stream,index)=>{const option=document.createElement("button");option.textContent=`${stream.quality||"Auto"} · ${stream.language||"Sem idioma"}`;option.addEventListener("click",()=>playStream(stream));streamOptions.append(option);if(index===0)playStream(stream);});});
+      matchesElement.append(card);
+    }
+    async function loadMatches() { try { const response=await fetch(apiUrl);if(!response.ok)throw new Error(`HTTP ${response.status}`);const matches=await response.json();matchesElement.replaceChildren();matches.forEach(showMatch);status.textContent=`${matches.length} partidas carregadas.`;if(!matches.length)matchesElement.innerHTML='<p class="empty">Nenhuma partida encontrada.</p>'; } catch(error) { status.textContent=`Não foi possível carregar a API: ${error.message}`; } }
+    loadMatches();
+  </script>
+</body>
+</html>

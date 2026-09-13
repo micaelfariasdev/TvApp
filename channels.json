@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Gabepeixe",
+    "url": "https://kick.com/api/v2/channels/gabepeixe/playback-url",
+    "type": "kick"
+  },
+  {
+    "name": "Allan",
+    "url": "https://kick.com/api/v2/channels/allanstag/playback-url",
+    "type": "kick"
+  }
+]
