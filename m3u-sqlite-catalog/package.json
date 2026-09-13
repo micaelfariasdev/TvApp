@@ -1,0 +1,16 @@
+{
+  "name": "m3u-sqlite-catalog",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "import": "node import-m3u.js",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

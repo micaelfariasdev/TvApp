@@ -1,0 +1,12 @@
+[
+  {
+    "id": "exemplo",
+    "title": "Serie de Exemplo",
+    "endpoint": "series/exemplo.json"
+  },
+  {
+    "id": "NRTSP",
+    "title": "Naruto",
+    "endpoint": "series/NRTSP.json"
+  }
+]

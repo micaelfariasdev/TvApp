@@ -20,3 +20,7 @@ AndroidTVApp/.idea/
 *.iml
 .DS_Store
 Thumbs.db
+
+# Banco SQLite gerado pelo catÃ¡logo M3U; recriado pelo importador local.
+m3u-sqlite-catalog/catalog.db
+m3u-sqlite-catalog/catalog.db-*

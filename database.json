@@ -1,0 +1,191 @@
+[
+  {
+    "id": 1,
+    "name": "Loud Coringa",
+    "url": "https://kick.com/api/v2/channels/coringa/playback-url",
+    "type": "kick",
+    "category": "lives"
+  },
+  {
+    "id": 2,
+    "name": "Gabepeixe",
+    "url": "https://kick.com/api/v2/channels/gabepeixe/playback-url",
+    "type": "kick",
+    "category": "lives"
+  },
+  {
+    "id": 3,
+    "name": "Allan",
+    "url": "https://kick.com/api/v2/channels/allanstag/playback-url",
+    "type": "kick",
+    "category": "lives"
+  },
+  {
+    "id": 1789329802671,
+    "name": "[September 13, 2026 08:00 AM] Rangers vs Celtic",
+    "url": "https://tedesco.formaturamaxi.com.br/golazo.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 08:00 AM"
+  },
+  {
+    "id": 1789329802848,
+    "name": "[September 13, 2026 08:00 AM] Sheffield United vs Wolves",
+    "url": "https://admin2.formaturamaxi.com.br/foot.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 08:00 AM"
+  },
+  {
+    "id": 1789329802870,
+    "name": "[September 13, 2026 09:00 AM] Celta Vigo vs Málaga",
+    "url": "https://admin2.formaturamaxi.com.br/dep.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 09:00 AM"
+  },
+  {
+    "id": 1789329803864,
+    "name": "[September 13, 2026 10:00 AM] Coventry City vs Brighton",
+    "url": "https://admin2.formaturamaxi.com.br/usa.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 10:00 AM"
+  },
+  {
+    "id": 1789329803329,
+    "name": "[September 13, 2026 10:00 AM] Lille vs Troyes",
+    "url": "https://tedesco.formaturamaxi.com.br/beines.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 10:00 AM"
+  },
+  {
+    "id": 1789329804235,
+    "name": "[September 13, 2026 10:00 AM] Lecce vs Monza",
+    "url": "https://customer-b85rs0kp4mxlfevz.cloudflarestream.com/84c415945880b0e161343f05eb622307/manifest/video.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 10:00 AM"
+  },
+  {
+    "id": 1789329804277,
+    "name": "[September 13, 2026 10:30 AM] RB Leipzig vs Hamburger",
+    "url": "https://admin2.formaturamaxi.com.br/pea.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 10:30 AM"
+  },
+  {
+    "id": 1789329804639,
+    "name": "[September 13, 2026 11:15 AM] Levante vs Barcelona",
+    "url": "https://admin2.formaturamaxi.com.br/dep.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 11:15 AM"
+  },
+  {
+    "id": 1789329804491,
+    "name": "[September 13, 2026 12:15 AM] Le Mans vs Lens",
+    "url": "https://tedesco.formaturamaxi.com.br/beines.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 12:15 AM"
+  },
+  {
+    "id": 1789329804898,
+    "name": "[September 13, 2026 12:30 AM] Man United vs Man City",
+    "url": "https://admin2.formaturamaxi.com.br/main.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 12:30 AM"
+  },
+  {
+    "id": 1789329804921,
+    "name": "[September 13, 2026 12:30 AM] Elversberg vs Bayern München",
+    "url": "https://admin2.formaturamaxi.com.br/one.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 12:30 AM"
+  },
+  {
+    "id": 1789329805492,
+    "name": "[September 13, 2026 13:00 AM] Napoli vs Bologna",
+    "url": "https://customer-b85rs0kp4mxlfevz.cloudflarestream.com/84c415945880b0e161343f05eb622307/manifest/video.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 13:00 AM"
+  },
+  {
+    "id": 1789329806153,
+    "name": "[September 13, 2026 14:00 AM] Benfica vs Gil Vicente",
+    "url": "https://admin2.formaturamaxi.com.br/benfica.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 14:00 AM"
+  },
+  {
+    "id": 1789329806163,
+    "name": "[September 13, 2026 15:45 AM] Sassuolo vs Juventus",
+    "url": "https://customer-b85rs0kp4mxlfevz.cloudflarestream.com/84c415945880b0e161343f05eb622307/manifest/video.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 15:45 AM"
+  },
+  {
+    "id": 1789329805839,
+    "name": "[September 13, 2026 15:45 AM] PSG vs Brest",
+    "url": "https://tedesco.formaturamaxi.com.br/beines.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 15:45 AM"
+  },
+  {
+    "id": 1789329806211,
+    "name": "[September 13, 2026 16:00 PM] Vitória vs Mirassol",
+    "url": "https://admin2.formaturamaxi.com.br/pfc2.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 16:00 PM"
+  },
+  {
+    "id": 1789329806648,
+    "name": "[September 13, 2026 17:30 PM] Flamengo vs Corinthians",
+    "url": "https://tedesco.formaturamaxi.com.br/fana2.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 17:30 PM"
+  },
+  {
+    "id": 1789329807394,
+    "name": "[September 13, 2026 17:30 PM] Colo-Colo vs  Concepcion",
+    "url": "https://tedesco.formaturamaxi.com.br/fsp.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 17:30 PM"
+  },
+  {
+    "id": 1789329807021,
+    "name": "[September 13, 2026 18:30 PM] Chicago Fire vs New England",
+    "url": "https://admin2.formaturamaxi.com.br/ncaa13.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 18:30 PM"
+  },
+  {
+    "id": 1789329807805,
+    "name": "[September 13, 2026 22:00 PM] Santos Laguna vs Juárez",
+    "url": "https://admin2.formaturamaxi.com.br/prem.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 22:00 PM"
+  },
+  {
+    "id": 1789329808049,
+    "name": "[September 13, 2026 22:07 PM] Chivas vs Pumas",
+    "url": "https://admin2.formaturamaxi.com.br/bein.m3u8",
+    "type": "hls",
+    "category": "futebol",
+    "start_time": "September 13, 2026 22:07 PM"
+  }
+]

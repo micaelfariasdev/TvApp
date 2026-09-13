@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Catálogo M3U</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, system-ui, sans-serif; background: #0b1020; color: #edf2ff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; }
+    header { padding: 28px clamp(18px, 4vw, 64px); background: linear-gradient(120deg, #101b3e, #172554); }
+    h1 { margin: 0 0 8px; font-size: clamp(25px, 4vw, 40px); }
+    p { color: #aebbd6; margin: 0; }
+    main { max-width: 1500px; padding: 24px clamp(18px, 4vw, 64px) 56px; margin: auto; }
+    .controls { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px; margin-bottom: 16px; }
+    input, button, .file-label { min-height: 46px; border-radius: 10px; border: 1px solid #33415f; font: inherit; }
+    input { background: #131d35; color: #fff; padding: 0 14px; width: 100%; }
+    button, .file-label { cursor: pointer; background: #2563eb; color: white; border: 0; padding: 0 16px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+    button:hover, .file-label:hover { background: #3b82f6; }
+    .file-label input { display: none; }
+    .toolbar { display: flex; gap: 14px; align-items: center; margin: 20px 0; flex-wrap: wrap; }
+    #search { max-width: 440px; }
+    #status { color: #9fb0d4; font-size: .92rem; }
+    #catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
+    .card { background: #131d35; border: 1px solid #263653; border-radius: 14px; overflow: hidden; min-width: 0; }
+    .poster { height: 132px; width: 100%; object-fit: cover; background: linear-gradient(130deg, #213258, #10172b); }
+    .placeholder { height: 132px; display: grid; place-items: center; color: #94a3b8; font-size: 38px; background: linear-gradient(130deg, #213258, #10172b); }
+    .content { padding: 14px; }
+    .title { font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .meta { color: #98a8c6; font-size: .82rem; margin: 7px 0 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .actions a, .actions button { min-height: 34px; border-radius: 8px; text-decoration: none; font-size: .85rem; }
+    .actions a { display: grid; place-items: center; background: #243553; color: #fff; }
+    .actions button { padding: 0 8px; }
+    .empty { grid-column: 1 / -1; padding: 42px; text-align: center; color: #9aaaca; background: #131d35; border-radius: 14px; }
+    @media (max-width: 720px) { .controls { grid-template-columns: 1fr 1fr; } .controls input { grid-column: 1 / -1; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Catálogo M3U</h1>
+    <p>Carregue sua lista para visualizar canais, filmes, logos e links.</p>
+  </header>
+  <main>
+    <section class="controls">
+      <input id="m3uUrl" type="url" placeholder="https://exemplo.com/lista.m3u">
+      <button id="loadUrl">Carregar URL</button>
+      <label class="file-label">Abrir arquivo<input id="m3uFile" type="file" accept=".m3u,.m3u8,text/plain"></label>
+    </section>
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Pesquisar título, grupo ou link">
+      <span id="status">Nenhuma lista carregada.</span>
+    </div>
+    <section id="catalog"><div class="empty">Abra um arquivo M3U ou informe a URL da lista.</div></section>
+  </main>
+  <script>
+    const catalog = document.querySelector('#catalog');
+    const status = document.querySelector('#status');
+    const search = document.querySelector('#search');
+    let items = [];
+
+    function attr(line, name) {
+      const match = line.match(new RegExp(`${name}="([^"]*)"`, 'i'));
+      return match ? match[1].trim() : '';
+    }
+
+    function parseM3U(text) {
+      const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/);
+      const result = [];
+      let info = null;
+      for (const rawLine of lines) {
+        const line = rawLine.trim();
+        if (!line) continue;
+        if (line.startsWith('#EXTINF:')) {
+          const comma = line.indexOf(',');
+          info = {
+            title: (comma >= 0 ? line.slice(comma + 1) : 'Sem título').trim() || 'Sem título',
+            logo: attr(line, 'tvg-logo'),
+            group: attr(line, 'group-title'),
+            id: attr(line, 'tvg-id')
+          };
+        } else if (!line.startsWith('#') && info) {
+          result.push({ ...info, url: line });
+          info = null;
+        }
+      }
+      return result;
+    }
+
+    function render() {
+      const term = search.value.trim().toLocaleLowerCase('pt-BR');
+      const visible = items.filter(item => [item.title, item.group, item.id, item.url]
+        .join(' ').toLocaleLowerCase('pt-BR').includes(term));
+      status.textContent = `${visible.length} de ${items.length} itens`;
+      if (!visible.length) {
+        catalog.innerHTML = '<div class="empty">Nenhum item encontrado.</div>';
+        return;
+      }
+      const fragment = document.createDocumentFragment();
+      for (const item of visible) {
+        const card = document.createElement('article');
+        card.className = 'card';
+        const image = item.logo
+          ? `<img class="poster" src="${escapeHtml(item.logo)}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'placeholder',textContent:'▶'}))">`
+          : '<div class="placeholder">▶</div>';
+        card.innerHTML = `${image}<div class="content"><div class="title" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div><div class="meta" title="${escapeHtml(item.group || item.id || item.url)}">${escapeHtml(item.group || item.id || 'Sem grupo')}</div><div class="actions"><a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">Abrir link</a><button type="button">Copiar link</button></div></div>`;
+        card.querySelector('button').addEventListener('click', async () => {
+          try { await navigator.clipboard.writeText(item.url); card.querySelector('button').textContent = 'Copiado!'; }
+          catch { window.prompt('Copie o link:', item.url); }
+        });
+        fragment.append(card);
+      }
+      catalog.replaceChildren(fragment);
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>'"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[char]));
+    }
+
+    function loadText(text) { items = parseM3U(text); render(); }
+    document.querySelector('#m3uFile').addEventListener('change', event => {
+      const file = event.target.files[0];
+      if (file) file.text().then(loadText);
+    });
+    document.querySelector('#loadUrl').addEventListener('click', async () => {
+      const url = document.querySelector('#m3uUrl').value.trim();
+      if (!url) return;
+      if (url.startsWith('file:')) {
+        status.textContent = 'Para arquivos do computador, use o botão “Abrir arquivo”. O navegador bloqueia links file:// por segurança.';
+        return;
+      }
+      status.textContent = 'Carregando lista…';
+      try { loadText(await (await fetch(url)).text()); }
+      catch { status.textContent = 'Não foi possível buscar a URL. Baixe o M3U e use “Abrir arquivo” ou habilite CORS no servidor.'; }
+    });
+    search.addEventListener('input', render);
+  </script>
+</body>
+</html>
