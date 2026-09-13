@@ -30,10 +30,14 @@ if (-not (Test-Path -LiteralPath $apk)) { throw "APK não encontrado: $apk" }
 
 Push-Location $projectRoot
 try {
+    # A listagem não falha quando a tag ainda não existe, diferentemente de
+    # `gh release view`, que encerra o PowerShell por causa do ErrorActionPreference.
+    $releaseTags = @(& gh release list --limit 1000 --json tagName --jq '.[].tagName')
+    if ($LASTEXITCODE -ne 0) { throw 'Não foi possível consultar as releases do GitHub.' }
+
     # Cria a release caso a tag ainda não exista; nas próximas vezes substitui
     # somente o arquivo app-debug.apk daquela mesma release.
-    gh release view $tag 2>$null
-    if ($LASTEXITCODE -eq 0) {
+    if ($releaseTags -contains $tag) {
         gh release upload $tag $apk --clobber
     } else {
         gh release create $tag $apk --title "TV Box $tag" --generate-notes
