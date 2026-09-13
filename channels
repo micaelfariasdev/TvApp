@@ -10,8 +10,193 @@
     "type": "kick"
   },
   {
-    "name": "Santos x Cruzeiro",
+    "name": "Birmingham City vs Derby County",
+    "url": "https://admin2.formaturamaxi.com.br/dallas.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "West Bromwich vs QPR",
+    "url": "https://tedesco.formaturamaxi.com.br/golazo.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Racing Santander vs Deportivo Alaves",
+    "url": "https://tedesco.formaturamaxi.com.br/dep.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Dortmund vs Paderborn",
+    "url": "https://tedesco.formaturamaxi.com.br/one.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Aston Villa vs Nottingham",
+    "url": "https://admin2.formaturamaxi.com.br/aston.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Bournemouth vs Brentford",
+    "url": "https://admin2.formaturamaxi.com.br/brentford.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Chelsea vs Hull",
+    "url": "https://admin2.formaturamaxi.com.br/usa.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Crystal Palace vs Ipswich",
+    "url": "https://admin2.formaturamaxi.com.br/ipswich.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Liverpool vs Fulham",
+    "url": "https://admin2.formaturamaxi.com.br/prem.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Middlesbrough vs Norwich",
+    "url": "https://tedesco.formaturamaxi.com.br/golazo.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Swansea City vs Burnley",
+    "url": "https://admin2.formaturamaxi.com.br/dallas.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Osasuna vs Espanyol",
+    "url": "https://tedesco.formaturamaxi.com.br/dep.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Strasbourg vs Monaco",
+    "url": "https://tedesco.formaturamaxi.com.br/beines.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Olympiakos Piraeus vs OPI",
+    "url": "https://admin2.formaturamaxi.com.br/claro.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Lazio vs Milan",
+    "url": "https://admin2.formaturamaxi.com.br/tele.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Athletic Club vs Elche",
+    "url": "https://tedesco.formaturamaxi.com.br/dep.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Tottenham vs Everton",
+    "url": "https://admin2.formaturamaxi.com.br/ncaa13.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Köln vs Werder Bremen",
+    "url": "https://tedesco.formaturamaxi.com.br/one.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Kilmarnock vs Aberdeen",
+    "url": "https://admin2.formaturamaxi.com.br/prem.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Casa Pia vs Porto",
+    "url": "https://admin2.formaturamaxi.com.br/bein.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Al Khaleej vs Al Nassr",
+    "url": "https://tedesco.formaturamaxi.com.br/fsp.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Atalanta vs Cagliari",
+    "url": "https://admin2.formaturamaxi.com.br/dallas.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Auxerre vs Nice",
+    "url": "https://amg01334-beinsportsllc-beinxtra-localnow-kcy6r.amagi.tv/playlistR1080p.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Paris vs Lyon",
+    "url": "https://tedesco.formaturamaxi.com.br/beines.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Arsenal vs Sunderland",
+    "url": "https://admin2.formaturamaxi.com.br/usa.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Real Madrid vs Rayo Vallecano",
+    "url": "https://admin2.formaturamaxi.com.br/dep.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Atlético Mineiro vs Fluminense",
+    "url": "https://admin.formaturamaxi.com.br/fana.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Vasco vs Gremio",
+    "url": "https://admin.formaturamaxi.com.br/fana2.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Chapecoense vs Internacional",
+    "url": "https://admin.formaturamaxi.com.br/fana3.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Atlético Tucumán vs River Plate",
+    "url": "https://admin.formaturamaxi.com.br/fana4.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Palmeiras vs São Paulo",
+    "url": "https://admin.formaturamaxi.com.br/fana5.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Toluca vs Atlas",
+    "url": "https://tedesco.formaturamaxi.com.br/tudnmx.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Inter Miami vs Nashville",
+    "url": "https://tedesco.formaturamaxi.com.br/mls.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Orlando City SC vs Toronto",
+    "url": "https://tedesco.formaturamaxi.com.br/mls2.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Botafogo vs Braganino",
+    "url": "https://admin.formaturamaxi.com.br/fana6.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Santos vs Cruziero",
     "url": "https://admin.formaturamaxi.com.br/fana7.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Monterrey vs Tigres",
+    "url": "https://tedesco.formaturamaxi.com.br/tudnmx.m3u8",
+    "type": "hls"
+  },
+  {
+    "name": "Cruz Azul vs América",
+    "url": "https://tedesco.formaturamaxi.com.br/tudnmx.m3u8",
     "type": "hls"
   }
 ]
