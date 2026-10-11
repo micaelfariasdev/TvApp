@@ -1,0 +1,42 @@
+<section class="panel">
+  <div class="row">
+    <div>
+      <h1>Visão geral</h1>
+      <p class="muted">Conteúdo servido diretamente para seu TVBox.</p>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="/tvbox/add">+ Canal ou filme</a>
+      <a class="btn primary" href="/tvbox/series/add">+ Série</a>
+      <a class="btn" href="/tvbox/import/m3u">Importar M3U</a>
+    </div>
+  </div>
+  <div class="grid" style="margin-top:18px">
+    <article class="card">
+      <span class="badge">CATÁLOGO</span>
+      <h2 style="margin-top:12px">{{channelsCount}} canais e filmes</h2>
+      <p class="muted">Organizados por categorias para facilitar a navegação.</p>
+    </article>
+    <article class="card">
+      <span class="badge">SÉRIES</span>
+      <h2 style="margin-top:12px">{{seriesCount}} séries</h2>
+      <p class="muted">Temporadas e episódios ficam em arquivos individuais.</p>
+      <a class="btn" href="/tvbox/series" style="margin-top:12px">Gerenciar séries</a>
+    </article>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="row">
+    <div>
+      <h2>Categorias do Catálogo</h2>
+      <p class="muted">Acesse a gestão detalhada por categoria ou gerencie tudo centralizado.</p>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="/tvbox/categories">Ver todas as categorias</a>
+    </div>
+  </div>
+  
+  <div class="grid" style="margin-top:18px">
+    {{categoryCards}}
+  </div>
+</section>

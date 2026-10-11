@@ -1,0 +1,74 @@
+<section class="panel" style="max-width: 700px">
+  <h1>Adicionar canal ou filme</h1>
+  <form method="POST" action="/tvbox/add?pass={{password}}">
+    <label>Nome</label
+    ><input id="media-name" type="text" name="name" required />
+    <label>URL (.mp4, .m3u8, API ou página web)</label
+    ><input type="url" name="url" required />
+    <label>Foto/capa (opcional)</label>
+    <div class="row" style="align-items: stretch">
+      <input
+        id="media-poster"
+        type="url"
+        name="poster"
+        placeholder="https://site.com/capa.jpg"
+      /><button id="find-poster" class="btn" type="button">Buscar capa</button>
+    </div>
+    <p id="poster-status" class="muted" style="margin: 8px 0 0">
+      Digite o título e use “Buscar capa”. Usa TMDb quando configurada e IMDb
+      como alternativa.
+    </p>
+    <label>Tipo</label
+    ><select name="type">
+      <option value="mp4">MP4</option>
+      <option value="hls">HLS</option>
+      <option value="kick">Kick</option>
+      <option value="embed">Embed / página web</option>
+    </select>
+    <p class="muted" style="margin: 8px 0 0">
+      Embed abre a página diretamente no navegador interno do app.
+    </p>
+    <label>Categoria</label
+    ><select name="category">
+      <option value="filmes">Filmes</option>
+      <option value="futebol">Futebol</option>
+      <option value="kick">Kick</option>
+    </select>
+    <div class="actions" style="margin-top: 20px">
+      <button class="btn primary" type="submit">Salvar item</button
+      ><a class="btn" href="/tvbox?pass={{password}}">Cancelar</a>
+    </div>
+  </form>
+</section>
+<script>
+  (() => {
+    const name = document.querySelector("#media-name"),
+      poster = document.querySelector("#media-poster"),
+      status = document.querySelector("#poster-status"),
+      button = document.querySelector("#find-poster");
+    button.addEventListener("click", async () => {
+      const title = name.value.trim();
+      if (!title) {
+        status.textContent = "Digite o nome do filme antes de buscar a capa.";
+        name.focus();
+        return;
+      }
+      button.disabled = true;
+      status.textContent = "Buscando capa…";
+      try {
+        const response = await fetch(
+          `/tvbox/api/poster?pass={{password}}&title=${encodeURIComponent(title)}&kind=movie`,
+        );
+        const data = await response.json();
+        if (!response.ok || !data.poster)
+          throw new Error(data.error || "Capa não encontrada");
+        poster.value = data.poster;
+        status.textContent = `Capa encontrada via ${data.source}${data.title ? `: ${data.title}` : ""}.`;
+      } catch (error) {
+        status.textContent = error.message || "Não foi possível buscar a capa.";
+      } finally {
+        button.disabled = false;
+      }
+    });
+  })();
+</script>

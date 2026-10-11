@@ -5,6 +5,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
+    <queries>
+        <package android:name="org.mozilla.fennec_fdroid" />
+    </queries>
+
     <application
         android:allowBackup="true"
         android:label="@string/app_name"

@@ -1,0 +1,18 @@
+<section class="panel">
+  <div class="row">
+    <div>
+      <a class="btn" href="/tvbox/series">← Séries</a>
+      <h1 style="margin-top:16px">{{title}}</h1>
+      <p class="muted">Endpoint: <code>/series/{{id}}.json</code></p>
+    </div>
+  </div>
+  {{coverForm}}
+  <form method="post" action="/tvbox/series/{{id}}/seasons" class="row" style="margin:18px 0">
+    <div style="min-width:220px;flex:1">
+      <label style="margin-top:0">Nova temporada</label>
+      <input type="number" name="number" min="1" required placeholder="Número da temporada">
+    </div>
+    <button class="btn primary" style="margin-top:25px">Adicionar temporada</button>
+  </form>
+  <div class="grid">{{seasonCards}}</div>
+</section>

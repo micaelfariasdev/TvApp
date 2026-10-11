@@ -1,0 +1,460 @@
+{
+  "format": "tvbox-import/v1",
+  "exportedAt": "2026-10-10T22:00:13.433Z",
+  "filters": {
+    "group": "Filmes | Lancamentos 2026",
+    "query": "Top 50 - curadoria"
+  },
+  "channels": [
+    {
+      "name": "Devoradores de Estrelas (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Devoradores%20de%20Estrelas%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Extermínio: O Templo dos Ossos (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Exterminio%20O%20Templo%20dos%20Ossos%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Drama (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/o%20drama%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Socorro! (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Socorro%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Divirta-se, Não Morra (2026)\" tvg-logo=\"\" group-title=\"Filmes | Lancamentos 2026\",Boa Sorte, Divirta-se, Não Morra (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/boa%20sorte%20divirta%20se%20nao%20morra%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Peaky Blinders: O Homem Imortal (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Peaky%20Blinders%20O%20Homem%20Imortal%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Morro dos Ventos Uivantes (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Morro%20dos%20Ventos%20Uivantes%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Mago do Kremlin (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Mago%20do%20Kremlin%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "A Noiva! (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/A%20Noiva%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Caminhos do Crime (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Caminhos%20do%20Crime%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Mike & Nick & Nick & Alice (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Mike%20and%20Nick%20and%20Nick%20and%20Alice%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Ato Noturno (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Ato%20Noturno%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Hamlet (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Hamlet%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Diabo Veste Prada 2 (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Diabo%20Veste%20Prada%202%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Super Mario Galaxy: O Filme (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Super%20Mario%20Galaxy%20O%20Filme%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Focinho de Outro (2026)\" tvg-logo=\"\" group-title=\"Filmes | Lancamentos 2026\",Cara de Um, Focinho de Outro (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/cara%20de%20um%20focinho%20de%20outro%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Primata (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Primata%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Pânico 7 (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Panico%207%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Casamento Sangrento: A Viúva (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Casamento%20Sangrento%20A%20Viuva%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Falsário (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Falsario%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Parque Lezama (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Parque%20Lezama%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Pavana (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Pavana%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "A Rainha do Xadrez (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/A%20Rainha%20do%20Xadrez.2026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "A Conexão Sueca (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/A%20Conexao%20Sueca%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Louis Theroux: Por Dentro da Machosfera (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Louis%20Theroux%20Por%20Dentro%20da%20Machosfera%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "A História de Um Gorila com David Attenborough (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/A%20Historia%20de%20Um%20Gorila%20com%20David%20Attenborough%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Queda Livre: As Consequências do Caso Boeing (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/movies/documentary/queda-livre-as-consequencias-do-caso-boeing-2026/queda-livre-as-consequencias-do-caso-boeing-2026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "A Tragédia de Moriah Wilson (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/A%20Tragedia%20de%20Moriah%20Wilson%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Investigando Lucy Letby (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Investigando%20Lucy%20Letby%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Os Cantores (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Os%20Cantores%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Show dos Muppets (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Show%20dos%20Muppets%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Kaguya: A Princesa Espacial (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Kaguya%20A%20Princesa%20Espacial%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Gintama: Yoshiwara em Chamas (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/movies/animation/gintama-yoshiwara-em-chamas-2026/gintama-yoshiwara-em-chamas-2026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Golden Kamuy 3 - Invasão a Prisão Abashiri (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Golden%20Kamuy%20Invasao%20a%20Prisao%20Abashiri%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Inteligência Humana (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Inteligencia%20Humana%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Diário de Pilar na Amazônia (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Diario%20de%20Pilar%20na%20Amazonia%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Dinheiro Suspeito (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Dinheiro%20Suspeito%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Máquina de Guerra (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Maquina%20de%20Guerra%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Afinador (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Afinador%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Um Cabra Bom de Bola (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/UM%20CABRA%20BOM%20DE%20BOLA%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Som da Morte (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/o%20som%20da%20morte%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Manual Prático da Vingança Lucrativa (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Manual%20Pratico%20da%20Vinganca%20Lucrativa%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Destruição Final 2 (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Destruicao%20Final%202%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Dupla Perigosa (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Dupla%20Perigosa%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Rei da Internet (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/movies/drama/o-rei-da-internet-2026/o-rei-da-internet-2026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Justiceiro: Uma Última Morte (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Justiceiro%20Uma%20Ultima%20Morte%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "Dhurandhar: A Vingança (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Dhurandhar%20A%20VinganCa%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Último Grande Assalto (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Ultimo%20Grande%20Assalto%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Velho Fusca (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Velho%20Fusca%202026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    },
+    {
+      "name": "O Último Nascer do Sol (2026)",
+      "url": "http://89.222.120.130:34871/s3v3/movies/romance/o-ultimo-nascer-do-sol-2026/o-ultimo-nascer-do-sol-2026.mp4",
+      "type": "mp4",
+      "category": "Filmes | Lancamentos 2026",
+      "poster": "",
+      "logo": "",
+      "tvgId": ""
+    }
+  ]
+}

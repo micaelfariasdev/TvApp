@@ -1,0 +1,15 @@
+<section class="panel">
+  <div class="row">
+    <div>
+      <h1>Séries</h1>
+      <p class="muted">Catálogo enviado ao app por <code>/series.json</code>.</p>
+    </div>
+    <div class="actions">
+      <form method="post" action="/tvbox/series/posters/fill" onsubmit="return confirm('Buscar capas para todas as séries sem foto?')">
+        <button class="btn" type="submit">Buscar capas faltantes</button>
+      </form>
+      <a class="btn primary" href="/tvbox/series/add">+ Nova série</a>
+    </div>
+  </div>
+  <div class="grid" style="margin-top:18px">{{cards}}</div>
+</section>

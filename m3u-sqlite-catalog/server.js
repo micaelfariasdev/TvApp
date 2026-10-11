@@ -56,6 +56,37 @@ app.get('/api/channels', (req, res) => {
 
 // Exporta todos os itens do filtro atual, sem a limitação de 24 itens da tela.
 // O resultado pode ser enviado diretamente ao painel do TVBox para importar.
+app.get('/api/kick/channels', (_req, res) => {
+  // Lista de streamers da Kick para verificar status
+  const kickStreamers = [
+    'streamer1', 'streamer2', 'streamer3', 'streamer4', 'streamer5',
+    'streamer6', 'streamer7', 'streamer8', 'streamer9', 'streamer10'
+  ];
+
+  async function fetchChannel(name) {
+    try {
+      const fetch = await import('node-fetch');
+      const response = await fetch.default(`https://kick.com/api/v2/channels/${name}`);
+      const data = await response.json();
+      return { name, livestream: data.livestream ?? null };
+    } catch (error) {
+      console.error(`Erro ao buscar ${name}:`, error);
+      return { name, livestream: null };
+    }
+  }
+
+  Promise.all(kickStreamers.map(fetchChannel))
+    .then(results => {
+      const live = results.filter(r => r.livestream !== null);
+      const offline = results.filter(r => r.livestream === null);
+      res.json({ live, offline });
+    })
+    .catch(error => {
+      console.error('Erro ao consultar channels Kick:', error);
+      res.status(500).json({ error: 'Erro ao consultar channels Kick' });
+    });
+});
+
 app.get('/api/export/tvbox.json', (req, res) => {
   const { where, params, group, term } = filtersFromQuery(req.query);
   const rows = db.prepare(`
@@ -74,6 +105,8 @@ app.get('/api/export/tvbox.json', (req, res) => {
       url: row.url,
       type: /\.mp4(?:[?#]|$)/i.test(row.url) ? 'mp4' : 'hls',
       category: row.groupName || 'm3u',
+      // O TVBox usa `poster`; `logo` fica para compatibilidade com exportações antigas.
+      poster: row.logo || '',
       logo: row.logo || '',
       tvgId: row.tvgId || ''
     };

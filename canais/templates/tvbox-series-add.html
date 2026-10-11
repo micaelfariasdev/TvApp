@@ -1,0 +1,17 @@
+<section class="panel" style="max-width:700px">
+  <h1>Nova série</h1>
+  <p class="muted">A série será criada em <code>series/&lt;id&gt;.json</code>.</p>
+  <form method="post" action="/tvbox/series/add">
+    <label>Título</label>
+    <input name="title" required placeholder="Ex.: Minha Série">
+    <label>ID (somente letras, números, _ e -)</label>
+    <input name="id" required pattern="[A-Za-z0-9_-]+" placeholder="minha-serie">
+    <label>Capa (opcional)</label>
+    <input name="poster" type="url" placeholder="https://site.com/capa.jpg">
+    <p class="muted">Você pode informar uma URL manual ou usar “Buscar capas faltantes” depois.</p>
+    <div class="actions" style="margin-top:20px">
+      <button class="btn primary">Criar série</button>
+      <a class="btn" href="/tvbox/series">Cancelar</a>
+    </div>
+  </form>
+</section>

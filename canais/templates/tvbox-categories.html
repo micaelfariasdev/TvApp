@@ -1,0 +1,247 @@
+<style>
+  .categories-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .categories-hero h1 {
+    margin-bottom: 6px;
+  }
+
+  .category-search {
+    width: min(100%, 420px);
+  }
+
+  .category-search input {
+    margin-top: 6px;
+  }
+
+  .category-list {
+    display: grid;
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .category-group {
+    background: rgba(18, 29, 48, 0.93);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.18s;
+  }
+
+  .category-group:hover {
+    border-color: #3b4e6d;
+  }
+
+  .category-group summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .category-group summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .category-group summary::after {
+    content: "+";
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--surface2);
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--blue);
+    transition: background 0.18s, color 0.18s;
+  }
+
+  .category-group summary:hover::after {
+    background: var(--blue);
+    color: #071120;
+  }
+
+  .category-group[open] summary {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .category-group[open] summary::after {
+    content: "−";
+  }
+
+  .category-group summary > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .category-group summary strong {
+    font-size: 17px;
+    word-break: break-word;
+  }
+
+  .summary-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .count {
+    white-space: nowrap;
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 13px;
+    background: var(--surface2);
+    padding: 3px 10px;
+    border-radius: 99px;
+    border: 1px solid var(--line);
+  }
+
+  .category-content {
+    padding: 20px;
+  }
+
+  .category-tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .category-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+  }
+
+  .category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    border: 1px solid var(--line);
+    background: #0c1729;
+    border-radius: 12px;
+    padding: 14px;
+    transition: border-color 0.18s, transform 0.18s;
+  }
+
+  .category-item:hover {
+    border-color: #4b6f9f;
+    transform: translateY(-1px);
+  }
+
+  .category-item strong {
+    display: block;
+    overflow-wrap: anywhere;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  .category-item .badge {
+    margin-left: 0;
+  }
+
+  .category-item .url {
+    font-size: 12px;
+    margin: 8px 0 0;
+    word-break: break-all;
+    color: var(--muted);
+    max-height: 36px;
+    overflow: hidden;
+  }
+
+  .category-item .btn {
+    padding: 8px 12px;
+    flex: none;
+    min-height: 36px;
+  }
+
+  @media (max-width: 600px) {
+    .categories-hero {
+      align-items: stretch;
+    }
+
+    .category-search {
+      width: 100%;
+    }
+
+    .category-group summary {
+      padding: 14px 16px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .summary-actions {
+      width: 100%;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+
+    .category-content {
+      padding: 14px 16px;
+    }
+
+    .count {
+      font-size: 12px;
+    }
+
+    .category-item {
+      padding: 12px;
+    }
+  }
+</style>
+
+<section class="panel categories-hero">
+  <div>
+    <h1>Listas por categoria</h1>
+    <p class="muted"><strong>{{categoryCount}}</strong> categorias. As listas ficam fechadas para manter o painel organizado.</p>
+  </div>
+  <label class="category-search">Buscar categoria ou conteúdo
+    <input id="category-filter" type="search" autocomplete="off" placeholder="Ex.: filmes, premiere, naruto...">
+  </label>
+</section>
+
+<section class="category-list" id="category-list">
+  {{categorySections}}
+</section>
+
+<script>
+  const filter = document.getElementById('category-filter');
+  const groups = [...document.querySelectorAll('.category-group')];
+
+  filter.addEventListener('input', () => {
+    const query = filter.value.trim().toLocaleLowerCase('pt-BR');
+
+    groups.forEach(group => {
+      const categoryMatches = (group.dataset.category || '').toLocaleLowerCase('pt-BR').includes(query);
+      let itemMatches = false;
+
+      group.querySelectorAll('.category-item').forEach(item => {
+        const visible = !query || categoryMatches || (item.dataset.name || '').toLocaleLowerCase('pt-BR').includes(query);
+        item.hidden = !visible;
+        if (visible) itemMatches = true;
+      });
+
+      group.hidden = !categoryMatches && !itemMatches;
+      
+      if (query && !group.hidden) {
+        group.open = true;
+      }
+    });
+  });
+</script>

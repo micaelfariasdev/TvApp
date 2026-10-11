@@ -1,0 +1,22 @@
+<section class="panel" style="max-width:900px">
+  <div class="row">
+    <div>
+      <a class="btn" href="/tvbox/categories">← Voltar para Categorias</a>
+      <h1 style="margin-top:16px">{{categoryName}}</h1>
+      <p class="muted">Gerencie a capa e visualize os itens desta categoria.</p>
+    </div>
+  </div>
+
+  <form method="post" action="/tvbox/category/{{categorySlug}}/poster" class="row" style="margin:20px 0; align-items:flex-end;">
+    <div style="flex:1; min-width:280px;">
+      <label>Capa da Categoria (Poster)</label>
+      <input type="url" name="poster" value="{{poster}}" placeholder="https://site.com/capa-categoria.jpg">
+    </div>
+    <button class="btn primary" type="submit">Salvar Capa</button>
+  </form>
+
+  <h2 style="margin-top:28px">Itens nesta Categoria</h2>
+  <div class="category-items" style="margin-top:15px">
+    {{itemsRows}}
+  </div>
+</section>

@@ -13,8 +13,8 @@ android {
         targetSdk = 35
         // O script scripts/publish-release.ps1 pode sobrescrever estes valores
         // com -PappVersionCode e -PappVersionName ao publicar uma release.
-        versionCode = (project.findProperty("appVersionCode") as String?)?.toIntOrNull() ?: 6
-        versionName = (project.findProperty("appVersionName") as String?) ?: "1.0.6"
+        versionCode = (project.findProperty("appVersionCode") as String?)?.toIntOrNull() ?: 10
+        versionName = (project.findProperty("appVersionName") as String?) ?: "1.0.10"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -52,4 +52,5 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("io.coil-kt:coil:2.7.0")
 }

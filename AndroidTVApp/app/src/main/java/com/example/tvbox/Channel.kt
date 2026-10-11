@@ -7,6 +7,8 @@ data class Channel(
     val url: String,
     val type: String = "hls",
     val category: String? = null,
+    val poster: String? = null,
+    val backdrop: String? = null,
     @SerializedName(value = "group", alternate = ["league", "competition"])
     val group: String? = null,
     @SerializedName("start_time")
