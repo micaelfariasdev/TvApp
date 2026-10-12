@@ -6,17 +6,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.item_kick_live.view.*
 
 data class KickLiveChannel(
     val name: String,
     val poster: String?,
     val kickName: String,
-    var isLive: Boolean = false
+    val isLive: Boolean = false,
+    val playbackUrl: String? = null,
+    val playbackEndpoint: String? = null,
+    val title: String? = null,
+    val viewers: Int = 0,
+    val thumbnail: String? = null
 )
 
 class KickLiveAdapter(
-    private val channels: List<KickLiveChannel>,
+    private var channels: List<KickLiveChannel>,
     private val onItemClick: (KickLiveChannel) -> Unit
 ) : RecyclerView.Adapter<KickLiveAdapter.KickLiveViewHolder>() {
 
@@ -35,11 +39,16 @@ class KickLiveAdapter(
         val channel = channels[position]
         holder.channelName.text = channel.name
         Glide.with(holder.itemView.context)
-            .load(channel.poster)
+            .load(channel.thumbnail ?: channel.poster)
             .placeholder(R.drawable.media_poster_placeholder)
             .error(R.drawable.media_poster_placeholder)
             .into(holder.channelPoster)
         holder.itemView.setOnClickListener { onItemClick(channel) }
+    }
+
+    fun submit(items: List<KickLiveChannel>) {
+        channels = items
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = channels.size

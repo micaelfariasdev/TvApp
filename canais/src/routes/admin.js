@@ -39,7 +39,7 @@ function tvboxPage(title, body) {
     path.join(TEMPLATES_DIRECTORY, "tvbox.html"),
     "utf-8",
   );
-  const navigation = `<nav class="actions app-navigation"><a class="btn" href="/tvbox">Visão geral</a><a class="btn" href="/tvbox/categories">Categorias</a><a class="btn" href="/tvbox/series">Séries</a><form method="post" action="/tvbox/posters/fill" onsubmit="return confirm('Buscar capas para todos os filmes sem foto?')"><button class="btn" type="submit">Buscar capas faltantes</button></form><form method="post" action="/tvbox/logout"><button class="btn danger" type="submit">Sair</button></form></nav>`;
+  const navigation = `<nav class="actions app-navigation"><a class="btn" href="/tvbox">Visão geral</a><a class="btn" href="/tvbox/home">Home</a><a class="btn" href="/tvbox/categories">Categorias</a><a class="btn" href="/tvbox/series">Séries</a><a class="btn" href="/tvbox/hls">Canais HLS</a><form method="post" action="/tvbox/posters/fill" onsubmit="return confirm('Buscar capas para todos os filmes sem foto?')"><button class="btn" type="submit">Buscar capas faltantes</button></form><form method="post" action="/tvbox/logout"><button class="btn danger" type="submit">Sair</button></form></nav>`;
   return removeLegacyPasswordFromHtml(
     layout
       .replaceAll("{{title}}", safeText(title))
@@ -106,7 +106,13 @@ router.post("/logout", (req, res) => {
 });
 
 router.use((req, res, next) => {
-  if (req.path === "/login" || req.path.startsWith("/api/")) return next();
+  if (
+    req.path === "/login" ||
+    req.path.startsWith("/api/")
+  ) {
+    return next();
+  }
+
   if (requireTvboxAccess(req, res)) return next();
 });
 
@@ -140,30 +146,163 @@ router.get("/api/home", (req, res) => {
 
 router.get("/home", (req, res) => {
   const config = loadHomeConfig();
-  const categories = [...new Set(loadDB().map((item) => String(item.category || "outros").trim() || "outros"))]
-    .sort((a, b) => a.localeCompare(b, "pt-BR"));
-  const enabledCategories = new Set(config.sections
-    .filter((section) => section.type === "category" && section.enabled !== false)
-    .map((section) => String(section.category || "").toLocaleLowerCase("pt-BR")));
-  const hasKick = config.sections.some((section) => section.type === "kick-live" && section.enabled !== false);
-  const hasSeries = config.sections.some((section) => section.type === "series" && section.enabled !== false);
-  const categoryOptions = categories.map((category) => {
-    const checked = enabledCategories.has(category.toLocaleLowerCase("pt-BR")) ? "checked" : "";
-    return `<label class="card" style="display:flex;align-items:center;gap:12px;padding:14px"><input type="checkbox" name="categories" value="${safeText(category)}" ${checked}><span><strong>${safeText(category)}</strong><small class="muted" style="display:block;margin-top:3px">Exibir uma fileira desta categoria no app.</small></span></label>`;
-  }).join("") || '<p class="empty">Cadastre conteÃºdos com categoria antes de configurar a Home.</p>';
-  const saved = req.query.saved ? '<p class="login-message">PÃ¡gina inicial salva. Atualize o catÃ¡logo no app para aplicar.</p>' : "";
-  const body = `<section class="panel"><div class="row"><div><h1>PÃ¡gina inicial do app</h1><p class="muted">Marque o que deve aparecer. As categorias seguem a ordem abaixo.</p></div><a class="btn" href="/tvbox">Voltar</a></div>${saved}<form method="post" action="/tvbox/home" style="margin-top:20px"><div class="grid"><label class="card" style="display:flex;align-items:center;gap:12px;padding:14px"><input type="checkbox" name="showKick" ${hasKick ? "checked" : ""}><span><strong>Banner Ao vivo na Kick</strong><small class="muted" style="display:block;margin-top:3px">Abre a categoria Kick.</small></span></label><label class="card" style="display:flex;align-items:center;gap:12px;padding:14px"><input type="checkbox" name="showSeries" ${hasSeries ? "checked" : ""}><span><strong>SÃ©ries</strong><small class="muted" style="display:block;margin-top:3px">Mostra a fileira de sÃ©ries com capas.</small></span></label></div><h2 style="margin:28px 0 12px">Categorias</h2><div class="grid">${categoryOptions}</div><div class="actions" style="margin-top:24px"><button class="btn primary" type="submit">Salvar pÃ¡gina inicial</button></div></form></section>`;
-  res.send(tvboxPage("PÃ¡gina inicial", body));
+
+  const categories = [
+    ...new Set(
+      loadDB().map(
+        (item) => String(item.category || "outros").trim() || "outros",
+      ),
+    ),
+  ].sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+  const enabledCategories = new Set(
+    config.sections
+      .filter(
+        (section) => section.type === "category" && section.enabled !== false,
+      )
+      .map((section) =>
+        String(section.category || "").toLocaleLowerCase("pt-BR"),
+      ),
+  );
+
+  const hasKick = config.sections.some(
+    (section) => section.type === "kick-live" && section.enabled !== false,
+  );
+
+  const hasSeries = config.sections.some(
+    (section) => section.type === "series" && section.enabled !== false,
+  );
+
+  const categoryOptions =
+    categories
+      .map((category) => {
+        const checked = enabledCategories.has(
+          category.toLocaleLowerCase("pt-BR"),
+        )
+          ? "checked"
+          : "";
+
+        return `
+        <label class="card" style="display:flex;align-items:center;gap:12px;padding:14px">
+          <input
+            type="checkbox"
+            name="categories"
+            value="${safeText(category)}"
+            ${checked}
+          >
+          <span>
+            <strong>${safeText(category)}</strong>
+            <small class="muted" style="display:block;margin-top:3px">
+              Exibir uma fileira desta categoria no app.
+            </small>
+          </span>
+        </label>
+      `;
+      })
+      .join("") ||
+    '<p class="empty">Cadastre conteúdos com categoria antes de configurar a Home.</p>';
+
+  const template = fs.readFileSync(
+    path.join(TEMPLATES_DIRECTORY, "tvbox-home.html"),
+    "utf-8",
+  );
+
+  const body = template
+    .replace("{{categoryOptions}}", categoryOptions)
+    .replace("{{kickChecked}}", hasKick ? "checked" : "")
+    .replace("{{seriesChecked}}", hasSeries ? "checked" : "")
+    .replace(
+      "{{savedMessage}}",
+      req.query.saved
+        ? '<p class="login-message">Página inicial salva. Atualize o catálogo no app para aplicar.</p>'
+        : "",
+    );
+
+  res.send(tvboxPage("Página inicial", body));
+});
+
+// Dados dinâmicos da Home
+router.get("/home/data", (req, res) => {
+  try {
+    const config = loadHomeConfig();
+
+    const categories = [
+      ...new Set(
+        loadDB().map(
+          (item) => String(item.category || "outros").trim() || "outros",
+        ),
+      ),
+    ].sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+    const enabledCategories = config.sections
+      .filter(
+        (section) => section.type === "category" && section.enabled !== false,
+      )
+      .map((section) =>
+        String(section.category || "").toLocaleLowerCase("pt-BR"),
+      );
+
+    res.json({
+      saved: req.query.saved === "1",
+      showKick: config.sections.some(
+        (section) => section.type === "kick-live" && section.enabled !== false,
+      ),
+      showSeries: config.sections.some(
+        (section) => section.type === "series" && section.enabled !== false,
+      ),
+      categories: categories.map((category) => ({
+        name: category,
+        enabled: enabledCategories.includes(
+          category.toLocaleLowerCase("pt-BR"),
+        ),
+      })),
+    });
+  } catch (error) {
+    console.error("[HOME] Erro:", error);
+
+    res.status(500).json({
+      error: "Erro ao carregar configuração da Home",
+    });
+  }
 });
 
 router.post("/home", (req, res) => {
-  const selected = Array.isArray(req.body.categories) ? req.body.categories : req.body.categories ? [req.body.categories] : [];
+  const selected = Array.isArray(req.body.categories)
+    ? req.body.categories
+    : req.body.categories
+      ? [req.body.categories]
+      : [];
   const sections = [];
-  if (req.body.showKick) sections.push({ id: "kick-live", type: "kick-live", title: "Ao vivo na Kick", enabled: true, limit: 1 });
-  selected.map((value) => String(value).trim()).filter(Boolean).forEach((category) => {
-    sections.push({ id: `category-${category.toLocaleLowerCase("pt-BR")}`, type: "category", category, title: category, enabled: true, limit: 18 });
-  });
-  if (req.body.showSeries) sections.push({ id: "series", type: "series", title: "SÃ©ries", enabled: true, limit: 18 });
+  if (req.body.showKick) {
+    sections.push({
+      id: "kick-live",
+      type: "kick-live",
+      title: "Ao vivo na Kick",
+      enabled: true,
+      limit: 40,
+    });
+  }
+  selected
+    .map((value) => String(value).trim())
+    .filter(Boolean)
+    .forEach((category) => {
+      sections.push({
+        id: `category-${category.toLocaleLowerCase("pt-BR")}`,
+        type: "category",
+        category,
+        title: category,
+        enabled: true,
+        limit: 18,
+      });
+    });
+  if (req.body.showSeries)
+    sections.push({
+      id: "series",
+      type: "series",
+      title: "Séries",
+      enabled: true,
+      limit: 18,
+    });
   saveHomeConfig({ sections });
   res.redirect("/tvbox/home?saved=1");
 });
@@ -729,13 +868,17 @@ router.get("/edit/:id", (req, res) => {
       );
 
   // Extrai todas as categorias únicas já presentes no banco de dados
-  const uniqueCategories = [...new Set(dbData.map((i) => String(i.category || "outros").trim() || "outros"))].sort((a, b) => a.localeCompare(b, "pt-BR"));
+  const uniqueCategories = [
+    ...new Set(
+      dbData.map((i) => String(i.category || "outros").trim() || "outros"),
+    ),
+  ].sort((a, b) => a.localeCompare(b, "pt-BR"));
 
   // Gera as opções do select dinamicamente
   const categoryOptions = uniqueCategories
     .map(
       (cat) =>
-        `<option value="${safeText(cat)}" ${item.category === cat ? "selected" : ""}>${safeText(cat)}</option>`
+        `<option value="${safeText(cat)}" ${item.category === cat ? "selected" : ""}>${safeText(cat)}</option>`,
     )
     .join("");
 
@@ -811,11 +954,23 @@ router.get("/category/:name", (req, res) => {
   const itemsRows = items.length
     ? items
         .map(
-          (item) =>
-            `<article class="category-item" style="width:100%"><div><strong>${safeText(item.name)}</strong><span class="badge">${safeText(item.type || "hls")}</span><p class="url">${safeText(item.url)}</p></div><div class="actions"><a class="btn" href="/tvbox/edit/${item.id}">Editar</a></div></article>`,
+          (item) => `
+            <article class="category-item" style="display: flex; align-items: center; justify-content: space-between; background: #1f2937; border: 1px solid #374151; border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; gap: 16px; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#4b5563'" onmouseout="this.style.borderColor='#374151'">
+                <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1;">
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <strong style="color: #ffffff; font-size: 15px; font-weight: 600;">${safeText(item.name)}</strong>
+                        <span class="badge" style="background: #374151; color: #60a5fa; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px;">${safeText(item.type || "hls")}</span>
+                    </div>
+                    <p class="url" style="color: #9ca3af; font-size: 13px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${safeText(item.url)}">${safeText(item.url)}</p>
+                </div>
+                <div class="actions" style="display: flex; gap: 8px; flex-shrink: 0;">
+                    <a class="btn" href="/tvbox/edit/${item.id}" style="background: #374151; color: #f3f4f6; text-decoration: none; padding: 8px 14px; font-size: 13px; font-weight: 500; border-radius: 8px; border: 1px solid #4b5563; transition: background 0.2s;" onmouseover="this.style.background='#4b5563'" onmouseout="this.style.background='#374151'">Editar</a>
+                </div>
+            </article>
+            `,
         )
         .join("")
-    : '<div class="empty">Nenhum item encontrado nesta categoria.</div>';
+    : '<div class="empty" style="text-align: center; padding: 32px; color: #9ca3af; font-size: 14px; background: #1f2937; border-radius: 12px; border: 1px dashed #374151;">Nenhum item encontrado nesta categoria.</div>';
 
   const templateContent = fs.readFileSync(
     path.join(TEMPLATES_DIRECTORY, "tvbox-category-detail.html"),
@@ -843,4 +998,420 @@ router.post("/category/:name/poster", (req, res) => {
   res.redirect(`/tvbox/category/${encodeURIComponent(categoryName)}`);
 });
 [];
+
+let kickCache = null;
+let kickCacheAt = 0;
+let kickPending = null;
+
+
+const hls = require("../services/hls");
+const embedtv = require("../services/embedtv");
+// Reprodução HLS usando o prefixo /tvbox
+router.get("/api/live/:id.m3u8", hls.play);
+router.get("/api/live/resource/:token", hls.resource);
+
+function getPublicBaseUrl(req) {
+  return `${req.protocol}://${req.get("host")}`;
+}
+
+// API do Brasileirão Série A
+router.get(
+  "/api/events/brasileirao-serie-a",
+  async (req, res) => {
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      "*"
+    );
+
+    try {
+      const result = await embedtv.events({
+        brasileirao: true,
+        baseUrl: getPublicBaseUrl(req),
+        sync: true,
+      });
+
+      res.json(result);
+    } catch (error) {
+      console.error(
+        "[EMBEDTV] Brasileirão:",
+        error.message
+      );
+
+      res.status(502).json({
+        events: [],
+        error: error.message,
+      });
+    }
+  }
+);
+
+// API de todos os eventos
+router.get(
+  "/api/embedtv/events",
+  async (req, res) => {
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      "*"
+    );
+
+    try {
+      const result = await embedtv.events({
+        baseUrl: getPublicBaseUrl(req),
+        sync: true,
+      });
+
+      res.json(result);
+    } catch (error) {
+      console.error(
+        "[EMBEDTV] Todos os eventos:",
+        error.message
+      );
+
+      res.status(502).json({
+        events: [],
+        error: error.message,
+      });
+    }
+  }
+);
+
+// Painel HLS
+
+router.get("/hls", (req, res) => {
+  try {
+    const file = path.join(
+      TEMPLATES_DIRECTORY,
+      "tvbox-hls.html"
+    );
+
+    console.log("[TVBOX HLS] Abrindo:", file);
+
+    if (!fs.existsSync(file)) {
+      return res.status(500).send(
+        "ERRO: arquivo tvbox-hls.html não encontrado em " + file
+      );
+    }
+
+    const html = fs.readFileSync(file, "utf8");
+
+    console.log(
+      "[TVBOX HLS] HTML carregado:",
+      html.length,
+      "caracteres"
+    );
+
+    const page = tvboxPage("Canais HLS", html);
+
+    console.log(
+      "[TVBOX HLS] Página montada com sucesso"
+    );
+
+    return res
+      .status(200)
+      .type("html")
+      .send(page);
+
+  } catch (error) {
+    console.error(
+      "[TVBOX HLS] ERRO AO ABRIR PÁGINA:",
+      error.stack
+    );
+
+    return res.status(500).type("text").send(
+      "Erro ao abrir painel HLS:\n\n" +
+      error.stack
+    );
+  }
+});
+
+
+// Canais cadastrados
+router.get("/hls/channels", (req, res) => {
+  res.json(hls.list());
+});
+
+// Configuração do polling HLS
+router.get("/hls/settings", (req, res) => {
+  res.json(hls.getSettings());
+});
+
+router.post("/hls/settings", (req, res) => {
+  try {
+    res.json(hls.setSettings(req.body));
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+// Adicionar canal
+router.post("/hls/channels", async (req, res) => {
+  try {
+    const channel = await hls.add(req.body);
+
+    res.status(201).json(channel);
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+// Atualizar canal manualmente
+
+router.post(
+  "/hls/channels/:id/refresh",
+  async (req, res) => {
+    const channel = hls.channelById(req.params.id);
+
+    if (!channel) {
+      return res.status(404).json({
+        error: "Canal não encontrado",
+      });
+    }
+
+    try {
+      const result = await hls.refresh(
+        channel,
+        true
+      );
+
+      if (result.error) {
+        return res.status(502).json({
+          error: result.error,
+          status: "error",
+        });
+      }
+
+      return res.json({
+        ok: true,
+        status: "online",
+        checks: result.checks,
+        changes: result.changes,
+        lastCheck: new Date(
+          result.checked
+        ).toISOString(),
+      });
+    } catch (error) {
+      return res.status(502).json({
+        error: error.message,
+      });
+    }
+  }
+);
+
+
+// Excluir canal
+router.delete(
+  "/hls/channels/:id",
+  (req, res) => {
+    if (!hls.remove(req.params.id)) {
+      return res.status(404).json({
+        error: "Canal não encontrado",
+      });
+    }
+
+    res.json({ ok: true });
+  }
+);
+
+router.delete("/hls/channels", (req, res) => {
+  try {
+    const removed = hls.removeAll();
+    res.json({ ok: true, removed });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Diagnóstico da EmbedTV
+router.get(
+  "/hls/embedtv-status",
+  (req, res) => {
+    res.json(embedtv.status());
+  }
+);
+
+
+router.post("/hls/sync-embedtv", async (req, res) => {
+  try {
+    console.log(
+      "[EMBEDTV] Sincronização solicitada pelo painel"
+    );
+
+    const result = await embedtv.events({
+      force: true,
+      sync: true,
+      baseUrl: getPublicBaseUrl(req),
+    });
+
+    return res.json({
+      ...result,
+      message:
+        "Eventos consultados. Sincronização HLS iniciada.",
+    });
+  } catch (error) {
+    console.error(
+      "[EMBEDTV] Falha na consulta:",
+      error
+    );
+
+    return res.status(502).json({
+      error: error.message,
+    });
+  }
+});
+
+
+
+router.get("/api/kick/live", async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  const cacheMs = 60_000;
+
+  if (kickCache && Date.now() - kickCacheAt < cacheMs) {
+    return res.json(kickCache);
+  }
+
+  try {
+    if (!kickPending) {
+      kickPending = (async () => {
+        const db = loadDB();
+
+        // O banco atual retorna um array.
+        // Busca apenas canais com type = kick.
+        const channels = db.filter(
+          (item) =>
+            String(item.type || "")
+              .trim()
+              .toLowerCase() === "kick",
+        );
+
+        let failed = 0;
+
+        const results = await Promise.all(
+          channels.map(async (channel) => {
+            try {
+              // Usa o NAME cadastrado no painel,
+              // sem depender da URL do canal.
+              const name = String(channel.name || "").trim();
+
+              if (!name) {
+                failed++;
+                console.warn("[KICK] Canal sem nome:", channel.id);
+                return null;
+              }
+
+              const kickName = name
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/^@/, "")
+                .replace(/\s+/g, "");
+
+              const response = await fetch(
+                `https://kick.com/api/v2/channels/${encodeURIComponent(kickName)}`,
+                {
+                  headers: {
+                    Accept: "application/json",
+                    "User-Agent": "Mozilla/5.0",
+                    Referer: "https://kick.com/",
+                  },
+                  signal: AbortSignal.timeout(10000),
+                },
+              );
+
+              if (!response.ok) {
+                failed++;
+
+                console.warn(`[KICK] ${kickName}: HTTP ${response.status}`);
+
+                return null;
+              }
+
+              const data = await response.json();
+              const live = data?.livestream;
+
+              // A API pode retornar uma livestream
+              // sem o campo is_live.
+              const isLive = live != null && live.is_live !== false;
+
+              if (!isLive) {
+                console.log(`[KICK] OFFLINE: ${kickName}`);
+                return null;
+              }
+
+              console.log(`[KICK] ONLINE: ${kickName}`);
+
+              return {
+                id: channel.id,
+                name: channel.name || data.user?.username || kickName,
+                kickName: data.slug || kickName,
+
+                url: data.playback_url || null,
+                playbackUrl: data.playback_url || null,
+
+                playbackEndpoint: channel.url || null,
+
+                type: "hls",
+                category: "kick",
+
+                poster: channel.poster || data.user?.profile_pic || null,
+
+                isLive: true,
+                title: live.session_title || "",
+                viewers: live.viewer_count || 0,
+                thumbnail: live.thumbnail?.url || null,
+                startedAt: live.start_time || null,
+              };
+            } catch (error) {
+              failed++;
+
+              console.error(
+                `[KICK] Erro no canal ${channel.name}:`,
+                error.message,
+              );
+
+              return null;
+            }
+          }),
+        );
+
+        const liveChannels = results
+          .filter(Boolean)
+          .sort((a, b) => b.viewers - a.viewers);
+
+        const result = {
+          total: liveChannels.length,
+          checked: channels.length,
+          failed,
+          updatedAt: new Date().toISOString(),
+          channels: liveChannels,
+        };
+
+        // Mantém o cache de 60 segundos.
+        // Evita substituir dados válidos por
+        // um resultado de consulta com falhas.
+        if (failed === 0 || !kickCache) {
+          kickCache = result;
+          kickCacheAt = Date.now();
+        }
+
+        return failed > 0 && kickCache !== result ? kickCache : result;
+      })().finally(() => {
+        kickPending = null;
+      });
+    }
+
+    return res.json(await kickPending);
+  } catch (error) {
+    console.error("[KICK] Erro geral:", error);
+
+    return res.status(500).json({
+      error: "Erro ao consultar canais da Kick",
+    });
+  }
+});
+
 module.exports = router;

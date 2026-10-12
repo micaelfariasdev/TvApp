@@ -1,0 +1,742 @@
+<section class="panel">
+  <h1>Canais HLS</h1>
+  <p class="muted">
+    Gerenciamento de canais HLS e integração com EmbedTV.
+    O polling continua funcionando com o painel fechado.
+  </p>
+
+  <div class="grid">
+    <div>
+      <label for="poll">Intervalo do polling (segundos)</label>
+      <input
+        id="poll"
+        type="number"
+        min="30"
+        max="3600"
+        step="1"
+        value="300"
+      />
+    </div>
+
+    <div style="align-self: end">
+      <button
+        type="button"
+        class="btn primary"
+        id="savePoll"
+      >
+        Salvar intervalo
+      </button>
+    </div>
+  </div>
+
+  <p id="status" class="muted">
+    Carregando configurações...
+  </p>
+</section>
+
+<section class="panel">
+  <h2>Adicionar canal</h2>
+
+  <form id="addHls">
+    <label for="channelName">Nome</label>
+    <input
+      id="channelName"
+      name="name"
+      required
+      maxlength="100"
+      placeholder="Ex.: Meu canal"
+    />
+
+    <label for="channelUrl">
+      URL do embed ou playlist HLS
+    </label>
+    <input
+      id="channelUrl"
+      name="url"
+      type="url"
+      required
+      placeholder="https://..."
+    />
+
+    <div class="actions" style="margin-top: 16px">
+      <button
+        class="btn primary"
+        type="submit"
+      >
+        Adicionar canal
+      </button>
+    </div>
+  </form>
+
+  <div class="actions" style="margin-top: 20px">
+    <button
+      class="btn"
+      id="syncEmbed"
+      type="button"
+    >
+      Sincronizar EmbedTV agora
+    </button>
+
+    <button
+      class="btn danger"
+      id="deleteAllHls"
+      type="button"
+    >
+      Apagar todos os canais HLS
+    </button>
+
+    <button
+      class="btn"
+      id="refreshList"
+      type="button"
+    >
+      Atualizar lista
+    </button>
+
+    <button
+      class="btn"
+      id="checkEmbed"
+      type="button"
+    >
+      Diagnóstico EmbedTV
+    </button>
+  </div>
+
+  <p
+    id="message"
+    class="muted"
+    aria-live="polite"
+    style="margin-top: 15px"
+  ></p>
+
+  <pre
+    id="diagnostics"
+    style="
+      display: none;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      padding: 14px;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      font-size: 12px;
+      max-height: 400px;
+      overflow-y: auto;
+    "
+  ></pre>
+</section>
+
+<section class="panel">
+  <div
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    "
+  >
+    <h2>Canais cadastrados</h2>
+    <span id="channelCount" class="muted"></span>
+  </div>
+
+  <div id="channels">
+    Carregando canais...
+  </div>
+</section>
+
+<style>
+  .panel {
+    background: #1f2937;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    color: #f9fafb;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #374151;
+    color: #f9fafb;
+    text-align: center;
+  }
+
+  .btn.primary {
+    background: #2563eb;
+    color: #ffffff;
+  }
+
+  .btn.danger {
+    background: #dc2626;
+    color: #ffffff;
+  }
+
+  input[type="text"],
+  input[type="url"],
+  input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #4b553d;
+    border-radius: 8px;
+    background: #111827;
+    color: #f9fafb;
+    font-size: 14px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 12px;
+  }
+
+  label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #d1d5db;
+  }
+
+  .muted {
+    color: #9ca3af;
+    font-size: 13px;
+  }
+
+  .card {
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 10px;
+    padding: 14px;
+  }
+
+  .url {
+    word-break: break-all;
+    font-family: monospace;
+    font-size: 12px;
+    background: #1f2937;
+    padding: 8px;
+    border-radius: 6px;
+    margin: 10px 0;
+  }
+
+  @media (min-width: 768px) {
+    .panel {
+      padding: 24px;
+    }
+
+    .grid {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+    }
+
+    .actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      width: auto;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="number"] {
+      max-width: 400px;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  "use strict";
+
+  const $ = function (id) {
+    return document.getElementById(id);
+  };
+
+  const BASE = "/tvbox/hls";
+
+  let loading = false;
+
+  function message(text, error) {
+    const el = $("message");
+
+    if (!el) return;
+
+    el.textContent = String(text || "");
+
+    if (error === true) {
+      el.style.color = "#f87171";
+    } else {
+      el.style.color = "";
+    }
+  }
+
+  function formatError(error) {
+    if (error && error.message) {
+      return error.message;
+    }
+
+    return String(error);
+  }
+
+  async function api(endpoint, options) {
+    const url = BASE + endpoint;
+    const config = options || {};
+
+    const headers = {
+      Accept: "application/json"
+    };
+
+    if (config.body !== undefined) {
+      headers["Content-Type"] = "application/json";
+    }
+
+    if (config.headers) {
+      Object.assign(headers, config.headers);
+    }
+
+    let response;
+
+    try {
+      response = await fetch(url, {
+        method: config.method || "GET",
+        credentials: "same-origin",
+        cache: "no-store",
+        headers: headers,
+        body: config.body
+      });
+    } catch (error) {
+      throw new Error("Falha de conexão com " + url + ": " + formatError(error));
+    }
+
+    if (response.status === 401) {
+      throw new Error("Sessão expirada. Faça login novamente em /tvbox/login");
+    }
+
+    const raw = await response.text();
+
+    let data;
+
+    try {
+      data = JSON.parse(raw);
+    } catch (error) {
+      if (
+        response.redirected ||
+        raw.toLowerCase().includes("<html") ||
+        raw.toLowerCase().includes("<!doctype")
+      ) {
+        throw new Error("A rota " + url + " retornou HTML em vez de JSON. Verifique sua sessão em /tvbox/login.");
+      }
+
+      throw new Error("Resposta inválida da API " + url + " (HTTP " + response.status + "): " + raw.substring(0, 200));
+    }
+
+    if (!response.ok) {
+      throw new Error(url + " - HTTP " + response.status + ": " + (data.error || "Erro desconhecido"));
+    }
+
+    return data;
+  }
+
+  function createButton(label, action, danger) {
+    const btn = document.createElement("button");
+
+    btn.type = "button";
+    btn.className = danger ? "btn danger" : "btn";
+    btn.textContent = label;
+
+    btn.addEventListener("click", async function () {
+      btn.disabled = true;
+
+      try {
+        await action();
+      } catch (error) {
+        message(formatError(error), true);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    return btn;
+  }
+
+  function formatDate(value) {
+    if (!value) return "-";
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return String(value);
+    }
+
+    return date.toLocaleString("pt-BR");
+  }
+
+  async function loadSettings() {
+    try {
+      const config = await api("/settings");
+
+      if (document.activeElement !== $("poll")) {
+        $("poll").value = config.pollingSeconds || 300;
+      }
+
+      const status = $("status");
+
+      status.style.color = "";
+
+      status.textContent =
+        "Polling: " +
+        (config.pollingSeconds || 300) +
+        " segundos | Canais: " +
+        (config.channels || 0) +
+        " | Última execução: " +
+        formatDate(config.lastRun) +
+        " | Executando: " +
+        (config.running ? "Sim" : "Não");
+
+    } catch (error) {
+      $("status").textContent = "Erro ao carregar configurações: " + formatError(error);
+      $("status").style.color = "#f87171";
+    }
+  }
+
+  function createChannelCard(channel) {
+    const card = document.createElement("article");
+
+    card.className = "card";
+    card.style.marginBottom = "14px";
+
+    const title = document.createElement("h3");
+
+    title.textContent = String(channel.name || "Sem nome") + " (" + String(channel.id || "-") + ")";
+
+    const state = document.createElement("p");
+
+    state.className = "muted";
+
+    state.textContent =
+      "Status: " +
+      (channel.status || "checking") +
+      " | Verificações: " +
+      (channel.checks || 0) +
+      " | Mudanças de URL: " +
+      (channel.changes || 0) +
+      " | Última atualização: " +
+      formatDate(channel.lastCheck);
+
+    const errorElement = document.createElement("p");
+
+    if (channel.error) {
+      errorElement.textContent = "Erro: " + channel.error;
+      errorElement.style.color = "#f87171";
+    }
+
+    const urlElement = document.createElement("p");
+
+    urlElement.className = "url";
+
+    const publicUrl = new URL(
+      "/tvbox/api/live/" + encodeURIComponent(channel.id) + ".m3u8",
+      window.location.origin
+    ).href;
+
+    urlElement.textContent = publicUrl;
+
+    const actions = document.createElement("div");
+
+    actions.className = "actions";
+
+    actions.appendChild(
+      createButton("Copiar API", async function () {
+        try {
+          await navigator.clipboard.writeText(publicUrl);
+          message("URL copiada: " + publicUrl);
+        } catch (error) {
+          window.prompt("Copie a URL do canal:", publicUrl);
+        }
+      })
+    );
+
+    actions.appendChild(
+      createButton("Abrir playlist", async function () {
+        window.open(publicUrl, "_blank", "noopener");
+      })
+    );
+
+    actions.appendChild(
+      createButton("Atualizar agora", async function () {
+        message("Atualizando canal " + channel.name + "...");
+
+        await api(
+          "/channels/" + encodeURIComponent(channel.id) + "/refresh",
+          {
+            method: "POST"
+          }
+        );
+
+        message("Verificação concluída: " + channel.name);
+
+        await loadChannels();
+      })
+    );
+
+    actions.appendChild(
+      createButton("Excluir", async function () {
+        const confirmed = window.confirm("Deseja excluir o canal " + channel.name + "?");
+
+        if (!confirmed) return;
+
+        await api(
+          "/channels/" + encodeURIComponent(channel.id),
+          {
+            method: "DELETE"
+          }
+        );
+
+        message("Canal excluído com sucesso.");
+
+        await loadChannels();
+        await loadSettings();
+      }, true)
+    );
+
+    card.appendChild(title);
+    card.appendChild(state);
+
+    if (channel.error) {
+      card.appendChild(errorElement);
+    }
+
+    card.appendChild(urlElement);
+    card.appendChild(actions);
+
+    return card;
+  }
+
+  async function loadChannels() {
+    if (loading) return;
+
+    loading = true;
+
+    try {
+      const channels = await api("/channels");
+
+      if (!Array.isArray(channels)) {
+        throw new Error("A API /tvbox/hls/channels não retornou uma lista.");
+      }
+
+      const container = $("channels");
+
+      container.replaceChildren();
+
+      $("channelCount").textContent = channels.length + " canal(is) cadastrado(s)";
+
+      if (channels.length === 0) {
+        container.textContent = "Nenhum canal cadastrado.";
+        return;
+      }
+
+      channels.forEach(function (channel) {
+        container.appendChild(createChannelCard(channel));
+      });
+
+    } catch (error) {
+      $("channels").textContent = "Erro ao carregar canais: " + formatError(error);
+      message(formatError(error), true);
+    } finally {
+      loading = false;
+    }
+  }
+
+  $("savePoll").addEventListener("click", async function () {
+    const button = $("savePoll");
+
+    button.disabled = true;
+
+    try {
+      const seconds = Number($("poll").value);
+
+      if (!Number.isInteger(seconds) || seconds < 30 || seconds > 3600) {
+        throw new Error("O intervalo deve estar entre 30 e 3600 segundos.");
+      }
+
+      await api("/settings", {
+        method: "POST",
+        body: JSON.stringify({
+          pollingSeconds: seconds
+        })
+      });
+
+      message("Intervalo salvo com sucesso.");
+
+      await loadSettings();
+
+    } catch (error) {
+      message(formatError(error), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  $("addHls").addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const button = form.querySelector("button[type=submit]");
+
+    button.disabled = true;
+
+    try {
+      const formData = new FormData(form);
+
+      const payload = {
+        name: String(formData.get("name") || "").trim(),
+        url: String(formData.get("url") || "").trim()
+      };
+
+      if (!payload.name || !payload.url) {
+        throw new Error("Preencha o nome e a URL do canal.");
+      }
+
+      message("Cadastrando canal...");
+
+      await api("/channels", {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+
+      form.reset();
+
+      message("Canal adicionado com sucesso.");
+
+      await loadChannels();
+      await loadSettings();
+
+    } catch (error) {
+      message(formatError(error), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  $("syncEmbed").addEventListener("click", async function () {
+    const button = $("syncEmbed");
+
+    button.disabled = true;
+
+    message("Consultando a API da EmbedTV...");
+
+    try {
+      const result = await api("/sync-embedtv", {
+        method: "POST"
+      });
+
+      const total = Number(
+        result.total || (Array.isArray(result.events) ? result.events.length : 0)
+      );
+
+      message(total + " evento(s) consultado(s). " + (result.message || "Consulta concluída."));
+
+      await loadChannels();
+      await loadSettings();
+
+    } catch (error) {
+      message(formatError(error), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  $("checkEmbed").addEventListener("click", async function () {
+    const button = $("checkEmbed");
+    const output = $("diagnostics");
+
+    button.disabled = true;
+
+    output.style.display = "block";
+    output.textContent = "Consultando diagnóstico EmbedTV...";
+
+    try {
+      const result = await api("/embedtv-status");
+
+      output.textContent = JSON.stringify(result, null, 2);
+      message("Diagnóstico carregado.");
+
+    } catch (error) {
+      output.textContent = formatError(error);
+      message(formatError(error), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  $("deleteAllHls").addEventListener("click", async function () {
+    const button = $("deleteAllHls");
+    if (!confirm("Apagar TODOS os canais HLS cadastrados? Esta ação não pode ser desfeita.")) return;
+    if (prompt('Para confirmar, digite APAGAR TODOS:') !== 'APAGAR TODOS') return;
+    button.disabled = true;
+    try {
+      const result = await api("/channels", { method: "DELETE" });
+      message(`${result.removed} canal(is) HLS apagado(s).`);
+      await loadChannels();
+    } catch (error) {
+      message(formatError(error), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  $("refreshList").addEventListener("click", async function () {
+    const button = $("refreshList");
+
+    button.disabled = true;
+
+    try {
+      await loadChannels();
+      await loadSettings();
+
+      message("Lista atualizada.");
+
+    } catch (error) {
+      message(formatError(error), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  async function initialize() {
+    await Promise.all([
+      loadSettings(),
+      loadChannels()
+    ]);
+  }
+
+  initialize().catch(function (error) {
+    message("Erro ao inicializar painel: " + formatError(error), true);
+  });
+
+  setInterval(function () {
+    if (document.visibilityState === "visible") {
+      loadChannels();
+      loadSettings();
+    }
+  }, 30000);
+
+})();
+</script>

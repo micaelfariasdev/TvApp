@@ -1,3 +1,4 @@
+
 package com.example.tvbox
 
 import android.view.LayoutInflater
@@ -10,28 +11,93 @@ import coil.load
 
 class MediaCardAdapter(
     private var items: List<Channel>,
+    private val gridMode: Boolean = false,
     private val onClick: (Channel) -> Unit
 ) : RecyclerView.Adapter<MediaCardAdapter.Holder>() {
+
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         val poster: ImageView = view.findViewById(R.id.media_card_poster)
         val title: TextView = view.findViewById(R.id.media_card_title)
         val category: TextView = view.findViewById(R.id.media_card_category)
     }
 
-    fun submit(newItems: List<Channel>) { items = newItems; notifyDataSetChanged() }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = Holder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_media_card, parent, false)
-    )
+    fun submit(newItems: List<Channel>) {
+        items = newItems
+        notifyDataSetChanged()
+    }
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): Holder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(
+                if (gridMode) R.layout.item_media_grid_card else R.layout.item_media_card,
+                parent,
+                false
+            )
+
+        return Holder(view)
+    }
+
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val item = items[position]
+
+        val isSeries = item.type.equals("series-group", ignoreCase = true)
+
+        val isEpisode = !isSeries &&
+            item.category.equals("series", ignoreCase = true) &&
+            item.episode != null
+
+        // Canais ao vivo ficam quadrados; conteúdo sob demanda continua em pôster vertical.
+        val isLive = !isSeries && !isEpisode && item.type.lowercase() in setOf(
+            "hls", "kick", "iframe", "embed", "football-group", "match-group"
+        )
+        updateGridCardSize(holder, isLive)
+
         holder.title.text = item.name
-        holder.category.text = if (item.type.equals("series-group", true)) "SÉRIE" else "FILME"
+
+        holder.category.text = when {
+            isEpisode -> {
+                val season = item.season ?: 1
+                val episode = item.episode ?: 1
+                "T${season} • EP${episode}"
+            }
+            isSeries -> "SÉRIE"
+            item.type.equals("kick", ignoreCase = true) -> "AO VIVO"
+            item.category.equals("futebol", ignoreCase = true) -> "AO VIVO"
+            else -> item.category?.uppercase()?.takeIf { it.isNotBlank() } ?: "FILME"
+        }
+
         holder.poster.load(item.poster) {
             crossfade(true)
             placeholder(R.drawable.media_poster_placeholder)
             error(R.drawable.media_poster_placeholder)
         }
-        holder.itemView.setOnClickListener { onClick(item) }
+
+        holder.itemView.setOnClickListener {
+            onClick(item)
+        }
     }
-    override fun getItemCount() = items.size
+
+    override fun getItemCount(): Int = items.size
+
+    private fun updateGridCardSize(holder: Holder, isLive: Boolean) {
+        if (!gridMode) return
+
+        holder.itemView.post {
+            val width = holder.itemView.width
+            if (width <= 0) return@post
+
+            val targetHeight = if (isLive) width else dp(holder.itemView, 220)
+            val params = holder.itemView.layoutParams ?: return@post
+            if (params.height != targetHeight) {
+                params.height = targetHeight
+                holder.itemView.layoutParams = params
+            }
+        }
+    }
+
+    private fun dp(view: View, value: Int): Int =
+        (value * view.resources.displayMetrics.density).toInt()
 }

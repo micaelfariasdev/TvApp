@@ -36,15 +36,48 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tvbox.databinding.ActivityMainBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import coil.load
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.math.max
 import kotlin.math.min
+import android.graphics.Rect
+import androidx.media3.exoplayer.DefaultLoadControl
+
+private data class KickLiveResponse(val channels: List<KickLiveChannel> = emptyList())
+
+private data class BrasileirãoEventsResponse(val events: List<BrasileirãoEvent> = emptyList())
+private data class BrasileirãoEvent(
+    val id: Long?,
+    val title: String?,
+    val time_start: String?,
+    val players: List<String>?,
+    val league: BrasileirãoLeague?,
+    val teams: BrasileirãoTeams?
+)
+private data class BrasileirãoLeague(val name: String?, val image: String?)
+private data class BrasileirãoTeams(val home: BrasileirãoTeam?, val away: BrasileirãoTeam?)
+private data class BrasileirãoTeam(val name: String?, val image: String?)
+
+private data class BrazilianEventsResponse(val events: List<BrazilianEvent> = emptyList())
+private data class BrazilianEvent(
+    val id: Long?,
+    val title: String?,
+    val time_start: String?,
+    val players: List<BrazilianPlayer> = emptyList(),
+    val league: BrazilianLeague?,
+    val teams: BrazilianTeams?
+)
+private data class BrazilianPlayer(val apiUrl: String?, val status: String?)
+private data class BrazilianLeague(val name: String?, val image: String?)
+private data class BrazilianTeams(val home: BrazilianTeam?, val away: BrazilianTeam?)
+private data class BrazilianTeam(val name: String?, val image: String?)
 
 private data class KickPlaybackResponse(
     val data: String?
@@ -110,16 +143,37 @@ class MainActivity : AppCompatActivity() {
 
     private companion object {
         const val TVBOX_API_BASE = "http://164.152.62.129/tvbox/api"
-    }
+        const val HLS_PROXY_BASE = "http://164.152.62.129/api/hls-proxy?url="
+}
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var exoPlayer: ExoPlayer
+    private lateinit var kickLiveAdapter: KickLiveAdapter
+    private var kickLiveLoading = false
+    private val kickLiveClient = OkHttpClient()
+    private val kickLiveRefresh = object : Runnable {
+        override fun run() {
+            if (binding.homeMenu.visibility == View.VISIBLE) {
+                loadKickLiveChannels()
+                loadTodayBrazilianMatches()
+            }
+            mainHandler.postDelayed(this, 60_000)
+        }
+    }
     private lateinit var channelAdapter: ChannelAdapter
     private lateinit var homeMovieAdapter: MediaCardAdapter
     private lateinit var homeSeriesAdapter: MediaCardAdapter
+    private lateinit var homeRecentAdapter: MediaCardAdapter
+    private lateinit var homeMatchesAdapter: TodayMatchAdapter
     private lateinit var seriesGridAdapter: MediaCardAdapter
+    private lateinit var episodesGridAdapter: MediaCardAdapter
+    private lateinit var catalogGridAdapter: MediaCardAdapter
     private var allChannels: List<Channel> = emptyList()
+    private var channelsLoading = false
     private var currentChannel: Channel? = null
+    private var recentItems: List<Channel> = emptyList()
+    private val recentPrefsName = "watch_history"
+    private val recentKey = "items"
     private val matchStreamGroups = mutableMapOf<String, List<Channel>>()
     private val footballGroups = mutableMapOf<String, List<Channel>>()
     private val movieGroups = mutableMapOf<String, List<Channel>>()
@@ -133,13 +187,20 @@ class MainActivity : AppCompatActivity() {
     private var seriesEpisodeMenuOpen = false
     private var footballGroupMenuOpen = false
     private var movieCategoryMenuOpen = false
+    private var playerReturnWasChannels = false
+    private var playerReturnWasHome = true
     private var streamReloadAttempts = 0
     private var bufferingStartedAt = 0L
+    private var hlsLastPositionMs = C.TIME_UNSET
+    private var hlsLastProgressAt = 0L
+    private var hlsLastRecoveryAt = 0L
+    private var hlsRecoveryAttempts = 0
+    private var hlsStartedAt = 0L
     private val mainHandler = Handler(Looper.getMainLooper())
     private val playbackWatchdog = object : Runnable {
         override fun run() {
             if (::exoPlayer.isInitialized &&
-                currentChannel?.type?.lowercase() in setOf("kick", "hls") &&
+                currentChannel?.type?.lowercase() == "kick" &&
                 exoPlayer.playWhenReady &&
                 exoPlayer.playbackState == Player.STATE_BUFFERING
             ) {
@@ -155,24 +216,85 @@ class MainActivity : AppCompatActivity() {
         }
     }
     
+    // Monitor exclusivo dos canais HLS. Não altera Kick, MP4 ou iframe.
+    private val hlsFreezeMonitor = object : Runnable {
+        override fun run() {
+            if (::exoPlayer.isInitialized) {
+                val active = currentChannel?.type?.equals("hls", ignoreCase = true) == true &&
+                    binding.playerView.visibility == View.VISIBLE &&
+                    exoPlayer.playWhenReady
+                if (active) {
+                    val now = SystemClock.elapsedRealtime()
+                    val position = exoPlayer.currentPosition
+                    if (hlsLastProgressAt == 0L) {
+                        hlsLastProgressAt = now
+                        hlsLastPositionMs = position
+                    } else if (position > hlsLastPositionMs + 250L) {
+                        hlsLastPositionMs = position
+                        hlsLastProgressAt = now
+                        if (now - hlsStartedAt >= 30_000L) hlsRecoveryAttempts = 0
+                    } else if (now - hlsLastProgressAt >= 15_000L) {
+                        recoverFrozenHls("sem progresso por 15 segundos")
+                    }
+                } else {
+                    hlsLastPositionMs = C.TIME_UNSET
+                    hlsLastProgressAt = 0L
+                }
+            }
+            mainHandler.postDelayed(this, 5_000L)
+        }
+    }
+
+    private fun recoverFrozenHls(reason: String) {
+        val channel = currentChannel ?: return
+        if (!channel.type.equals("hls", ignoreCase = true) ||
+            binding.playerView.visibility != View.VISIBLE || !exoPlayer.playWhenReady) return
+
+        val now = SystemClock.elapsedRealtime()
+        val waitMs = (5_000L * (1L shl hlsRecoveryAttempts.coerceAtMost(4)))
+            .coerceAtMost(60_000L)
+        if (hlsLastRecoveryAt != 0L && now - hlsLastRecoveryAt < waitMs) return
+
+        hlsLastRecoveryAt = now
+        hlsRecoveryAttempts++
+        hlsLastProgressAt = now
+        hlsLastPositionMs = C.TIME_UNSET
+        hlsStartedAt = now
+        Log.w("TVBOX_HLS", "Reabrindo HLS: $reason (tentativa $hlsRecoveryAttempts)")
+
+        exoPlayer.stop()
+        playStream(channel.url)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupPlayer()
+        mainHandler.post(hlsFreezeMonitor)
         setupIFrameWebView()
         setupRecyclerView()
         setupHomeMenu()
         loadChannels()
+        mainHandler.postDelayed(kickLiveRefresh, 60_000)
     }
 
     private fun setupPlayer() {
+        val loadControl = DefaultLoadControl.Builder()
+    .setBufferDurationsMs(
+        30_000, // Buffer mínimo: 30 segundos
+        60_000, // Buffer máximo: 60 segundos
+        2_500,  // Para iniciar: 2,5 segundos
+        5_000   // Para retomar após travar: 5 segundos
+    )
+    .build()
         val httpDataSourceFactory = DefaultHttpDataSource.Factory()
             .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-        exoPlayer = ExoPlayer.Builder(this)
-            .setMediaSourceFactory(DefaultMediaSourceFactory(httpDataSourceFactory))
-            .build()
+       exoPlayer = ExoPlayer.Builder(this)
+    .setMediaSourceFactory(DefaultMediaSourceFactory(httpDataSourceFactory))
+    .setLoadControl(loadControl)
+    .build()
         exoPlayer.setAudioAttributes(
             AudioAttributes.Builder()
                 .setUsage(C.USAGE_MEDIA)
@@ -188,19 +310,53 @@ class MainActivity : AppCompatActivity() {
         mainHandler.post(playbackWatchdog)
         exoPlayer.addListener(object : Player.Listener {
             override fun onPlayerError(error: androidx.media3.common.PlaybackException) {
-                refreshCurrentStream("erro do player: ${error.errorCodeName}", error)
+                if (currentChannel?.type?.equals("hls", ignoreCase = true) == true) {
+                    recoverFrozenHls("erro do player: ${error.errorCodeName}")
+                } else {
+                    refreshCurrentStream("erro do player: ${error.errorCodeName}", error)
+                }
             }
 
             override fun onPlaybackStateChanged(playbackState: Int) {
-                when (playbackState) {
-                    Player.STATE_BUFFERING -> bufferingStartedAt = SystemClock.elapsedRealtime()
-                    Player.STATE_READY -> {
-                        streamReloadAttempts = 0
-                        bufferingStartedAt = 0L
+    when (playbackState) {
+        Player.STATE_BUFFERING -> {
+            bufferingStartedAt = SystemClock.elapsedRealtime()
+        }
+
+        Player.STATE_READY -> {
+            streamReloadAttempts = 0
+            bufferingStartedAt = 0L
+        }
+
+        Player.STATE_ENDED -> {
+            bufferingStartedAt = 0L
+
+            // Reiniciar automaticamente somente canais HLS
+            if (currentChannel?.type.equals("hls", ignoreCase = true)) {
+                Log.w(
+                    "TVBOX_HLS",
+                    "Live HLS terminou. Reabrindo transmissão..."
+                )
+
+                mainHandler.postDelayed({
+                    val channel = currentChannel
+
+                    if (
+                        channel?.type.equals("hls", ignoreCase = true) &&
+                        exoPlayer.playbackState == Player.STATE_ENDED
+                    ) {
+                        exoPlayer.stop()
+                        playStream(channel!!.url)
                     }
-                    else -> bufferingStartedAt = 0L
-                }
+                }, 1500L)
             }
+        }
+
+        else -> {
+            bufferingStartedAt = 0L
+        }
+    }
+}
         })
     }
 
@@ -215,18 +371,104 @@ class MainActivity : AppCompatActivity() {
     private fun setupHomeCatalogs() {
         binding.homeMoviesRow.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         binding.homeSeriesRow.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+        binding.homeMatchesRecycler.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         homeMovieAdapter = MediaCardAdapter(emptyList()) { channel -> playChannel(channel) }
         homeSeriesAdapter = MediaCardAdapter(emptyList()) { channel ->
-            openSeriesEpisodes(channel.url, channel.name, channel.poster)
-        }
+    // 1. Oculta a página inicial / menus anteriores se necessário
+    binding.homeMenu.visibility = View.GONE
+    binding.seriesGridPanel.visibility = View.GONE // Se houver grid geral aberto
+    
+    // 2. Chama a função que carrega e exibe o painel/grid de episódios
+    openSeriesEpisodes(channel.url, channel.name, channel.poster)
+}
         binding.homeMoviesRow.adapter = homeMovieAdapter
         binding.homeSeriesRow.adapter = homeSeriesAdapter
+        homeMatchesAdapter = TodayMatchAdapter(emptyList()) { match ->
+            match.apiUrl?.takeIf { it.isNotBlank() }?.let { streamUrl ->
+                playChannel(
+                    Channel(
+                        name = "${match.homeName} x ${match.awayName}",
+                        url = streamUrl,
+                        type = "hls",
+                        category = "futebol",
+                        poster = match.homeImage ?: match.awayImage
+                    )
+                )
+            }
+        }
+        binding.homeRecentRow.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+        homeRecentAdapter = MediaCardAdapter(emptyList()) { channel -> playChannel(channel) }
+        binding.homeRecentRow.adapter = homeRecentAdapter
+        binding.homeMatchesRecycler.adapter = homeMatchesAdapter
 
-        binding.seriesGrid.layoutManager = GridLayoutManager(this, 6)
-        seriesGridAdapter = MediaCardAdapter(emptyList()) { channel ->
+       binding.seriesGrid.layoutManager = GridLayoutManager(this, 6)
+
+val spacing = dp(14)
+
+binding.seriesGrid.addItemDecoration(
+    object : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            outRect.set(
+                spacing / 2,
+                spacing / 2,
+                spacing / 2,
+                spacing / 2
+            )
+        }
+    }
+)
+
+
+        seriesGridAdapter = MediaCardAdapter(emptyList(), gridMode = true) { channel ->
             openSeriesEpisodes(channel.url, channel.name, channel.poster)
         }
         binding.seriesGrid.adapter = seriesGridAdapter
+        
+binding.episodesGrid.layoutManager = GridLayoutManager(this, 6)
+
+val episodeSpacing = dp(14)
+
+binding.episodesGrid.addItemDecoration(
+    object : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            outRect.set(
+                episodeSpacing / 2,
+                episodeSpacing / 2,
+                episodeSpacing / 2,
+                episodeSpacing / 2
+            )
+        }
+    }
+)
+
+episodesGridAdapter = MediaCardAdapter(emptyList(), gridMode = true) { episode ->
+    playChannel(episode)
+}
+
+binding.episodesGrid.adapter = episodesGridAdapter
+
+        binding.catalogGrid.layoutManager = GridLayoutManager(this, 6)
+        binding.catalogGrid.addItemDecoration(
+            object : RecyclerView.ItemDecoration() {
+                override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                    val gridSpacing = dp(14) / 2
+                    outRect.set(gridSpacing, gridSpacing, gridSpacing, gridSpacing)
+                }
+            }
+        )
+        catalogGridAdapter = MediaCardAdapter(emptyList(), gridMode = true) { channel -> playChannel(channel) }
+        binding.catalogGrid.adapter = catalogGridAdapter
+
     }
 
     private fun setupHomeMenu() {
@@ -236,7 +478,28 @@ class MainActivity : AppCompatActivity() {
         binding.homeKick.setOnClickListener { refreshAndOpenCategory("kick") }
         binding.homeMovies.setOnClickListener { refreshAndOpenCategory("filmes") }
         binding.homeSeries.setOnClickListener { refreshAndOpenCategory("series") }
-        binding.homeKickLiveBanner.setOnClickListener { refreshAndOpenCategory("kick") }
+        binding.homeKickLiveRecycler.layoutManager =
+            LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+        kickLiveAdapter = KickLiveAdapter(emptyList()) { live ->
+            val hls = live.playbackUrl
+            if (!hls.isNullOrBlank()) {
+                currentChannel = Channel(
+                    name = live.name,
+                    url = live.playbackEndpoint ?: "",
+                    type = "kick",
+                    category = "kick",
+                    poster = live.poster
+                )
+                recordRecentlyWatched(currentChannel!!)
+                playerReturnWasHome = true
+                playerReturnWasChannels = false
+                streamReloadAttempts = 0
+                playStream(hls)
+            } else {
+                Toast.makeText(this, "Transmissão indisponível", Toast.LENGTH_SHORT).show()
+            }
+        }
+        binding.homeKickLiveRecycler.adapter = kickLiveAdapter
         binding.homeUpdate.setOnClickListener { checkForUpdate() }
         setupHomeCatalogs()
 
@@ -390,10 +653,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        binding.homeMenu.visibility = View.GONE
-        binding.channelPanelTitle.text = category.uppercase()
-        showChannels(channels)
-        showChannelMenu()
+        showCatalogGrid(category.uppercase(), channels)
     }
 
     /** Primeiro nível do Futebol: campeonatos/dias; segundo: jogos/canais. */
@@ -412,8 +672,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         footballGroupMenuOpen = false
-        binding.homeMenu.visibility = View.GONE
-        binding.channelPanelTitle.text = "FUTEBOL"
         val groups = footballGroups.map { (label, channels) ->
             Channel(
                 name = "$label  (${channels.size})",
@@ -423,8 +681,7 @@ class MainActivity : AppCompatActivity() {
                 poster = channels.mapNotNull { it.poster }.firstOrNull()
             )
         }
-        showChannels(groups)
-        showChannelMenu()
+        showCatalogGrid("FUTEBOL", groups)
     }
 
     private fun footballGroupLabel(channel: Channel): String {
@@ -447,9 +704,7 @@ class MainActivity : AppCompatActivity() {
         val channels = footballGroups[groupId].orEmpty()
         if (channels.isEmpty()) return
         footballGroupMenuOpen = true
-        binding.channelPanelTitle.text = groupId.uppercase()
-        showChannels(channels)
-        showChannelMenu()
+        showCatalogGrid(groupId.uppercase(), channels)
     }
 
     /** Primeiro nÃ­vel dos filmes: categorias recebidas do catÃ¡logo. */
@@ -468,8 +723,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         movieCategoryMenuOpen = false
-        binding.homeMenu.visibility = View.GONE
-        binding.channelPanelTitle.text = "FILMES"
         val groups = movieGroups.map { (label, channels) ->
             Channel(
                 name = "$label  (${channels.size})",
@@ -479,8 +732,7 @@ class MainActivity : AppCompatActivity() {
                 poster = channels.mapNotNull { it.poster }.firstOrNull()
             )
         }
-        showChannels(groups)
-        showChannelMenu()
+        showCatalogGrid("FILMES", groups)
     }
 
     private fun movieCategoryLabel(channel: Channel): String {
@@ -498,9 +750,7 @@ class MainActivity : AppCompatActivity() {
         val movies = movieGroups[categoryId].orEmpty()
         if (movies.isEmpty()) return
         movieCategoryMenuOpen = true
-        binding.channelPanelTitle.text = categoryId.uppercase()
-        showChannels(movies)
-        showChannelMenu()
+        showCatalogGrid(categoryId.uppercase(), movies)
     }
 
     private fun channelCategory(channel: Channel): String {
@@ -517,16 +767,37 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /** Catálogos em tela cheia: filmes, canais e grupos usam o mesmo grid das séries. */
+    private fun showCatalogGrid(title: String, items: List<Channel>) {
+        binding.homeMenu.visibility = View.GONE
+        binding.channelPanel.visibility = View.GONE
+        binding.seriesGridPanel.visibility = View.GONE
+        binding.episodesGridPanel.visibility = View.GONE
+        binding.sidebar.visibility = View.GONE
+        binding.catalogGridTitle.text = "$title (${items.size})"
+        catalogGridAdapter.submit(items)
+        binding.catalogGridPanel.visibility = View.VISIBLE
+        binding.catalogGrid.scrollToPosition(0)
+        binding.catalogGrid.post {
+            (binding.catalogGrid.findViewHolderForAdapterPosition(0)?.itemView
+                ?: binding.catalogGrid).requestFocus()
+        }
+    }
+
     private fun showHomeMenu() {
         exoPlayer.pause()
         binding.iframeWebView.stopLoading()
         binding.iframeWebView.visibility = View.GONE
         binding.playerView.visibility = View.GONE
         binding.channelPanel.visibility = View.GONE
+        binding.catalogGridPanel.visibility = View.GONE
         binding.seriesGridPanel.visibility = View.GONE
         binding.sidebar.visibility = View.VISIBLE
         binding.homeMenu.visibility = View.VISIBLE
+        binding.episodesGridPanel.visibility = View.GONE
         seriesEpisodeMenuOpen = false
+        if (allChannels.isEmpty()) loadChannels()
+        else { loadRecentItems(); renderRecentItems() }
         binding.homeHome.requestFocus()
     }
 
@@ -542,6 +813,7 @@ class MainActivity : AppCompatActivity() {
         seriesEpisodeMenuOpen = false
         binding.homeMenu.visibility = View.GONE
         binding.channelPanel.visibility = View.GONE
+        binding.catalogGridPanel.visibility = View.GONE
         binding.sidebar.visibility = View.GONE
         val series = seriesCatalogEntries.mapNotNull { entry ->
             val endpoint = entry.endpoint ?: entry.url ?: return@mapNotNull null
@@ -557,56 +829,115 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun openSeriesEpisodes(
-        endpoint: String,
-        fallbackTitle: String,
-        fallbackPoster: String? = null
-    ) {
-        Toast.makeText(this, "Carregando episódios...", Toast.LENGTH_SHORT).show()
-        lifecycleScope.launch(Dispatchers.IO) {
-            val url = if (endpoint.startsWith("http://") || endpoint.startsWith("https://")) endpoint
-            else "http://164.152.62.129/${endpoint.trimStart('/')}"
-            val details = try {
-                val request = Request.Builder().url(url).header("Accept", "application/json").build()
-                OkHttpClient().newCall(request).execute().use { response ->
-                    val body = response.body?.string()
-                    if (!response.isSuccessful || body.isNullOrBlank()) null else Gson().fromJson(body, SeriesDetails::class.java)
+
+private fun openSeriesEpisodes(
+    endpoint: String,
+    fallbackTitle: String,
+    fallbackPoster: String? = null
+) {
+    Toast.makeText(this, "Carregando episódios...", Toast.LENGTH_SHORT).show()
+
+    lifecycleScope.launch(Dispatchers.IO) {
+        val url = if (
+            endpoint.startsWith("http://") ||
+            endpoint.startsWith("https://")
+        ) {
+            endpoint
+        } else {
+            "http://164.152.62.129/${endpoint.trimStart('/')}"
+        }
+
+        val details = try {
+            val request = Request.Builder()
+                .url(url)
+                .header("Accept", "application/json")
+                .build()
+
+            OkHttpClient().newCall(request).execute().use { response ->
+                val body = response.body?.string()
+
+                if (!response.isSuccessful || body.isNullOrBlank()) {
+                    null
+                } else {
+                    Gson().fromJson(body, SeriesDetails::class.java)
                 }
-            } catch (e: Exception) { null }
-            val seriesName = details?.title ?: fallbackTitle
-            val episodes = details?.seasons.orEmpty().flatMap { season ->
+            }
+        } catch (e: Exception) {
+            null
+        }
+
+        val seriesName = details?.title ?: fallbackTitle
+
+        val episodes = details?.seasons.orEmpty()
+            .flatMap { season ->
                 season.episodes.orEmpty().mapIndexed { index, episode ->
                     Channel(
-                        name = episode.title ?: episode.name ?: "Episode ${episode.number ?: episode.episode ?: index + 1}",
-                        url = episode.url.orEmpty(), type = episode.type ?: "mp4", category = "series",
-                        series = seriesName, season = season.number ?: season.season,
+                        name = episode.title
+                            ?: episode.name
+                            ?: "Episódio ${episode.number ?: episode.episode ?: index + 1}",
+                        url = episode.url.orEmpty(),
+                        type = episode.type ?: "mp4",
+                        category = "series",
+                        series = seriesName,
+                        season = season.number ?: season.season,
                         episode = episode.number ?: episode.episode ?: index + 1,
-                        // A capa da série é reutilizada em todos os episódios.
                         poster = details?.poster ?: fallbackPoster
                     )
                 }
-            }.filter { it.url.isNotBlank() }
-                .sortedWith(compareBy<Channel> { it.season ?: 0 }.thenBy { it.episode ?: Int.MAX_VALUE })
-            withContext(Dispatchers.Main) {
-                if (episodes.isEmpty()) {
-                    Toast.makeText(this@MainActivity, "Nenhum episódio encontrado", Toast.LENGTH_SHORT).show()
-                    return@withContext
-                }
-                activeSeriesName = seriesName
-                activeSeriesEpisodes = episodes
-                activeSeriesEpisodeIndex = lastWatchedSeriesEpisodeIndex(seriesName, episodes)
-                seriesEpisodeMenuOpen = true
-                binding.channelPanelTitle.text = seriesName.uppercase()
-                showChannels(
-                    episodes.mapIndexed { index, episode -> episode.copy(name = episodeMenuLabel(episode, index)) },
-                    activeSeriesEpisodeIndex
-                )
-                // Escolher uma série apenas abre a lista: o episódio só toca
-                // depois de um novo OK sobre ele.
-                showChannelMenu()
+            }
+            .filter { it.url.isNotBlank() }
+            .sortedWith(
+                compareBy<Channel> { it.season ?: 0 }
+                    .thenBy { it.episode ?: Int.MAX_VALUE }
+            )
+
+        withContext(Dispatchers.Main) {
+            if (episodes.isEmpty()) {
+                Toast.makeText(
+                    this@MainActivity,
+                    "Nenhum episódio encontrado",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@withContext
+            }
+
+            activeSeriesName = seriesName
+            activeSeriesEpisodes = episodes
+            activeSeriesEpisodeIndex =
+                lastWatchedSeriesEpisodeIndex(seriesName, episodes)
+
+            seriesEpisodeMenuOpen = true
+
+            binding.homeMenu.visibility = View.GONE
+            binding.seriesGridPanel.visibility = View.GONE
+            binding.channelPanel.visibility = View.GONE
+            binding.catalogGridPanel.visibility = View.GONE
+            binding.sidebar.visibility = View.GONE
+            binding.episodesGridPanel.visibility = View.VISIBLE
+
+            binding.episodesGridTitle.text =
+                "${seriesName.uppercase()} • ${episodes.size} EPISÓDIOS"
+
+            val displayEpisodes = episodes.mapIndexed { index, episode ->
+                episode.copy(name = episodeMenuLabel(episode, index))
+            }
+
+            episodesGridAdapter.submit(displayEpisodes)
+
+            binding.episodesGrid.scrollToPosition(activeSeriesEpisodeIndex)
+
+            binding.episodesGrid.post {
+                (
+                    binding.episodesGrid
+                        .findViewHolderForAdapterPosition(activeSeriesEpisodeIndex)
+                        ?.itemView
+                        ?: binding.episodesGrid
+                ).requestFocus()
             }
         }
     }
+}
+
 
     private fun episodeMenuLabel(channel: Channel, index: Int): String {
         val marker = when {
@@ -633,6 +964,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadChannels(onLoaded: (() -> Unit)? = null) {
+        if (channelsLoading) return
+        channelsLoading = true
         if (onLoaded != null) Toast.makeText(this, "Atualizando catálogo...", Toast.LENGTH_SHORT).show()
         val rawChannelsUrl = "$TVBOX_API_BASE/channels"
         val channelsUrl = "$rawChannelsUrl?t=${System.currentTimeMillis()}"
@@ -640,12 +973,12 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             val client = OkHttpClient()
             val rawChannels = fetchRawChannels(client, channelsUrl)
-            val serieAChannels = fetchBrazilianSerieAChannels(client)
             val series = fetchSeriesCatalog(client, "$TVBOX_API_BASE/series?t=${System.currentTimeMillis()}")
             val home = fetchHomeConfig(client, "$TVBOX_API_BASE/home?t=${System.currentTimeMillis()}")
-            val channels = rawChannels + serieAChannels
+            val channels = rawChannels
 
             withContext(Dispatchers.Main) {
+                channelsLoading = false
                 allChannels = channels
                 seriesCatalogEntries = series
                 homeSections = home?.sections.orEmpty()
@@ -656,6 +989,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateHomeCatalogs() {
+        loadRecentItems()
+        renderRecentItems()
         renderConfiguredHomeSections()
         // As fileiras dinâmicas abaixo substituem o layout antigo e evitam
         // conteúdo duplicado. Mantemos os adapters antigos para compatibilidade.
@@ -678,16 +1013,110 @@ class MainActivity : AppCompatActivity() {
         binding.homeMoviesEmpty.visibility = View.GONE
         binding.homeSeriesEmpty.visibility = View.GONE
 
-        val liveKick = allChannels.firstOrNull { it.type.equals("kick", ignoreCase = true) }
-        val showKick = homeSections.isEmpty() || homeSections.any { it.type == "kick-live" && it.enabled != false }
-        binding.homeKickLiveBanner.visibility = if (liveKick == null) View.GONE else View.VISIBLE
-        binding.homeKickLiveBanner.visibility = if (liveKick == null || !showKick) View.GONE else View.VISIBLE
-        if (liveKick != null) {
-            binding.homeKickLiveTitle.text = liveKick.name
-            binding.homeKickLiveCover.load(liveKick.poster) {
-                crossfade(true)
-                placeholder(R.drawable.media_poster_placeholder)
-                error(R.drawable.media_poster_placeholder)
+        binding.homeKickLiveCarousel.visibility = View.GONE
+        loadKickLiveChannels()
+        loadTodayBrazilianMatches()
+
+    }
+
+    private fun loadRecentItems() {
+        recentItems = try {
+            val json = getSharedPreferences(recentPrefsName, MODE_PRIVATE).getString(recentKey, "[]") ?: "[]"
+            Gson().fromJson<List<Channel>>(json, object : TypeToken<List<Channel>>() {}.type) ?: emptyList()
+        } catch (_: Exception) { emptyList() }
+    }
+
+    private fun renderRecentItems() {
+        if (!::homeRecentAdapter.isInitialized) return
+        val items = recentItems.take(12)
+        homeRecentAdapter.submit(items)
+        binding.homeRecentTitle.visibility = if (items.isEmpty()) View.GONE else View.VISIBLE
+        binding.homeRecentRow.visibility = if (items.isEmpty()) View.GONE else View.VISIBLE
+    }
+
+    private fun recordRecentlyWatched(channel: Channel) {
+        if (channel.url.isBlank() || channel.type.equals("series-group", true) ||
+            channel.type.equals("movie-group", true) || channel.type.equals("football-group", true)) return
+        recentItems = listOf(channel) + recentItems.filterNot { it.url == channel.url && it.name == channel.name }
+        recentItems = recentItems.take(12)
+        getSharedPreferences(recentPrefsName, MODE_PRIVATE).edit()
+            .putString(recentKey, Gson().toJson(recentItems)).apply()
+        if (binding.homeMenu.visibility == View.VISIBLE) renderRecentItems()
+    }
+
+    private fun loadKickLiveChannels() {
+        if (kickLiveLoading || !::kickLiveAdapter.isInitialized) return
+        val showKick = homeSections.isEmpty() ||
+            homeSections.any { it.type == "kick-live" && it.enabled != false }
+        if (!showKick) {
+            binding.homeKickLiveCarousel.visibility = View.GONE
+            return
+        }
+        kickLiveLoading = true
+        lifecycleScope.launch(Dispatchers.IO) {
+            val result = try {
+                val request = Request.Builder()
+                    .url("$TVBOX_API_BASE/kick/live")
+                    .header("Accept", "application/json")
+                    .build()
+                kickLiveClient.newCall(request).execute().use { response ->
+                    val body = response.body?.string()
+                    if (!response.isSuccessful || body.isNullOrBlank()) null
+                    else Gson().fromJson(body, KickLiveResponse::class.java)
+                }
+            } catch (error: Exception) {
+                Log.w("TVBOX_KICK", "Falha ao consultar canais ao vivo", error)
+                null
+            }
+            withContext(Dispatchers.Main) {
+                kickLiveLoading = false
+                if (result != null) {
+                    val online = result.channels.orEmpty().filter { it.isLive }
+                    kickLiveAdapter.submit(online)
+                    binding.homeKickLiveCarousel.visibility =
+                        if (online.isEmpty()) View.GONE else View.VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun loadTodayBrazilianMatches() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val response = try {
+                val request = Request.Builder()
+                    .url("$TVBOX_API_BASE/events/brasileirao-serie-a")
+                    .header("Accept", "application/json")
+                    .build()
+                OkHttpClient().newCall(request).execute().use { httpResponse ->
+                    val body = httpResponse.body?.string()
+                    if (!httpResponse.isSuccessful || body.isNullOrBlank()) null
+                    else Gson().fromJson(body, BrazilianEventsResponse::class.java)
+                }
+            } catch (error: Exception) {
+                Log.w("TVBOX_EVENTS", "Falha ao consultar jogos do Brasileirão", error)
+                null
+            }
+
+            val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
+            val games = response?.events.orEmpty()
+                .filter { it.time_start?.substringBefore("T") == today }
+                .map { event ->
+                    val home = event.teams?.home
+                    val away = event.teams?.away
+                    TodayMatch(
+                        homeName = home?.name?.takeIf { it.isNotBlank() } ?: "Casa",
+                        homeImage = home?.image,
+                        awayName = away?.name?.takeIf { it.isNotBlank() } ?: "Visitante",
+                        awayImage = away?.image,
+                        time = event.time_start?.substringAfter("T")?.take(5) ?: "--:--",
+                        apiUrl = event.players.firstOrNull { it.status == "online" }?.apiUrl
+                            ?: event.players.firstOrNull()?.apiUrl
+                    )
+                }
+
+            withContext(Dispatchers.Main) {
+                homeMatchesAdapter.submit(games)
+                binding.homeMatchesCarousel.visibility = if (games.isEmpty()) View.GONE else View.VISIBLE
             }
         }
     }
@@ -938,26 +1367,44 @@ class MainActivity : AppCompatActivity() {
                     return super.dispatchKeyEvent(event)
                 }
                 KeyEvent.KEYCODE_DPAD_UP -> {
-                    if (binding.channelPanel.visibility != View.VISIBLE && changeSeriesEpisode(-1)) return true
+                    // Fora do player, a seta pertence ao RecyclerView: ela só move
+                    // o foco entre os cards. Troca automática de episódio é exclusiva
+                    // da reprodução em tela cheia.
+                    if (isPlayerVisible() && changeSeriesEpisode(-1)) return true
                 }
                 KeyEvent.KEYCODE_DPAD_DOWN -> {
-                    if (binding.channelPanel.visibility != View.VISIBLE && changeSeriesEpisode(1)) return true
+                    if (isPlayerVisible() && changeSeriesEpisode(1)) return true
                 }
             }
         }
         return super.dispatchKeyEvent(event)
     }
 
+    private fun isPlayerVisible(): Boolean =
+        binding.playerView.visibility == View.VISIBLE ||
+            binding.iframeWebView.visibility == View.VISIBLE
+
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         when {
             binding.homeMenu.visibility == View.VISIBLE -> super.onBackPressed()
+            binding.episodesGridPanel.visibility == View.VISIBLE -> {
+    binding.episodesGridPanel.visibility = View.GONE
+    openSeriesCatalog()
+}
             binding.seriesGridPanel.visibility == View.VISIBLE -> showHomeMenu()
+            binding.catalogGridPanel.visibility == View.VISIBLE && movieCategoryMenuOpen -> openMovieCatalog()
+            binding.catalogGridPanel.visibility == View.VISIBLE && footballGroupMenuOpen -> openFootballCatalog()
+            binding.catalogGridPanel.visibility == View.VISIBLE -> showHomeMenu()
             binding.playerView.visibility == View.VISIBLE && binding.playerView.isControllerFullyVisible -> {
                 binding.playerView.hideController()
             }
             binding.playerView.visibility == View.VISIBLE || binding.iframeWebView.visibility == View.VISIBLE -> exitPlayerToCurrentMenu()
-            binding.channelPanel.visibility == View.VISIBLE && seriesEpisodeMenuOpen -> openSeriesCatalog()
+            binding.channelPanel.visibility == View.VISIBLE &&
+    seriesEpisodeMenuOpen -> {
+    binding.channelPanel.visibility = View.GONE
+    openSeriesCatalog()
+}
             binding.channelPanel.visibility == View.VISIBLE && movieCategoryMenuOpen -> openMovieCatalog()
             binding.channelPanel.visibility == View.VISIBLE && footballGroupMenuOpen -> openFootballCatalog()
             binding.channelPanel.visibility == View.VISIBLE -> showHomeMenu()
@@ -982,6 +1429,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun playChannel(channel: Channel) {
         saveMovieProgress()
+        playerReturnWasChannels = binding.channelPanel.visibility == View.VISIBLE
+        playerReturnWasHome = binding.homeMenu.visibility == View.VISIBLE
         if (channel.type.equals("series-group", ignoreCase = true)) {
             openSeriesEpisodes(channel.url, channel.series ?: channel.name, channel.poster)
             return
@@ -1003,14 +1452,18 @@ class MainActivity : AppCompatActivity() {
 
         activeMatchGroupId = null
         currentChannel = channel
+        recordRecentlyWatched(channel)
         if (activeSeriesEpisodes.isNotEmpty()) {
             activeSeriesEpisodeIndex = activeSeriesEpisodes.indexOfFirst { it.url == channel.url }
             if (activeSeriesEpisodeIndex >= 0) saveLastWatchedSeriesEpisode(channel.url)
         }
         streamReloadAttempts = 0
+        hlsLastPositionMs = C.TIME_UNSET
+        hlsLastProgressAt = 0L
+        hlsLastRecoveryAt = 0L
+        hlsRecoveryAttempts = 0
+        hlsStartedAt = SystemClock.elapsedRealtime()
         when (channel.type.lowercase()) {
-            // HLS deve usar o ExoPlayer primeiro. Alguns provedores aceitam o
-            // player nativo, mas outros precisam do WebView como alternativa.
             "hls" -> playStream(channel.url)
             "mp4" -> playStream(channel.url, movieResumePosition(channel))
             "kick" -> resolveAndPlayKick(channel.url)
@@ -1085,64 +1538,23 @@ class MainActivity : AppCompatActivity() {
         streamReloadAttempts++
         when (channel.type.lowercase()) {
             "kick" -> resolveAndPlayKick(channel.url)
-            // O fallback do HLS é o simulador de navegador. Não repetimos a
-            // tentativa nativa para evitar ficar preso em carregamento.
-            "hls" -> playHlsAsBrowser(channel.url)
+            "hls" -> recoverFrozenHls(reason)
             "mp4" -> playStream(channel.url, movieResumePosition(channel))
             else -> {}
         }
     }
 
-    // Método para simular navegador reproduzindo HLS (.m3u8) via HTML5 nativo com player Video.js (ou tag video padrão com suporte)
-    private fun playHlsAsBrowser(url: String) {
-        if (url.isBlank()) return
-        enterPlayerMode()
-        exoPlayer.pause()
-        binding.playerView.visibility = View.GONE
-        binding.iframeWebView.visibility = View.VISIBLE
-
-        val html = """
-            <!doctype html>
-            <html>
-            <head>
-                <meta name="viewport" content="width=device-width,initial-scale=1">
-                <style>
-                    html, body { margin:0; width:100%; height:100%; overflow:hidden; background:#000; }
-                    video { width:100%; height:100%; object-fit:contain; }
-                </style>
-                <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-            </head>
-            <body>
-                <video id="video" controls autoplay playsinline></video>
-                <script>
-                    var video = document.getElementById('video');
-                    var videoSrc = '$url';
-                    if (Hls.isSupported()) {
-                        var hls = new Hls();
-                        hls.loadSource(videoSrc);
-                        hls.attachMedia(video);
-                        hls.on(Hls.Events.MANIFEST_PARSED,function() {
-                            video.play().catch(function(e){ console.log(e); });
-                        });
-                    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                        video.src = videoSrc;
-                        video.addEventListener('loadedmetadata',function() {
-                            video.play().catch(function(e){ console.log(e); });
-                        });
-                    }
-                </script>
-            </body>
-            </html>
-        """.trimIndent()
-
-        binding.iframeWebView.loadDataWithBaseURL("https://admin2.formaturamaxi.com.br/", html, "text/html", "UTF-8", null)
+    private fun hlsPlaybackUrl(url: String): String {
+        if (currentChannel?.type?.equals("hls", ignoreCase = true) != true) return url
+        if (HLS_PROXY_BASE.isBlank()) return url
+        return HLS_PROXY_BASE + Uri.encode(url)
     }
 
     private fun playStream(url: String, resumePositionMs: Long = 0L) {
         if (url.isBlank()) return
         enterPlayerMode()
         hideIFramePlayer()
-        val mediaItem = MediaItem.fromUri(url)
+        val mediaItem = MediaItem.fromUri(hlsPlaybackUrl(url))
         exoPlayer.setMediaItem(mediaItem)
         if (resumePositionMs > 0) exoPlayer.seekTo(resumePositionMs)
         exoPlayer.prepare()
@@ -1260,18 +1672,45 @@ class MainActivity : AppCompatActivity() {
         binding.channelPanel.visibility = View.GONE
         binding.seriesGridPanel.visibility = View.GONE
         binding.sidebar.visibility = View.GONE
+        binding.episodesGridPanel.visibility = View.GONE
         binding.playerView.requestFocus()
     }
 
     /** Sai sem nova requisição e reaproveita exatamente a lista já aberta. */
-    private fun exitPlayerToCurrentMenu() {
-        saveMovieProgress()
-        exoPlayer.pause()
-        binding.iframeWebView.stopLoading()
-        binding.iframeWebView.visibility = View.GONE
-        binding.playerView.visibility = View.GONE
+   
+private fun exitPlayerToCurrentMenu() {
+    saveMovieProgress()
+    exoPlayer.pause()
+
+    binding.iframeWebView.stopLoading()
+    binding.iframeWebView.visibility = View.GONE
+    binding.playerView.visibility = View.GONE
+
+    if (seriesEpisodeMenuOpen && activeSeriesEpisodes.isNotEmpty()) {
+        binding.channelPanel.visibility = View.GONE
+        binding.sidebar.visibility = View.GONE
+        binding.seriesGridPanel.visibility = View.GONE
+        binding.episodesGridPanel.visibility = View.VISIBLE
+
+        binding.episodesGrid.scrollToPosition(
+            activeSeriesEpisodeIndex.coerceAtLeast(0)
+        )
+
+        binding.episodesGrid.post {
+            binding.episodesGrid
+                .findViewHolderForAdapterPosition(
+                    activeSeriesEpisodeIndex.coerceAtLeast(0)
+                )
+                ?.itemView
+                ?.requestFocus()
+        }
+    } else if (playerReturnWasChannels) {
         showChannelMenu()
+    } else {
+        showHomeMenu()
     }
+}
+
 
     override fun onStop() {
         saveMovieProgress()
@@ -1282,6 +1721,8 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         saveMovieProgress()
         mainHandler.removeCallbacks(playbackWatchdog)
+        mainHandler.removeCallbacks(hlsFreezeMonitor)
+        mainHandler.removeCallbacks(kickLiveRefresh)
         binding.iframeWebView.destroy()
         exoPlayer.release()
         binding.recyclerView.adapter = null

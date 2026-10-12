@@ -1,0 +1,11 @@
+◇ injected env (5) from .env // tip: ⌘ enable debugging { debug: true }
+Servidor rodando na porta 4055
+[EMBEDTV] Iniciando consulta automática...
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[TVBOX HLS] Abrindo: F:\tvbox\canais\templates\tvbox-hls.html
+[TVBOX HLS] HTML carregado: 15052 caracteres
+[TVBOX HLS] Página montada com sucesso
+[TVBOX HLS] Abrindo: F:\tvbox\canais\templates\tvbox-hls.html
+[TVBOX HLS] HTML carregado: 15052 caracteres
+[TVBOX HLS] Página montada com sucesso

@@ -69,10 +69,11 @@ function passwordMatches(candidate) {
 }
 
 function removeLegacyPasswordFromHtml(html) {
-  return html
-    .replace(/([?&])pass=[^&"'\s>]+&?/g, "$1")
-    .replace(/\?&/g, "?")
-    .replace(/\?(["'>\s])/g, "$1");
+  // Esta função também recebe páginas com JavaScript embutido. Não tente
+  // normalizar `?` no HTML inteiro: isso altera operadores ternários do JS
+  // (por exemplo, `condicao ? "a" : "b"`) e quebra a página no navegador.
+  // A remoção do parâmetro legado continua limitada ao padrão `pass=`.
+  return html.replace(/([?&])pass=[^&"'\s>]+&?/g, "$1");
 }
 
 module.exports = {

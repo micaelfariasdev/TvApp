@@ -1,0 +1,4509 @@
+
+==========================================================================================
+ARQUIVO: server.js
+LINHAS: 21
+==========================================================================================
+
+const express = require("express");
+const cron = require("node-cron");
+const { PORT } = require("./src/config/env");
+const apiRoutes = require("./src/routes/api");
+const adminRoutes = require("./src/routes/admin");
+const hls = require("./src/services/hls");
+
+const app = express();
+app.set("trust proxy", 1);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.use("/", apiRoutes);
+app.use("/tvbox", adminRoutes);
+
+
+
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
+
+
+==========================================================================================
+ARQUIVO: src\config\env.js
+LINHAS: 9
+==========================================================================================
+
+require("dotenv").config({ override: true });
+
+module.exports = {
+  PORT: process.env.PORT || 4000,
+  PASSWORD: String(process.env.TVBOX_PASSWORD || ""),
+  SESSION_SECRET: String(process.env.TVBOX_SESSION_SECRET || ""),
+  TMDB_API_KEY: String(process.env.TMDB_API_KEY || "").trim(),
+  BASE_URL: "https://roxiestreams.biz",
+};
+
+==========================================================================================
+ARQUIVO: src\routes\admin.js
+LINHAS: 1418
+==========================================================================================
+
+const express = require("express");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+const { PASSWORD } = require("../config/env");
+const {
+  loadDB,
+  saveDB,
+  loadSeriesCatalog,
+  saveSeriesCatalog,
+} = require("../services/db");
+const { loadCategoriesMeta, saveCategoriesMeta } = require("../services/db");
+const { loadHomeConfig, saveHomeConfig } = require("../services/db");
+
+const { findPoster } = require("../services/poster");
+const {
+  hasTvboxSession,
+  requireTvboxAccess,
+  clearSession,
+  signSession,
+  passwordMatches,
+  safeText,
+  removeLegacyPasswordFromHtml,
+  SESSION_COOKIE,
+} = require("../utils/helpers");
+
+const router = express.Router();
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 100 * 1024 * 1024 },
+});
+
+const SERIES_DIRECTORY = path.join(__dirname, "../../series");
+const TEMPLATES_DIRECTORY = path.join(__dirname, "../../templates");
+const SESSION_DURATION_MS = 1000 * 60 * 60 * 12;
+
+function tvboxPage(title, body) {
+  const layout = fs.readFileSync(
+    path.join(TEMPLATES_DIRECTORY, "tvbox.html"),
+    "utf-8",
+  );
+  const navigation = `<nav class="actions app-navigation"><a class="btn" href="/tvbox">Visão geral</a><a class="btn" href="/tvbox/home">Home</a><a class="btn" href="/tvbox/categories">Categorias</a><a class="btn" href="/tvbox/series">Séries</a><a class="btn" href="/tvbox/hls">Canais HLS</a><form method="post" action="/tvbox/posters/fill" onsubmit="return confirm('Buscar capas para todos os filmes sem foto?')"><button class="btn" type="submit">Buscar capas faltantes</button></form><form method="post" action="/tvbox/logout"><button class="btn danger" type="submit">Sair</button></form></nav>`;
+  return removeLegacyPasswordFromHtml(
+    layout
+      .replaceAll("{{title}}", safeText(title))
+      .replaceAll("{{password}}", "")
+      .replace("{{body}}", `${navigation}${body}`),
+  );
+}
+
+function loginPage(message = "") {
+  const layout = fs.readFileSync(
+    path.join(TEMPLATES_DIRECTORY, "tvbox.html"),
+    "utf-8",
+  );
+  const warning = message
+    ? `<p class="login-message">${safeText(message)}</p>`
+    : "";
+  return layout
+    .replaceAll("{{title}}", "Entrar")
+    .replaceAll("{{password}}", "")
+    .replace(
+      "{{body}}",
+      `<section class="login-shell"><div class="login-brand"><span class="brand-mark">▶</span><div><strong>TVBox</strong><small>Central de catálogo</small></div></div><h1>Bem-vindo de volta</h1><p>Entre para administrar filmes, séries, canais e listas ao vivo.</p>${warning}<form method="post" action="/tvbox/login"><label>Senha do painel</label><input type="password" name="password" autocomplete="current-password" autofocus required><button class="btn primary login-submit" type="submit">Entrar no painel</button></form></section>`,
+    );
+}
+
+router.get("/login", (req, res) => {
+  if (hasTvboxSession(req)) return res.redirect("/tvbox");
+  if (!PASSWORD)
+    return res
+      .status(503)
+      .send(
+        loginPage(
+          "Configure TVBOX_PASSWORD no servidor antes de usar o painel.",
+        ),
+      );
+  res.send(
+    loginPage(
+      req.query.error === "1" ? "Senha inválida. Tente novamente." : "",
+    ),
+  );
+});
+
+router.post("/login", (req, res) => {
+  if (!PASSWORD)
+    return res
+      .status(503)
+      .send(loginPage("Configuração de segurança ausente no servidor."));
+  if (!passwordMatches(req.body.password))
+    return res.redirect("/tvbox/login?error=1");
+  const expiresAt = Date.now() + SESSION_DURATION_MS;
+  res.cookie(SESSION_COOKIE, signSession({ expiresAt }), {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: req.secure,
+    path: "/tvbox",
+    maxAge: SESSION_DURATION_MS,
+  });
+  res.redirect("/tvbox");
+});
+
+router.post("/logout", (req, res) => {
+  clearSession(res);
+  res.redirect("/tvbox/login");
+});
+
+router.use((req, res, next) => {
+  if (
+    req.path === "/login" ||
+    req.path.startsWith("/api/")
+  ) {
+    return next();
+  }
+
+  if (requireTvboxAccess(req, res)) return next();
+});
+
+router.get("/api/channels", (req, res) => {
+  const dbData = loadDB();
+  const categoriesMeta = loadCategoriesMeta();
+
+  const cleanData = dbData.map(({ name, url, type, category, poster }) => {
+    const categoryKey = String(category || "outros").trim();
+    const categoryPoster = categoriesMeta[categoryKey]?.poster || null;
+
+    return {
+      name,
+      url,
+      type,
+      category,
+      poster: poster || categoryPoster,
+    };
+  });
+
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.json(cleanData);
+});
+
+// Configuração pública consumida pelo app Android. A edição continua protegida
+// pelo middleware da rota /tvbox.
+router.get("/api/home", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.json(loadHomeConfig());
+});
+
+router.get("/home", (req, res) => {
+  const config = loadHomeConfig();
+
+  const categories = [
+    ...new Set(
+      loadDB().map(
+        (item) => String(item.category || "outros").trim() || "outros",
+      ),
+    ),
+  ].sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+  const enabledCategories = new Set(
+    config.sections
+      .filter(
+        (section) => section.type === "category" && section.enabled !== false,
+      )
+      .map((section) =>
+        String(section.category || "").toLocaleLowerCase("pt-BR"),
+      ),
+  );
+
+  const hasKick = config.sections.some(
+    (section) => section.type === "kick-live" && section.enabled !== false,
+  );
+
+  const hasSeries = config.sections.some(
+    (section) => section.type === "series" && section.enabled !== false,
+  );
+
+  const categoryOptions =
+    categories
+      .map((category) => {
+        const checked = enabledCategories.has(
+          category.toLocaleLowerCase("pt-BR"),
+        )
+          ? "checked"
+          : "";
+
+        return `
+        <label class="card" style="display:flex;align-items:center;gap:12px;padding:14px">
+          <input
+            type="checkbox"
+            name="categories"
+            value="${safeText(category)}"
+            ${checked}
+          >
+          <span>
+            <strong>${safeText(category)}</strong>
+            <small class="muted" style="display:block;margin-top:3px">
+              Exibir uma fileira desta categoria no app.
+            </small>
+          </span>
+        </label>
+      `;
+      })
+      .join("") ||
+    '<p class="empty">Cadastre conteúdos com categoria antes de configurar a Home.</p>';
+
+  const template = fs.readFileSync(
+    path.join(TEMPLATES_DIRECTORY, "tvbox-home.html"),
+    "utf-8",
+  );
+
+  const body = template
+    .replace("{{categoryOptions}}", categoryOptions)
+    .replace("{{kickChecked}}", hasKick ? "checked" : "")
+    .replace("{{seriesChecked}}", hasSeries ? "checked" : "")
+    .replace(
+      "{{savedMessage}}",
+      req.query.saved
+        ? '<p class="login-message">Página inicial salva. Atualize o catálogo no app para aplicar.</p>'
+        : "",
+    );
+
+  res.send(tvboxPage("Página inicial", body));
+});
+
+// Dados dinâmicos da Home
+router.get("/home/data", (req, res) => {
+  try {
+    const config = loadHomeConfig();
+
+    const categories = [
+      ...new Set(
+        loadDB().map(
+          (item) => String(item.category || "outros").trim() || "outros",
+        ),
+      ),
+    ].sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+    const enabledCategories = config.sections
+      .filter(
+        (section) => section.type === "category" && section.enabled !== false,
+      )
+      .map((section) =>
+        String(section.category || "").toLocaleLowerCase("pt-BR"),
+      );
+
+    res.json({
+      saved: req.query.saved === "1",
+      showKick: config.sections.some(
+        (section) => section.type === "kick-live" && section.enabled !== false,
+      ),
+      showSeries: config.sections.some(
+        (section) => section.type === "series" && section.enabled !== false,
+      ),
+      categories: categories.map((category) => ({
+        name: category,
+        enabled: enabledCategories.includes(
+          category.toLocaleLowerCase("pt-BR"),
+        ),
+      })),
+    });
+  } catch (error) {
+    console.error("[HOME] Erro:", error);
+
+    res.status(500).json({
+      error: "Erro ao carregar configuração da Home",
+    });
+  }
+});
+
+router.post("/home", (req, res) => {
+  const selected = Array.isArray(req.body.categories)
+    ? req.body.categories
+    : req.body.categories
+      ? [req.body.categories]
+      : [];
+  const sections = [];
+  if (req.body.showKick) {
+    sections.push({
+      id: "kick-live",
+      type: "kick-live",
+      title: "Ao vivo na Kick",
+      enabled: true,
+      limit: 40,
+    });
+  }
+  selected
+    .map((value) => String(value).trim())
+    .filter(Boolean)
+    .forEach((category) => {
+      sections.push({
+        id: `category-${category.toLocaleLowerCase("pt-BR")}`,
+        type: "category",
+        category,
+        title: category,
+        enabled: true,
+        limit: 18,
+      });
+    });
+  if (req.body.showSeries)
+    sections.push({
+      id: "series",
+      type: "series",
+      title: "Séries",
+      enabled: true,
+      limit: 18,
+    });
+  saveHomeConfig({ sections });
+  res.redirect("/tvbox/home?saved=1");
+});
+
+router.get("/api/poster", async (req, res) => {
+  const title = String(req.query.title || "").trim();
+  const kind = req.query.kind === "tv" ? "tv" : "movie";
+  if (!title)
+    return res.status(400).json({ error: "Informe um título para buscar." });
+  const result = await findPoster(title, kind);
+  if (!result)
+    return res.status(404).json({ error: "Nenhuma capa encontrada." });
+  res.json(result);
+});
+
+router.post("/posters/fill", async (req, res) => {
+  const dbData = loadDB();
+  let updated = 0;
+  for (const item of dbData) {
+    if (item.poster) continue;
+    const result = await findPoster(item.name, "movie");
+    if (result?.poster) {
+      item.poster = result.poster;
+      updated++;
+    }
+  }
+  saveDB(dbData);
+  res.redirect(`/tvbox?covers=${updated}`);
+});
+
+router.post("/series/posters/fill", async (req, res) => {
+  const catalog = loadSeriesCatalog();
+  let updated = 0;
+  for (const item of catalog) {
+    if (item.poster) continue;
+    const result = await findPoster(item.title || item.name || item.id, "tv");
+    if (!result?.poster) continue;
+    item.poster = result.poster;
+    const file = path.join(SERIES_DIRECTORY, `${item.id}.json`);
+    if (fs.existsSync(file)) {
+      const details = JSON.parse(fs.readFileSync(file, "utf-8"));
+      details.poster = result.poster;
+      fs.writeFileSync(file, JSON.stringify(details, null, 2), "utf-8");
+    }
+    updated++;
+  }
+  saveSeriesCatalog(catalog);
+  res.redirect(`/tvbox/series?covers=${updated}`);
+});
+
+router.get("/api/series", (req, res) => {
+  const catalog = loadSeriesCatalog().map((item) => ({
+    id: item.id,
+    title: item.title || item.name || item.id,
+    poster: item.poster || null,
+    endpoint: `/tvbox/api/series/${encodeURIComponent(item.id)}`,
+  }));
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.json(catalog);
+});
+
+router.get("/api/series/:id", (req, res) => {
+  const id = req.params.id;
+  if (!/^[a-zA-Z0-9_-]+$/.test(id))
+    return res.status(400).json({ error: "Invalid series id" });
+  const file = path.join(SERIES_DIRECTORY, `${id}.json`);
+  if (!fs.existsSync(file))
+    return res.status(404).json({ error: "Series not found" });
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.type("application/json").send(fs.readFileSync(file, "utf-8"));
+});
+
+router.get("/series", (req, res) => {
+  const series = loadSeriesCatalog();
+  const cards = series.length
+    ? series
+        .map(
+          (item) =>
+            `<article class="card"><div class="row"><span class="badge">SÉRIE</span><div class="actions"><a class="btn" href="/tvbox/series/${encodeURIComponent(item.id)}">Abrir</a><a class="btn danger" href="/tvbox/series/${encodeURIComponent(item.id)}/delete" onclick="return confirm('Excluir a série e todas as temporadas e episódios?')">Excluir</a></div></div><h2 style="margin-top:14px">${safeText(item.title)}</h2><p class="muted">ID: ${safeText(item.id)}<br>Endpoint: ${safeText(item.endpoint || `series/${item.id}.json`)}</p></article>`,
+        )
+        .join("")
+    : '<div class="empty">Nenhuma série cadastrada ainda.</div>';
+
+  const templateContent = fs.readFileSync(
+    path.join(TEMPLATES_DIRECTORY, "tvbox-series.html"),
+    "utf-8",
+  );
+  const body = templateContent.replace("{{cards}}", cards);
+  res.send(tvboxPage("Séries", body));
+});
+
+router.get("/series/add", (req, res) => {
+  const body = fs.readFileSync(
+    path.join(TEMPLATES_DIRECTORY, "tvbox-series-add.html"),
+    "utf-8",
+  );
+  res.send(tvboxPage("Nova série", body));
+});
+
+router.post("/series/add", (req, res) => {
+  const id = String(req.body.id || "").trim();
+  const title = String(req.body.title || "").trim();
+  const poster = String(req.body.poster || "").trim();
+  if (!title || !/^[A-Za-z0-9_-]+$/.test(id))
+    return res
+      .status(400)
+      .send(
+        tvboxPage(
+          "Erro",
+          '<section class="panel"><h1>Dados inválidos</h1><p class="muted">Use um título e um ID válido.</p></section>',
+        ),
+      );
+  const catalog = loadSeriesCatalog();
+  const file = path.join(SERIES_DIRECTORY, `${id}.json`);
+  if (catalog.some((item) => item.id === id) || fs.existsSync(file))
+    return res
+      .status(409)
+      .send(
+        tvboxPage(
+          "Erro",
+          `<section class="panel"><h1>Essa série já existe</h1><a class="btn" href="/tvbox/series">Voltar</a></section>`,
+        ),
+      );
+  fs.mkdirSync(SERIES_DIRECTORY, { recursive: true });
+  const validPoster = /^https?:\/\//i.test(poster) ? poster : null;
+  catalog.push({
+    id,
+    title,
+    endpoint: `series/${id}.json`,
+    poster: validPoster,
+  });
+  saveSeriesCatalog(catalog);
+  fs.writeFileSync(
+    file,
+    JSON.stringify({ title, poster: validPoster, seasons: [] }, null, 2),
+    "utf-8",
+  );
+  res.redirect(`/tvbox/series/${encodeURIComponent(id)}`);
+});
+
+router.get("/series/:id", (req, res) => {
+  const id = req.params.id;
+  if (!/^[A-Za-z0-9_-]+$/.test(id)) return res.status(400).send("ID inválido");
+  const file = path.join(SERIES_DIRECTORY, `${id}.json`);
+  if (!fs.existsSync(file)) return res.status(404).send("Série não encontrada");
+  const data = JSON.parse(fs.readFileSync(file, "utf-8"));
+  const seasons = Array.isArray(data.seasons) ? data.seasons : [];
+  const catalogItem = loadSeriesCatalog().find((item) => item.id === id);
+  const currentPoster = String(data.poster || catalogItem?.poster || "");
+  const coverForm = `<form method="post" action="/tvbox/series/${encodeURIComponent(id)}/poster" class="row" style="margin:18px 0"><div style="min-width:260px;flex:1"><label style="margin-top:0">Capa da série</label><input type="url" name="poster" value="${safeText(currentPoster)}" placeholder="https://site.com/capa.jpg"></div><button class="btn" style="margin-top:25px">Salvar capa</button></form>`;
+  const seasonCards = seasons.length
+    ? seasons
+        .sort((a, b) => a.number - b.number)
+        .map(
+          (season) =>
+            `<article class="card"><div class="row"><div><span class="badge">TEMPORADA ${season.number}</span><h2 style="margin-top:12px">${(season.episodes || []).length} episódio(s)</h2></div><a class="btn danger" href="/tvbox/series/${id}/season/${season.number}/delete">Excluir temporada</a></div><table><tr><th>#</th><th>Título</th><th class="hide-mobile">URL</th><th>Tipo</th><th></th></tr>${(
+              season.episodes || []
+            )
+              .sort((a, b) => a.number - b.number)
+              .map(
+                (ep) =>
+                  `<tr><td>${ep.number}</td><td>${safeText(ep.title || `Episódio ${ep.number}`)}</td><td class="url hide-mobile">${safeText(ep.url)}</td><td><span class="badge">${safeText(ep.type || "mp4")}</span></td><td><a class="btn danger" href="/tvbox/series/${id}/season/${season.number}/episode/${ep.number}/delete">Excluir</a></td></tr>`,
+              )
+              .join(
+                "",
+              )}</table><form method="post" action="/tvbox/series/${id}/season/${season.number}/episodes"><h3 style="margin-top:20px">Adicionar episódio</h3><div class="grid"><div><label>Número</label><input type="number" min="1" name="number" required></div><div><label>Título</label><input name="title" required placeholder="Episódio ${(season.episodes || []).length + 1}"></div></div><label>URL do vídeo</label><input type="url" name="url" required placeholder="https://...mp4"><label>Tipo</label><select name="type"><option value="mp4">MP4</option><option value="hls">HLS</option></select><div class="actions" style="margin-top:16px"><button class="btn primary">Adicionar episódio</button></div></form></article>`,
+        )
+        .join("")
+    : '<div class="empty">Adicione a primeira temporada para começar.</div>';
+
+  const templateContent = fs.readFileSync(
+    path.join(TEMPLATES_DIRECTORY, "tvbox-series-detail.html"),
+    "utf-8",
+  );
+  const body = templateContent
+    .replaceAll("{{title}}", safeText(data.title || id))
+    .replaceAll("{{id}}", safeText(id))
+    .replace("{{coverForm}}", coverForm)
+    .replace("{{seasonCards}}", seasonCards);
+
+  res.send(tvboxPage(data.title || id, body));
+});
+
+router.post("/series/:id/poster", (req, res) => {
+  const id = req.params.id;
+  if (!/^[A-Za-z0-9_-]+$/.test(id)) return res.status(400).send("ID inválido");
+  const file = path.join(SERIES_DIRECTORY, `${id}.json`);
+  if (!fs.existsSync(file)) return res.status(404).send("Série não encontrada");
+  const poster = String(req.body.poster || "").trim();
+  const validPoster = /^https?:\/\//i.test(poster) ? poster : null;
+  const details = JSON.parse(fs.readFileSync(file, "utf-8"));
+  details.poster = validPoster;
+  fs.writeFileSync(file, JSON.stringify(details, null, 2), "utf-8");
+  const catalog = loadSeriesCatalog();
+  const index = catalog.findIndex((item) => item.id === id);
+  if (index >= 0) catalog[index].poster = validPoster;
+  saveSeriesCatalog(catalog);
+  res.redirect(`/tvbox/series/${encodeURIComponent(id)}`);
+});
+
+router.post("/series/:id/seasons", (req, res) => {
+  const id = req.params.id,
+    number = Number(req.body.number),
+    file = path.join(SERIES_DIRECTORY, `${id}.json`);
+  if (!fs.existsSync(file) || !Number.isInteger(number) || number < 1)
+    return res.status(400).send("Temporada inválida");
+  const data = JSON.parse(fs.readFileSync(file, "utf-8"));
+  data.seasons ||= [];
+  if (!data.seasons.some((s) => Number(s.number) === number))
+    data.seasons.push({ number, episodes: [] });
+  fs.writeFileSync(file, JSON.stringify(data, null, 2), "utf-8");
+  res.redirect(`/tvbox/series/${id}`);
+});
+
+router.post("/series/:id/season/:season/episodes", (req, res) => {
+  const id = req.params.id,
+    seasonNumber = Number(req.params.season),
+    number = Number(req.body.number),
+    file = path.join(SERIES_DIRECTORY, `${id}.json`);
+  if (
+    !fs.existsSync(file) ||
+    !Number.isInteger(number) ||
+    number < 1 ||
+    !req.body.url
+  )
+    return res.status(400).send("Episódio inválido");
+  const data = JSON.parse(fs.readFileSync(file, "utf-8"));
+  const season = (data.seasons || []).find(
+    (s) => Number(s.number) === seasonNumber,
+  );
+  if (!season) return res.status(404).send("Temporada não encontrada");
+  season.episodes ||= [];
+  season.episodes = season.episodes.filter(
+    (ep) => Number(ep.number) !== number,
+  );
+  season.episodes.push({
+    number,
+    title: String(req.body.title || `Episódio ${number}`),
+    url: String(req.body.url),
+    type: req.body.type === "hls" ? "hls" : "mp4",
+  });
+  fs.writeFileSync(file, JSON.stringify(data, null, 2), "utf-8");
+  res.redirect(`/tvbox/series/${id}`);
+});
+
+router.get("/series/:id/season/:season/delete", (req, res) => {
+  const { id } = req.params,
+    seasonNumber = Number(req.params.season),
+    file = path.join(SERIES_DIRECTORY, `${id}.json`);
+  if (fs.existsSync(file)) {
+    const data = JSON.parse(fs.readFileSync(file, "utf-8"));
+    data.seasons = (data.seasons || []).filter(
+      (s) => Number(s.number) !== seasonNumber,
+    );
+    fs.writeFileSync(file, JSON.stringify(data, null, 2), "utf-8");
+  }
+  res.redirect(`/tvbox/series/${id}`);
+});
+
+router.get("/series/:id/season/:season/episode/:episode/delete", (req, res) => {
+  const { id } = req.params,
+    seasonNumber = Number(req.params.season),
+    episodeNumber = Number(req.params.episode),
+    file = path.join(SERIES_DIRECTORY, `${id}.json`);
+  if (fs.existsSync(file)) {
+    const data = JSON.parse(fs.readFileSync(file, "utf-8"));
+    const season = (data.seasons || []).find(
+      (s) => Number(s.number) === seasonNumber,
+    );
+    if (season)
+      season.episodes = (season.episodes || []).filter(
+        (ep) => Number(ep.number) !== episodeNumber,
+      );
+    fs.writeFileSync(file, JSON.stringify(data, null, 2), "utf-8");
+  }
+  res.redirect(`/tvbox/series/${id}`);
+});
+
+router.get("/import/m3u", (req, res) => {
+  const seriesOptions =
+    loadSeriesCatalog()
+      .map(
+        (item) =>
+          `<option value="${safeText(item.id)}">${safeText(item.title)}</option>`,
+      )
+      .join("") || '<option value="">Nenhuma série cadastrada</option>';
+  const body = fs
+    .readFileSync(path.join(TEMPLATES_DIRECTORY, "tvbox-import.html"), "utf-8")
+    .replace("{{seriesOptions}}", seriesOptions);
+  res.send(tvboxPage("Importar M3U", body));
+});
+
+router.post("/import/m3u", upload.single("catalog"), (req, res) => {
+  if (!req.file)
+    return res
+      .status(400)
+      .send(
+        tvboxPage(
+          "Importar M3U",
+          '<section class="panel"><h1>Arquivo ausente</h1><p class="muted">Selecione o JSON exportado pelo catálogo M3U.</p></section>',
+        ),
+      );
+  let payload;
+  try {
+    payload = JSON.parse(req.file.buffer.toString("utf-8"));
+  } catch {
+    return res
+      .status(400)
+      .send(
+        tvboxPage(
+          "Importar M3U",
+          '<section class="panel"><h1>JSON inválido</h1><p class="muted">O arquivo não pôde ser lido.</p></section>',
+        ),
+      );
+  }
+  const incoming = Array.isArray(payload) ? payload : payload.channels;
+  if (!Array.isArray(incoming))
+    return res
+      .status(400)
+      .send(
+        tvboxPage(
+          "Importar M3U",
+          '<section class="panel"><h1>Formato inválido</h1><p class="muted">Use o arquivo gerado pelo catálogo M3U.</p></section>',
+        ),
+      );
+  if (req.body.target === "episodes") {
+    const seriesId = String(req.body.seriesId || "");
+    const seasonNumber = Number(req.body.seasonNumber);
+    const startEpisode = Number(req.body.startEpisode) || 1;
+    const seriesFile = path.join(SERIES_DIRECTORY, `${seriesId}.json`);
+    if (
+      !/^[A-Za-z0-9_-]+$/.test(seriesId) ||
+      !fs.existsSync(seriesFile) ||
+      !Number.isInteger(seasonNumber) ||
+      seasonNumber < 1
+    )
+      return res
+        .status(400)
+        .send(
+          tvboxPage(
+            "Importar M3U",
+            '<section class="panel"><h1>Destino inválido</h1><p class="muted">Escolha uma série e uma temporada válidas.</p></section>',
+          ),
+        );
+    const seriesData = JSON.parse(fs.readFileSync(seriesFile, "utf-8"));
+    seriesData.seasons ||= [];
+    let season = seriesData.seasons.find(
+      (item) => Number(item.number) === seasonNumber,
+    );
+    if (!season) {
+      season = { number: seasonNumber, episodes: [] };
+      seriesData.seasons.push(season);
+    }
+    season.episodes ||= [];
+    const knownUrls = new Set(season.episodes.map((item) => item.url));
+    let added = 0,
+      ignored = 0,
+      nextNumber = Math.max(
+        startEpisode,
+        ...season.episodes.map((item) => Number(item.number) + 1),
+        1,
+      );
+    for (const item of incoming) {
+      const url = String(item?.url || "").trim();
+      const title = String(item?.name || item?.title || "").trim();
+      if (!title || !/^https?:\/\//i.test(url) || knownUrls.has(url)) {
+        ignored++;
+        continue;
+      }
+      season.episodes.push({
+        number: nextNumber++,
+        title,
+        url,
+        type: item.type === "mp4" ? "mp4" : "hls",
+      });
+      knownUrls.add(url);
+      added++;
+    }
+    fs.writeFileSync(seriesFile, JSON.stringify(seriesData, null, 2), "utf-8");
+    return res.send(
+      tvboxPage(
+        "Importação concluída",
+        `<section class="panel"><h1>Episódios importados</h1><p class="muted"><strong>${added}</strong> episódio(s) adicionado(s) na temporada ${seasonNumber}. <strong>${ignored}</strong> item(ns) ignorado(s).</p><div class="actions"><a class="btn primary" href="/tvbox/series/${encodeURIComponent(seriesId)}">Abrir série</a></div></section>`,
+      ),
+    );
+  }
+  const current = loadDB();
+  const urls = new Set(current.map((item) => item.url));
+  let added = 0,
+    ignored = 0;
+  for (const item of incoming) {
+    const url = String(item?.url || "").trim();
+    const name = String(item?.name || item?.title || "").trim();
+    if (!name || !/^https?:\/\//i.test(url) || urls.has(url)) {
+      ignored++;
+      continue;
+    }
+    const imageUrl = String(item?.poster || item?.logo || "").trim();
+    current.push({
+      id: Date.now() + added,
+      name,
+      url,
+      type: item.type === "mp4" ? "mp4" : "hls",
+      category:
+        String(item.category || item.groupName || "m3u").trim() || "m3u",
+      ...(/^https?:\/\//i.test(imageUrl) ? { poster: imageUrl } : {}),
+    });
+    urls.add(url);
+    added++;
+  }
+  saveDB(current);
+  res.send(
+    tvboxPage(
+      "Importação concluída",
+      `<section class="panel"><h1>Importação concluída</h1><p class="muted"><strong>${added}</strong> canal(is) adicionado(s). <strong>${ignored}</strong> item(ns) ignorado(s) por URL repetida ou dados inválidos.</p><div class="actions"><a class="btn primary" href="/tvbox">Voltar ao painel</a><a class="btn" href="/tvbox/import/m3u">Importar outro arquivo</a></div></section>`,
+    ),
+  );
+});
+
+router.get("/categories", (req, res) => {
+  const categories = loadDB().reduce((groups, item) => {
+    const category = String(item.category || "outros").trim() || "outros";
+    (groups[category] ||= []).push(item);
+    return groups;
+  }, {});
+
+  const categorySections =
+    Object.entries(categories)
+      .sort(([left], [right]) => left.localeCompare(right, "pt-BR"))
+      .map(([category, items]) => {
+        const rows = items
+          .sort((left, right) =>
+            String(left.name).localeCompare(String(right.name), "pt-BR"),
+          )
+          .map(
+            (item) =>
+              `<article class="category-item" data-name="${safeText(`${item.name}${item.type || ""}`)}"><div><strong>${safeText(item.name)}</strong><span class="badge">${safeText(item.type || "hls")}</span><p class="url">${safeText(item.url)}</p></div><div class="actions"><a class="btn" href="/tvbox/edit/${item.id}">Editar</a><a class="btn danger" href="/tvbox/delete/${item.id}" onclick="return confirm('Excluir este item?')">Excluir</a></div></article>`,
+          )
+          .join("");
+        return `<details class="category-group" data-category="${safeText(category)}"><summary><div><span class="badge">CATEGORIA</span><strong>${safeText(category)}</strong></div><div class="summary-actions" onclick="event.stopPropagation()"><a class="btn" href="/tvbox/category/${encodeURIComponent(category)}">Gerenciar Capa</a><span class="count">${items.length} item(ns)</span></div></summary><div class="category-content"><div class="category-tools"><span class="muted">Abra somente a lista que quiser administrar.</span><form method="post" action="/tvbox/category/delete" onsubmit="return confirm('Excluir todos os ${items.length} itens da categoria?')"><input type="hidden" name="category" value="${safeText(category)}"><button class="btn danger" type="submit">Excluir categoria</button></form></div><div class="category-items">${rows}</div></div></details>`;
+      })
+      .join("") ||
+    '<section class="panel"><div class="empty">Nenhuma categoria cadastrada.</div></section>';
+  const body = fs
+    .readFileSync(
+      path.join(TEMPLATES_DIRECTORY, "tvbox-categories.html"),
+      "utf-8",
+    )
+    .replaceAll("{{categoryCount}}", String(Object.keys(categories).length))
+    .replace("{{categorySections}}", categorySections);
+  res.send(tvboxPage("Categorias", body));
+});
+
+router.post("/category/delete", (req, res) => {
+  const category = String(req.body.category || "").trim();
+  if (!category)
+    return res
+      .status(400)
+      .send(
+        tvboxPage(
+          "Erro",
+          '<section class="panel"><h1>Categoria invalida</h1></section>',
+        ),
+      );
+
+  const normalizedCategory = category.toLocaleLowerCase("pt-BR");
+  const remaining = loadDB().filter((item) => {
+    const itemCategory = (
+      String(item.category || "outros").trim() || "outros"
+    ).toLocaleLowerCase("pt-BR");
+    return itemCategory !== normalizedCategory;
+  });
+  saveDB(remaining);
+  res.redirect("/tvbox/categories");
+});
+
+router.get("/", (req, res) => {
+  if (!hasTvboxSession(req)) return res.redirect("/tvbox/login");
+  const channels = loadDB();
+  const series = loadSeriesCatalog();
+
+  const byCategory = channels.reduce((total, item) => {
+    const key = item.category || "outros";
+    total[key] = (total[key] || 0) + 1;
+    return total;
+  }, {});
+
+  const categoryCards =
+    Object.entries(byCategory)
+      .map(
+        ([name, total]) =>
+          `<article class="card">
+          <span class="badge">CATEGORIA</span>
+          <h2 style="margin-top:12px">${safeText(name)}</h2>
+          <p class="muted">${total} item(ns) cadastrado(s).</p>
+          <div class="actions" style="margin-top:14px">
+            <a class="btn primary" href="/tvbox/category/${encodeURIComponent(name)}">Gerenciar Capa / Itens</a>
+          </div>
+        </article>`,
+      )
+      .join("") || '<div class="empty">Nenhuma categoria cadastrada.</div>';
+
+  const templateContent = fs.readFileSync(
+    path.join(TEMPLATES_DIRECTORY, "tvbox-dashboard.html"),
+    "utf-8",
+  );
+  const body = templateContent
+    .replaceAll("{{channelsCount}}", channels.length)
+    .replaceAll("{{seriesCount}}", series.length)
+    .replaceAll("{{categoryCards}}", categoryCards);
+
+  return res.send(tvboxPage("Painel", body));
+});
+
+router.get("/add", (req, res) => {
+  const body = fs.readFileSync(
+    path.join(TEMPLATES_DIRECTORY, "tvbox-add.html"),
+    "utf-8",
+  );
+  return res.send(tvboxPage("Adicionar item", body));
+});
+
+router.post("/add", (req, res) => {
+  const { name, url, type, category, poster } = req.body;
+  const imageUrl = String(poster || "").trim();
+
+  let dbData = loadDB();
+  dbData.push({
+    id: Date.now(),
+    name,
+    url,
+    type,
+    category,
+    ...(/^https?:\/\//i.test(imageUrl) ? { poster: imageUrl } : {}),
+  });
+  saveDB(dbData);
+  res.redirect("/tvbox");
+});
+
+router.get("/series/:id/delete", (req, res) => {
+  const id = req.params.id;
+  if (!/^[a-zA-Z0-9_-]+$/.test(id)) return res.status(400).send("ID inválido");
+  const catalog = loadSeriesCatalog().filter((item) => item.id !== id);
+  saveSeriesCatalog(catalog);
+  const file = path.join(SERIES_DIRECTORY, `${id}.json`);
+  if (fs.existsSync(file)) fs.unlinkSync(file);
+  res.redirect("/tvbox/series");
+});
+
+router.get("/edit/:id", (req, res) => {
+  if (!requireTvboxAccess(req, res)) return;
+  const id = req.params.id;
+  const dbData = loadDB();
+  const item = dbData.find((item) => String(item.id) === String(id));
+  if (!item)
+    return res
+      .status(404)
+      .send(
+        tvboxPage(
+          "Não encontrado",
+          '<section class="panel"><h1>Item não encontrado</h1></section>',
+        ),
+      );
+
+  // Extrai todas as categorias únicas já presentes no banco de dados
+  const uniqueCategories = [
+    ...new Set(
+      dbData.map((i) => String(i.category || "outros").trim() || "outros"),
+    ),
+  ].sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+  // Gera as opções do select dinamicamente
+  const categoryOptions = uniqueCategories
+    .map(
+      (cat) =>
+        `<option value="${safeText(cat)}" ${item.category === cat ? "selected" : ""}>${safeText(cat)}</option>`,
+    )
+    .join("");
+
+  const typeKey = (item.type || "").toLowerCase();
+  const posterValue = safeText(item.poster || "");
+  const body = fs
+    .readFileSync(path.join(TEMPLATES_DIRECTORY, "tvbox-edit.html"), "utf-8")
+    .replaceAll("{{id}}", safeText(id))
+    .replaceAll("{{password}}", "")
+    .replaceAll("{{name}}", safeText(item.name || ""))
+    .replaceAll("{{url}}", safeText(item.url || ""))
+    .replaceAll("{{poster}}", posterValue)
+    .replace("{{type_mp4}}", typeKey === "mp4" ? "selected" : "")
+    .replace("{{type_hls}}", typeKey === "hls" ? "selected" : "")
+    .replace("{{type_kick}}", typeKey === "kick" ? "selected" : "")
+    .replace("{{type_embed}}", typeKey === "embed" ? "selected" : "")
+    .replace("{{categoryOptions}}", categoryOptions);
+
+  res.send(tvboxPage("Editar item", body));
+});
+
+router.post("/edit/:id", (req, res) => {
+  const id = req.params.id;
+  const { name, url, type, category, poster } = req.body;
+  const imageUrl = String(poster || "").trim();
+
+  let dbData = loadDB();
+  const index = dbData.findIndex((item) => String(item.id) === String(id));
+  if (index === -1)
+    return res
+      .status(404)
+      .send(
+        tvboxPage(
+          "Não encontrado",
+          '<section class="panel"><h1>Item não encontrado</h1></section>',
+        ),
+      );
+
+  dbData[index] = {
+    id: dbData[index].id,
+    name,
+    url,
+    type,
+    category,
+    ...(/^https?:\/\//i.test(imageUrl)
+      ? { poster: imageUrl }
+      : { poster: null }),
+  };
+  saveDB(dbData);
+  res.redirect("/tvbox");
+});
+
+router.get("/delete/:id", (req, res) => {
+  let dbData = loadDB();
+  dbData = dbData.filter((item) => item.id != req.params.id);
+  saveDB(dbData);
+  res.redirect("/tvbox");
+});
+
+// Rota de Detalhes da Categoria
+router.get("/category/:name", (req, res) => {
+  const categoryName = decodeURIComponent(req.params.name);
+  const channels = loadDB();
+  const items = channels.filter(
+    (item) =>
+      (String(item.category || "outros").trim() || "outros").toLowerCase() ===
+      categoryName.toLowerCase(),
+  );
+
+  const categoriesMeta = loadCategoriesMeta();
+  const currentPoster = categoriesMeta[categoryName]?.poster || "";
+
+  const itemsRows = items.length
+    ? items
+        .map(
+          (item) => `
+            <article class="category-item" style="display: flex; align-items: center; justify-content: space-between; background: #1f2937; border: 1px solid #374151; border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; gap: 16px; transition: border-color 0.2s;" onmouseover="this.style.borderColor='#4b5563'" onmouseout="this.style.borderColor='#374151'">
+                <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1;">
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <strong style="color: #ffffff; font-size: 15px; font-weight: 600;">${safeText(item.name)}</strong>
+                        <span class="badge" style="background: #374151; color: #60a5fa; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px;">${safeText(item.type || "hls")}</span>
+                    </div>
+                    <p class="url" style="color: #9ca3af; font-size: 13px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${safeText(item.url)}">${safeText(item.url)}</p>
+                </div>
+                <div class="actions" style="display: flex; gap: 8px; flex-shrink: 0;">
+                    <a class="btn" href="/tvbox/edit/${item.id}" style="background: #374151; color: #f3f4f6; text-decoration: none; padding: 8px 14px; font-size: 13px; font-weight: 500; border-radius: 8px; border: 1px solid #4b5563; transition: background 0.2s;" onmouseover="this.style.background='#4b5563'" onmouseout="this.style.background='#374151'">Editar</a>
+                </div>
+            </article>
+            `,
+        )
+        .join("")
+    : '<div class="empty" style="text-align: center; padding: 32px; color: #9ca3af; font-size: 14px; background: #1f2937; border-radius: 12px; border: 1px dashed #374151;">Nenhum item encontrado nesta categoria.</div>';
+
+  const templateContent = fs.readFileSync(
+    path.join(TEMPLATES_DIRECTORY, "tvbox-category-detail.html"),
+    "utf-8",
+  );
+  const body = templateContent
+    .replaceAll("{{categoryName}}", safeText(categoryName))
+    .replaceAll("{{categorySlug}}", encodeURIComponent(categoryName))
+    .replaceAll("{{poster}}", safeText(currentPoster))
+    .replaceAll("{{itemsRows}}", itemsRows);
+
+  res.send(tvboxPage(`Categoria: ${categoryName}`, body));
+});
+
+// Rota para Salvar a Capa da Categoria
+router.post("/category/:name/poster", (req, res) => {
+  const categoryName = decodeURIComponent(req.params.name);
+  const poster = String(req.body.poster || "").trim();
+  const validPoster = /^https?:\/\//i.test(poster) ? poster : null;
+
+  const categoriesMeta = loadCategoriesMeta();
+  categoriesMeta[categoryName] = { poster: validPoster };
+  saveCategoriesMeta(categoriesMeta);
+
+  res.redirect(`/tvbox/category/${encodeURIComponent(categoryName)}`);
+});
+[];
+
+let kickCache = null;
+let kickCacheAt = 0;
+let kickPending = null;
+
+
+const hls = require("../services/hls");
+const embedtv = require("../services/embedtv");
+// Reprodução HLS usando o prefixo /tvbox
+router.get("/api/live/:id.m3u8", hls.play);
+router.get("/api/live/resource/:token", hls.resource);
+
+function getPublicBaseUrl(req) {
+  return `${req.protocol}://${req.get("host")}`;
+}
+
+// API do Brasileirão Série A
+router.get(
+  "/api/events/brasileirao-serie-a",
+  async (req, res) => {
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      "*"
+    );
+
+    try {
+      const result = await embedtv.events({
+        brasileirao: true,
+        baseUrl: getPublicBaseUrl(req),
+        sync: true,
+      });
+
+      res.json(result);
+    } catch (error) {
+      console.error(
+        "[EMBEDTV] Brasileirão:",
+        error.message
+      );
+
+      res.status(502).json({
+        events: [],
+        error: error.message,
+      });
+    }
+  }
+);
+
+// API de todos os eventos
+router.get(
+  "/api/embedtv/events",
+  async (req, res) => {
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      "*"
+    );
+
+    try {
+      const result = await embedtv.events({
+        baseUrl: getPublicBaseUrl(req),
+        sync: true,
+      });
+
+      res.json(result);
+    } catch (error) {
+      console.error(
+        "[EMBEDTV] Todos os eventos:",
+        error.message
+      );
+
+      res.status(502).json({
+        events: [],
+        error: error.message,
+      });
+    }
+  }
+);
+
+// Painel HLS
+
+router.get("/hls", (req, res) => {
+  try {
+    const file = path.join(
+      TEMPLATES_DIRECTORY,
+      "tvbox-hls.html"
+    );
+
+    console.log("[TVBOX HLS] Abrindo:", file);
+
+    if (!fs.existsSync(file)) {
+      return res.status(500).send(
+        "ERRO: arquivo tvbox-hls.html não encontrado em " + file
+      );
+    }
+
+    const html = fs.readFileSync(file, "utf8");
+
+    console.log(
+      "[TVBOX HLS] HTML carregado:",
+      html.length,
+      "caracteres"
+    );
+
+    const page = tvboxPage("Canais HLS", html);
+
+    console.log(
+      "[TVBOX HLS] Página montada com sucesso"
+    );
+
+    return res
+      .status(200)
+      .type("html")
+      .send(page);
+
+  } catch (error) {
+    console.error(
+      "[TVBOX HLS] ERRO AO ABRIR PÁGINA:",
+      error.stack
+    );
+
+    return res.status(500).type("text").send(
+      "Erro ao abrir painel HLS:\n\n" +
+      error.stack
+    );
+  }
+});
+
+
+// Canais cadastrados
+router.get("/hls/channels", (req, res) => {
+  res.json(hls.list());
+});
+
+// Configuração do polling HLS
+router.get("/hls/settings", (req, res) => {
+  res.json(hls.getSettings());
+});
+
+router.post("/hls/settings", (req, res) => {
+  try {
+    res.json(hls.setSettings(req.body));
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+// Adicionar canal
+router.post("/hls/channels", async (req, res) => {
+  try {
+    const channel = await hls.add(req.body);
+
+    res.status(201).json(channel);
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
+// Atualizar canal manualmente
+
+router.post(
+  "/hls/channels/:id/refresh",
+  async (req, res) => {
+    const channel = hls.channelById(req.params.id);
+
+    if (!channel) {
+      return res.status(404).json({
+        error: "Canal não encontrado",
+      });
+    }
+
+    try {
+      const result = await hls.refresh(
+        channel,
+        true
+      );
+
+      if (result.error) {
+        return res.status(502).json({
+          error: result.error,
+          status: "error",
+        });
+      }
+
+      return res.json({
+        ok: true,
+        status: "online",
+        checks: result.checks,
+        changes: result.changes,
+        lastCheck: new Date(
+          result.checked
+        ).toISOString(),
+      });
+    } catch (error) {
+      return res.status(502).json({
+        error: error.message,
+      });
+    }
+  }
+);
+
+
+// Excluir canal
+router.delete(
+  "/hls/channels/:id",
+  (req, res) => {
+    if (!hls.remove(req.params.id)) {
+      return res.status(404).json({
+        error: "Canal não encontrado",
+      });
+    }
+
+    res.json({ ok: true });
+  }
+);
+
+router.delete("/hls/channels", (req, res) => {
+  try {
+    const removed = hls.removeAll();
+    res.json({ ok: true, removed });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Diagnóstico da EmbedTV
+router.get(
+  "/hls/embedtv-status",
+  (req, res) => {
+    res.json(embedtv.status());
+  }
+);
+
+
+router.post("/hls/sync-embedtv", async (req, res) => {
+  try {
+    console.log(
+      "[EMBEDTV] Sincronização solicitada pelo painel"
+    );
+
+    const result = await embedtv.events({
+      force: true,
+      sync: true,
+      baseUrl: getPublicBaseUrl(req),
+    });
+
+    return res.json({
+      ...result,
+      message:
+        "Eventos consultados. Sincronização HLS iniciada.",
+    });
+  } catch (error) {
+    console.error(
+      "[EMBEDTV] Falha na consulta:",
+      error
+    );
+
+    return res.status(502).json({
+      error: error.message,
+    });
+  }
+});
+
+
+
+router.get("/api/kick/live", async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  const cacheMs = 60_000;
+
+  if (kickCache && Date.now() - kickCacheAt < cacheMs) {
+    return res.json(kickCache);
+  }
+
+  try {
+    if (!kickPending) {
+      kickPending = (async () => {
+        const db = loadDB();
+
+        // O banco atual retorna um array.
+        // Busca apenas canais com type = kick.
+        const channels = db.filter(
+          (item) =>
+            String(item.type || "")
+              .trim()
+              .toLowerCase() === "kick",
+        );
+
+        let failed = 0;
+
+        const results = await Promise.all(
+          channels.map(async (channel) => {
+            try {
+              // Usa o NAME cadastrado no painel,
+              // sem depender da URL do canal.
+              const name = String(channel.name || "").trim();
+
+              if (!name) {
+                failed++;
+                console.warn("[KICK] Canal sem nome:", channel.id);
+                return null;
+              }
+
+              const kickName = name
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/^@/, "")
+                .replace(/\s+/g, "");
+
+              const response = await fetch(
+                `https://kick.com/api/v2/channels/${encodeURIComponent(kickName)}`,
+                {
+                  headers: {
+                    Accept: "application/json",
+                    "User-Agent": "Mozilla/5.0",
+                    Referer: "https://kick.com/",
+                  },
+                  signal: AbortSignal.timeout(10000),
+                },
+              );
+
+              if (!response.ok) {
+                failed++;
+
+                console.warn(`[KICK] ${kickName}: HTTP ${response.status}`);
+
+                return null;
+              }
+
+              const data = await response.json();
+              const live = data?.livestream;
+
+              // A API pode retornar uma livestream
+              // sem o campo is_live.
+              const isLive = live != null && live.is_live !== false;
+
+              if (!isLive) {
+                console.log(`[KICK] OFFLINE: ${kickName}`);
+                return null;
+              }
+
+              console.log(`[KICK] ONLINE: ${kickName}`);
+
+              return {
+                id: channel.id,
+                name: channel.name || data.user?.username || kickName,
+                kickName: data.slug || kickName,
+
+                url: data.playback_url || null,
+                playbackUrl: data.playback_url || null,
+
+                playbackEndpoint: channel.url || null,
+
+                type: "hls",
+                category: "kick",
+
+                poster: channel.poster || data.user?.profile_pic || null,
+
+                isLive: true,
+                title: live.session_title || "",
+                viewers: live.viewer_count || 0,
+                thumbnail: live.thumbnail?.url || null,
+                startedAt: live.start_time || null,
+              };
+            } catch (error) {
+              failed++;
+
+              console.error(
+                `[KICK] Erro no canal ${channel.name}:`,
+                error.message,
+              );
+
+              return null;
+            }
+          }),
+        );
+
+        const liveChannels = results
+          .filter(Boolean)
+          .sort((a, b) => b.viewers - a.viewers);
+
+        const result = {
+          total: liveChannels.length,
+          checked: channels.length,
+          failed,
+          updatedAt: new Date().toISOString(),
+          channels: liveChannels,
+        };
+
+        // Mantém o cache de 60 segundos.
+        // Evita substituir dados válidos por
+        // um resultado de consulta com falhas.
+        if (failed === 0 || !kickCache) {
+          kickCache = result;
+          kickCacheAt = Date.now();
+        }
+
+        return failed > 0 && kickCache !== result ? kickCache : result;
+      })().finally(() => {
+        kickPending = null;
+      });
+    }
+
+    return res.json(await kickPending);
+  } catch (error) {
+    console.error("[KICK] Erro geral:", error);
+
+    return res.status(500).json({
+      error: "Erro ao consultar canais da Kick",
+    });
+  }
+});
+
+module.exports = router;
+
+
+==========================================================================================
+ARQUIVO: src\routes\api.js
+LINHAS: 95
+==========================================================================================
+
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
+const { loadDB, loadSeriesCatalog, loadCategoriesMeta } = require("../services/db");
+
+const router = express.Router();
+const hls = require("../services/hls");
+
+const SERIES_DIRECTORY = path.join(__dirname, "../../series");
+
+router.get("/channels.json", (req, res) => {
+  const dbData = loadDB();
+  const categoriesMeta = loadCategoriesMeta();
+
+  const cleanData = dbData.map(({ name, url, type, category, poster }) => {
+    const categoryKey = String(category || "outros").trim();
+    const categoryPoster = categoriesMeta[categoryKey]?.poster || null;
+
+    return {
+      name,
+      url,
+      type,
+      category,
+      poster: poster || categoryPoster,
+    };
+  });
+
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.json(cleanData);
+});
+
+router.get("/series.json", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  const catalog = loadSeriesCatalog();
+  res.type("application/json").send(JSON.stringify(catalog, null, 2));
+});
+
+router.get("/series/:id.json", (req, res) => {
+  const id = req.params.id;
+  if (!/^[a-zA-Z0-9_-]+$/.test(id))
+    return res.status(400).json({ error: "Invalid series id" });
+  const file = path.join(SERIES_DIRECTORY, `${id}.json`);
+  if (!fs.existsSync(file))
+    return res.status(404).json({ error: "Series not found" });
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.type("application/json").send(fs.readFileSync(file, "utf-8"));
+});
+
+// Rotas públicas de reprodução, na mesma porta do servidor principal.
+router.get("/api/live/:id.m3u8", hls.play);
+router.get("/api/live/resource/:token", hls.resource);
+
+router.get("/api/hls-proxy", async (req, res) => {
+  const rawUrl = String(req.query.url || "");
+
+  try {
+    const target = new URL(rawUrl);
+
+    if (!["http:", "https:"].includes(target.protocol)) {
+      return res.status(400).json({ error: "Protocolo inválido" });
+    }
+
+    const response = await fetch(target, {
+      signal: AbortSignal.timeout(15000),
+    });
+
+    if (!response.ok) {
+      return res.status(502).json({
+        error: `Origem retornou HTTP ${response.status}`,
+      });
+    }
+
+    const playlist = await response.text();
+
+    const rewritten = playlist.replace(
+      /^(?!#)(.+)$/gm,
+      (line) => {
+        const value = line.trim();
+        if (!value) return line;
+
+        const absolute = new URL(value, target).href;
+
+        return `/tvbox/api/hls-proxy?url=${encodeURIComponent(absolute)}`;
+      }
+    );
+
+    res.type("application/vnd.apple.mpegurl");
+    res.send(rewritten);
+  } catch (error) {
+    res.status(502).json({ error: error.message });
+  }
+});
+
+module.exports = router;
+
+
+==========================================================================================
+ARQUIVO: src\services\db.js
+LINHAS: 105
+==========================================================================================
+
+const fs = require("fs");
+const path = require("path");
+
+const DB_FILE = path.join(__dirname, "../../database.json");
+const SERIES_FILE = path.join(__dirname, "../../series.json");
+
+function loadDB() {
+  if (!fs.existsSync(DB_FILE)) {
+    const initial = [
+      {
+        id: 1,
+        name: "Loud Coringa",
+        url: "https://kick.com/api/v2/channels/coringa/playback-url",
+        type: "kick",
+        category: "lives",
+      },
+      {
+        id: 2,
+        name: "Gabepeixe",
+        url: "https://kick.com/api/v2/channels/gabepeixe/playback-url",
+        type: "kick",
+        category: "lives",
+      },
+      {
+        id: 3,
+        name: "Allan",
+        url: "https://kick.com/api/v2/channels/allanstag/playback-url",
+        type: "kick",
+        category: "lives",
+      },
+    ];
+    fs.writeFileSync(DB_FILE, JSON.stringify(initial, null, 2), "utf-8");
+  }
+  return JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));
+}
+
+function saveDB(data) {
+  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf-8");
+}
+
+function loadSeriesCatalog() {
+  if (!fs.existsSync(SERIES_FILE)) return [];
+  return JSON.parse(fs.readFileSync(SERIES_FILE, "utf-8"));
+}
+
+function saveSeriesCatalog(data) {
+  fs.writeFileSync(SERIES_FILE, JSON.stringify(data, null, 2), "utf-8");
+}
+
+const CATEGORIES_FILE = path.join(__dirname, "../../categories.json");
+const HOME_FILE = path.join(__dirname, "../../home.json");
+
+const DEFAULT_HOME_CONFIG = {
+  sections: [
+    { id: "kick-live", type: "kick-live", title: "Ao vivo na Kick", enabled: true, limit: 1 },
+    { id: "movies", type: "category", category: "filmes", title: "Filmes em destaque", enabled: true, limit: 18 },
+    { id: "series", type: "series", title: "Séries", enabled: true, limit: 18 },
+  ],
+};
+
+function loadCategoriesMeta() {
+  if (!fs.existsSync(CATEGORIES_FILE)) return {};
+  try {
+    return JSON.parse(fs.readFileSync(CATEGORIES_FILE, "utf-8"));
+  } catch {
+    return {};
+  }
+}
+
+function saveCategoriesMeta(data) {
+  fs.writeFileSync(CATEGORIES_FILE, JSON.stringify(data, null, 2), "utf-8");
+}
+
+function loadHomeConfig() {
+  if (!fs.existsSync(HOME_FILE)) return structuredClone(DEFAULT_HOME_CONFIG);
+  try {
+    const config = JSON.parse(fs.readFileSync(HOME_FILE, "utf-8"));
+    return Array.isArray(config?.sections)
+      ? { sections: config.sections }
+      : structuredClone(DEFAULT_HOME_CONFIG);
+  } catch {
+    return structuredClone(DEFAULT_HOME_CONFIG);
+  }
+}
+
+function saveHomeConfig(data) {
+  const sections = Array.isArray(data?.sections) ? data.sections : [];
+  fs.writeFileSync(HOME_FILE, JSON.stringify({ sections }, null, 2), "utf-8");
+}
+
+module.exports = {
+  DB_FILE,
+  SERIES_FILE,
+  CATEGORIES_FILE,
+  HOME_FILE,
+  loadDB,
+  saveDB,
+  loadSeriesCatalog,
+  saveSeriesCatalog,
+  loadCategoriesMeta,
+  saveCategoriesMeta,
+  loadHomeConfig,
+  saveHomeConfig,
+};
+
+
+==========================================================================================
+ARQUIVO: src\services\embedtv.js
+LINHAS: 278
+==========================================================================================
+
+"use strict";
+
+const hls = require("./hls");
+
+const API_URLS = [
+  "https://embedtv.cc/api/events",
+  "http://embedtv.cc/api/events",
+];
+
+let cache = null;
+let updatedAt = 0;
+let pending = null;
+let lastAttempt = null;
+let lastError = null;
+let lastHttpStatus = null;
+let syncing = null;
+
+function normalize(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
+}
+
+function isBrasileirao(event) {
+  return normalize(event?.league?.name) === "brasileirao - serie a";
+}
+
+function extractPlayer(player) {
+  if (typeof player === "string") {
+    return player;
+  }
+
+  if (player && typeof player === "object") {
+    return player.url || player.embedUrl || player.src || null;
+  }
+
+  return null;
+}
+
+function allowedEmbed(value) {
+  try {
+    const url = new URL(value);
+
+    return (
+      url.protocol === "https:" &&
+      (url.hostname === "embedtv.cc" ||
+        url.hostname === "embedtv.lat" ||
+        url.hostname.endsWith(".embedtv.cc") ||
+        url.hostname.endsWith(".embedtv.lat"))
+    );
+  } catch {
+    return false;
+  }
+}
+
+function idFor(event) {
+  return hls.slug(event.title || event.slug || String(event.id || ""));
+}
+
+async function load(force = false) {
+  if (!force && cache && Date.now() - updatedAt < 60000) {
+    return cache;
+  }
+
+  if (pending) {
+    return pending;
+  }
+
+  pending = (async () => {
+    lastAttempt = new Date().toISOString();
+
+    let lastFailure = null;
+
+    for (const apiUrl of API_URLS) {
+      try {
+        console.log("[EMBEDTV] Consultando:", apiUrl);
+
+        const response = await fetch(apiUrl, {
+          headers: {
+            Accept: "application/json",
+            "User-Agent": "Mozilla/5.0",
+          },
+          signal: AbortSignal.timeout(15000),
+        });
+
+        lastHttpStatus = response.status;
+
+        if (!response.ok) {
+          throw new Error(`EmbedTV retornou HTTP ${response.status}`);
+        }
+
+        const payload = await response.json();
+
+        const events = Array.isArray(payload) ? payload : payload?.events;
+
+        if (!Array.isArray(events)) {
+          throw new Error("A API retornou um formato inválido");
+        }
+
+        cache = events;
+        updatedAt = Date.now();
+        lastError = null;
+
+        console.log(`[EMBEDTV] Consulta concluída: ${events.length} eventos`);
+
+        return events;
+      } catch (error) {
+        lastFailure = error;
+
+        console.error("[EMBEDTV] Falha:", apiUrl, error.message);
+      }
+    }
+
+    lastError = lastFailure?.message || "Não foi possível consultar a EmbedTV";
+
+    throw lastFailure || new Error(lastError);
+  })();
+
+  try {
+    return await pending;
+  } finally {
+    pending = null;
+  }
+}
+
+async function syncPlayers(events) {
+  if (syncing) return syncing;
+  syncing = registerPlayers(events);
+  try { return await syncing; } finally { syncing = null; }
+}
+
+async function registerPlayers(events) {
+  const selected = events.filter(isBrasileirao);
+  let registered = 0;
+  let failed = 0;
+  for (const event of selected) {
+    const id = idFor(event);
+    if (!id || hls.channelById(id)) continue;
+    const start = Date.parse(event.time_start || "");
+    if (Number.isFinite(start) && Date.now() >= start + 5 * 60 * 60 * 1000) continue;
+    const player = (Array.isArray(event.players) ? event.players : [])
+      .map(extractPlayer).find((url) => url && allowedEmbed(url));
+    if (!player) continue;
+    try {
+      await hls.add({ id, name: event.title || id, url: player, automatic: true });
+      registered++;
+    } catch (error) {
+      failed++;
+      console.error("[EMBEDTV] Falha:", id, error.message);
+    }
+  }
+  return { registered, failed };
+}
+
+function mapEvent(event, baseUrl = "") {
+  const channels = new Map(hls.list().map((channel) => [channel.id, channel]));
+
+  const id = idFor(event);
+  const channel = channels.get(id);
+  const players = channel ? [{
+    embedUrl: channel.url,
+    apiUrl: `${baseUrl}/tvbox/api/live/${encodeURIComponent(id)}.m3u8`,
+    status: channel.status,
+    error: channel.error,
+  }] : [];
+
+  return {
+    id: event.id,
+    slug: id,
+    originalSlug: event.slug || null,
+    hlsUrl: channel ? `${baseUrl}/tvbox/api/live/${encodeURIComponent(id)}.m3u8` : null,
+    title: event.title || null,
+
+    league: {
+      name: event.league?.name || null,
+      image: event.league?.image || null,
+    },
+
+    teams: {
+      home: {
+        name: event.teams?.home?.name || null,
+        image: event.teams?.home?.image || null,
+      },
+
+      away: {
+        name: event.teams?.away?.name || null,
+        image: event.teams?.away?.image || null,
+      },
+    },
+
+    time_start: event.time_start || null,
+    time_end: event.time_end || null,
+
+    players,
+  };
+}
+
+async function events(options = {}) {
+  const {
+    brasileirao = false,
+    force = false,
+    baseUrl = "",
+    sync = false,
+  } = options;
+
+  // Consulta a API sem aguardar a verificação HLS.
+  const allEvents = await load(force);
+
+  const selected = brasileirao ? allEvents.filter(isBrasileirao) : allEvents;
+
+  // Registra os players antes de montar a resposta. Antes isso rodava em
+  // segundo plano e uma URL recém-trocada aparecia como `not_registered`
+  // até a próxima consulta da API.
+  let syncResult = null;
+  if (sync) {
+    syncPlayers(selected).catch((error) => console.error("[EMBEDTV] Sync:", error.message));
+  }
+
+  return {
+    events: selected.map((event) => mapEvent(event, baseUrl)),
+    total: selected.length,
+    updatedAt: new Date(updatedAt).toISOString(),
+    syncing: Boolean(syncing),
+    sync: syncResult,
+  };
+}
+
+function status() {
+  return {
+    lastAttempt,
+
+    updatedAt: updatedAt ? new Date(updatedAt).toISOString() : null,
+
+    lastError,
+    lastHttpStatus,
+
+    cachedEvents: cache?.length || 0,
+  };
+}
+
+module.exports = {
+  events,
+  load,
+  status,
+};
+
+// Consulta inicial e sincronização dos canais.
+setImmediate(async () => {
+  try {
+    console.log("[EMBEDTV] Iniciando consulta automática...");
+
+    await events({
+      force: true,
+      sync: true,
+    });
+
+    console.log("[EMBEDTV] Consulta inicial concluída.");
+  } catch (error) {
+    console.error("[EMBEDTV] Erro inicial:", error.message);
+  }
+});
+
+// Consulta e sincronização a cada 5 minutos.
+const timer = setInterval(async () => {
+  try {
+    await events({
+      force: true,
+      sync: true,
+    });
+  } catch (error) {
+    console.error("[EMBEDTV] Erro no polling:", error.message);
+  }
+}, 300000);
+
+timer.unref?.();
+
+
+==========================================================================================
+ARQUIVO: src\services\hls.js
+LINHAS: 454
+==========================================================================================
+
+"use strict";
+const fs = require("node:fs");
+const path = require("node:path");
+const crypto = require("node:crypto");
+const dns = require("node:dns/promises");
+const net = require("node:net");
+const { Readable } = require("node:stream");
+const { pipeline } = require("node:stream/promises");
+const FILE = path.join(__dirname, "../../hls-channels.json");
+const SETTINGS = path.join(__dirname, "../../hls-settings.json");
+// Mantém os tokens de recursos por tempo suficiente para uma reprodução em
+// andamento. O limite antigo de 30 minutos fazia streams longas falharem
+// mesmo que o app ainda estivesse assistindo.
+const RESOURCE_IDLE_TTL_MS = 15 * 60 * 1000;
+const AUTO_TTL_MS = 5 * 60 * 60 * 1000;
+const channels = new Map(),
+  cache = new Map(),
+  resources = new Map();
+let interval = null,
+  lastRun = null,
+  running = false;
+let settings = { pollingSeconds: 300, embedtvSeconds: 60 };
+try {
+  settings = { ...settings, ...JSON.parse(fs.readFileSync(SETTINGS, "utf8")) };
+} catch {}
+try {
+  for (const c of JSON.parse(fs.readFileSync(FILE, "utf8")))
+    if (c.id && c.url && (!c.automatic || (c.expiresAt && c.expiresAt > Date.now()))) channels.set(c.id, c);
+} catch {}
+const slug = (s) =>
+  String(s || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9-]+/g, "-")
+    .replace(/^-|-+$/g, "")
+    .slice(0, 70);
+function publicIP(ip) {
+  if (net.isIP(ip) !== 4) return false;
+  const [a, b, c] = ip.split(".").map(Number);
+  return !(
+    a === 0 ||
+    a === 10 ||
+    a === 127 ||
+    a >= 224 ||
+    (a === 169 && b === 254) ||
+    (a === 172 && b >= 16 && b <= 31) ||
+    (a === 192 && b === 168) ||
+    (a === 100 && b >= 64 && b <= 127) ||
+    (a === 192 && b === 0) ||
+    (a === 192 && b === 88 && c === 99) ||
+    (a === 198 && (b === 18 || b === 19)) ||
+    (a === 198 && b === 51 && c === 100) ||
+    (a === 203 && b === 0 && c === 113)
+  );
+}
+async function validate(raw) {
+  const u = new URL(raw);
+  if (
+    !["https:", "http:"].includes(u.protocol) ||
+    u.username ||
+    u.password ||
+    (u.port && !["80", "443"].includes(u.port))
+  )
+    throw Error("URL não permitida");
+  if (net.isIP(u.hostname)) {
+    if (!publicIP(u.hostname)) throw Error("IP privado não permitido");
+  } else {
+    const ips = await dns.lookup(u.hostname, { all: true, family: 4 });
+    if (!ips.length || ips.some((x) => !publicIP(x.address)))
+      throw Error("Endereço de origem não permitido");
+  }
+  return u.href;
+}
+async function request(raw, headers = {}) {
+  let url = raw;
+  for (let i = 0; i < 5; i++) {
+    url = await validate(url);
+    const response = await fetch(url, {
+      redirect: "manual",
+      signal: AbortSignal.timeout(15000),
+      headers: { "User-Agent": "Mozilla/5.0", Accept: "*/*", ...headers },
+    });
+    if (response.status >= 300 && response.status < 400) {
+      const next = response.headers.get("location");
+      await response.body?.cancel();
+      if (!next) throw Error("Redirect inválido");
+      url = new URL(next, url).href;
+      continue;
+    }
+    return { response, url };
+  }
+  throw Error("Redirecionamentos demais");
+}
+async function textLimited(response) {
+  const size = Number(response.headers.get("content-length") || 0);
+  if (size > 2_000_000) throw Error("HTML/playlist grande demais");
+  const data = await response.arrayBuffer();
+  if (data.byteLength > 2_000_000) throw Error("HTML/playlist grande demais");
+  return Buffer.from(data).toString("utf8");
+}
+function candidates(body, base) {
+  const txt = body
+    .replace(/\\u002f/gi, "/")
+    .replace(/\\\//g, "/")
+    .replace(/&amp;/g, "&");
+  const found = new Set();
+  for (const m of txt.matchAll(
+    /(?:https?:\/\/[^\s"'<>]+|["']([^"']+)["'])/gi,
+  )) {
+    const candidate = m[1] || m[0];
+    if (!/\.(?:m3u8|txt)(?:[?#]|$)/i.test(candidate)) continue;
+    try {
+      found.add(new URL(candidate, base).href);
+    } catch {}
+  }
+  return [...found].slice(0, 30);
+}
+async function resolve(channel) {
+  const root = await request(channel.url);
+  if (!root.response.ok) throw Error("Origem HTTP " + root.response.status);
+  const body = await textLimited(root.response);
+  if (body.trimStart().startsWith("#EXTM3U")) return { url: root.url };
+  for (const candidate of candidates(body, root.url)) {
+    try {
+      const p = await request(candidate);
+      if (!p.response.ok) continue;
+      const t = await textLimited(p.response);
+      if (t.trimStart().startsWith("#EXTM3U")) return { url: p.url };
+    } catch {}
+  }
+  throw Error("Não foi encontrada playlist HLS no embed");
+}
+async function refresh(channel, force = false) {
+  const old = cache.get(channel.id);
+  if (old?.pending) return old.pending;
+  if (channel.automatic && old?.url) return old;
+  if (
+    !force &&
+    old?.url &&
+    Date.now() - old.checked < settings.pollingSeconds * 1000
+  )
+    return old;
+  const promise = (async () => {
+    try {
+      const found = await resolve(channel);
+      const value = {
+        url: found.url,
+        checked: Date.now(),
+        error: null,
+        checks: (old?.checks || 0) + 1,
+        changes:
+          (old?.changes || 0) + (old?.url && old.url !== found.url ? 1 : 0),
+      };
+      cache.set(channel.id, value);
+      return value;
+    } catch (e) {
+      const value = {
+        ...old,
+        checked: Date.now(),
+        error: e.message,
+        checks: (old?.checks || 0) + 1,
+      };
+      cache.set(channel.id, value);
+      return value;
+    }
+  })();
+  cache.set(channel.id, { ...old, pending: promise });
+  return promise;
+}
+function persist() {
+  fs.writeFileSync(FILE, JSON.stringify([...channels.values()], null, 2));
+}
+function cleanup() {
+  let changed = false;
+  for (const [id, channel] of channels) {
+    if (channel.automatic && (!channel.expiresAt || channel.expiresAt <= Date.now())) {
+      channels.delete(id);
+      cache.delete(id);
+      changed = true;
+    }
+  }
+  for (const [token, resource] of resources) {
+    if (!channels.has(resource.channelId) || Date.now() - resource.lastAccess > RESOURCE_IDLE_TTL_MS) resources.delete(token);
+  }
+  if (changed) persist();
+}
+
+function list() {
+  cleanup();
+  return [...channels.values()].map((channel) => {
+    const state = cache.get(channel.id);
+
+    return {
+      ...channel,
+
+      status: state?.error ? "error" : state?.url ? "online" : "checking",
+
+      error: state?.error || null,
+
+      checks: state?.checks || 0,
+      changes: state?.changes || 0,
+
+      lastCheck: state?.checked ? new Date(state.checked).toISOString() : null,
+
+      apiUrl: `/tvbox/api/live/${encodeURIComponent(channel.id)}.m3u8`,
+    };
+  });
+}
+
+async function add({ name, url, id, automatic = false }) {
+  name = String(name || "").trim();
+  url = String(url || "").trim();
+  id = slug(id || name);
+
+  if (!name || name.length > 100 || !id || !url || url.length > 4096) {
+    throw Error("Canal inválido");
+  }
+
+  cleanup();
+  await validate(url);
+
+  const existing = channels.get(id);
+
+  if (existing) {
+    if (existing.url !== url) {
+      throw Error("ID já usado para outra URL");
+    }
+
+    // O polling periódico já atualiza canais existentes.
+    // Evita disparar várias verificações simultâneas.
+    return existing;
+  }
+
+  const channel = {
+    id,
+    name,
+    url,
+    automatic,
+    ...(automatic ? { createdAt: Date.now(), expiresAt: Date.now() + AUTO_TTL_MS } : {}),
+  };
+
+  channels.set(id, channel);
+  persist();
+
+  console.log(`[HLS] Canal cadastrado: ${id}`);
+
+  // Não bloqueia o cadastro aguardando a origem.
+  refresh(channel, true).catch((error) => {
+    console.error(`[HLS] Erro ao verificar ${id}:`, error.message);
+  });
+
+  return channel;
+}
+
+function remove(id) {
+  if (!channels.has(id)) return false;
+  channels.delete(id);
+  cache.delete(id);
+  for (const [token, entry] of resources) if (entry.channelId === id) resources.delete(token);
+  persist();
+  return true;
+}
+function removeAll() {
+  const removed = channels.size;
+  channels.clear();
+  cache.clear();
+  resources.clear();
+  persist();
+  return removed;
+}
+
+function tokenFor(channelId, url) {
+  const token = crypto.createHash("sha256").update(channelId + "\0" + url).digest("hex").slice(0, 32);
+  const now = Date.now();
+  const previous = resources.get(token);
+  resources.set(token, { channelId, url, created: previous?.created || now, lastAccess: now });
+  return token;
+}
+
+function rewrite(body, base, id) {
+  return body
+    .split(/\r?\n/)
+    .map((line) => {
+      if (!line.trim()) return line;
+
+      if (line.trimStart().startsWith("#")) {
+        return line.replace(
+          /URI="([^"]+)"/g,
+          (_, relative) => {
+            const absolute = new URL(
+              relative,
+              base
+            ).href;
+
+            const token = tokenFor(
+              id,
+              absolute
+            );
+
+            return (
+              `URI="/tvbox/api/live/resource/${token}"`
+            );
+          }
+        );
+      }
+
+      const absolute = new URL(
+        line.trim(),
+        base
+      ).href;
+
+      const token = tokenFor(id, absolute);
+
+      return (
+        `/tvbox/api/live/resource/${token}`
+      );
+    })
+    .join("\n");
+}
+
+async function play(req, res) {
+  cleanup();
+  const c = channels.get(req.params.id);
+  if (!c) return res.status(404).send("Canal não encontrado");
+  try {
+    const state = await refresh(c);
+    if (!state.url) throw Error(state.error || "Origem indisponível");
+    // Playlist sempre nova, nunca guardar segmentos ao longo do polling.
+    const p = await request(state.url);
+    if (!p.response.ok) throw Error("Origem HTTP " + p.response.status);
+    const body = await textLimited(p.response);
+    if (!body.trimStart().startsWith("#EXTM3U"))
+      throw Error("Playlist inválida");
+    res.set({
+      "Content-Type": "application/vnd.apple.mpegurl",
+      "Cache-Control": "no-store",
+      "Access-Control-Allow-Origin": "*",
+    });
+    return res.send(rewrite(body, p.url, c.id));
+  } catch (e) {
+    return res.status(502).send(e.message);
+  }
+}
+async function resource(req, res) {
+  cleanup();
+  const entry = resources.get(req.params.token);
+  if (!entry || !channels.has(entry.channelId))
+    return res.status(404).send("Recurso expirado");
+  entry.lastAccess = Date.now();
+  try {
+    const { response, url } = await request(
+      entry.url,
+      req.headers.range ? { Range: req.headers.range } : {},
+    );
+    if (!response.ok && response.status !== 206)
+      throw Error("Origem HTTP " + response.status);
+    const type = response.headers.get("content-type") || "";
+    const isPlaylist =
+      /mpegurl/i.test(type) || /\.(m3u8|txt)$/i.test(new URL(url).pathname);
+    if (isPlaylist) {
+      const buf = await response.arrayBuffer();
+      const body = Buffer.from(buf).toString("utf8");
+      if (body.trimStart().startsWith("#EXTM3U")) {
+        res.set({
+          "Content-Type": "application/vnd.apple.mpegurl",
+          "Cache-Control": "no-store",
+          "Access-Control-Allow-Origin": "*",
+        });
+        return res.send(rewrite(body, url, entry.channelId));
+      }
+      if (/mpegurl/i.test(type)) throw Error("Playlist inválida");
+      res.status(response.status).set({
+        "Content-Type": type || "application/octet-stream",
+        "Cache-Control": "no-store",
+        "Access-Control-Allow-Origin": "*",
+      });
+      return res.send(Buffer.from(buf));
+    }
+    res.status(response.status).set({
+      "Content-Type": type || "application/octet-stream",
+      "Cache-Control": "no-store",
+      "Access-Control-Allow-Origin": "*",
+    });
+    if (response.headers.get("content-range"))
+      res.set("Content-Range", response.headers.get("content-range"));
+    if (response.headers.get("accept-ranges"))
+      res.set("Accept-Ranges", response.headers.get("accept-ranges"));
+    await pipeline(Readable.fromWeb(response.body), res);
+  } catch (e) {
+    if (!res.headersSent) res.status(502).send(e.message);
+    else res.destroy();
+  }
+}
+function getSettings() {
+  return { ...settings, lastRun, running, channels: channels.size };
+}
+function setSettings(next) {
+  const n = Number(next.pollingSeconds);
+  if (!Number.isInteger(n) || n < 30 || n > 3600)
+    throw Error("Polling deve ser de 30 a 3600 segundos");
+  settings.pollingSeconds = n;
+  fs.writeFileSync(SETTINGS, JSON.stringify(settings, null, 2));
+  start();
+  return getSettings();
+}
+async function poll() {
+  cleanup();
+  if (running) return;
+  running = true;
+  try {
+    const list = [...channels.values()];
+    let i = 0;
+    await Promise.all(
+      Array.from({ length: Math.min(3, list.length) }, async () => {
+        while (i < list.length) {
+          const channel = list[i++];
+          if (channel.automatic) continue;
+          await refresh(channel, true);
+        }
+      }),
+    );
+    lastRun = new Date().toISOString();
+  } finally {
+    running = false;
+  }
+}
+function start() {
+  if (interval) clearInterval(interval);
+  interval = setInterval(
+    () => poll().catch((e) => console.warn("[HLS]", e.message)),
+    settings.pollingSeconds * 1000,
+  );
+  interval.unref?.();
+}
+start();
+setImmediate(() => poll().catch(() => {}));
+setInterval(cleanup, 60000).unref?.();
+cleanup();
+module.exports = {
+  list,
+  add,
+  remove,
+  removeAll,
+  refresh,
+  getSettings,
+  setSettings,
+  poll,
+  play,
+  resource,
+  channelById: (id) => channels.get(id),
+  slug,
+};
+
+
+==========================================================================================
+ARQUIVO: src\services\poster.js
+LINHAS: 70
+==========================================================================================
+
+const axios = require("axios");
+const { TMDB_API_KEY } = require("../config/env");
+
+const headers = {
+  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+  "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+};
+
+async function findPoster(title, kind = "movie") {
+  const query = String(title || "").trim();
+  if (!query) return null;
+
+  if (TMDB_API_KEY) {
+    try {
+      const endpoint = kind === "tv" ? "tv" : "movie";
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/search/${endpoint}`,
+        {
+          params: {
+            api_key: TMDB_API_KEY,
+            language: "pt-BR",
+            query,
+            include_adult: false,
+          },
+          timeout: 10000,
+        },
+      );
+      const item =
+        response.data?.results?.find((result) => result.poster_path) ||
+        response.data?.results?.[0];
+      if (item?.poster_path)
+        return {
+          poster: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
+          title: item.title || item.name || query,
+          source: "TMDb",
+        };
+    } catch (error) {
+      console.warn(`Busca TMDb falhou para "${query}": ${error.message}`);
+    }
+  }
+
+  try {
+    const response = await axios.get(
+      `https://v3.sg.media-imdb.com/suggestion/x/${encodeURIComponent(query)}.json`,
+      {
+        headers,
+        timeout: 10000,
+      },
+    );
+    const wantedTypes =
+      kind === "tv"
+        ? new Set(["tvSeries", "tvMiniSeries"])
+        : new Set(["feature", "movie", "videoMovie"]);
+    const item =
+      (response.data?.d || []).find(
+        (result) => wantedTypes.has(result.q) && result.i?.imageUrl,
+      ) || (response.data?.d || []).find((result) => result.i?.imageUrl);
+    if (item?.i?.imageUrl)
+      return {
+        poster: item.i.imageUrl,
+        title: item.l || query,
+        source: "IMDb",
+      };
+  } catch (error) {
+    console.warn(`Busca IMDb falhou para "${query}": ${error.message}`);
+  }
+  return null;
+}
+
+module.exports = { findPoster };
+
+==========================================================================================
+ARQUIVO: src\services\scraper.js
+LINHAS: 70
+==========================================================================================
+
+const axios = require("axios");
+const cheerio = require("cheerio");
+const { BASE_URL } = require("../config/env");
+const { loadDB, saveDB } = require("./db");
+
+const headers = {
+  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+  Referer: BASE_URL,
+  "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+};
+
+async function getLiveDomains() {
+  try {
+    const response = await axios.get(`${BASE_URL}/domainsz76.txt`, { headers });
+    const list = response.data
+      .trim()
+      .split("\n")
+      .map((d) => d.trim())
+      .filter(Boolean);
+    if (list.length > 0) return list[0];
+  } catch (error) {}
+  return "shadow-ran.online";
+}
+
+async function extractStreamFromPage(eventUrl, activeDomain) {
+  try {
+    const fullUrl = eventUrl.startsWith("http") ? eventUrl : `${BASE_URL}${eventUrl}`;
+    const response = await axios.get(fullUrl, { headers });
+    const html = response.data;
+
+    const streamMatch = html.match(/getRandomStream\(['"]([^'"]+\.m3u8)['"]\)/);
+    if (streamMatch) {
+      const streamFile = streamMatch[1];
+      const subMatch = html.match(/var\s+subdomain\s*=\s*['"]([^'"]+)['"]/);
+      const subdomain = subMatch ? subMatch[1] : "admin";
+      return `https://${subdomain}.${activeDomain}/${streamFile}`;
+    }
+
+    const fallbackMatch = html.match(/https?:\/\/[^\s"'<>]+\.m3u8/);
+    if (fallbackMatch) return fallbackMatch[0];
+  } catch (error) {}
+  return null;
+}
+
+function convertTo24h(timeStr, countdownText) {
+  if (!timeStr) return "";
+  if (countdownText && countdownText.toUpperCase().includes("LIVE")) return "AO VIVO";
+
+  const match = timeStr.match(/(\d{1,2}):(\d{2})/);
+  if (!match) return timeStr;
+
+  let hours = parseInt(match[1], 10);
+  const minutes = match[2];
+
+  const upper = timeStr.toUpperCase();
+  if (upper.includes("PM") && hours < 12) {
+    hours += 12;
+  } else if (upper.includes("AM") && hours === 12) {
+    hours = 0;
+  }
+
+  hours = (hours + 4) % 24;
+
+  const formattedHours = String(hours).padStart(2, "0");
+  return timeStr.replace(/(\d{1,2}):(\d{2})/, `${formattedHours}:${minutes}`);
+}
+
+
+
+module.exports = { runScraper };
+
+==========================================================================================
+ARQUIVO: src\utils\helpers.js
+LINHAS: 90
+==========================================================================================
+
+const crypto = require("crypto");
+const { PASSWORD, SESSION_SECRET } = require("../config/env");
+
+const SESSION_COOKIE = "tvbox_session";
+
+function safeText(value = "") {
+  return String(value).replace(
+    /[&<>"']/g,
+    (char) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;",
+      })[char]
+  );
+}
+
+function readCookies(req) {
+  return Object.fromEntries(
+    String(req.headers.cookie || "")
+      .split(";")
+      .map((part) => part.trim().split(/=(.*)/s, 2))
+      .filter(([key]) => key)
+      .map(([key, value]) => [key, decodeURIComponent(value || "")]),
+  );
+}
+
+function signSession(payload) {
+  const encoded = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const signature = crypto
+    .createHmac("sha256", SESSION_SECRET)
+    .update(encoded)
+    .digest("base64url");
+  return `${encoded}.${signature}`;
+}
+
+function hasTvboxSession(req) {
+  if (!SESSION_SECRET) return false;
+  const token = readCookies(req)[SESSION_COOKIE];
+  if (!token || !token.includes(".")) return false;
+  const [encoded, signature] = token.split(".");
+  const expected = crypto.createHmac("sha256", SESSION_SECRET).update(encoded).digest("base64url");
+  if (signature.length !== expected.length || !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) return false;
+  try {
+    return JSON.parse(Buffer.from(encoded, "base64url").toString("utf8")).expiresAt > Date.now();
+  } catch (_) {
+    return false;
+  }
+}
+
+function requireTvboxAccess(req, res) {
+  if (hasTvboxSession(req)) return true;
+  if (req.accepts(["html"])) res.redirect("/tvbox/login");
+  else res.status(401).json({ error: "Sessão expirada. Faça login novamente." });
+  return false;
+}
+
+function clearSession(res) {
+  res.clearCookie(SESSION_COOKIE, { path: "/tvbox", sameSite: "lax" });
+}
+
+function passwordMatches(candidate) {
+  if (!PASSWORD) return false;
+  const received = Buffer.from(String(candidate || ""));
+  const expected = Buffer.from(PASSWORD);
+  return received.length === expected.length && crypto.timingSafeEqual(received, expected);
+}
+
+function removeLegacyPasswordFromHtml(html) {
+  // Esta função também recebe páginas com JavaScript embutido. Não tente
+  // normalizar `?` no HTML inteiro: isso altera operadores ternários do JS
+  // (por exemplo, `condicao ? "a" : "b"`) e quebra a página no navegador.
+  // A remoção do parâmetro legado continua limitada ao padrão `pass=`.
+  return html.replace(/([?&])pass=[^&"'\s>]+&?/g, "$1");
+}
+
+module.exports = {
+  SESSION_COOKIE,
+  safeText,
+  readCookies,
+  signSession,
+  hasTvboxSession,
+  requireTvboxAccess,
+  clearSession,
+  passwordMatches,
+  removeLegacyPasswordFromHtml,
+};
+
+
+==========================================================================================
+ARQUIVO: templates\tvbox-add.html
+LINHAS: 75
+==========================================================================================
+
+<section class="panel" style="max-width: 700px">
+  <h1>Adicionar canal ou filme</h1>
+  <form method="POST" action="/tvbox/add?pass={{password}}">
+    <label>Nome</label
+    ><input id="media-name" type="text" name="name" required />
+    <label>URL (.mp4, .m3u8, API ou página web)</label
+    ><input type="url" name="url" required />
+    <label>Foto/capa (opcional)</label>
+    <div class="row" style="align-items: stretch">
+      <input
+        id="media-poster"
+        type="url"
+        name="poster"
+        placeholder="https://site.com/capa.jpg"
+      /><button id="find-poster" class="btn" type="button">Buscar capa</button>
+    </div>
+    <p id="poster-status" class="muted" style="margin: 8px 0 0">
+      Digite o título e use “Buscar capa”. Usa TMDb quando configurada e IMDb
+      como alternativa.
+    </p>
+    <label>Tipo</label
+    ><select name="type">
+      <option value="mp4">MP4</option>
+      <option value="hls">HLS</option>
+      <option value="kick">Kick</option>
+      <option value="embed">Embed / página web</option>
+    </select>
+    <p class="muted" style="margin: 8px 0 0">
+      Embed abre a página diretamente no navegador interno do app.
+    </p>
+    <label>Categoria</label
+    ><select name="category">
+      <option value="filmes">Filmes</option>
+      <option value="futebol">Futebol</option>
+      <option value="kick">Kick</option>
+    </select>
+    <div class="actions" style="margin-top: 20px">
+      <button class="btn primary" type="submit">Salvar item</button
+      ><a class="btn" href="/tvbox?pass={{password}}">Cancelar</a>
+    </div>
+  </form>
+</section>
+<script>
+  (() => {
+    const name = document.querySelector("#media-name"),
+      poster = document.querySelector("#media-poster"),
+      status = document.querySelector("#poster-status"),
+      button = document.querySelector("#find-poster");
+    button.addEventListener("click", async () => {
+      const title = name.value.trim();
+      if (!title) {
+        status.textContent = "Digite o nome do filme antes de buscar a capa.";
+        name.focus();
+        return;
+      }
+      button.disabled = true;
+      status.textContent = "Buscando capa…";
+      try {
+        const response = await fetch(
+          `/tvbox/api/poster?pass={{password}}&title=${encodeURIComponent(title)}&kind=movie`,
+        );
+        const data = await response.json();
+        if (!response.ok || !data.poster)
+          throw new Error(data.error || "Capa não encontrada");
+        poster.value = data.poster;
+        status.textContent = `Capa encontrada via ${data.source}${data.title ? `: ${data.title}` : ""}.`;
+      } catch (error) {
+        status.textContent = error.message || "Não foi possível buscar a capa.";
+      } finally {
+        button.disabled = false;
+      }
+    });
+  })();
+</script>
+
+
+==========================================================================================
+ARQUIVO: templates\tvbox-categories.html
+LINHAS: 247
+==========================================================================================
+
+<style>
+  .categories-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .categories-hero h1 {
+    margin-bottom: 6px;
+  }
+
+  .category-search {
+    width: min(100%, 420px);
+  }
+
+  .category-search input {
+    margin-top: 6px;
+  }
+
+  .category-list {
+    display: grid;
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .category-group {
+    background: rgba(18, 29, 48, 0.93);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.18s;
+  }
+
+  .category-group:hover {
+    border-color: #3b4e6d;
+  }
+
+  .category-group summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .category-group summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .category-group summary::after {
+    content: "+";
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--surface2);
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--blue);
+    transition: background 0.18s, color 0.18s;
+  }
+
+  .category-group summary:hover::after {
+    background: var(--blue);
+    color: #071120;
+  }
+
+  .category-group[open] summary {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .category-group[open] summary::after {
+    content: "−";
+  }
+
+  .category-group summary > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .category-group summary strong {
+    font-size: 17px;
+    word-break: break-word;
+  }
+
+  .summary-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .count {
+    white-space: nowrap;
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 13px;
+    background: var(--surface2);
+    padding: 3px 10px;
+    border-radius: 99px;
+    border: 1px solid var(--line);
+  }
+
+  .category-content {
+    padding: 20px;
+  }
+
+  .category-tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .category-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+  }
+
+  .category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    border: 1px solid var(--line);
+    background: #0c1729;
+    border-radius: 12px;
+    padding: 14px;
+    transition: border-color 0.18s, transform 0.18s;
+  }
+
+  .category-item:hover {
+    border-color: #4b6f9f;
+    transform: translateY(-1px);
+  }
+
+  .category-item strong {
+    display: block;
+    overflow-wrap: anywhere;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  .category-item .badge {
+    margin-left: 0;
+  }
+
+  .category-item .url {
+    font-size: 12px;
+    margin: 8px 0 0;
+    word-break: break-all;
+    color: var(--muted);
+    max-height: 36px;
+    overflow: hidden;
+  }
+
+  .category-item .btn {
+    padding: 8px 12px;
+    flex: none;
+    min-height: 36px;
+  }
+
+  @media (max-width: 600px) {
+    .categories-hero {
+      align-items: stretch;
+    }
+
+    .category-search {
+      width: 100%;
+    }
+
+    .category-group summary {
+      padding: 14px 16px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .summary-actions {
+      width: 100%;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+
+    .category-content {
+      padding: 14px 16px;
+    }
+
+    .count {
+      font-size: 12px;
+    }
+
+    .category-item {
+      padding: 12px;
+    }
+  }
+</style>
+
+<section class="panel categories-hero">
+  <div>
+    <h1>Listas por categoria</h1>
+    <p class="muted"><strong>{{categoryCount}}</strong> categorias. As listas ficam fechadas para manter o painel organizado.</p>
+  </div>
+  <label class="category-search">Buscar categoria ou conteúdo
+    <input id="category-filter" type="search" autocomplete="off" placeholder="Ex.: filmes, premiere, naruto...">
+  </label>
+</section>
+
+<section class="category-list" id="category-list">
+  {{categorySections}}
+</section>
+
+<script>
+  const filter = document.getElementById('category-filter');
+  const groups = [...document.querySelectorAll('.category-group')];
+
+  filter.addEventListener('input', () => {
+    const query = filter.value.trim().toLocaleLowerCase('pt-BR');
+
+    groups.forEach(group => {
+      const categoryMatches = (group.dataset.category || '').toLocaleLowerCase('pt-BR').includes(query);
+      let itemMatches = false;
+
+      group.querySelectorAll('.category-item').forEach(item => {
+        const visible = !query || categoryMatches || (item.dataset.name || '').toLocaleLowerCase('pt-BR').includes(query);
+        item.hidden = !visible;
+        if (visible) itemMatches = true;
+      });
+
+      group.hidden = !categoryMatches && !itemMatches;
+      
+      if (query && !group.hidden) {
+        group.open = true;
+      }
+    });
+  });
+</script>
+
+==========================================================================================
+ARQUIVO: templates\tvbox-category-detail.html
+LINHAS: 28
+==========================================================================================
+
+<section class="panel" style="max-width:960px; margin: 40px auto; background: #111827; border: 1px solid #1f2937; border-radius: 16px; padding: 32px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4); font-family: system-ui, -apple-system, sans-serif; color: #f3f4f6;">
+  
+  <!-- Cabeçalho -->
+  <div class="row" style="display: flex; flex-direction: column; gap: 8px;">
+    <div>
+      <a class="btn" href="/tvbox/categories" style="display: inline-flex; align-items: center; gap: 6px; color: #60a5fa; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#60a5fa'">
+        ← Voltar para Categorias
+      </a>
+      <h1 style="margin: 12px 0 4px 0; font-size: 28px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px;">{{categoryName}}</h1>
+      <p class="muted" style="margin: 0; color: #9ca3af; font-size: 14px;">Gerencie a capa e visualize os itens desta categoria.</p>
+    </div>
+  </div>
+
+  <!-- Formulário de Capa -->
+  <form method="post" action="/tvbox/category/{{categorySlug}}/poster" class="row" style="margin: 28px 0; display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; background: #1f2937; padding: 20px; border-radius: 12px; border: 1px solid #374151;">
+    <div style="flex: 1; min-width: 280px; display: flex; flex-direction: column; gap: 6px;">
+      <label style="font-size: 13px; font-weight: 600; color: #d1d5db; text-transform: uppercase; letter-spacing: 0.5px;">Capa da Categoria (Poster)</label>
+      <input type="url" name="poster" value="{{poster}}" placeholder="https://site.com/capa-categoria.jpg" style="width: 100%; background: #111827; border: 1px solid #4b5563; border-radius: 8px; padding: 12px 14px; color: #fff; font-size: 14px; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#4b5563'">
+    </div>
+    <button class="btn primary" type="submit" style="background: #2563eb; color: white; border: none; padding: 12px 22px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.2s, transform 0.1s; font-size: 14px;" onmouseover="this.style.background='#1d4ed8'" onmouseout="this.style.background='#2563eb'">Salvar Capa</button>
+  </form>
+
+  <!-- Lista de Itens -->
+  <h2 style="margin-top: 36px; font-size: 20px; font-weight: 600; color: #ffffff; border-bottom: 1px solid #1f2937; padding-bottom: 10px;">Itens nesta Categoria</h2>
+  <div class="category-items" style="margin-top: 18px;">
+    {{itemsRows}}
+  </div>
+</section>
+
+==========================================================================================
+ARQUIVO: templates\tvbox-dashboard.html
+LINHAS: 42
+==========================================================================================
+
+<section class="panel">
+  <div class="row">
+    <div>
+      <h1>Visão geral</h1>
+      <p class="muted">Conteúdo servido diretamente para seu TVBox.</p>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="/tvbox/add">+ Canal ou filme</a>
+      <a class="btn primary" href="/tvbox/series/add">+ Série</a>
+      <a class="btn" href="/tvbox/import/m3u">Importar M3U</a>
+    </div>
+  </div>
+  <div class="grid" style="margin-top:18px">
+    <article class="card">
+      <span class="badge">CATÁLOGO</span>
+      <h2 style="margin-top:12px">{{channelsCount}} canais e filmes</h2>
+      <p class="muted">Organizados por categorias para facilitar a navegação.</p>
+    </article>
+    <article class="card">
+      <span class="badge">SÉRIES</span>
+      <h2 style="margin-top:12px">{{seriesCount}} séries</h2>
+      <p class="muted">Temporadas e episódios ficam em arquivos individuais.</p>
+      <a class="btn" href="/tvbox/series" style="margin-top:12px">Gerenciar séries</a>
+    </article>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="row">
+    <div>
+      <h2>Categorias do Catálogo</h2>
+      <p class="muted">Acesse a gestão detalhada por categoria ou gerencie tudo centralizado.</p>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="/tvbox/categories">Ver todas as categorias</a>
+    </div>
+  </div>
+  
+  <div class="grid" style="margin-top:18px">
+    {{categoryCards}}
+  </div>
+</section>
+
+==========================================================================================
+ARQUIVO: templates\tvbox-edit.html
+LINHAS: 45
+==========================================================================================
+
+<section class="panel" style="max-width:700px">
+  <h1>Editar item</h1>
+  <form method="POST" action="/tvbox/edit/{{id}}">
+    <label>Nome</label><input id="media-name" type="text" name="name" value="{{name}}" required>
+    <label>URL (.mp4, .m3u8, API ou página web)</label><input type="url" name="url" value="{{url}}" required>
+    <label>Foto/capa (opcional)</label>
+    <div class="row" style="align-items:stretch"><input id="media-poster" type="url" name="poster" value="{{poster}}" placeholder="https://site.com/capa.jpg"><button id="find-poster" class="btn" type="button">Buscar capa</button></div>
+    <p id="poster-status" class="muted" style="margin:8px 0 0">Digite o título e use "Buscar capa". Usa TMDb quando configurada e IMDb como alternativa.</p>
+    <label>Tipo</label><select name="type">
+      <option value="mp4" {{type_mp4}}>MP4</option>
+      <option value="hls" {{type_hls}}>HLS</option>
+      <option value="kick" {{type_kick}}>Kick</option>
+      <option value="embed" {{type_embed}}>Embed / página web</option>
+    </select>
+    <p class="muted" style="margin:8px 0 0">Embed abre a página diretamente no navegador interno do app.</p>
+    
+    <label>Categoria</label>
+    <select name="category">
+      {{categoryOptions}}
+    </select>
+
+    <div class="actions" style="margin-top:20px">
+      <button class="btn primary" type="submit">Salvar alterações</button>
+      <a class="btn" href="/tvbox">Cancelar</a>
+    </div>
+  </form>
+</section>
+<script>
+(() => {
+  const name = document.querySelector('#media-name'), poster = document.querySelector('#media-poster'), status = document.querySelector('#poster-status'), button = document.querySelector('#find-poster');
+  button.addEventListener('click', async () => {
+    const title = name.value.trim();
+    if (!title) { status.textContent = 'Digite o nome do filme antes de buscar a capa.'; name.focus(); return; }
+    button.disabled = true; status.textContent = 'Buscando capa…';
+    try {
+      const response = await fetch(`/tvbox/api/poster?pass={{password}}&title=${encodeURIComponent(title)}`, { headers: { 'Accept': 'application/json' } });
+      const result = await response.json();
+      if (result?.poster) { poster.value = result.poster; status.textContent = `${result.source}: capa encontrada.`; }
+      else { status.textContent = result?.error || 'Nenhuma capa encontrada.'; }
+    } catch (err) { status.textContent = 'Erro ao buscar capa.'; }
+    button.disabled = false;
+  });
+})();
+</script>
+
+
+==========================================================================================
+ARQUIVO: templates\tvbox-hls.html
+LINHAS: 743
+==========================================================================================
+
+<section class="panel">
+  <h1>Canais HLS</h1>
+  <p class="muted">
+    Gerenciamento de canais HLS e integração com EmbedTV.
+    O polling continua funcionando com o painel fechado.
+  </p>
+
+  <div class="grid">
+    <div>
+      <label for="poll">Intervalo do polling (segundos)</label>
+      <input
+        id="poll"
+        type="number"
+        min="30"
+        max="3600"
+        step="1"
+        value="300"
+      />
+    </div>
+
+    <div style="align-self: end">
+      <button
+        type="button"
+        class="btn primary"
+        id="savePoll"
+      >
+        Salvar intervalo
+      </button>
+    </div>
+  </div>
+
+  <p id="status" class="muted">
+    Carregando configurações...
+  </p>
+</section>
+
+<section class="panel">
+  <h2>Adicionar canal</h2>
+
+  <form id="addHls">
+    <label for="channelName">Nome</label>
+    <input
+      id="channelName"
+      name="name"
+      required
+      maxlength="100"
+      placeholder="Ex.: Meu canal"
+    />
+
+    <label for="channelUrl">
+      URL do embed ou playlist HLS
+    </label>
+    <input
+      id="channelUrl"
+      name="url"
+      type="url"
+      required
+      placeholder="https://..."
+    />
+
+    <div class="actions" style="margin-top: 16px">
+      <button
+        class="btn primary"
+        type="submit"
+      >
+        Adicionar canal
+      </button>
+    </div>
+  </form>
+
+  <div class="actions" style="margin-top: 20px">
+    <button
+      class="btn"
+      id="syncEmbed"
+      type="button"
+    >
+      Sincronizar EmbedTV agora
+    </button>
+
+    <button
+      class="btn danger"
+      id="deleteAllHls"
+      type="button"
+    >
+      Apagar todos os canais HLS
+    </button>
+
+    <button
+      class="btn"
+      id="refreshList"
+      type="button"
+    >
+      Atualizar lista
+    </button>
+
+    <button
+      class="btn"
+      id="checkEmbed"
+      type="button"
+    >
+      Diagnóstico EmbedTV
+    </button>
+  </div>
+
+  <p
+    id="message"
+    class="muted"
+    aria-live="polite"
+    style="margin-top: 15px"
+  ></p>
+
+  <pre
+    id="diagnostics"
+    style="
+      display: none;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      padding: 14px;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      font-size: 12px;
+      max-height: 400px;
+      overflow-y: auto;
+    "
+  ></pre>
+</section>
+
+<section class="panel">
+  <div
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    "
+  >
+    <h2>Canais cadastrados</h2>
+    <span id="channelCount" class="muted"></span>
+  </div>
+
+  <div id="channels">
+    Carregando canais...
+  </div>
+</section>
+
+<style>
+  .panel {
+    background: #1f2937;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    color: #f9fafb;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #374151;
+    color: #f9fafb;
+    text-align: center;
+  }
+
+  .btn.primary {
+    background: #2563eb;
+    color: #ffffff;
+  }
+
+  .btn.danger {
+    background: #dc2626;
+    color: #ffffff;
+  }
+
+  input[type="text"],
+  input[type="url"],
+  input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #4b553d;
+    border-radius: 8px;
+    background: #111827;
+    color: #f9fafb;
+    font-size: 14px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 12px;
+  }
+
+  label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #d1d5db;
+  }
+
+  .muted {
+    color: #9ca3af;
+    font-size: 13px;
+  }
+
+  .card {
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 10px;
+    padding: 14px;
+  }
+
+  .url {
+    word-break: break-all;
+    font-family: monospace;
+    font-size: 12px;
+    background: #1f2937;
+    padding: 8px;
+    border-radius: 6px;
+    margin: 10px 0;
+  }
+
+  @media (min-width: 768px) {
+    .panel {
+      padding: 24px;
+    }
+
+    .grid {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+    }
+
+    .actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      width: auto;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="number"] {
+      max-width: 400px;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  "use strict";
+
+  const $ = function (id) {
+    return document.getElementById(id);
+  };
+
+  const BASE = "/tvbox/hls";
+
+  let loading = false;
+
+  function message(text, error) {
+    const el = $("message");
+
+    if (!el) return;
+
+    el.textContent = String(text || "");
+
+    if (error === true) {
+      el.style.color = "#f87171";
+    } else {
+      el.style.color = "";
+    }
+  }
+
+  function formatError(error) {
+    if (error && error.message) {
+      return error.message;
+    }
+
+    return String(error);
+  }
+
+  async function api(endpoint, options) {
+    const url = BASE + endpoint;
+    const config = options || {};
+
+    const headers = {
+      Accept: "application/json"
+    };
+
+    if (config.body !== undefined) {
+      headers["Content-Type"] = "application/json";
+    }
+
+    if (config.headers) {
+      Object.assign(headers, config.headers);
+    }
+
+    let response;
+
+    try {
+      response = await fetch(url, {
+        method: config.method || "GET",
+        credentials: "same-origin",
+        cache: "no-store",
+        headers: headers,
+        body: config.body
+      });
+    } catch (error) {
+      throw new Error("Falha de conexão com " + url + ": " + formatError(error));
+    }
+
+    if (response.status === 401) {
+      throw new Error("Sessão expirada. Faça login novamente em /tvbox/login");
+    }
+
+    const raw = await response.text();
+
+    let data;
+
+    try {
+      data = JSON.parse(raw);
+    } catch (error) {
+      if (
+        response.redirected ||
+        raw.toLowerCase().includes("<html") ||
+        raw.toLowerCase().includes("<!doctype")
+      ) {
+        throw new Error("A rota " + url + " retornou HTML em vez de JSON. Verifique sua sessão em /tvbox/login.");
+      }
+
+      throw new Error("Resposta inválida da API " + url + " (HTTP " + response.status + "): " + raw.substring(0, 200));
+    }
+
+    if (!response.ok) {
+      throw new Error(url + " - HTTP " + response.status + ": " + (data.error || "Erro desconhecido"));
+    }
+
+    return data;
+  }
+
+  function createButton(label, action, danger) {
+    const btn = document.createElement("button");
+
+    btn.type = "button";
+    btn.className = danger ? "btn danger" : "btn";
+    btn.textContent = label;
+
+    btn.addEventListener("click", async function () {
+      btn.disabled = true;
+
+      try {
+        await action();
+      } catch (error) {
+        message(formatError(error), true);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    return btn;
+  }
+
+  function formatDate(value) {
+    if (!value) return "-";
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return String(value);
+    }
+
+    return date.toLocaleString("pt-BR");
+  }
+
+  async function loadSettings() {
+    try {
+      const config = await api("/settings");
+
+      if (document.activeElement !== $("poll")) {
+        $("poll").value = config.pollingSeconds || 300;
+      }
+
+      const status = $("status");
+
+      status.style.color = "";
+
+      status.textContent =
+        "Polling: " +
+        (config.pollingSeconds || 300) +
+        " segundos | Canais: " +
+        (config.channels || 0) +
+        " | Última execução: " +
+        formatDate(config.lastRun) +
+        " | Executando: " +
+        (config.running ? "Sim" : "Não");
+
+    } catch (error) {
+      $("status").textContent = "Erro ao carregar configurações: " + formatError(error);
+      $("status").style.color = "#f87171";
+    }
+  }
+
+  function createChannelCard(channel) {
+    const card = document.createElement("article");
+
+    card.className = "card";
+    card.style.marginBottom = "14px";
+
+    const title = document.createElement("h3");
+
+    title.textContent = String(channel.name || "Sem nome") + " (" + String(channel.id || "-") + ")";
+
+    const state = document.createElement("p");
+
+    state.className = "muted";
+
+    state.textContent =
+      "Status: " +
+      (channel.status || "checking") +
+      " | Verificações: " +
+      (channel.checks || 0) +
+      " | Mudanças de URL: " +
+      (channel.changes || 0) +
+      " | Última atualização: " +
+      formatDate(channel.lastCheck);
+
+    const errorElement = document.createElement("p");
+
+    if (channel.error) {
+      errorElement.textContent = "Erro: " + channel.error;
+      errorElement.style.color = "#f87171";
+    }
+
+    const urlElement = document.createElement("p");
+
+    urlElement.className = "url";
+
+    const publicUrl = new URL(
+      "/tvbox/api/live/" + encodeURIComponent(channel.id) + ".m3u8",
+      window.location.origin
+    ).href;
+
+    urlElement.textContent = publicUrl;
+
+    const actions = document.createElement("div");
+
+    actions.className = "actions";
+
+    actions.appendChild(
+      createButton("Copiar API", async function () {
+        try {
+          await navigator.clipboard.writeText(publicUrl);
+          message("URL copiada: " + publicUrl);
+        } catch (error) {
+          window.prompt("Copie a URL do canal:", publicUrl);
+        }
+      })
+    );
+
+    actions.appendChild(
+      createButton("Abrir playlist", async function () {
+        window.open(publicUrl, "_blank", "noopener");
+      })
+    );
+
+    actions.appendChild(
+      createButton("Atualizar agora", async function () {
+        message("Atualizando canal " + channel.name + "...");
+
+        await api(
+          "/channels/" + encodeURIComponent(channel.id) + "/refresh",
+          {
+            method: "POST"
+          }
+        );
+
+        message("Verificação concluída: " + channel.name);
+
+        await loadChannels();
+      })
+    );
+
+    actions.appendChild(
+      createButton("Excluir", async function () {
+        const confirmed = window.confirm("Deseja excluir o canal " + channel.name + "?");
+
+        if (!confirmed) return;
+
+        await api(
+          "/channels/" + encodeURIComponent(channel.id),
+          {
+            method: "DELETE"
+          }
+        );
+
+        message("Canal excluído com sucesso.");
+
+        await loadChannels();
+        await loadSettings();
+      }, true)
+    );
+
+    card.appendChild(title);
+    card.appendChild(state);
+
+    if (channel.error) {
+      card.appendChild(errorElement);
+    }
+
+    card.appendChild(urlElement);
+    card.appendChild(actions);
+
+    return card;
+  }
+
+  async function loadChannels() {
+    if (loading) return;
+
+    loading = true;
+
+    try {
+      const channels = await api("/channels");
+
+      if (!Array.isArray(channels)) {
+        throw new Error("A API /tvbox/hls/channels não retornou uma lista.");
+      }
+
+      const container = $("channels");
+
+      container.replaceChildren();
+
+      $("channelCount").textContent = channels.length + " canal(is) cadastrado(s)";
+
+      if (channels.length === 0) {
+        container.textContent = "Nenhum canal cadastrado.";
+        return;
+      }
+
+      channels.forEach(function (channel) {
+        container.appendChild(createChannelCard(channel));
+      });
+
+    } catch (error) {
+      $("channels").textContent = "Erro ao carregar canais: " + formatError(error);
+      message(formatError(error), true);
+    } finally {
+      loading = false;
+    }
+  }
+
+  $("savePoll").addEventListener("click", async function () {
+    const button = $("savePoll");
+
+    button.disabled = true;
+
+    try {
+      const seconds = Number($("poll").value);
+
+      if (!Number.isInteger(seconds) || seconds < 30 || seconds > 3600) {
+        throw new Error("O intervalo deve estar entre 30 e 3600 segundos.");
+      }
+
+      await api("/settings", {
+        method: "POST",
+        body: JSON.stringify({
+          pollingSeconds: seconds
+        })
+      });
+
+      message("Intervalo salvo com sucesso.");
+
+      await loadSettings();
+
+    } catch (error) {
+      message(formatError(error), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  $("addHls").addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const button = form.querySelector("button[type=submit]");
+
+    button.disabled = true;
+
+    try {
+      const formData = new FormData(form);
+
+      const payload = {
+        name: String(formData.get("name") || "").trim(),
+        url: String(formData.get("url") || "").trim()
+      };
+
+      if (!payload.name || !payload.url) {
+        throw new Error("Preencha o nome e a URL do canal.");
+      }
+
+      message("Cadastrando canal...");
+
+      await api("/channels", {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+
+      form.reset();
+
+      message("Canal adicionado com sucesso.");
+
+      await loadChannels();
+      await loadSettings();
+
+    } catch (error) {
+      message(formatError(error), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  $("syncEmbed").addEventListener("click", async function () {
+    const button = $("syncEmbed");
+
+    button.disabled = true;
+
+    message("Consultando a API da EmbedTV...");
+
+    try {
+      const result = await api("/sync-embedtv", {
+        method: "POST"
+      });
+
+      const total = Number(
+        result.total || (Array.isArray(result.events) ? result.events.length : 0)
+      );
+
+      message(total + " evento(s) consultado(s). " + (result.message || "Consulta concluída."));
+
+      await loadChannels();
+      await loadSettings();
+
+    } catch (error) {
+      message(formatError(error), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  $("checkEmbed").addEventListener("click", async function () {
+    const button = $("checkEmbed");
+    const output = $("diagnostics");
+
+    button.disabled = true;
+
+    output.style.display = "block";
+    output.textContent = "Consultando diagnóstico EmbedTV...";
+
+    try {
+      const result = await api("/embedtv-status");
+
+      output.textContent = JSON.stringify(result, null, 2);
+      message("Diagnóstico carregado.");
+
+    } catch (error) {
+      output.textContent = formatError(error);
+      message(formatError(error), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  $("deleteAllHls").addEventListener("click", async function () {
+    const button = $("deleteAllHls");
+    if (!confirm("Apagar TODOS os canais HLS cadastrados? Esta ação não pode ser desfeita.")) return;
+    if (prompt('Para confirmar, digite APAGAR TODOS:') !== 'APAGAR TODOS') return;
+    button.disabled = true;
+    try {
+      const result = await api("/channels", { method: "DELETE" });
+      message(`${result.removed} canal(is) HLS apagado(s).`);
+      await loadChannels();
+    } catch (error) {
+      message(formatError(error), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  $("refreshList").addEventListener("click", async function () {
+    const button = $("refreshList");
+
+    button.disabled = true;
+
+    try {
+      await loadChannels();
+      await loadSettings();
+
+      message("Lista atualizada.");
+
+    } catch (error) {
+      message(formatError(error), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  async function initialize() {
+    await Promise.all([
+      loadSettings(),
+      loadChannels()
+    ]);
+  }
+
+  initialize().catch(function (error) {
+    message("Erro ao inicializar painel: " + formatError(error), true);
+  });
+
+  setInterval(function () {
+    if (document.visibilityState === "visible") {
+      loadChannels();
+      loadSettings();
+    }
+  }, 30000);
+
+})();
+</script>
+
+
+==========================================================================================
+ARQUIVO: templates\tvbox-home.html
+LINHAS: 89
+==========================================================================================
+
+
+<section class="panel">
+  <div class="row">
+    <div>
+      <h1>Página inicial do app</h1>
+      <p class="muted">
+        Marque o que deve aparecer na TVBOX.
+        As categorias seguem a ordem abaixo.
+      </p>
+    </div>
+
+    <a class="btn" href="/tvbox">Voltar</a>
+  </div>
+
+  {{savedMessage}}
+
+  <form
+    method="post"
+    action="/tvbox/home"
+    style="margin-top:20px"
+  >
+    <h2>Seções principais</h2>
+
+    <div class="grid">
+      <label
+        class="card"
+        style="display:flex;align-items:center;gap:12px;padding:14px"
+      >
+        <input
+          type="checkbox"
+          name="showKick"
+          {{kickChecked}}
+        >
+
+        <span>
+          <strong>Ao vivo na Kick</strong>
+          <small
+            class="muted"
+            style="display:block;margin-top:3px"
+          >
+            Exibir o carrossel dos streamers online na Home.
+          </small>
+        </span>
+      </label>
+
+      <label
+        class="card"
+        style="display:flex;align-items:center;gap:12px;padding:14px"
+      >
+        <input
+          type="checkbox"
+          name="showSeries"
+          {{seriesChecked}}
+        >
+
+        <span>
+          <strong>Séries</strong>
+          <small
+            class="muted"
+            style="display:block;margin-top:3px"
+          >
+            Mostrar a fileira de séries com capas.
+          </small>
+        </span>
+      </label>
+    </div>
+
+    <h2 style="margin:28px 0 12px">
+      Categorias
+    </h2>
+
+    <div class="grid">
+      {{categoryOptions}}
+    </div>
+
+    <div
+      class="actions"
+      style="margin-top:24px"
+    >
+      <button
+        class="btn primary"
+        type="submit"
+      >
+        Salvar página inicial
+      </button>
+    </div>
+  </form>
+</section>
+
+
+==========================================================================================
+ARQUIVO: templates\tvbox-import.html
+LINHAS: 42
+==========================================================================================
+
+<section class="panel" style="max-width: 700px">
+  <h1>Importar catálogo M3U</h1>
+  <p class="muted">
+    Selecione o JSON gerado pelo botão “Baixar todos do filtro” no catálogo M3U.
+  </p>
+  <form
+    method="post"
+    enctype="multipart/form-data"
+    action="/tvbox/import/m3u?pass={{password}}"
+  >
+    <label>Arquivo do catálogo</label
+    ><input
+      type="file"
+      name="catalog"
+      accept="application/json,.json"
+      required
+    /><label>Destino</label
+    ><select id="importTarget" name="target">
+      <option value="channels">Canais e filmes</option>
+      <option value="episodes">Episódios de uma série</option>
+    </select>
+    <div id="episodeTarget" hidden>
+      <label>Série</label
+      ><select name="seriesId">
+        {{seriesOptions}}</select
+      ><label>Temporada</label
+      ><input type="number" name="seasonNumber" min="1" value="1" /><label
+        >Número inicial do episódio</label
+      ><input type="number" name="startEpisode" min="1" value="1" />
+    </div>
+    <div class="actions" style="margin-top: 20px">
+      <button class="btn primary" type="submit">Importar</button
+      ><a class="btn" href="/tvbox?pass={{password}}">Cancelar</a>
+    </div>
+  </form>
+</section>
+<script>
+  const target = document.querySelector("#importTarget"),
+    episodeTarget = document.querySelector("#episodeTarget");
+  target.onchange = () => (episodeTarget.hidden = target.value !== "episodes");
+</script>
+
+
+==========================================================================================
+ARQUIVO: templates\tvbox-series-add.html
+LINHAS: 17
+==========================================================================================
+
+<section class="panel" style="max-width:700px">
+  <h1>Nova série</h1>
+  <p class="muted">A série será criada em <code>series/&lt;id&gt;.json</code>.</p>
+  <form method="post" action="/tvbox/series/add">
+    <label>Título</label>
+    <input name="title" required placeholder="Ex.: Minha Série">
+    <label>ID (somente letras, números, _ e -)</label>
+    <input name="id" required pattern="[A-Za-z0-9_-]+" placeholder="minha-serie">
+    <label>Capa (opcional)</label>
+    <input name="poster" type="url" placeholder="https://site.com/capa.jpg">
+    <p class="muted">Você pode informar uma URL manual ou usar “Buscar capas faltantes” depois.</p>
+    <div class="actions" style="margin-top:20px">
+      <button class="btn primary">Criar série</button>
+      <a class="btn" href="/tvbox/series">Cancelar</a>
+    </div>
+  </form>
+</section>
+
+==========================================================================================
+ARQUIVO: templates\tvbox-series-detail.html
+LINHAS: 18
+==========================================================================================
+
+<section class="panel">
+  <div class="row">
+    <div>
+      <a class="btn" href="/tvbox/series">← Séries</a>
+      <h1 style="margin-top:16px">{{title}}</h1>
+      <p class="muted">Endpoint: <code>/series/{{id}}.json</code></p>
+    </div>
+  </div>
+  {{coverForm}}
+  <form method="post" action="/tvbox/series/{{id}}/seasons" class="row" style="margin:18px 0">
+    <div style="min-width:220px;flex:1">
+      <label style="margin-top:0">Nova temporada</label>
+      <input type="number" name="number" min="1" required placeholder="Número da temporada">
+    </div>
+    <button class="btn primary" style="margin-top:25px">Adicionar temporada</button>
+  </form>
+  <div class="grid">{{seasonCards}}</div>
+</section>
+
+==========================================================================================
+ARQUIVO: templates\tvbox-series.html
+LINHAS: 15
+==========================================================================================
+
+<section class="panel">
+  <div class="row">
+    <div>
+      <h1>Séries</h1>
+      <p class="muted">Catálogo enviado ao app por <code>/series.json</code>.</p>
+    </div>
+    <div class="actions">
+      <form method="post" action="/tvbox/series/posters/fill" onsubmit="return confirm('Buscar capas para todas as séries sem foto?')">
+        <button class="btn" type="submit">Buscar capas faltantes</button>
+      </form>
+      <a class="btn primary" href="/tvbox/series/add">+ Nova série</a>
+    </div>
+  </div>
+  <div class="grid" style="margin-top:18px">{{cards}}</div>
+</section>
+
+==========================================================================================
+ARQUIVO: templates\tvbox.html
+LINHAS: 406
+==========================================================================================
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>{{title}} · TVBox</title>
+    <style>
+      :root {
+        --ink: #f4f7fb;
+        --muted: #98a7bd;
+        --canvas: #070a10;
+        --surface: #111722;
+        --surface2: #171f2d;
+        --line: #293448;
+        --blue: #68a5ff;
+        --blue2: #3c75e8;
+        --danger: #ff6576;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: radial-gradient(900px 460px at 8% -8%, #1d3e77 0%, transparent 62%), var(--canvas);
+        color: var(--ink);
+        font: 15px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        min-height: 100vh;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: linear-gradient(#ffffff05 1px, transparent 1px), linear-gradient(90deg, #ffffff04 1px, transparent 1px);
+        background-size: 42px 42px;
+        mask-image: linear-gradient(#000 70%, transparent 100%);
+      }
+
+      .wrap {
+        width: min(100% - 32px, 1420px);
+        margin: auto;
+        padding: 24px 0 64px;
+        position: relative;
+      }
+
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 14px 0 28px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 21px;
+        font-weight: 850;
+        letter-spacing: -0.03em;
+      }
+
+      .brand::before,
+      .brand-mark {
+        content: "▶";
+        display: grid;
+        place-items: center;
+        width: 39px;
+        height: 39px;
+        border-radius: 13px;
+        color: white;
+        background: linear-gradient(135deg, #77b5ff, #4b6eea);
+        box-shadow: 0 9px 25px #306dec66;
+        font-size: 14px;
+      }
+
+      .brand small,
+      .muted {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav .btn {
+        background: transparent;
+        border-color: transparent;
+      }
+
+      .nav .btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .app-navigation {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 0 0 20px;
+      }
+
+      .app-navigation form,
+      .actions form {
+        margin: 0;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 9px 16px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--surface2);
+        color: var(--ink);
+        text-decoration: none;
+        font: 700 13px inherit;
+        cursor: pointer;
+        transition: transform 0.18s, background 0.18s, border-color 0.18s;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        border-color: #5577af;
+        background: #202c40;
+      }
+
+      .btn.primary {
+        border-color: transparent;
+        background: linear-gradient(135deg, var(--blue), var(--blue2));
+        color: #071120;
+        box-shadow: 0 8px 20px #3776dd4d;
+      }
+
+      .btn.danger {
+        color: #ffd9df;
+        background: #3a1d28;
+        border-color: #713442;
+      }
+
+      .panel {
+        margin-top: 20px;
+        padding: 24px;
+        background: linear-gradient(145deg, #151c29ef, #0e141ef5);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.35);
+      }
+
+      .panel:first-of-type {
+        margin-top: 0;
+      }
+
+      h1, h2, h3 {
+        margin: 0 0 8px;
+        letter-spacing: -0.035em;
+        line-height: 1.2;
+      }
+
+      h1 { font-size: 28px; }
+      h2 { font-size: 20px; }
+      h3 { font-size: 16px; }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        padding: 18px;
+        background: linear-gradient(140deg, #192333, #111823);
+        border: 1px solid #2a394f;
+        border-radius: 15px;
+        transition: transform 0.18s, border-color 0.18s;
+      }
+
+      .card:hover {
+        transform: translateY(-2px);
+        border-color: #4b6f9f;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 24px;
+        padding: 3px 10px;
+        border-radius: 99px;
+        background: #274265;
+        color: #b8d9ff;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+      }
+
+      .empty {
+        padding: 32px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      label {
+        display: block;
+        margin: 16px 0 6px;
+        color: #dbe7f8;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      input, select {
+        width: 100%;
+        min-height: 44px;
+        padding: 10px 14px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        outline: 0;
+        background: #080d16;
+        color: var(--ink);
+        font: inherit;
+        transition: border-color 0.18s, box-shadow 0.18s;
+      }
+
+      input:focus, select:focus {
+        border-color: var(--blue);
+        box-shadow: 0 0 0 3px rgba(95, 158, 255, 0.15);
+      }
+
+      .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+      }
+
+      th, td {
+        padding: 12px 14px;
+        text-align: left;
+        border-bottom: 1px solid #243044;
+        vertical-align: middle;
+      }
+
+      th {
+        color: #93a9c8;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      td.url {
+        max-width: 390px;
+        color: var(--muted);
+        font-size: 12px;
+        word-break: break-all;
+      }
+
+      .login-shell {
+        width: min(100%, 420px);
+        margin: 10vh auto 0;
+        padding: 32px;
+        background: linear-gradient(145deg, #182237, #0e141f);
+        border: 1px solid #344665;
+        border-radius: 24px;
+        box-shadow: 0 28px 90px rgba(0, 0, 0, 0.6);
+      }
+
+      .login-brand {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .login-brand .brand-mark {
+        font-size: 15px;
+      }
+
+      .login-brand strong {
+        display: block;
+        font-size: 20px;
+      }
+
+      .login-brand small {
+        display: block;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      .login-shell h1 {
+        font-size: 24px;
+      }
+
+      .login-shell > p {
+        color: var(--muted);
+        line-height: 1.5;
+        margin-top: 6px;
+      }
+
+      .login-message {
+        padding: 12px;
+        border: 1px solid #70404b;
+        background: #371e27;
+        border-radius: 10px;
+        color: #ffccd3;
+        font-size: 14px;
+      }
+
+      .login-submit {
+        width: 100%;
+        margin-top: 24px;
+        min-height: 46px;
+      }
+
+      @media (max-width: 768px) {
+        .wrap {
+          width: min(100% - 24px, 1420px);
+          padding-top: 16px;
+        }
+
+        .top {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+        }
+
+        .nav {
+          width: 100%;
+          justify-content: flex-start;
+        }
+
+        .app-navigation {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .app-navigation .btn,
+        .app-navigation form,
+        .app-navigation form .btn {
+          width: 100%;
+        }
+
+        .panel {
+          padding: 16px;
+          border-radius: 16px;
+        }
+
+        h1 {
+          font-size: 22px;
+        }
+
+        .hide-mobile {
+          display: none !important;
+        }
+
+        .login-shell {
+          margin-top: 4vh;
+          padding: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <header class="top">
+        <div class="brand">TVBox <small>Painel de catálogo</small></div>
+        <nav class="nav">
+          <a class="btn" href="/tvbox">Painel</a>
+          <a class="btn" href="/tvbox/home">Home</a>
+          <a class="btn" href="/tvbox/series">Séries</a>
+        </nav>
+      </header>
+      {{body}}
+    </main>
+  </body>
+</html>
+

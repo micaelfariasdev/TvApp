@@ -1,0 +1,88 @@
+
+<section class="panel">
+  <div class="row">
+    <div>
+      <h1>Página inicial do app</h1>
+      <p class="muted">
+        Marque o que deve aparecer na TVBOX.
+        As categorias seguem a ordem abaixo.
+      </p>
+    </div>
+
+    <a class="btn" href="/tvbox">Voltar</a>
+  </div>
+
+  {{savedMessage}}
+
+  <form
+    method="post"
+    action="/tvbox/home"
+    style="margin-top:20px"
+  >
+    <h2>Seções principais</h2>
+
+    <div class="grid">
+      <label
+        class="card"
+        style="display:flex;align-items:center;gap:12px;padding:14px"
+      >
+        <input
+          type="checkbox"
+          name="showKick"
+          {{kickChecked}}
+        >
+
+        <span>
+          <strong>Ao vivo na Kick</strong>
+          <small
+            class="muted"
+            style="display:block;margin-top:3px"
+          >
+            Exibir o carrossel dos streamers online na Home.
+          </small>
+        </span>
+      </label>
+
+      <label
+        class="card"
+        style="display:flex;align-items:center;gap:12px;padding:14px"
+      >
+        <input
+          type="checkbox"
+          name="showSeries"
+          {{seriesChecked}}
+        >
+
+        <span>
+          <strong>Séries</strong>
+          <small
+            class="muted"
+            style="display:block;margin-top:3px"
+          >
+            Mostrar a fileira de séries com capas.
+          </small>
+        </span>
+      </label>
+    </div>
+
+    <h2 style="margin:28px 0 12px">
+      Categorias
+    </h2>
+
+    <div class="grid">
+      {{categoryOptions}}
+    </div>
+
+    <div
+      class="actions"
+      style="margin-top:24px"
+    >
+      <button
+        class="btn primary"
+        type="submit"
+      >
+        Salvar página inicial
+      </button>
+    </div>
+  </form>
+</section>

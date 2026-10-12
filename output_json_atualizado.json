@@ -1,460 +1,815 @@
 {
   "format": "tvbox-import/v1",
-  "exportedAt": "2026-10-10T22:00:13.433Z",
+  "exportedAt": "2026-10-11T22:58:24.337Z",
   "filters": {
-    "group": "Filmes | Lancamentos 2026",
-    "query": "Top 50 - curadoria"
+    "group": "",
+    "query": ""
   },
   "channels": [
     {
-      "name": "Devoradores de Estrelas (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Devoradores%20de%20Estrelas%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Mosaico Premiere FHD",
+      "url": "http://79.127.148.209:8880/live/7999833244/rhw8wx7ry7/74668.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgRXAQUKGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUltPRkAKXRpYQAJXC1IBUlQWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAlFXDRsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUCFFUFkQ=",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Extermínio: O Templo dos Ossos (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Exterminio%20O%20Templo%20dos%20Ossos%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Mosaico Premiere HD",
+      "url": "http://79.127.148.209:8880/live/7999833244/rhw8wx7ry7/74669.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgRXAQULGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUlpPRkAKXRpYQAJXC1MGV1YWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1hRDBsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUCFNTFkQ=",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "O Drama (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/o%20drama%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 2",
+      "url": "http://79.127.148.130:8880/live/7999833244/rhw8wx7ry7/37060.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwUCGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPU1NPRkAKXRpYQABUCF8JWVQWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFReFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwtXB1lESQ==",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Socorro! (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Socorro%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 2 [4K]",
+      "url": "http://79.127.148.130:8880/live/7999833244/rhw8wx7ry7/215405.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgFSAgcCAh4XQhUGETtZBxsCQFYBWQBfBlZEGBtMUFwBEVkGBAsGBQMGXlZTSBITUFxAWBNTCV8DWF8WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1hRFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQw5eA1JESQ==",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Divirta-se, Não Morra (2026)\" tvg-logo=\"\" group-title=\"Filmes | Lancamentos 2026\",Boa Sorte, Divirta-se, Não Morra (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/boa%20sorte%20divirta%20se%20nao%20morra%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 2 FHD",
+      "url": "http://212.102.60.187:8880/live/7999833244/rhw8wx7ry7/38410.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBbAwICGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPU1JPRkAKXRpYQANZAVIGWFcWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1heFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwtUAlRESQ==",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Peaky Blinders: O Homem Imortal (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Peaky%20Blinders%20O%20Homem%20Imortal%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 2 H265",
+      "url": "http://89.187.173.71:8880/live/7999833244/rhw8wx7ry7/51259.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgZSBQYLGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPU1FPRkAKXRpYQAJWDVMDUFUWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1dQFhUaWl4RXRdFShANEGBkRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQw9WBldESQ==",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
     },
     {
-      "name": "O Morro dos Ventos Uivantes (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Morro%20dos%20Ventos%20Uivantes%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 2 H265",
+      "url": "http://79.127.188.70:8880/live/7999833244/rhw8wx7ry7/62895.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVRDwoHGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPU1BPRkAKXRpYQABTCl4IUVIWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1dXFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwpWAVdESQ==",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
     },
     {
-      "name": "O Mago do Kremlin (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Mago%20do%20Kremlin%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 2 HD",
+      "url": "http://79.127.148.136:8880/live/7999833244/rhw8wx7ry7/36952.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgYAGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPU1BPRkAKXRpYQANUDlAHWF4WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFdUFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwtUB1lESQ==",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "A Noiva! (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/A%20Noiva%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 3",
+      "url": "http://79.127.148.157:8880/live/7999833244/rhw8wx7ry7/37059.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwYLGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPU1dPRkAKXRpYQAZYAFYBU0QYG11BRQFBDVZfbVNXQ14FBkFeEkEVGg0MbgVcC1APAhYDGgkTSBEKREMQDVxAWwpPQQZZF0tZFgcTWxtVBVREGBtbVkQKRxFOEQgVe3EVSkEGHEQGV0sLDV9DA0RFEkQYG1FKbhZWEENBV1ZfUEVEWUFUEk8bVQMabgJWCF8EBUBQV1dCRglBBhEeFV9aWQ8XDBZvE1BcQFgTVgBeCFRWFkQ=",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Caminhos do Crime (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Caminhos%20do%20Crime%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 3 FHD",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/38409.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Mike & Nick & Nick & Alice (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Mike%20and%20Nick%20and%20Nick%20and%20Alice%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 3 H265",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/51260.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
     },
     {
-      "name": "Ato Noturno (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Ato%20Noturno%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 3 HD",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/36951.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Hamlet (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Hamlet%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 4",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/37058.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "O Diabo Veste Prada 2 (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Diabo%20Veste%20Prada%202%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 4 FHD",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/38408.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Super Mario Galaxy: O Filme (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Super%20Mario%20Galaxy%20O%20Filme%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 4 H265",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/51261.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
     },
     {
-      "name": "Focinho de Outro (2026)\" tvg-logo=\"\" group-title=\"Filmes | Lancamentos 2026\",Cara de Um, Focinho de Outro (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/cara%20de%20um%20focinho%20de%20outro%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 4 HD",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/36950.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "O Primata (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Primata%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 5",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/37057.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Pânico 7 (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Panico%207%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 5 FHD",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/38407.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Casamento Sangrento: A Viúva (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Casamento%20Sangrento%20A%20Viuva%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 5 H265",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/51262.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
     },
     {
-      "name": "O Falsário (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Falsario%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 5 HD",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/36949.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Parque Lezama (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Parque%20Lezama%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 6",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/37056.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Pavana (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Pavana%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 6 FHD",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/38406.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "A Rainha do Xadrez (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/A%20Rainha%20do%20Xadrez.2026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 6 H265",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/51263.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
     },
     {
-      "name": "A Conexão Sueca (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/A%20Conexao%20Sueca%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 6 HD",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/36906.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Louis Theroux: Por Dentro da Machosfera (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Louis%20Theroux%20Por%20Dentro%20da%20Machosfera%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 7",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/37017.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "A História de Um Gorila com David Attenborough (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/A%20Historia%20de%20Um%20Gorila%20com%20David%20Attenborough%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 7 FHD",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/38405.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Queda Livre: As Consequências do Caso Boeing (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/movies/documentary/queda-livre-as-consequencias-do-caso-boeing-2026/queda-livre-as-consequencias-do-caso-boeing-2026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 7 FHD H265",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/91502.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
     },
     {
-      "name": "A Tragédia de Moriah Wilson (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/A%20Tragedia%20de%20Moriah%20Wilson%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 7 HD",
+      "url": "http://79.127.188.70:8880/live/7999833244/rhw8wx7ry7/36905.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgMHGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUFFPRkAKXRpYQANQDF8GVFAWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFdVFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwtSB1FESQ==",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Investigando Lucy Letby (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Investigando%20Lucy%20Letby%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 8",
+      "url": "http://79.127.148.130:8880/live/7999833244/rhw8wx7ry7/54120.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgZXBgECGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUFFPRkAKXRpYQABRD1YBUFAWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEBlVVFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwpeAlFESQ==",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Os Cantores (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Os%20Cantores%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 8 FHD",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/931355.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "O Show dos Muppets (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Show%20dos%20Muppets%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere 8 HD",
+      "url": "http://79.127.188.70:8880/live/7999833244/rhw8wx7ry7/64657.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVXAQYFGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUFdPRkAKXRpYQABYD18CWFEWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFBeBhsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtVAVBfFkQ=",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Kaguya: A Princesa Espacial (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Kaguya%20A%20Princesa%20Espacial%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere Clubes",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/37016.ts",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Gintama: Yoshiwara em Chamas (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/movies/animation/gintama-yoshiwara-em-chamas-2026/gintama-yoshiwara-em-chamas-2026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere Clubes [4K]",
+      "url": "http://212.102.60.149:8880/live/7999833244/rhw8wx7ry7/40783.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgdTAAsBGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUFZPRkAKXRpYQANXDlMGVlcWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEBlZTARsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtfBlRSFkQ=",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Golden Kamuy 3 - Invasão a Prisão Abashiri (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Golden%20Kamuy%20Invasao%20a%20Prisao%20Abashiri%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere Clubes FHD",
+      "url": "http://212.102.60.157:8880/live/7999833244/rhw8wx7ry7/38411.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBbAwIDGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUFVPRkAKXRpYQAVTClUAVUQYG11BRQFBDVZfbVNXQ14FBkFeEkEVGg0MbgVcC1APAhYDGgkTSBEKREMQDVxAWwpPQQZZF0tZFgcTWxtUBlZSFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwhUAllTFkQ=",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Inteligência Humana (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Inteligencia%20Humana%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere Clubes H265",
+      "url": "http://79.127.148.209:8880/live/7999833244/rhw8wx7ry7/51265.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgZSBQUHGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUFVPRkAKXRpYQAJXC1UHU1IWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1deDBsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUCVFXFkQ=",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
     },
     {
-      "name": "O Diário de Pilar na Amazônia (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Diario%20de%20Pilar%20na%20Amazonia%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Premiere Clubes HD",
+      "url": "http://79.127.148.140:8880/live/7999833244/rhw8wx7ry7/36948.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgcKGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUFRPRkAKXRpYQABRAFQEVlMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1JTBxsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxteBlVeFkQ=",
+      "type": "hls",
+      "category": "Canais | Premiere",
+      "poster": "https://i.imgur.com/0hDut9Q.png"
     },
     {
-      "name": "Dinheiro Suspeito (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Dinheiro%20Suspeito%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Paramount+ 1 (A)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/105804.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
     },
     {
-      "name": "Máquina de Guerra (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Maquina%20de%20Guerra%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Paramount+ 1 FHD (B)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952468.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
     },
     {
-      "name": "O Afinador (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Afinador%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Paramount+ 1 HD (B)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/105801.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
     },
     {
-      "name": "Um Cabra Bom de Bola (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/UM%20CABRA%20BOM%20DE%20BOLA%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Paramount+ 1 SD (B)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952463.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
     },
     {
-      "name": "O Som da Morte (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/o%20som%20da%20morte%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Paramount+ 2 (A)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/105805.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
     },
     {
-      "name": "Manual Prático da Vingança Lucrativa (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Manual%20Pratico%20da%20Vinganca%20Lucrativa%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Paramount+ 2 FHD (B)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952469.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
     },
     {
-      "name": "Destruição Final 2 (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Destruicao%20Final%202%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Paramount+ 2 HD (B)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/105802.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
     },
     {
-      "name": "Dupla Perigosa (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Dupla%20Perigosa%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Paramount+ 2 SD (B)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952464.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
     },
     {
-      "name": "O Rei da Internet (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/movies/drama/o-rei-da-internet-2026/o-rei-da-internet-2026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Paramount+ 3 (A)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/105806.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
     },
     {
-      "name": "O Justiceiro: Uma Última Morte (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Justiceiro%20Uma%20Ultima%20Morte%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Paramount+ 3 FHD (B)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952470.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
     },
     {
-      "name": "Dhurandhar: A Vingança (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/Dhurandhar%20A%20VinganCa%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Paramount+ 3 HD (B)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/105803.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
     },
     {
-      "name": "O Último Grande Assalto (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Ultimo%20Grande%20Assalto%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Paramount+ 3 SD (B)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952465.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
     },
     {
-      "name": "O Velho Fusca (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/1-filmes/lancamentos2026/O%20Velho%20Fusca%202026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Paramount+ 4 (A)",
+      "url": "http://79.127.148.134:8880/live/7999833244/rhw8wx7ry7/105807.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgJTAgsCAB4XQhUGETtZBxsCQFYBWQBfBlZEGBtMUFwBEVkGBAsGBQMGXlRWSBITUFxAWBNSDFIFVFINGxQbVBxHBkVdU1ttUVIQCgABElkbGk5AXg9mAlQMB1pdGgMTVBFPFVpBRxAPWRMPD0gSAVBMEANFBBtcE1BUAhsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtVBVBVFkQ=",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
     },
     {
-      "name": "O Último Nascer do Sol (2026)",
-      "url": "http://89.222.120.130:34871/s3v3/movies/romance/o-ultimo-nascer-do-sol-2026/o-ultimo-nascer-do-sol-2026.mp4",
-      "type": "mp4",
-      "category": "Filmes | Lancamentos 2026",
-      "poster": "",
-      "logo": "",
-      "tvgId": ""
+      "name": "Paramount+ 4 FHD (B)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952471.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
+    },
+    {
+      "name": "Paramount+ 4 HD (B)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/107583.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
+    },
+    {
+      "name": "Paramount+ 4 SD (B)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952466.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
+    },
+    {
+      "name": "Paramount+ 5 HD (B)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952467.ts",
+      "type": "hls",
+      "category": "Canais | Paramount+",
+      "poster": "https://i.imgur.com/pjCU00K.png"
+    },
+    {
+      "name": "UFC Fight Pass (A)",
+      "url": "http://79.127.148.157:8880/live/7999833244/rhw8wx7ry7/100815.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgJTBwsDAh4XQhUGETtZBxsCQFYBWQBfBlZEGBtMUFwBEVkGBAsGBQMGXlRbSBITUFxAWBNQDlUAVlUDGxQbVBxHBkVdU1ttUVIQCgABElkbGk5AXg9mAlQMB1pdGgMTVBFPFVpBRxAPWRMPD0gSAVBMEANFBBtcE1dRDQkaFRMHXBZZR0BOEA8VMzBBSBIGQUwHDEIIVggTW0RAShoVEw1APEVWQUNAUFYLBhFGCkEJGk5AXABBOVIOCFpcW01YC10QFQkQBhAZFQsMDQ1EDEtnEgtVQwNEAlZRBRtF",
+      "type": "hls",
+      "category": "Canais | UFC Fight Pass",
+      "poster": "https://i.imgur.com/GVyCH7T.png"
+    },
+    {
+      "name": "UFC Fight Pass 1 HD (B)",
+      "url": "http://89.187.173.71:8880/live/7999833244/rhw8wx7ry7/94688.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgpXAQsKGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUVpPRkAKXRpYQAVQC1IFWF4WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFZXBRsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtSBFRSFkQ=",
+      "type": "hls",
+      "category": "Canais | UFC Fight Pass",
+      "poster": "https://i.imgur.com/GVyCH7T.png"
+    },
+    {
+      "name": "UFC Fight Pass 2 HD (B)",
+      "url": "http://89.187.173.71:8880/live/7999833244/rhw8wx7ry7/92272.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgpRBQQAGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlNPRkAKXRpYQAVRAFMDV1IWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFZXBRsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtSBFZUFkQ=",
+      "type": "hls",
+      "category": "Canais | UFC Fight Pass",
+      "poster": "https://i.imgur.com/GVyCH7T.png"
+    },
+    {
+      "name": "UFC Fight Pass 3 HD (B)",
+      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/177136.ts",
+      "type": "hls",
+      "category": "Canais | UFC Fight Pass",
+      "poster": "https://i.imgur.com/GVyCH7T.png"
+    },
+    {
+      "name": "HBO",
+      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/65114.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVWBgIGGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlJPRkAKXRpYQAJTCVYDUVMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1dTBRsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtVBllSDAsaRA==",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/U5LrKAW.png"
+    },
+    {
+      "name": "HBO 2",
+      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/37086.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwsEGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlFPRkAKXRpYQABQDlcCVFMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFRUDRsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtTA1lSFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/QTtMuR2.png"
+    },
+    {
+      "name": "HBO 2 FHD",
+      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/38423.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBbAwEBGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlBPRkAKXRpYQAJQAFEFUlMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1BSBBsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtTA1heFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/QTtMuR2.png"
+    },
+    {
+      "name": "HBO 2 FHD H265",
+      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/986820.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgpbAQsABx4XQhUGETtZBxsCQFYBWQBfBlZEGBtMUFwBEVkGBAsGBQMGXltXSBITUFxAWBNVCF4IWFYMGxQbVBxHBkVdU1ttUVIQCgABElkbGk5AXg9mAlQMB1pdGgMTVBFPFVpBRxAPWRMPD0gSAVBMEANFBBtcE1NQDA4aFRMHXBZZR0BOEA8VLydBSBIGQUwHDEIIVggTW0RAShoVEw1APEVWQUNAUFYLBhFGCkEJGk5AXABBOVIOCFpcW01YC10QFQkQBhAZFQsMDQ1EDEtnEgtVQwNECVNSAhtF",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
+    },
+    {
+      "name": "HBO 2 HD",
+      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/36966.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgUEGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXldPRkAKXRpYQAJQAF4JVFMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAlhfDBsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtXBVRRAwAOG0w=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/QTtMuR2.png"
+    },
+    {
+      "name": "HBO Family",
+      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/37085.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwsHGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlZPRkAKXRpYQABQDlcCUV4WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFBRABsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtRA1ZUFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/f181m4I.png"
+    },
+    {
+      "name": "HBO Family FHD",
+      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/41486.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgdSAwsEGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlVPRkAKXRpYQABQDlcEVV4WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAlFeAxsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtfBFFUFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/f181m4I.png"
+    },
+    {
+      "name": "HBO Family H265",
+      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/62847.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVRDwcFGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlRPRkAKXRpYQABVDlAHVlMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1VeBhsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtfBFRXFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
+    },
+    {
+      "name": "HBO Family HD",
+      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/36965.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgUHGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXltPRkAKXRpYQAJTCVUCUF4WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1BTDRsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUCFRfBA4AG0w=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/f181m4I.png"
+    },
+    {
+      "name": "HBO FHD",
+      "url": "http://212.102.60.151:8880/live/7999833244/rhw8wx7ry7/61972.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVSDgQAGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXltPRkAKXRpYQAZUCVEIWUQYG11BRQFBDVZfbVNXQ14FBkFeEkEVGg0MbgVcC1APAhYDGgkTSBEKREMQDVxAWwpPQQZZF0tZFgcTWxtUBFlUFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwxfAFZESQ==",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/U5LrKAW.png"
+    },
+    {
+      "name": "HBO H265",
+      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/62848.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVRDwcKGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlpPRkAKXRpYQAJTCVIFVlMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1VeDBsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtVBFBRDAsaRA==",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
+    },
+    {
+      "name": "HBO HD",
+      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/36964.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgUGGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1NPRkAKXRpYQAJTCVYIWFMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1NfBhsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtXBVlSBAgKG0w=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/U5LrKAW.png"
+    },
+    {
+      "name": "HBO Mundi",
+      "url": "http://212.102.60.149:8880/live/7999833244/rhw8wx7ry7/37076.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwQEGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1NPRkAKXRpYQABWD1MHUFcWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFBTDRsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtSB1VVFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/B6EZjKx.png"
+    },
+    {
+      "name": "HBO Mundi FHD",
+      "url": "http://212.102.60.151:8880/live/7999833244/rhw8wx7ry7/40268.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgdTBQUKGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1JPRkAKXRpYQAZXCV4HVkQYG11BRQFBDVZfbVNXQ14FBkFeEkEVGg0MbgVcC1APAhYDGgkTSBEKREMQDVxAWwpPQQZZF0tZFgcTWxtUB1FUFhUaWl4RXRdFShANEGBkRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwFUCFNESQ==",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/B6EZjKx.png"
+    },
+    {
+      "name": "HBO Mundi H265",
+      "url": "http://212.102.60.157:8880/live/7999833244/rhw8wx7ry7/62863.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVRDwUBGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1FPRkAKXRpYQAVRAFEHWVYWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1VRDBsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtXAVlQABtF",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
+    },
+    {
+      "name": "HBO Mundi HD",
+      "url": "http://212.102.60.174:8880/live/7999833244/rhw8wx7ry7/36913.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgIBGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1BPRkAKXRpYQANSC1AJWVUWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1BTDBsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtfAFBUFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/B6EZjKx.png"
+    },
+    {
+      "name": "HBO Plus",
+      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/37084.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwsGGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1BPRkAKXRpYQAJUCF8GU1QWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1VTBBsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUCVdVFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/AKrQpLY.png"
+    },
+    {
+      "name": "HBO Plus E",
+      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/37083.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwsBGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1ZPRkAKXRpYQAJQAFMHUFQWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNECVNfFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQw5UCFBESQ==",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/AKrQpLY.png"
+    },
+    {
+      "name": "HBO Plus FHD",
+      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/41487.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgdSAwsFGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1VPRkAKXRpYQAJTCVcBUFYWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1VeDBsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUBFFeBwANG0w=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/AKrQpLY.png"
+    },
+    {
+      "name": "HBO Plus H265",
+      "url": "http://212.102.60.174:8880/live/7999833244/rhw8wx7ry7/62852.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVRDwYAGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1RPRkAKXRpYQANRCVMJVV8WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1VRABsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtfA1RXFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
+    },
+    {
+      "name": "HBO Plus HD",
+      "url": "http://212.102.60.151:8880/live/7999833244/rhw8wx7ry7/36963.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgUBGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1tPRkAKXRpYQARVDVIAU0QYG11BRQFBDVZfbVNXQ14FBkFeEkEVGg0MbgVcC1APAhYDGgkTSBEKREMQDVxAWwpPQQZZF0tZFgcTWxtUAVVRFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQw9VCVhESQ==",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/AKrQpLY.png"
+    },
+    {
+      "name": "HBO POP",
+      "url": "http://212.102.60.149:8880/live/7999833244/rhw8wx7ry7/37073.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwQBGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1tPRkAKXRpYQANRAVYJUl4WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1NeDRsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxteBVdQFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/5YkOnWL.png"
+    },
+    {
+      "name": "HBO POP FHD",
+      "url": "http://212.102.60.151:8880/live/7999833244/rhw8wx7ry7/40270.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgdTBQQCGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1pPRkAKXRpYQAJQDVIFVFUWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFhRAhsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxteAlFfFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/5YkOnWL.png"
+    },
+    {
+      "name": "HBO POP H265",
+      "url": "http://212.102.60.149:8880/live/7999833244/rhw8wx7ry7/62866.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVRDwUEGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVlNPRkAKXRpYQABZDFMFU1YWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFhRAhsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxteBFZeFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
+    },
+    {
+      "name": "HBO POP HD",
+      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/36911.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgIDGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVlJPRkAKXRpYQAJQAF8IUl4WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1BXDBsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtXBllRBAEOG0w=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/5YkOnWL.png"
+    },
+    {
+      "name": "HBO Signature",
+      "url": "http://212.102.60.157:8880/live/7999833244/rhw8wx7ry7/37082.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwsAGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVlJPRkAKXRpYQAJYDVAGUl8WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFNRBhsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtXAVlWAhtF",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/yR8vTk8.png"
+    },
+    {
+      "name": "HBO Signature FHD",
+      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/41488.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgdSAwsKGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVlFPRkAKXRpYQABQDlcDWVEWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFdSABsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtfBFBTFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/yR8vTk8.png"
+    },
+    {
+      "name": "HBO Signature FHD H265",
+      "url": "http://212.102.60.157:8880/live/7999833244/rhw8wx7ry7/986819.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgpbAQsDDh4XQhUGETtZBxsCQFYBWQBfBlZEGBtMUFwBEVkGBAsGBQMGX1NQSBITUFxAWBNSAVAAVVMMGxQbVBxHBkVdU1ttUVIQCgABElkbGk5AXg9mAlQMB1pdGgMTVBFPFVpBRxAPWRMPD0gSAVBMEANFBBtcE1NSDQsaFRMHXBZZR0BOEA8VLydBSBIGQUwHDEIIVggTW0RAShoVEw1APEVWQUNAUFYLBhFGCkEJGk5AXABBOVIOCFpcW01YC10QFQkQBhAZFQsMDQ1EDEtnEgtVQwNEAFFeDQAaRA==",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
+    },
+    {
+      "name": "HBO Signature HD",
+      "url": "http://212.102.60.174:8880/live/7999833244/rhw8wx7ry7/36962.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgUAGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVldPRkAKXRpYQANRAF8JWFIWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAlRSBhsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtRAFRTFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/yR8vTk8.png"
+    },
+    {
+      "name": "HBO Xtreme",
+      "url": "http://212.102.60.149:8880/live/7999833244/rhw8wx7ry7/37075.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwQHGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVldPRkAKXRpYQANRDFQCU14WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFFRABsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUCFZSFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/KkyoQPI.png"
+    },
+    {
+      "name": "HBO Xtreme E",
+      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/37074.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwQGGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVlZPRkAKXRpYQAJQAFUIVFEWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFFVBxsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUAFFXBw8MG0w=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/KkyoQPI.png"
+    },
+    {
+      "name": "HBO Xtreme FHD",
+      "url": "http://212.102.60.157:8880/live/7999833244/rhw8wx7ry7/42901.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgdRDgMDGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVlVPRkAKXRpYQABWClUDVVIWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1NVBxsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtTBFJfFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/KkyoQPI.png"
+    },
+    {
+      "name": "HBO Xtreme H265",
+      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/62865.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVRDwUHGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVlVPRkAKXRpYQAJQAFAIV14WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFdeBxsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtSAFVXAgAJG0w=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/1pnZ4MD.png"
+    },
+    {
+      "name": "HBO Xtreme HD",
+      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/36912.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgIAGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVltPRkAKXRpYQABVD1IAVlIWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFRSBRsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtRBVhUFkQ=",
+      "type": "hls",
+      "category": "Canais | HBO",
+      "poster": "https://i.imgur.com/KkyoQPI.png"
+    },
+    {
+      "name": "SporTV FHD",
+      "url": "http://195.178.110.110/sportv/index.m3u8",
+      "type": "hls",
+      "category": "Canais | SPORTV",
+      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi3zwxlNqafWKC8VMgyVyh4YdoJ4ZJMmHvaF16fyEOmg&s=10"
+    },
+    {
+      "name": "SporTV 2 FHD",
+      "url": "http://195.178.110.110/sportv2/index.m3u8",
+      "type": "hls",
+      "category": "Canais | SPORTV",
+      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi3zwxlNqafWKC8VMgyVyh4YdoJ4ZJMmHvaF16fyEOmg&s=10"
+    },
+    {
+      "name": "SporTV 3 FHD",
+      "url": "http://195.178.110.110/sportv3/index.m3u8",
+      "type": "hls",
+      "category": "Canais | SPORTV",
+      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi3zwxlNqafWKC8VMgyVyh4YdoJ4ZJMmHvaF16fyEOmg&s=10"
+    },
+    {
+      "name": "Globo",
+      "url": "https://media2.cdntvms.com.br/tv_morena_dorados/index.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "Band",
+      "url": "http://170.84.165.204/BAND_HD/index.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "Record",
+      "url": "http://170.84.165.204/Record_HD/index.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "SBT",
+      "url": "https://cdn.live.br1.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/chunklist.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "RedeTV!",
+      "url": "http://45.162.64.114/REDE_TV/index.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "TV Cultura",
+      "url": "https://player-tvcultura.stream.uol.com.br/live/tvcultura.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "TV Brasil",
+      "url": "https://tvbrasil-stream.ebc.com.br/index.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "TV Gazeta",
+      "url": "https://tv.nuvemplay.live/hls/40gtv/stream.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "Rede Vida",
+      "url": "http://168.197.104.22/REDE_VIDA/index.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "TV Aparecida",
+      "url": "https://cdn.live.br1.jmvstream.com/w/LVW-9716/LVW9716_HbtQtezcaw/playlist.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "Canção Nova",
+      "url": "https://5c65286fc6ace.streamlock.net/cancaonova/CancaoNova.stream_720p/playlist.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "TV Evangelizar",
+      "url": "https://cdn-tiva-tvevangelizar-brasilstream-com-br.smartbit.co/hls/tvevangelizar/index.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "Rede Meio Norte",
+      "url": "https://maystreaming.cloudecast.com/redemeio/index.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "TV Câmara",
+      "url": "https://stream3.camara.gov.br/tv1/manifest.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "TV Senado",
+      "url": "http://45.162.64.114/TV_SENADO/index.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "Record News",
+      "url": "https://rnw-rn.otteravision.com/rnw/rn/rnw_rn.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "SBT News",
+      "url": "https://dai.google.com/linear/hls/pa/event/1XSOdtQ0SH2G8OEmEfGgjQ/stream/3fcacc90-62b1-40d9-9e23-f7e3245d2bb6:SCL2/master.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "Jovem Pan News",
+      "url": "https://d6yfbj4xxtrod.cloudfront.net/out/v1/7836eb391ec24452b149f3dc6df15bbd/index.m3u8",
+      "type": "hls",
+      "category": "Canais | ABERTOS",
+      "poster": null
+    },
+    {
+      "name": "ESPN FHD",
+      "url": "http://181.78.197.59:8000/play/a07z/index.m3u8",
+      "type": "hls",
+      "category": "Canais | ESPN",
+      "poster": null
+    },
+    {
+      "name": "ESPN 3 FHD",
+      "url": "http://190.83.2.182:8090/ESPN3/index.m3u8",
+      "type": "hls",
+      "category": "Canais | ESPN",
+      "poster": null
+    },
+    {
+      "name": "ESPN 4 FHD",
+      "url": "http://181.78.197.59:8000/play/a07n/index.m3u8",
+      "type": "hls",
+      "category": "Canais | ESPN",
+      "poster": null
     }
   ]
 }

@@ -1,0 +1,1684 @@
+◇ injected env (5) from .env // tip: ⌘ override existing { override: true }
+Servidor rodando na porta 4055
+[EMBEDTV] Iniciando consulta automática...
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-a375fd52e07e8a1b
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-a375fd52e07e8a1b',
+  url: 'https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/espn2',
+  channelId: 'embedtv-a375fd52e07e8a1b'
+}
+[HLS] Canal cadastrado: embedtv-daa50702114d0dfd
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-daa50702114d0dfd',
+  url: 'https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/espn4',
+  channelId: 'embedtv-daa50702114d0dfd'
+}
+[HLS] Canal cadastrado: embedtv-ad0ec705b40bac92
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-ad0ec705b40bac92',
+  url: 'https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/espn',
+  channelId: 'embedtv-ad0ec705b40bac92'
+}
+[HLS] Canal cadastrado: embedtv-973b9fc06375e33c
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-973b9fc06375e33c',
+  url: 'https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/caze1',
+  channelId: 'embedtv-973b9fc06375e33c'
+}
+[HLS] Canal cadastrado: embedtv-99f2da83239edec3
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-99f2da83239edec3',
+  url: 'https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/xsports',
+  channelId: 'embedtv-99f2da83239edec3'
+}
+[HLS] Canal cadastrado: embedtv-ae34fc5e5d6e988e
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-ae34fc5e5d6e988e',
+  url: 'https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/sportv2',
+  channelId: 'embedtv-ae34fc5e5d6e988e'
+}
+[HLS] Canal cadastrado: embedtv-d11c900d9bae6fd1
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-d11c900d9bae6fd1',
+  url: 'https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/sportv',
+  channelId: 'embedtv-d11c900d9bae6fd1'
+}
+[HLS] Canal cadastrado: embedtv-4b7a89a82fb71523
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-4b7a89a82fb71523',
+  url: 'https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/sportv3',
+  channelId: 'embedtv-4b7a89a82fb71523'
+}
+[HLS] Canal cadastrado: embedtv-0ba72e5fbce3e22c
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-0ba72e5fbce3e22c',
+  url: 'https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/bandsports',
+  channelId: 'embedtv-0ba72e5fbce3e22c'
+}
+[HLS] Canal cadastrado: embedtv-938c813103a73886
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-938c813103a73886',
+  url: 'https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/premiere',
+  channelId: 'embedtv-938c813103a73886'
+}
+[HLS] Canal cadastrado: embedtv-032f1b77cd8c67b7
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-032f1b77cd8c67b7',
+  url: 'https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/globors',
+  channelId: 'embedtv-032f1b77cd8c67b7'
+}
+[HLS] Canal cadastrado: embedtv-5c2959fc8adc28ec
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-5c2959fc8adc28ec',
+  url: 'https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/globosp',
+  channelId: 'embedtv-5c2959fc8adc28ec'
+}
+[HLS] Canal cadastrado: embedtv-14b4a986678028a0
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-14b4a986678028a0',
+  url: 'https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/globorj',
+  channelId: 'embedtv-14b4a986678028a0'
+}
+[HLS] Canal cadastrado: embedtv-7db3a13b5fe9325d
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-7db3a13b5fe9325d',
+  url: 'https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/espn3',
+  channelId: 'embedtv-7db3a13b5fe9325d'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-893fa30c2b12306f
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-893fa30c2b12306f',
+  url: 'https://d5053c97088995c33eb227b0594fa043.embedtv.lat/espn4',
+  channelId: 'embedtv-893fa30c2b12306f'
+}
+[HLS] Canal cadastrado: embedtv-618b5e58620174b0
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-618b5e58620174b0',
+  url: 'https://d5053c97088995c33eb227b0594fa043.embedtv.lat/espn2',
+  channelId: 'embedtv-618b5e58620174b0'
+}
+[HLS] Canal cadastrado: embedtv-5557ef343b870ec4
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-5557ef343b870ec4',
+  url: 'https://d5053c97088995c33eb227b0594fa043.embedtv.lat/espn',
+  channelId: 'embedtv-5557ef343b870ec4'
+}
+[HLS] Canal cadastrado: embedtv-d5c463187e6b352f
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-d5c463187e6b352f',
+  url: 'https://d5053c97088995c33eb227b0594fa043.embedtv.lat/caze1',
+  channelId: 'embedtv-d5c463187e6b352f'
+}
+[HLS] Canal cadastrado: embedtv-06e68fbb46a349e5
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-06e68fbb46a349e5',
+  url: 'https://d5053c97088995c33eb227b0594fa043.embedtv.lat/xsports',
+  channelId: 'embedtv-06e68fbb46a349e5'
+}
+[HLS] Canal cadastrado: embedtv-5f468a5578a2e257
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-5f468a5578a2e257',
+  url: 'https://d5053c97088995c33eb227b0594fa043.embedtv.lat/sportv2',
+  channelId: 'embedtv-5f468a5578a2e257'
+}
+[HLS] Canal cadastrado: embedtv-952943cc3911262a
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-952943cc3911262a',
+  url: 'https://d5053c97088995c33eb227b0594fa043.embedtv.lat/sportv',
+  channelId: 'embedtv-952943cc3911262a'
+}
+[HLS] Canal cadastrado: embedtv-372ffcf31d50d013
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-372ffcf31d50d013',
+  url: 'https://d5053c97088995c33eb227b0594fa043.embedtv.lat/sportv3',
+  channelId: 'embedtv-372ffcf31d50d013'
+}
+[HLS] Canal cadastrado: embedtv-904d524c4158bcd6
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-904d524c4158bcd6',
+  url: 'https://d5053c97088995c33eb227b0594fa043.embedtv.lat/bandsports',
+  channelId: 'embedtv-904d524c4158bcd6'
+}
+[HLS] Canal cadastrado: embedtv-69f56812ec9ef5b5
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-69f56812ec9ef5b5',
+  url: 'https://d5053c97088995c33eb227b0594fa043.embedtv.lat/premiere',
+  channelId: 'embedtv-69f56812ec9ef5b5'
+}
+[HLS] Canal cadastrado: embedtv-219bdd383dfcbcfb
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-219bdd383dfcbcfb',
+  url: 'https://d5053c97088995c33eb227b0594fa043.embedtv.lat/globors',
+  channelId: 'embedtv-219bdd383dfcbcfb'
+}
+[HLS] Canal cadastrado: embedtv-1a1f1bfa9e89bf0f
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-1a1f1bfa9e89bf0f',
+  url: 'https://d5053c97088995c33eb227b0594fa043.embedtv.lat/globosp',
+  channelId: 'embedtv-1a1f1bfa9e89bf0f'
+}
+[HLS] Canal cadastrado: embedtv-388093005c96c4e4
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-388093005c96c4e4',
+  url: 'https://d5053c97088995c33eb227b0594fa043.embedtv.lat/globorj',
+  channelId: 'embedtv-388093005c96c4e4'
+}
+[HLS] Canal cadastrado: embedtv-29cd1d59817d239e
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-29cd1d59817d239e',
+  url: 'https://d5053c97088995c33eb227b0594fa043.embedtv.lat/espn3',
+  channelId: 'embedtv-29cd1d59817d239e'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-0e2e1a66e6432f00
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-0e2e1a66e6432f00',
+  url: 'https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/espn2',
+  channelId: 'embedtv-0e2e1a66e6432f00'
+}
+[HLS] Canal cadastrado: embedtv-ba147650f13abd29
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-ba147650f13abd29',
+  url: 'https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/espn4',
+  channelId: 'embedtv-ba147650f13abd29'
+}
+[HLS] Canal cadastrado: embedtv-e1da55bab9836a50
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-e1da55bab9836a50',
+  url: 'https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/espn',
+  channelId: 'embedtv-e1da55bab9836a50'
+}
+[HLS] Canal cadastrado: embedtv-11fa7dc57886874d
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-11fa7dc57886874d',
+  url: 'https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/caze1',
+  channelId: 'embedtv-11fa7dc57886874d'
+}
+[HLS] Canal cadastrado: embedtv-7248b1e02844c4e5
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-7248b1e02844c4e5',
+  url: 'https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/xsports',
+  channelId: 'embedtv-7248b1e02844c4e5'
+}
+[HLS] Canal cadastrado: embedtv-51ca60d8b3803d8a
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-51ca60d8b3803d8a',
+  url: 'https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/sportv2',
+  channelId: 'embedtv-51ca60d8b3803d8a'
+}
+[HLS] Canal cadastrado: embedtv-4c9e0289ef749b1a
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-4c9e0289ef749b1a',
+  url: 'https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/sportv',
+  channelId: 'embedtv-4c9e0289ef749b1a'
+}
+[HLS] Canal cadastrado: embedtv-45cf50340bdd94a8
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-45cf50340bdd94a8',
+  url: 'https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/sportv3',
+  channelId: 'embedtv-45cf50340bdd94a8'
+}
+[HLS] Canal cadastrado: embedtv-d152ff8a1f8c05db
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-d152ff8a1f8c05db',
+  url: 'https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/bandsports',
+  channelId: 'embedtv-d152ff8a1f8c05db'
+}
+[HLS] Canal cadastrado: embedtv-8e6e82227982b2a5
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-8e6e82227982b2a5',
+  url: 'https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/premiere',
+  channelId: 'embedtv-8e6e82227982b2a5'
+}
+[HLS] Canal cadastrado: embedtv-473101ece18dac1c
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-473101ece18dac1c',
+  url: 'https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/globors',
+  channelId: 'embedtv-473101ece18dac1c'
+}
+[HLS] Canal cadastrado: embedtv-d2675a134cba996a
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-d2675a134cba996a',
+  url: 'https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/globosp',
+  channelId: 'embedtv-d2675a134cba996a'
+}
+[HLS] Canal cadastrado: embedtv-38b21821b868fee3
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-38b21821b868fee3',
+  url: 'https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/globorj',
+  channelId: 'embedtv-38b21821b868fee3'
+}
+[HLS] Canal cadastrado: embedtv-091ed07c500ec1a2
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-091ed07c500ec1a2',
+  url: 'https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/espn3',
+  channelId: 'embedtv-091ed07c500ec1a2'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-9008b9ef22d45c47
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-9008b9ef22d45c47',
+  url: 'https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/espn4',
+  channelId: 'embedtv-9008b9ef22d45c47'
+}
+[HLS] Canal cadastrado: embedtv-722bba9d12146453
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-722bba9d12146453',
+  url: 'https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/espn2',
+  channelId: 'embedtv-722bba9d12146453'
+}
+[HLS] Canal cadastrado: embedtv-a9e79e420791d7bd
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-a9e79e420791d7bd',
+  url: 'https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/espn',
+  channelId: 'embedtv-a9e79e420791d7bd'
+}
+[HLS] Canal cadastrado: embedtv-450f5359999317ad
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-450f5359999317ad',
+  url: 'https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/caze1',
+  channelId: 'embedtv-450f5359999317ad'
+}
+[HLS] Canal cadastrado: embedtv-7e1b6d5c1f34cab4
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-7e1b6d5c1f34cab4',
+  url: 'https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/xsports',
+  channelId: 'embedtv-7e1b6d5c1f34cab4'
+}
+[HLS] Canal cadastrado: embedtv-79b8c75df8cb7d70
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-79b8c75df8cb7d70',
+  url: 'https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/sportv2',
+  channelId: 'embedtv-79b8c75df8cb7d70'
+}
+[HLS] Canal cadastrado: embedtv-a9cbf282f9f07fcd
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-a9cbf282f9f07fcd',
+  url: 'https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/sportv',
+  channelId: 'embedtv-a9cbf282f9f07fcd'
+}
+[HLS] Canal cadastrado: embedtv-10a5855b3374a6e5
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-10a5855b3374a6e5',
+  url: 'https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/sportv3',
+  channelId: 'embedtv-10a5855b3374a6e5'
+}
+[HLS] Canal cadastrado: embedtv-60ce91210070431a
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-60ce91210070431a',
+  url: 'https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/bandsports',
+  channelId: 'embedtv-60ce91210070431a'
+}
+[HLS] Canal cadastrado: embedtv-f78827f59afc90fd
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-f78827f59afc90fd',
+  url: 'https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/premiere',
+  channelId: 'embedtv-f78827f59afc90fd'
+}
+[HLS] Canal cadastrado: embedtv-469404728a555ee0
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-469404728a555ee0',
+  url: 'https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/globors',
+  channelId: 'embedtv-469404728a555ee0'
+}
+[HLS] Canal cadastrado: embedtv-fc4e44823555a816
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-fc4e44823555a816',
+  url: 'https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/globosp',
+  channelId: 'embedtv-fc4e44823555a816'
+}
+[HLS] Canal cadastrado: embedtv-1eeeb4a81cfab3b9
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-1eeeb4a81cfab3b9',
+  url: 'https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/globorj',
+  channelId: 'embedtv-1eeeb4a81cfab3b9'
+}
+[HLS] Canal cadastrado: embedtv-acf90bfeb5e73e79
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-acf90bfeb5e73e79',
+  url: 'https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/espn3',
+  channelId: 'embedtv-acf90bfeb5e73e79'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-4b5509f6d27eb1bc
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-4b5509f6d27eb1bc',
+  url: 'https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/espn4',
+  channelId: 'embedtv-4b5509f6d27eb1bc'
+}
+[HLS] Canal cadastrado: embedtv-a1cd90ed124b792b
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-a1cd90ed124b792b',
+  url: 'https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/espn2',
+  channelId: 'embedtv-a1cd90ed124b792b'
+}
+[HLS] Canal cadastrado: embedtv-7a60eec9227718d0
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-7a60eec9227718d0',
+  url: 'https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/espn',
+  channelId: 'embedtv-7a60eec9227718d0'
+}
+[HLS] Canal cadastrado: embedtv-8fa0d813f71e5e6d
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-8fa0d813f71e5e6d',
+  url: 'https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/caze1',
+  channelId: 'embedtv-8fa0d813f71e5e6d'
+}
+[HLS] Canal cadastrado: embedtv-886e390aa514cf8b
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-886e390aa514cf8b',
+  url: 'https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/xsports',
+  channelId: 'embedtv-886e390aa514cf8b'
+}
+[HLS] Canal cadastrado: embedtv-8ae77595df577243
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-8ae77595df577243',
+  url: 'https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/sportv2',
+  channelId: 'embedtv-8ae77595df577243'
+}
+[HLS] Canal cadastrado: embedtv-da9ee91070f6a3c0
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-da9ee91070f6a3c0',
+  url: 'https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/sportv',
+  channelId: 'embedtv-da9ee91070f6a3c0'
+}
+[HLS] Canal cadastrado: embedtv-2ddf458dfa70fc25
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-2ddf458dfa70fc25',
+  url: 'https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/sportv3',
+  channelId: 'embedtv-2ddf458dfa70fc25'
+}
+[HLS] Canal cadastrado: embedtv-867c45328caad864
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-867c45328caad864',
+  url: 'https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/bandsports',
+  channelId: 'embedtv-867c45328caad864'
+}
+[HLS] Canal cadastrado: embedtv-b2caa52a0ce87d73
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-b2caa52a0ce87d73',
+  url: 'https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/premiere',
+  channelId: 'embedtv-b2caa52a0ce87d73'
+}
+[HLS] Canal cadastrado: embedtv-11be56f073be1802
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-11be56f073be1802',
+  url: 'https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/globors',
+  channelId: 'embedtv-11be56f073be1802'
+}
+[HLS] Canal cadastrado: embedtv-a326caaf0bc7bafa
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-a326caaf0bc7bafa',
+  url: 'https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/globosp',
+  channelId: 'embedtv-a326caaf0bc7bafa'
+}
+[HLS] Canal cadastrado: embedtv-7ba2d33f205fce07
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-7ba2d33f205fce07',
+  url: 'https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/globorj',
+  channelId: 'embedtv-7ba2d33f205fce07'
+}
+[HLS] Canal cadastrado: embedtv-8e1cc6c98a52619a
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-8e1cc6c98a52619a',
+  url: 'https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/espn3',
+  channelId: 'embedtv-8e1cc6c98a52619a'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-21d8b586a559b430
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-21d8b586a559b430',
+  url: 'https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/espn4',
+  channelId: 'embedtv-21d8b586a559b430'
+}
+[HLS] Canal cadastrado: embedtv-529a879542587c7b
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-529a879542587c7b',
+  url: 'https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/espn2',
+  channelId: 'embedtv-529a879542587c7b'
+}
+[HLS] Canal cadastrado: embedtv-66aecd3cec83e256
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-66aecd3cec83e256',
+  url: 'https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/espn',
+  channelId: 'embedtv-66aecd3cec83e256'
+}
+[HLS] Canal cadastrado: embedtv-55ae49806a039e21
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-55ae49806a039e21',
+  url: 'https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/caze1',
+  channelId: 'embedtv-55ae49806a039e21'
+}
+[HLS] Canal cadastrado: embedtv-6251554dfc90c7c3
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-6251554dfc90c7c3',
+  url: 'https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/xsports',
+  channelId: 'embedtv-6251554dfc90c7c3'
+}
+[HLS] Canal cadastrado: embedtv-9b5a652318e752a3
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-9b5a652318e752a3',
+  url: 'https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/sportv2',
+  channelId: 'embedtv-9b5a652318e752a3'
+}
+[HLS] Canal cadastrado: embedtv-b76541eb44f01bac
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-b76541eb44f01bac',
+  url: 'https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/sportv',
+  channelId: 'embedtv-b76541eb44f01bac'
+}
+[HLS] Canal cadastrado: embedtv-943501e43de1276b
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-943501e43de1276b',
+  url: 'https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/sportv3',
+  channelId: 'embedtv-943501e43de1276b'
+}
+[HLS] Canal cadastrado: embedtv-a9b418367a691d83
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-a9b418367a691d83',
+  url: 'https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/bandsports',
+  channelId: 'embedtv-a9b418367a691d83'
+}
+[HLS] Canal cadastrado: embedtv-7f0d26bd7fa55b71
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-7f0d26bd7fa55b71',
+  url: 'https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/premiere',
+  channelId: 'embedtv-7f0d26bd7fa55b71'
+}
+[HLS] Canal cadastrado: embedtv-62c24e585fac1286
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-62c24e585fac1286',
+  url: 'https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/globors',
+  channelId: 'embedtv-62c24e585fac1286'
+}
+[HLS] Canal cadastrado: embedtv-0efa21de488ea8b0
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-0efa21de488ea8b0',
+  url: 'https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/globosp',
+  channelId: 'embedtv-0efa21de488ea8b0'
+}
+[HLS] Canal cadastrado: embedtv-5bfa9cce6c00ee8c
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-5bfa9cce6c00ee8c',
+  url: 'https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/globorj',
+  channelId: 'embedtv-5bfa9cce6c00ee8c'
+}
+[HLS] Canal cadastrado: embedtv-2277b90cf1b5e5e0
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-2277b90cf1b5e5e0',
+  url: 'https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/espn3',
+  channelId: 'embedtv-2277b90cf1b5e5e0'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-c83010a858baf853
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-c83010a858baf853',
+  url: 'https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/espn4',
+  channelId: 'embedtv-c83010a858baf853'
+}
+[HLS] Canal cadastrado: embedtv-bfd7401deafe49e6
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-bfd7401deafe49e6',
+  url: 'https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/espn2',
+  channelId: 'embedtv-bfd7401deafe49e6'
+}
+[HLS] Canal cadastrado: embedtv-a36a74a3526186a2
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-a36a74a3526186a2',
+  url: 'https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/espn',
+  channelId: 'embedtv-a36a74a3526186a2'
+}
+[HLS] Canal cadastrado: embedtv-c177e14287c0a650
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-c177e14287c0a650',
+  url: 'https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/caze1',
+  channelId: 'embedtv-c177e14287c0a650'
+}
+[HLS] Canal cadastrado: embedtv-dda8fe7817ca4ed5
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-dda8fe7817ca4ed5',
+  url: 'https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/xsports',
+  channelId: 'embedtv-dda8fe7817ca4ed5'
+}
+[HLS] Canal cadastrado: embedtv-6d0e490dd313fcf0
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-6d0e490dd313fcf0',
+  url: 'https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/sportv2',
+  channelId: 'embedtv-6d0e490dd313fcf0'
+}
+[HLS] Canal cadastrado: embedtv-faebb3188e80eff8
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-faebb3188e80eff8',
+  url: 'https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/sportv',
+  channelId: 'embedtv-faebb3188e80eff8'
+}
+[HLS] Canal cadastrado: embedtv-ef26d2c0382496ec
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-ef26d2c0382496ec',
+  url: 'https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/sportv3',
+  channelId: 'embedtv-ef26d2c0382496ec'
+}
+[HLS] Canal cadastrado: embedtv-71fcfede957aa2a4
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-71fcfede957aa2a4',
+  url: 'https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/bandsports',
+  channelId: 'embedtv-71fcfede957aa2a4'
+}
+[HLS] Canal cadastrado: embedtv-6bc0e20251e047ed
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-6bc0e20251e047ed',
+  url: 'https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/premiere',
+  channelId: 'embedtv-6bc0e20251e047ed'
+}
+[HLS] Canal cadastrado: embedtv-9c86c2007bb114ce
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-9c86c2007bb114ce',
+  url: 'https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/globors',
+  channelId: 'embedtv-9c86c2007bb114ce'
+}
+[HLS] Canal cadastrado: embedtv-23ff489424047ea9
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-23ff489424047ea9',
+  url: 'https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/globosp',
+  channelId: 'embedtv-23ff489424047ea9'
+}
+[HLS] Canal cadastrado: embedtv-675dceec6268f986
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-675dceec6268f986',
+  url: 'https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/globorj',
+  channelId: 'embedtv-675dceec6268f986'
+}
+[HLS] Canal cadastrado: embedtv-f1d94eed0f5159ba
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-f1d94eed0f5159ba',
+  url: 'https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/espn3',
+  channelId: 'embedtv-f1d94eed0f5159ba'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consultando: http://embedtv.cc/api/events
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-a0c6b51532224014
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-a0c6b51532224014',
+  url: 'https://986395d843c756db33bda602a542ad7e.embedtv.lat/espn2',
+  channelId: 'embedtv-a0c6b51532224014'
+}
+[HLS] Canal cadastrado: embedtv-1e7e40eae0f6d791
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-1e7e40eae0f6d791',
+  url: 'https://986395d843c756db33bda602a542ad7e.embedtv.lat/espn4',
+  channelId: 'embedtv-1e7e40eae0f6d791'
+}
+[HLS] Canal cadastrado: embedtv-741236ce4880de4f
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-741236ce4880de4f',
+  url: 'https://986395d843c756db33bda602a542ad7e.embedtv.lat/espn',
+  channelId: 'embedtv-741236ce4880de4f'
+}
+[HLS] Canal cadastrado: embedtv-5d64402b6ba99494
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-5d64402b6ba99494',
+  url: 'https://986395d843c756db33bda602a542ad7e.embedtv.lat/caze1',
+  channelId: 'embedtv-5d64402b6ba99494'
+}
+[HLS] Canal cadastrado: embedtv-7db53e6a52c7e95a
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-7db53e6a52c7e95a',
+  url: 'https://986395d843c756db33bda602a542ad7e.embedtv.lat/xsports',
+  channelId: 'embedtv-7db53e6a52c7e95a'
+}
+[HLS] Canal cadastrado: embedtv-e0e4f4bed072db2c
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-e0e4f4bed072db2c',
+  url: 'https://986395d843c756db33bda602a542ad7e.embedtv.lat/sportv2',
+  channelId: 'embedtv-e0e4f4bed072db2c'
+}
+[HLS] Canal cadastrado: embedtv-8db69b2b15da2b63
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-8db69b2b15da2b63',
+  url: 'https://986395d843c756db33bda602a542ad7e.embedtv.lat/sportv',
+  channelId: 'embedtv-8db69b2b15da2b63'
+}
+[HLS] Canal cadastrado: embedtv-00eeeab23362d26f
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-00eeeab23362d26f',
+  url: 'https://986395d843c756db33bda602a542ad7e.embedtv.lat/sportv3',
+  channelId: 'embedtv-00eeeab23362d26f'
+}
+[HLS] Canal cadastrado: embedtv-1eaeeb95aa5b3069
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-1eaeeb95aa5b3069',
+  url: 'https://986395d843c756db33bda602a542ad7e.embedtv.lat/bandsports',
+  channelId: 'embedtv-1eaeeb95aa5b3069'
+}
+[HLS] Canal cadastrado: embedtv-0a71c60b4cff8d5d
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-0a71c60b4cff8d5d',
+  url: 'https://986395d843c756db33bda602a542ad7e.embedtv.lat/premiere',
+  channelId: 'embedtv-0a71c60b4cff8d5d'
+}
+[HLS] Canal cadastrado: embedtv-9844061c6aebbc72
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-9844061c6aebbc72',
+  url: 'https://986395d843c756db33bda602a542ad7e.embedtv.lat/globors',
+  channelId: 'embedtv-9844061c6aebbc72'
+}
+[HLS] Canal cadastrado: embedtv-f2979e4ffc46ec8a
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-f2979e4ffc46ec8a',
+  url: 'https://986395d843c756db33bda602a542ad7e.embedtv.lat/globosp',
+  channelId: 'embedtv-f2979e4ffc46ec8a'
+}
+[HLS] Canal cadastrado: embedtv-809ef5d759bde6f3
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-809ef5d759bde6f3',
+  url: 'https://986395d843c756db33bda602a542ad7e.embedtv.lat/globorj',
+  channelId: 'embedtv-809ef5d759bde6f3'
+}
+[HLS] Canal cadastrado: embedtv-f2780b7b568cf1ca
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-f2780b7b568cf1ca',
+  url: 'https://986395d843c756db33bda602a542ad7e.embedtv.lat/espn3',
+  channelId: 'embedtv-f2780b7b568cf1ca'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-81961448ea9d8a4e
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-81961448ea9d8a4e',
+  url: 'https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/espn4',
+  channelId: 'embedtv-81961448ea9d8a4e'
+}
+[HLS] Canal cadastrado: embedtv-de93357b65fad188
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-de93357b65fad188',
+  url: 'https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/espn2',
+  channelId: 'embedtv-de93357b65fad188'
+}
+[HLS] Canal cadastrado: embedtv-364ebb092c5c1bc0
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-364ebb092c5c1bc0',
+  url: 'https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/espn',
+  channelId: 'embedtv-364ebb092c5c1bc0'
+}
+[HLS] Canal cadastrado: embedtv-c7f360352c2056aa
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-c7f360352c2056aa',
+  url: 'https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/caze1',
+  channelId: 'embedtv-c7f360352c2056aa'
+}
+[HLS] Canal cadastrado: embedtv-a780cd5683bb98d7
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-a780cd5683bb98d7',
+  url: 'https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/xsports',
+  channelId: 'embedtv-a780cd5683bb98d7'
+}
+[HLS] Canal cadastrado: embedtv-85bc8d6d7a3f2e71
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-85bc8d6d7a3f2e71',
+  url: 'https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/sportv2',
+  channelId: 'embedtv-85bc8d6d7a3f2e71'
+}
+[HLS] Canal cadastrado: embedtv-bb1b842a8b38d1db
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-bb1b842a8b38d1db',
+  url: 'https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/sportv',
+  channelId: 'embedtv-bb1b842a8b38d1db'
+}
+[HLS] Canal cadastrado: embedtv-6a669ca337801cd7
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-6a669ca337801cd7',
+  url: 'https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/sportv3',
+  channelId: 'embedtv-6a669ca337801cd7'
+}
+[HLS] Canal cadastrado: embedtv-a437835c3ee778b5
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-a437835c3ee778b5',
+  url: 'https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/bandsports',
+  channelId: 'embedtv-a437835c3ee778b5'
+}
+[HLS] Canal cadastrado: embedtv-1d128835f9d1c286
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-1d128835f9d1c286',
+  url: 'https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/premiere',
+  channelId: 'embedtv-1d128835f9d1c286'
+}
+[HLS] Canal cadastrado: embedtv-f499fe891872065e
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-f499fe891872065e',
+  url: 'https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/globors',
+  channelId: 'embedtv-f499fe891872065e'
+}
+[HLS] Canal cadastrado: embedtv-a48b5eb476cda4c9
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-a48b5eb476cda4c9',
+  url: 'https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/globosp',
+  channelId: 'embedtv-a48b5eb476cda4c9'
+}
+[HLS] Canal cadastrado: embedtv-23435b907b418997
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-23435b907b418997',
+  url: 'https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/globorj',
+  channelId: 'embedtv-23435b907b418997'
+}
+[HLS] Canal cadastrado: embedtv-086a49b1e24bea9f
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-086a49b1e24bea9f',
+  url: 'https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/espn3',
+  channelId: 'embedtv-086a49b1e24bea9f'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-f6653d61fb9046eb
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-f6653d61fb9046eb',
+  url: 'https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/espn2',
+  channelId: 'embedtv-f6653d61fb9046eb'
+}
+[HLS] Canal cadastrado: embedtv-acaff9e6a1c39ce4
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-acaff9e6a1c39ce4',
+  url: 'https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/espn4',
+  channelId: 'embedtv-acaff9e6a1c39ce4'
+}
+[HLS] Canal cadastrado: embedtv-5d294474b622e198
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-5d294474b622e198',
+  url: 'https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/espn',
+  channelId: 'embedtv-5d294474b622e198'
+}
+[HLS] Canal cadastrado: embedtv-9baf90682631a7ed
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-9baf90682631a7ed',
+  url: 'https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/caze1',
+  channelId: 'embedtv-9baf90682631a7ed'
+}
+[HLS] Canal cadastrado: embedtv-e37e8067406609bc
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-e37e8067406609bc',
+  url: 'https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/xsports',
+  channelId: 'embedtv-e37e8067406609bc'
+}
+[HLS] Canal cadastrado: embedtv-933b8db5ea63393a
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-933b8db5ea63393a',
+  url: 'https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/sportv2',
+  channelId: 'embedtv-933b8db5ea63393a'
+}
+[HLS] Canal cadastrado: embedtv-e86efb6dad1c5066
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-e86efb6dad1c5066',
+  url: 'https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/sportv',
+  channelId: 'embedtv-e86efb6dad1c5066'
+}
+[HLS] Canal cadastrado: embedtv-931146c676c39206
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-931146c676c39206',
+  url: 'https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/sportv3',
+  channelId: 'embedtv-931146c676c39206'
+}
+[HLS] Canal cadastrado: embedtv-caf63936955b86ae
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-caf63936955b86ae',
+  url: 'https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/bandsports',
+  channelId: 'embedtv-caf63936955b86ae'
+}
+[HLS] Canal cadastrado: embedtv-31c3b6d4fb4d9840
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-31c3b6d4fb4d9840',
+  url: 'https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/premiere',
+  channelId: 'embedtv-31c3b6d4fb4d9840'
+}
+[HLS] Canal cadastrado: embedtv-aa4ba6253ca00826
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-aa4ba6253ca00826',
+  url: 'https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/globors',
+  channelId: 'embedtv-aa4ba6253ca00826'
+}
+[HLS] Canal cadastrado: embedtv-8bca87209e93a264
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-8bca87209e93a264',
+  url: 'https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/globosp',
+  channelId: 'embedtv-8bca87209e93a264'
+}
+[HLS] Canal cadastrado: embedtv-915a3d36cc4f007f
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-915a3d36cc4f007f',
+  url: 'https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/globorj',
+  channelId: 'embedtv-915a3d36cc4f007f'
+}
+[HLS] Canal cadastrado: embedtv-9bf8e1730c097fc6
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-9bf8e1730c097fc6',
+  url: 'https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/espn3',
+  channelId: 'embedtv-9bf8e1730c097fc6'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-8bda2fd8b783747c
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-8bda2fd8b783747c',
+  url: 'https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/espn2',
+  channelId: 'embedtv-8bda2fd8b783747c'
+}
+[HLS] Canal cadastrado: embedtv-399a1be76f670640
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-399a1be76f670640',
+  url: 'https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/espn4',
+  channelId: 'embedtv-399a1be76f670640'
+}
+[HLS] Canal cadastrado: embedtv-30f3dcd3ba66e168
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-30f3dcd3ba66e168',
+  url: 'https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/espn',
+  channelId: 'embedtv-30f3dcd3ba66e168'
+}
+[HLS] Canal cadastrado: embedtv-ec27998b0362729a
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-ec27998b0362729a',
+  url: 'https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/caze1',
+  channelId: 'embedtv-ec27998b0362729a'
+}
+[HLS] Canal cadastrado: embedtv-fac5dfd34191e484
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-fac5dfd34191e484',
+  url: 'https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/xsports',
+  channelId: 'embedtv-fac5dfd34191e484'
+}
+[HLS] Canal cadastrado: embedtv-300881e5fbbb402a
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-300881e5fbbb402a',
+  url: 'https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/sportv2',
+  channelId: 'embedtv-300881e5fbbb402a'
+}
+[HLS] Canal cadastrado: embedtv-ac01b2e1f78acc7c
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-ac01b2e1f78acc7c',
+  url: 'https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/sportv',
+  channelId: 'embedtv-ac01b2e1f78acc7c'
+}
+[HLS] Canal cadastrado: embedtv-1078ec4317f49136
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-1078ec4317f49136',
+  url: 'https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/sportv3',
+  channelId: 'embedtv-1078ec4317f49136'
+}
+[HLS] Canal cadastrado: embedtv-d902b19749bf93ef
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-d902b19749bf93ef',
+  url: 'https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/bandsports',
+  channelId: 'embedtv-d902b19749bf93ef'
+}
+[HLS] Canal cadastrado: embedtv-d3869e0478c2cbda
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-d3869e0478c2cbda',
+  url: 'https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/premiere',
+  channelId: 'embedtv-d3869e0478c2cbda'
+}
+[HLS] Canal cadastrado: embedtv-9ea5963c4fc55752
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-9ea5963c4fc55752',
+  url: 'https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/globors',
+  channelId: 'embedtv-9ea5963c4fc55752'
+}
+[HLS] Canal cadastrado: embedtv-e1298bfba9ab06f5
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-e1298bfba9ab06f5',
+  url: 'https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/globosp',
+  channelId: 'embedtv-e1298bfba9ab06f5'
+}
+[HLS] Canal cadastrado: embedtv-8826b9bb1f4e6a66
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-8826b9bb1f4e6a66',
+  url: 'https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/globorj',
+  channelId: 'embedtv-8826b9bb1f4e6a66'
+}
+[HLS] Canal cadastrado: embedtv-983221287e346a78
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-983221287e346a78',
+  url: 'https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/espn3',
+  channelId: 'embedtv-983221287e346a78'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-53eb7318a6f84aa9
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-53eb7318a6f84aa9',
+  url: 'https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/espn4',
+  channelId: 'embedtv-53eb7318a6f84aa9'
+}
+[HLS] Canal cadastrado: embedtv-e5b7efd49ab1f0ba
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-e5b7efd49ab1f0ba',
+  url: 'https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/espn2',
+  channelId: 'embedtv-e5b7efd49ab1f0ba'
+}
+[HLS] Canal cadastrado: embedtv-1f1e48a31291cf14
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-1f1e48a31291cf14',
+  url: 'https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/espn',
+  channelId: 'embedtv-1f1e48a31291cf14'
+}
+[HLS] Canal cadastrado: embedtv-dabaa1512adc9cb2
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-dabaa1512adc9cb2',
+  url: 'https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/caze1',
+  channelId: 'embedtv-dabaa1512adc9cb2'
+}
+[HLS] Canal cadastrado: embedtv-e1c392119bfbbff7
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-e1c392119bfbbff7',
+  url: 'https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/xsports',
+  channelId: 'embedtv-e1c392119bfbbff7'
+}
+[HLS] Canal cadastrado: embedtv-d90f5141efc3f655
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-d90f5141efc3f655',
+  url: 'https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/sportv2',
+  channelId: 'embedtv-d90f5141efc3f655'
+}
+[HLS] Canal cadastrado: embedtv-825c51bde9c30648
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-825c51bde9c30648',
+  url: 'https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/sportv',
+  channelId: 'embedtv-825c51bde9c30648'
+}
+[HLS] Canal cadastrado: embedtv-52f0caed15d7f280
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-52f0caed15d7f280',
+  url: 'https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/sportv3',
+  channelId: 'embedtv-52f0caed15d7f280'
+}
+[HLS] Canal cadastrado: embedtv-c45864e60e90c6af
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-c45864e60e90c6af',
+  url: 'https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/bandsports',
+  channelId: 'embedtv-c45864e60e90c6af'
+}
+[HLS] Canal cadastrado: embedtv-62a452a23e48aab4
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-62a452a23e48aab4',
+  url: 'https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/premiere',
+  channelId: 'embedtv-62a452a23e48aab4'
+}
+[HLS] Canal cadastrado: embedtv-ee82bd3930688ae4
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-ee82bd3930688ae4',
+  url: 'https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/globors',
+  channelId: 'embedtv-ee82bd3930688ae4'
+}
+[HLS] Canal cadastrado: embedtv-6c41e933919e331d
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-6c41e933919e331d',
+  url: 'https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/globosp',
+  channelId: 'embedtv-6c41e933919e331d'
+}
+[HLS] Canal cadastrado: embedtv-eecbe4495a0b89f4
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-eecbe4495a0b89f4',
+  url: 'https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/globorj',
+  channelId: 'embedtv-eecbe4495a0b89f4'
+}
+[HLS] Canal cadastrado: embedtv-707f583cdb50d99c
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-707f583cdb50d99c',
+  url: 'https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/espn3',
+  channelId: 'embedtv-707f583cdb50d99c'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-e9ab7a6adc78b2f7
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-e9ab7a6adc78b2f7',
+  url: 'https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/espn4',
+  channelId: 'embedtv-e9ab7a6adc78b2f7'
+}
+[HLS] Canal cadastrado: embedtv-67f2d4bdc72d58c7
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-67f2d4bdc72d58c7',
+  url: 'https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/espn2',
+  channelId: 'embedtv-67f2d4bdc72d58c7'
+}
+[HLS] Canal cadastrado: embedtv-4775c04eda568bb1
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-4775c04eda568bb1',
+  url: 'https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/espn',
+  channelId: 'embedtv-4775c04eda568bb1'
+}
+[HLS] Canal cadastrado: embedtv-8a85157b4d7d8a05
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-8a85157b4d7d8a05',
+  url: 'https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/caze1',
+  channelId: 'embedtv-8a85157b4d7d8a05'
+}
+[HLS] Canal cadastrado: embedtv-47fe4684d757224c
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-47fe4684d757224c',
+  url: 'https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/xsports',
+  channelId: 'embedtv-47fe4684d757224c'
+}
+[HLS] Canal cadastrado: embedtv-f918ffbbffd49b16
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-f918ffbbffd49b16',
+  url: 'https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/sportv2',
+  channelId: 'embedtv-f918ffbbffd49b16'
+}
+[HLS] Canal cadastrado: embedtv-3f855fa39c590a00
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-3f855fa39c590a00',
+  url: 'https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/sportv',
+  channelId: 'embedtv-3f855fa39c590a00'
+}
+[HLS] Canal cadastrado: embedtv-6b41e474de729342
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-6b41e474de729342',
+  url: 'https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/sportv3',
+  channelId: 'embedtv-6b41e474de729342'
+}
+[HLS] Canal cadastrado: embedtv-fc2140bae6730600
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-fc2140bae6730600',
+  url: 'https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/bandsports',
+  channelId: 'embedtv-fc2140bae6730600'
+}
+[HLS] Canal cadastrado: embedtv-af10a1aafd2e166e
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-af10a1aafd2e166e',
+  url: 'https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/premiere',
+  channelId: 'embedtv-af10a1aafd2e166e'
+}
+[HLS] Canal cadastrado: embedtv-76fa92f143fb9fc8
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-76fa92f143fb9fc8',
+  url: 'https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/globors',
+  channelId: 'embedtv-76fa92f143fb9fc8'
+}
+[HLS] Canal cadastrado: embedtv-6fee30ee87f4d995
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-6fee30ee87f4d995',
+  url: 'https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/globosp',
+  channelId: 'embedtv-6fee30ee87f4d995'
+}
+[HLS] Canal cadastrado: embedtv-93e79a7a74fcd8d9
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-93e79a7a74fcd8d9',
+  url: 'https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/globorj',
+  channelId: 'embedtv-93e79a7a74fcd8d9'
+}
+[HLS] Canal cadastrado: embedtv-e8e0514dff6e27ee
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-e8e0514dff6e27ee',
+  url: 'https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/espn3',
+  channelId: 'embedtv-e8e0514dff6e27ee'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-d88ade384cbd5e48
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-d88ade384cbd5e48',
+  url: 'https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/espn4',
+  channelId: 'embedtv-d88ade384cbd5e48'
+}
+[HLS] Canal cadastrado: embedtv-6531bf10fab57ee5
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-6531bf10fab57ee5',
+  url: 'https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/espn2',
+  channelId: 'embedtv-6531bf10fab57ee5'
+}
+[HLS] Canal cadastrado: embedtv-1b3d86d3f55fa9d1
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-1b3d86d3f55fa9d1',
+  url: 'https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/espn',
+  channelId: 'embedtv-1b3d86d3f55fa9d1'
+}
+[HLS] Canal cadastrado: embedtv-4580f9f945493a15
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-4580f9f945493a15',
+  url: 'https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/caze1',
+  channelId: 'embedtv-4580f9f945493a15'
+}
+[HLS] Canal cadastrado: embedtv-9791425b7c91ae61
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-9791425b7c91ae61',
+  url: 'https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/xsports',
+  channelId: 'embedtv-9791425b7c91ae61'
+}
+[HLS] Canal cadastrado: embedtv-6f8051893c1fc1ac
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-6f8051893c1fc1ac',
+  url: 'https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/sportv2',
+  channelId: 'embedtv-6f8051893c1fc1ac'
+}
+[HLS] Canal cadastrado: embedtv-c4f64ae42d6551e0
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-c4f64ae42d6551e0',
+  url: 'https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/sportv',
+  channelId: 'embedtv-c4f64ae42d6551e0'
+}
+[HLS] Canal cadastrado: embedtv-f6be3d15323aff34
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-f6be3d15323aff34',
+  url: 'https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/sportv3',
+  channelId: 'embedtv-f6be3d15323aff34'
+}
+[HLS] Canal cadastrado: embedtv-5c6134446fe50f6b
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-5c6134446fe50f6b',
+  url: 'https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/bandsports',
+  channelId: 'embedtv-5c6134446fe50f6b'
+}
+[HLS] Canal cadastrado: embedtv-7895161fc675bcec
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-7895161fc675bcec',
+  url: 'https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/premiere',
+  channelId: 'embedtv-7895161fc675bcec'
+}
+[HLS] Canal cadastrado: embedtv-2d8ebcd9a2266967
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-2d8ebcd9a2266967',
+  url: 'https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/globors',
+  channelId: 'embedtv-2d8ebcd9a2266967'
+}
+[HLS] Canal cadastrado: embedtv-e279129ff693ecec
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-e279129ff693ecec',
+  url: 'https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/globosp',
+  channelId: 'embedtv-e279129ff693ecec'
+}
+[HLS] Canal cadastrado: embedtv-deb2684ec2b0784f
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-deb2684ec2b0784f',
+  url: 'https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/globorj',
+  channelId: 'embedtv-deb2684ec2b0784f'
+}
+[HLS] Canal cadastrado: embedtv-d3fd8f5357fbd58e
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-d3fd8f5357fbd58e',
+  url: 'https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/espn3',
+  channelId: 'embedtv-d3fd8f5357fbd58e'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-d6d97298373427b3
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-d6d97298373427b3',
+  url: 'https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/espn4',
+  channelId: 'embedtv-d6d97298373427b3'
+}
+[HLS] Canal cadastrado: embedtv-b964173e52f2de3c
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-b964173e52f2de3c',
+  url: 'https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/espn2',
+  channelId: 'embedtv-b964173e52f2de3c'
+}
+[HLS] Canal cadastrado: embedtv-6830669e2ede57d1
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-6830669e2ede57d1',
+  url: 'https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/espn',
+  channelId: 'embedtv-6830669e2ede57d1'
+}
+[HLS] Canal cadastrado: embedtv-0f2054d568e7696b
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-0f2054d568e7696b',
+  url: 'https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/caze1',
+  channelId: 'embedtv-0f2054d568e7696b'
+}
+[HLS] Canal cadastrado: embedtv-f24b44528427f00d
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-f24b44528427f00d',
+  url: 'https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/xsports',
+  channelId: 'embedtv-f24b44528427f00d'
+}
+[HLS] Canal cadastrado: embedtv-06832c21e2ad94e9
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-06832c21e2ad94e9',
+  url: 'https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/sportv2',
+  channelId: 'embedtv-06832c21e2ad94e9'
+}
+[HLS] Canal cadastrado: embedtv-42b3fc96b1dc40d5
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-42b3fc96b1dc40d5',
+  url: 'https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/sportv',
+  channelId: 'embedtv-42b3fc96b1dc40d5'
+}
+[HLS] Canal cadastrado: embedtv-4bd2edeba65376e8
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-4bd2edeba65376e8',
+  url: 'https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/sportv3',
+  channelId: 'embedtv-4bd2edeba65376e8'
+}
+[HLS] Canal cadastrado: embedtv-e5790a6186ca2e90
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-e5790a6186ca2e90',
+  url: 'https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/bandsports',
+  channelId: 'embedtv-e5790a6186ca2e90'
+}
+[HLS] Canal cadastrado: embedtv-7167f19117e16c35
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-7167f19117e16c35',
+  url: 'https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/premiere',
+  channelId: 'embedtv-7167f19117e16c35'
+}
+[HLS] Canal cadastrado: embedtv-12d1b38c1382c0c8
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-12d1b38c1382c0c8',
+  url: 'https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/globors',
+  channelId: 'embedtv-12d1b38c1382c0c8'
+}
+[HLS] Canal cadastrado: embedtv-b096874f0bc39fce
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-b096874f0bc39fce',
+  url: 'https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/globosp',
+  channelId: 'embedtv-b096874f0bc39fce'
+}
+[HLS] Canal cadastrado: embedtv-b8e41da6e8c41bfa
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-b8e41da6e8c41bfa',
+  url: 'https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/globorj',
+  channelId: 'embedtv-b8e41da6e8c41bfa'
+}
+[HLS] Canal cadastrado: embedtv-37959fd1e1466b7e
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-37959fd1e1466b7e',
+  url: 'https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/espn3',
+  channelId: 'embedtv-37959fd1e1466b7e'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-ff10eee3554a8724
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-ff10eee3554a8724',
+  url: 'https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/espn2',
+  channelId: 'embedtv-ff10eee3554a8724'
+}
+[HLS] Canal cadastrado: embedtv-758b0b699e3628cc
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-758b0b699e3628cc',
+  url: 'https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/espn4',
+  channelId: 'embedtv-758b0b699e3628cc'
+}
+[HLS] Canal cadastrado: embedtv-2b129655e9ef6336
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-2b129655e9ef6336',
+  url: 'https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/espn',
+  channelId: 'embedtv-2b129655e9ef6336'
+}
+[HLS] Canal cadastrado: embedtv-6d65a7b05d66e9eb
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-6d65a7b05d66e9eb',
+  url: 'https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/caze1',
+  channelId: 'embedtv-6d65a7b05d66e9eb'
+}
+[HLS] Canal cadastrado: embedtv-1018d26c24c10480
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-1018d26c24c10480',
+  url: 'https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/xsports',
+  channelId: 'embedtv-1018d26c24c10480'
+}
+[HLS] Canal cadastrado: embedtv-bc2672bfcc1aabf5
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-bc2672bfcc1aabf5',
+  url: 'https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/sportv2',
+  channelId: 'embedtv-bc2672bfcc1aabf5'
+}
+[HLS] Canal cadastrado: embedtv-99afd549be908a71
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-99afd549be908a71',
+  url: 'https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/sportv',
+  channelId: 'embedtv-99afd549be908a71'
+}
+[HLS] Canal cadastrado: embedtv-fcc2f9985c152e58
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-fcc2f9985c152e58',
+  url: 'https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/sportv3',
+  channelId: 'embedtv-fcc2f9985c152e58'
+}
+[HLS] Canal cadastrado: embedtv-60dde9ce0d7be0cf
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-60dde9ce0d7be0cf',
+  url: 'https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/bandsports',
+  channelId: 'embedtv-60dde9ce0d7be0cf'
+}
+[HLS] Canal cadastrado: embedtv-6983055b3d9514eb
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-6983055b3d9514eb',
+  url: 'https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/premiere',
+  channelId: 'embedtv-6983055b3d9514eb'
+}
+[HLS] Canal cadastrado: embedtv-f73fdbe649a2968f
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-f73fdbe649a2968f',
+  url: 'https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/globors',
+  channelId: 'embedtv-f73fdbe649a2968f'
+}
+[HLS] Canal cadastrado: embedtv-d6ae5b9ed573c4b7
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-d6ae5b9ed573c4b7',
+  url: 'https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/globosp',
+  channelId: 'embedtv-d6ae5b9ed573c4b7'
+}
+[HLS] Canal cadastrado: embedtv-f116359a641567c9
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-f116359a641567c9',
+  url: 'https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/globorj',
+  channelId: 'embedtv-f116359a641567c9'
+}
+[HLS] Canal cadastrado: embedtv-9dc5f9e87b7aadd0
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-9dc5f9e87b7aadd0',
+  url: 'https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/espn3',
+  channelId: 'embedtv-9dc5f9e87b7aadd0'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-e454e7380001a1ad
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-e454e7380001a1ad',
+  url: 'https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/espn4',
+  channelId: 'embedtv-e454e7380001a1ad'
+}
+[HLS] Canal cadastrado: embedtv-cbacd44e43f2696c
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-cbacd44e43f2696c',
+  url: 'https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/espn2',
+  channelId: 'embedtv-cbacd44e43f2696c'
+}
+[HLS] Canal cadastrado: embedtv-a42365e5ec63cb5f
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-a42365e5ec63cb5f',
+  url: 'https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/espn',
+  channelId: 'embedtv-a42365e5ec63cb5f'
+}
+[HLS] Canal cadastrado: embedtv-d93743546d1bda2e
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-d93743546d1bda2e',
+  url: 'https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/caze1',
+  channelId: 'embedtv-d93743546d1bda2e'
+}
+[HLS] Canal cadastrado: embedtv-1c922d263282fb33
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-1c922d263282fb33',
+  url: 'https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/xsports',
+  channelId: 'embedtv-1c922d263282fb33'
+}
+[HLS] Canal cadastrado: embedtv-a7c71c7ee4775bf8
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-a7c71c7ee4775bf8',
+  url: 'https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/sportv2',
+  channelId: 'embedtv-a7c71c7ee4775bf8'
+}
+[HLS] Canal cadastrado: embedtv-5cddde1eb3b27ec0
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-5cddde1eb3b27ec0',
+  url: 'https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/sportv',
+  channelId: 'embedtv-5cddde1eb3b27ec0'
+}
+[HLS] Canal cadastrado: embedtv-bf6b5e3ff35aac8c
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-bf6b5e3ff35aac8c',
+  url: 'https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/sportv3',
+  channelId: 'embedtv-bf6b5e3ff35aac8c'
+}
+[HLS] Canal cadastrado: embedtv-5446b5630195bdcc
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-5446b5630195bdcc',
+  url: 'https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/bandsports',
+  channelId: 'embedtv-5446b5630195bdcc'
+}
+[HLS] Canal cadastrado: embedtv-318471871af39fc9
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-318471871af39fc9',
+  url: 'https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/premiere',
+  channelId: 'embedtv-318471871af39fc9'
+}
+[HLS] Canal cadastrado: embedtv-d84ad80a44ec36c5
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-d84ad80a44ec36c5',
+  url: 'https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/globors',
+  channelId: 'embedtv-d84ad80a44ec36c5'
+}
+[HLS] Canal cadastrado: embedtv-845514cc461dc853
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-845514cc461dc853',
+  url: 'https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/globosp',
+  channelId: 'embedtv-845514cc461dc853'
+}
+[HLS] Canal cadastrado: embedtv-09f20e1c47c73c64
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-09f20e1c47c73c64',
+  url: 'https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/globorj',
+  channelId: 'embedtv-09f20e1c47c73c64'
+}
+[HLS] Canal cadastrado: embedtv-b883366e78d96de5
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-b883366e78d96de5',
+  url: 'https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/espn3',
+  channelId: 'embedtv-b883366e78d96de5'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 40 eventos
+[HLS] Canal cadastrado: embedtv-69c0868e78032eed
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-69c0868e78032eed',
+  url: 'https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/espn4',
+  channelId: 'embedtv-69c0868e78032eed'
+}
+[HLS] Canal cadastrado: embedtv-ebf9a76430a5dd66
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-ebf9a76430a5dd66',
+  url: 'https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/espn2',
+  channelId: 'embedtv-ebf9a76430a5dd66'
+}
+[HLS] Canal cadastrado: embedtv-7474c717057b2e53
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-7474c717057b2e53',
+  url: 'https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/espn',
+  channelId: 'embedtv-7474c717057b2e53'
+}
+[HLS] Canal cadastrado: embedtv-a7619ef08ba19e49
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-a7619ef08ba19e49',
+  url: 'https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/caze1',
+  channelId: 'embedtv-a7619ef08ba19e49'
+}
+[HLS] Canal cadastrado: embedtv-ddccbd7985d68f47
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-ddccbd7985d68f47',
+  url: 'https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/xsports',
+  channelId: 'embedtv-ddccbd7985d68f47'
+}
+[HLS] Canal cadastrado: embedtv-3c1527f18a48256b
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-3c1527f18a48256b',
+  url: 'https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/sportv2',
+  channelId: 'embedtv-3c1527f18a48256b'
+}
+[HLS] Canal cadastrado: embedtv-40b39c6c7af4287b
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-40b39c6c7af4287b',
+  url: 'https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/sportv',
+  channelId: 'embedtv-40b39c6c7af4287b'
+}
+[HLS] Canal cadastrado: embedtv-60b797ab4a0245a3
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-60b797ab4a0245a3',
+  url: 'https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/sportv3',
+  channelId: 'embedtv-60b797ab4a0245a3'
+}
+[HLS] Canal cadastrado: embedtv-3ee17239ff489aa7
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-3ee17239ff489aa7',
+  url: 'https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/bandsports',
+  channelId: 'embedtv-3ee17239ff489aa7'
+}
+[HLS] Canal cadastrado: embedtv-fce7b44dec63ef1a
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-fce7b44dec63ef1a',
+  url: 'https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/premiere',
+  channelId: 'embedtv-fce7b44dec63ef1a'
+}
+[HLS] Canal cadastrado: embedtv-909b21ecec34eb69
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-909b21ecec34eb69',
+  url: 'https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/globors',
+  channelId: 'embedtv-909b21ecec34eb69'
+}
+[HLS] Canal cadastrado: embedtv-456e172fc3c99c76
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-456e172fc3c99c76',
+  url: 'https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/globosp',
+  channelId: 'embedtv-456e172fc3c99c76'
+}
+[HLS] Canal cadastrado: embedtv-6074822b34499519
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-6074822b34499519',
+  url: 'https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/globorj',
+  channelId: 'embedtv-6074822b34499519'
+}
+[HLS] Canal cadastrado: embedtv-3161c66e7af2d711
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-3161c66e7af2d711',
+  url: 'https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/espn3',
+  channelId: 'embedtv-3161c66e7af2d711'
+}
+[EMBEDTV] Players: 14 cadastrados, 0 falhas
+[EMBEDTV] Consultando: https://embedtv.cc/api/events
+[EMBEDTV] Consulta concluída: 20 eventos
+[HLS] Canal cadastrado: embedtv-74e204cfacfcd986
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-74e204cfacfcd986',
+  url: 'https://b1435299b30b759437d08169c7da09a6.embedtv.lat/espn2',
+  channelId: 'embedtv-74e204cfacfcd986'
+}
+[HLS] Canal cadastrado: embedtv-c7d9881289ae7ed8
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-c7d9881289ae7ed8',
+  url: 'https://b1435299b30b759437d08169c7da09a6.embedtv.lat/espn',
+  channelId: 'embedtv-c7d9881289ae7ed8'
+}
+[HLS] Canal cadastrado: embedtv-621286473a3a8838
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-621286473a3a8838',
+  url: 'https://b1435299b30b759437d08169c7da09a6.embedtv.lat/xsports',
+  channelId: 'embedtv-621286473a3a8838'
+}
+[HLS] Canal cadastrado: embedtv-6aa1ce3f0158a7af
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-6aa1ce3f0158a7af',
+  url: 'https://b1435299b30b759437d08169c7da09a6.embedtv.lat/espn4',
+  channelId: 'embedtv-6aa1ce3f0158a7af'
+}
+[HLS] Canal cadastrado: embedtv-bdc1c437ded2e8cb
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-bdc1c437ded2e8cb',
+  url: 'https://b1435299b30b759437d08169c7da09a6.embedtv.lat/primevideo',
+  channelId: 'embedtv-bdc1c437ded2e8cb'
+}
+[HLS] Canal cadastrado: embedtv-2ad7e3e11f58825b
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-2ad7e3e11f58825b',
+  url: 'https://b1435299b30b759437d08169c7da09a6.embedtv.lat/caze1',
+  channelId: 'embedtv-2ad7e3e11f58825b'
+}
+[HLS] Canal cadastrado: embedtv-305983ea5f7aafe5
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-305983ea5f7aafe5',
+  url: 'https://b1435299b30b759437d08169c7da09a6.embedtv.lat/bandsports',
+  channelId: 'embedtv-305983ea5f7aafe5'
+}
+[HLS] Canal cadastrado: embedtv-65f714b9edefe141
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-65f714b9edefe141',
+  url: 'https://b1435299b30b759437d08169c7da09a6.embedtv.lat/premiere',
+  channelId: 'embedtv-65f714b9edefe141'
+}
+[HLS] Canal cadastrado: embedtv-f0d508881aeeedd3
+[EMBEDTV] Canal cadastrado: {
+  id: 'embedtv-f0d508881aeeedd3',
+  url: 'https://b1435299b30b759437d08169c7da09a6.embedtv.lat/sportv',
+  channelId: 'embedtv-f0d508881aeeedd3'
+}
+[EMBEDTV] Players: 9 cadastrados, 0 falhas
