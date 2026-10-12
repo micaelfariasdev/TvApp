@@ -2,6 +2,7 @@
 
 const hls = require("./hls");
 const { loadDB, saveDB } = require("./db");
+const { BASE_URL } = require("../config/env");
 
 const API_URLS = [
   "https://embedtv.cc/api/events",
@@ -171,7 +172,7 @@ async function syncChannels(force = false) {
       name: channel.name || channel.id || id,
       // O banco público guarda apenas o endereço do proxy. A origem fica
       // separada para o serviço HLS continuar renovando o token do EmbedTV.
-      url: `/tvbox/api/live/${encodeURIComponent(id)}.m3u8`,
+      url: `${BASE_URL}/tvbox/api/live/${encodeURIComponent(id)}.m3u8`,
       originUrl: channel.url,
       type: "hls",
       category,
