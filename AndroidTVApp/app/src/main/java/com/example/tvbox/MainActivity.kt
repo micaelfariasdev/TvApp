@@ -143,7 +143,6 @@ class MainActivity : AppCompatActivity() {
 
     private companion object {
         const val TVBOX_API_BASE = "http://164.152.62.129/tvbox/api"
-        const val HLS_PROXY_BASE = "http://164.152.62.129/api/hls-proxy?url="
 }
 
     private lateinit var binding: ActivityMainBinding
@@ -1545,9 +1544,9 @@ private fun openSeriesEpisodes(
     }
 
     private fun hlsPlaybackUrl(url: String): String {
-        if (currentChannel?.type?.equals("hls", ignoreCase = true) != true) return url
-        if (HLS_PROXY_BASE.isBlank()) return url
-        return HLS_PROXY_BASE + Uri.encode(url)
+        // As URLs HLS do catálogo já apontam para o proxy do servidor.
+        // Não envolver novamente no proxy antigo do aplicativo.
+        return url
     }
 
     private fun playStream(url: String, resumePositionMs: Long = 0L) {
