@@ -225,6 +225,13 @@ async function add({ name, url, id, automatic = false }) {
   const existing = channels.get(id);
 
   if (existing) {
+    if (existing.automatic && !automatic) {
+      existing.automatic = false;
+      delete existing.createdAt;
+      delete existing.expiresAt;
+      channels.set(id, existing);
+      persist();
+    }
     // A fonte do mesmo evento pode mudar. Preserve o cache da sessão atual e
     // use a nova fonte somente quando a playlist precisar ser renovada.
     if (existing.automatic && automatic) {

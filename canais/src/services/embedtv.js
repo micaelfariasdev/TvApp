@@ -1,11 +1,17 @@
 "use strict";
 
 const hls = require("./hls");
+const { loadDB, saveDB } = require("./db");
 
 const API_URLS = [
   "https://embedtv.cc/api/events",
   "http://embedtv.cc/api/events",
 ];
+const CHANNEL_API_URLS = [
+  "https://embedtv.cc/api/channels",
+  "http://embedtv.cc/api/channels",
+];
+const CHANNEL_SYNC_INTERVAL_MS = 12 * 60 * 60 * 1000;
 
 let cache = null;
 let updatedAt = 0;
@@ -14,6 +20,9 @@ let lastAttempt = null;
 let lastError = null;
 let lastHttpStatus = null;
 let syncing = null;
+let channelsCache = null;
+let channelsUpdatedAt = 0;
+let channelsPending = null;
 
 function normalize(value) {
   return String(value || "")
@@ -123,6 +132,62 @@ async function load(force = false) {
   } finally {
     pending = null;
   }
+}
+
+async function loadChannels(force = false) {
+  if (!force && channelsCache && Date.now() - channelsUpdatedAt < CHANNEL_SYNC_INTERVAL_MS) return channelsCache;
+  if (channelsPending) return channelsPending;
+  channelsPending = (async () => {
+    let failure;
+    for (const apiUrl of CHANNEL_API_URLS) {
+      try {
+        const response = await fetch(apiUrl, {
+          headers: { Accept: "application/json", "User-Agent": "Mozilla/5.0" },
+          signal: AbortSignal.timeout(20000),
+        });
+        if (!response.ok) throw new Error(`EmbedTV canais retornou HTTP ${response.status}`);
+        const payload = await response.json();
+        if (!Array.isArray(payload?.channels)) throw new Error("Formato de canais inválido");
+        channelsCache = { categories: Array.isArray(payload.categories) ? payload.categories : [], channels: payload.channels };
+        channelsUpdatedAt = Date.now();
+        return channelsCache;
+      } catch (error) { failure = error; }
+    }
+    throw failure || new Error("Não foi possível consultar os canais EmbedTV");
+  })();
+  try { return await channelsPending; } finally { channelsPending = null; }
+}
+
+async function syncChannels(force = false) {
+  const payload = await loadChannels(force);
+  const categoryById = new Map(payload.categories.map((category) => [Number(category.id), String(category.name || "outros").trim()]));
+  const imported = payload.channels.map((channel) => {
+    const category = (Array.isArray(channel.categories) ? channel.categories : [])
+      .map((id) => categoryById.get(Number(id)))
+      .find((name) => name && name.toLowerCase() !== "todos") || "EmbedTV";
+    const id = `embedtv-channel-${hls.slug(channel.id || channel.name)}`;
+    return {
+      id,
+      name: channel.name || channel.id || id,
+      url: channel.url,
+      type: "hls",
+      category,
+      poster: channel.image || channel.preview || null,
+      source: "embedtv-channels",
+      sourceId: String(channel.id || ""),
+    };
+  }).filter((channel) => channel.url);
+  const importedIds = new Set(imported.map((channel) => channel.id));
+  const current = loadDB();
+  const kept = current.filter((item) => item.source !== "embedtv-channels" || importedIds.has(item.id));
+  const byId = new Map(kept.map((item) => [String(item.id), item]));
+  for (const channel of imported) byId.set(channel.id, { ...byId.get(channel.id), ...channel });
+  saveDB([...byId.values()]);
+  for (const channel of imported) {
+    try { await hls.add({ id: channel.id, name: channel.name, url: channel.url, automatic: false }); }
+    catch (error) { console.warn("[EMBEDTV] Canal não registrado no proxy:", channel.id, error.message); }
+  }
+  return { categories: payload.categories.length, imported: imported.length, updatedAt: new Date(channelsUpdatedAt).toISOString() };
 }
 
 async function syncPlayers(events) {
@@ -242,6 +307,8 @@ function status() {
 
 module.exports = {
   events,
+  channels: loadChannels,
+  syncChannels,
   load,
   status,
 };
@@ -255,6 +322,7 @@ setImmediate(async () => {
       force: true,
       sync: true,
     });
+    await syncChannels(false);
 
     console.log("[EMBEDTV] Consulta inicial concluída.");
   } catch (error) {
@@ -262,16 +330,14 @@ setImmediate(async () => {
   }
 });
 
-// Consulta e sincronização a cada 5 minutos.
+// Canais mudam pouco; sincroniza duas vezes por dia e mantém o proxy renovando
+// os tokens internamente conforme cada canal é reproduzido.
 const timer = setInterval(async () => {
   try {
-    await events({
-      force: true,
-      sync: true,
-    });
+    await syncChannels(true);
   } catch (error) {
-    console.error("[EMBEDTV] Erro no polling:", error.message);
+    console.error("[EMBEDTV] Erro na sincronização de canais:", error.message);
   }
-}, 300000);
+}, CHANNEL_SYNC_INTERVAL_MS);
 
 timer.unref?.();

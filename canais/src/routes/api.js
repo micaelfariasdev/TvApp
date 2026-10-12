@@ -16,8 +16,22 @@ const {
 
 const router = express.Router();
 const hls = require("../services/hls");
+const embedtv = require("../services/embedtv");
 
 const SERIES_DIRECTORY = path.join(__dirname, "../../series");
+
+// Canais da EmbedTV: a sincronização é persistida no database.json e o
+// serviço HLS mantém a resolução/renovação do token no servidor.
+router.get("/embedtv/channels", async (req, res) => {
+  try {
+    const sync = String(req.query.sync || "") === "1";
+    const result = sync ? await embedtv.syncChannels(true) : await embedtv.channels(false);
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    return res.json(sync ? result : result.channels);
+  } catch (error) {
+    return res.status(502).json({ error: "Falha ao consultar canais EmbedTV", detail: error.message });
+  }
+});
 
 // ==========================================
 // CONFIGURAÇÃO DO PROXY HLS
