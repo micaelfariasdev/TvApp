@@ -25,9 +25,22 @@ const SERIES_DIRECTORY = path.join(__dirname, "../../series");
 router.get("/embedtv/channels", async (req, res) => {
   try {
     const sync = String(req.query.sync || "") === "1";
-    const result = sync ? await embedtv.syncChannels(true) : await embedtv.channels(false);
+    if (sync) await embedtv.syncChannels(true);
+    else await embedtv.channels(false);
+    const forwardedProto = String(req.headers["x-forwarded-proto"] || "").split(",")[0];
+    const baseUrl = `${forwardedProto || req.protocol}://${req.get("host")}`;
+    const result = loadDB()
+      .filter((item) => item.source === "embedtv-channels")
+      .map(({ id, name, category, poster, type }) => ({
+        id,
+        name,
+        category,
+        poster,
+        type,
+        url: `${baseUrl}/tvbox/api/live/${encodeURIComponent(id)}.m3u8`,
+      }));
     res.setHeader("Access-Control-Allow-Origin", "*");
-    return res.json(sync ? result : result.channels);
+    return res.json({ channels: result, total: result.length });
   } catch (error) {
     return res.status(502).json({ error: "Falha ao consultar canais EmbedTV", detail: error.message });
   }

@@ -119,14 +119,20 @@ router.use((req, res, next) => {
 router.get("/api/channels", (req, res) => {
   const dbData = loadDB();
   const categoriesMeta = loadCategoriesMeta();
+  const forwardedProto = String(req.headers["x-forwarded-proto"] || "").split(",")[0];
+  const baseUrl = `${forwardedProto || req.protocol}://${req.get("host")}`;
 
-  const cleanData = dbData.map(({ name, url, type, category, poster }) => {
+  const cleanData = dbData.map(({ id, name, url, type, category, poster, source }) => {
     const categoryKey = String(category || "outros").trim();
     const categoryPoster = categoriesMeta[categoryKey]?.poster || null;
 
+    const proxyUrl = source === "embedtv-channels"
+      ? `${baseUrl}/tvbox/api/live/${encodeURIComponent(id)}.m3u8`
+      : url;
     return {
+      id,
       name,
-      url,
+      url: proxyUrl,
       type,
       category,
       poster: poster || categoryPoster,
