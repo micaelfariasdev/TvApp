@@ -169,14 +169,17 @@ async function syncChannels(force = false) {
     return {
       id,
       name: channel.name || channel.id || id,
-      url: channel.url,
+      // O banco público guarda apenas o endereço do proxy. A origem fica
+      // separada para o serviço HLS continuar renovando o token do EmbedTV.
+      url: `/tvbox/api/live/${encodeURIComponent(id)}.m3u8`,
+      originUrl: channel.url,
       type: "hls",
       category,
       poster: channel.image || channel.preview || null,
       source: "embedtv-channels",
       sourceId: String(channel.id || ""),
     };
-  }).filter((channel) => channel.url);
+  }).filter((channel) => channel.originUrl);
   const importedIds = new Set(imported.map((channel) => channel.id));
   const current = loadDB();
   const kept = current.filter((item) => item.source !== "embedtv-channels" || importedIds.has(item.id));
@@ -184,7 +187,7 @@ async function syncChannels(force = false) {
   for (const channel of imported) byId.set(channel.id, { ...byId.get(channel.id), ...channel });
   saveDB([...byId.values()]);
   for (const channel of imported) {
-    try { await hls.add({ id: channel.id, name: channel.name, url: channel.url, automatic: false }); }
+    try { await hls.add({ id: channel.id, name: channel.name, url: channel.originUrl, automatic: false }); }
     catch (error) { console.warn("[EMBEDTV] Canal não registrado no proxy:", channel.id, error.message); }
   }
   return { categories: payload.categories.length, imported: imported.length, updatedAt: new Date(channelsUpdatedAt).toISOString() };
