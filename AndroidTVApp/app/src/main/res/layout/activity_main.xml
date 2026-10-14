@@ -109,7 +109,7 @@
                 android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
                 android:paddingStart="14dp"
-                android:text="FUTEBOL AO VIVO"
+                android:text="AO VIVO"
                 android:textColor="#D5DCEC"
                 android:textSize="14sp" />
 

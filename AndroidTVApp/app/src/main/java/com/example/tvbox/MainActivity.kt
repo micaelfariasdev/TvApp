@@ -18,6 +18,7 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import android.transition.Slide
 import android.transition.TransitionManager
 import androidx.appcompat.app.AppCompatActivity
@@ -193,6 +194,8 @@ class MainActivity : AppCompatActivity() {
     private var hlsLastPositionMs = C.TIME_UNSET
     private var hlsLastProgressAt = 0L
     private var hlsLastRecoveryAt = 0L
+    /** True only while the app is recovering a stalled HLS stream. */
+    private var hlsRecovering = false
     private var hlsRecoveryAttempts = 0
     private var hlsStartedAt = 0L
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -232,8 +235,10 @@ class MainActivity : AppCompatActivity() {
                         hlsLastPositionMs = position
                         hlsLastProgressAt = now
                         if (now - hlsStartedAt >= 30_000L) hlsRecoveryAttempts = 0
-                    } else if (now - hlsLastProgressAt >= 15_000L) {
-                        recoverFrozenHls("sem progresso por 15 segundos")
+                    } else if (now - hlsLastProgressAt >= 30_000L &&
+                        exoPlayer.playbackState == Player.STATE_BUFFERING) {
+                        Log.w("TVBOX_HLS", "HLS sem progresso: pos=${position}ms, estado=BUFFERING, url=${currentChannel?.url}")
+                        recoverFrozenHls("sem progresso por 30 segundos em BUFFERING")
                     }
                 } else {
                     hlsLastPositionMs = C.TIME_UNSET
@@ -259,10 +264,14 @@ class MainActivity : AppCompatActivity() {
         hlsLastProgressAt = now
         hlsLastPositionMs = C.TIME_UNSET
         hlsStartedAt = now
-        Log.w("TVBOX_HLS", "Reabrindo HLS: $reason (tentativa $hlsRecoveryAttempts)")
+        hlsRecovering = true
+        Log.w(
+            "TVBOX_HLS",
+            "Reabrindo HLS: $reason (tentativa $hlsRecoveryAttempts, pos=${exoPlayer.currentPosition}ms, estado=${exoPlayer.playbackState}, url=${channel.url})"
+        )
 
         exoPlayer.stop()
-        playStream(channel.url)
+        playStream(channel.url, showController = false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -371,15 +380,15 @@ class MainActivity : AppCompatActivity() {
         binding.homeMoviesRow.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         binding.homeSeriesRow.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         binding.homeMatchesRecycler.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-        homeMovieAdapter = MediaCardAdapter(emptyList()) { channel -> playChannel(channel) }
-        homeSeriesAdapter = MediaCardAdapter(emptyList()) { channel ->
+        homeMovieAdapter = MediaCardAdapter(emptyList(), onClick = { channel -> playChannel(channel) }, progressProvider = ::cardProgress)
+        homeSeriesAdapter = MediaCardAdapter(emptyList(), onClick = { channel ->
     // 1. Oculta a página inicial / menus anteriores se necessário
     binding.homeMenu.visibility = View.GONE
     binding.seriesGridPanel.visibility = View.GONE // Se houver grid geral aberto
     
     // 2. Chama a função que carrega e exibe o painel/grid de episódios
     openSeriesEpisodes(channel.url, channel.name, channel.poster)
-}
+}, progressProvider = ::cardProgress)
         binding.homeMoviesRow.adapter = homeMovieAdapter
         binding.homeSeriesRow.adapter = homeSeriesAdapter
         homeMatchesAdapter = TodayMatchAdapter(emptyList()) { match ->
@@ -396,7 +405,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.homeRecentRow.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-        homeRecentAdapter = MediaCardAdapter(emptyList()) { channel -> playChannel(channel) }
+        homeRecentAdapter = MediaCardAdapter(emptyList(), onClick = { channel -> playChannel(channel) }, progressProvider = ::cardProgress)
         binding.homeRecentRow.adapter = homeRecentAdapter
         binding.homeMatchesRecycler.adapter = homeMatchesAdapter
 
@@ -423,9 +432,9 @@ binding.seriesGrid.addItemDecoration(
 )
 
 
-        seriesGridAdapter = MediaCardAdapter(emptyList(), gridMode = true) { channel ->
+        seriesGridAdapter = MediaCardAdapter(emptyList(), gridMode = true, onClick = { channel ->
             openSeriesEpisodes(channel.url, channel.name, channel.poster)
-        }
+        }, progressProvider = ::cardProgress)
         binding.seriesGrid.adapter = seriesGridAdapter
         
 binding.episodesGrid.layoutManager = GridLayoutManager(this, 6)
@@ -450,9 +459,9 @@ binding.episodesGrid.addItemDecoration(
     }
 )
 
-episodesGridAdapter = MediaCardAdapter(emptyList(), gridMode = true) { episode ->
+episodesGridAdapter = MediaCardAdapter(emptyList(), gridMode = true, onClick = { episode ->
     playChannel(episode)
-}
+}, progressProvider = ::cardProgress)
 
 binding.episodesGrid.adapter = episodesGridAdapter
 
@@ -465,7 +474,7 @@ binding.episodesGrid.adapter = episodesGridAdapter
                 }
             }
         )
-        catalogGridAdapter = MediaCardAdapter(emptyList(), gridMode = true) { channel -> playChannel(channel) }
+        catalogGridAdapter = MediaCardAdapter(emptyList(), gridMode = true, onClick = { channel -> playChannel(channel) }, progressProvider = ::cardProgress)
         binding.catalogGrid.adapter = catalogGridAdapter
 
     }
@@ -1034,9 +1043,28 @@ private fun openSeriesEpisodes(
     }
 
     private fun recordRecentlyWatched(channel: Channel) {
-        if (channel.url.isBlank() || channel.type.equals("series-group", true) ||
+        if (channel.url.isBlank() ||
             channel.type.equals("movie-group", true) || channel.type.equals("football-group", true)) return
-        recentItems = listOf(channel) + recentItems.filterNot { it.url == channel.url && it.name == channel.name }
+        // Episódios entram como a série inteira, nunca como itens individuais.
+        val recentChannel = if (channel.series?.isNotBlank() == true &&
+            !channel.type.equals("series-group", true)) {
+            val seriesName = channel.series!!.trim()
+            val entry = seriesCatalogEntries.firstOrNull {
+                (it.title ?: it.name).orEmpty().equals(seriesName, true)
+            }
+            Channel(
+                name = seriesName,
+                url = entry?.endpoint ?: entry?.url ?: channel.url,
+                type = "series-group",
+                category = "series",
+                poster = entry?.poster ?: channel.poster,
+                series = seriesName
+            )
+        } else channel
+        recentItems = listOf(recentChannel) + recentItems.filterNot {
+            it.name.equals(recentChannel.name, true) &&
+                (it.series ?: "").equals(recentChannel.series ?: "", true)
+        }
         recentItems = recentItems.take(12)
         getSharedPreferences(recentPrefsName, MODE_PRIVATE).edit()
             .putString(recentKey, Gson().toJson(recentItems)).apply()
@@ -1153,10 +1181,10 @@ private fun openSeriesEpisodes(
                 layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(206))
                 layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
                 isNestedScrollingEnabled = false
-                adapter = MediaCardAdapter(items) { channel ->
+                adapter = MediaCardAdapter(items, onClick = { channel ->
                     if (channel.type == "series-group") openSeriesEpisodes(channel.url, channel.name, channel.poster)
                     else playChannel(channel)
-                }
+                }, progressProvider = ::cardProgress)
             }
             container.addView(title)
             container.addView(row)
@@ -1464,7 +1492,7 @@ private fun openSeriesEpisodes(
         hlsStartedAt = SystemClock.elapsedRealtime()
         when (channel.type.lowercase()) {
             "hls" -> playStream(channel.url)
-            "mp4" -> playStream(channel.url, movieResumePosition(channel))
+            "mp4" -> playMovieWithResumeChoice(channel)
             "kick" -> resolveAndPlayKick(channel.url)
             "embed" -> playEmbedInExternalBrowser(channel.url)
             "iframe", "web", "browser" -> playBrowserPage(channel.url)
@@ -1549,7 +1577,7 @@ private fun openSeriesEpisodes(
         return url
     }
 
-    private fun playStream(url: String, resumePositionMs: Long = 0L) {
+    private fun playStream(url: String, resumePositionMs: Long = 0L, showController: Boolean = true) {
         if (url.isBlank()) return
         enterPlayerMode()
         hideIFramePlayer()
@@ -1558,7 +1586,8 @@ private fun openSeriesEpisodes(
         if (resumePositionMs > 0) exoPlayer.seekTo(resumePositionMs)
         exoPlayer.prepare()
         exoPlayer.playWhenReady = true
-        binding.playerView.showController()
+        if (showController && !hlsRecovering) binding.playerView.showController()
+        hlsRecovering = false
     }
 
     private fun isMoviePlaying(): Boolean = (currentChannel?.type ?: "").equals("mp4", ignoreCase = true) &&
@@ -1576,6 +1605,29 @@ private fun openSeriesEpisodes(
     private fun movieResumePosition(channel: Channel): Long {
         return getSharedPreferences("movie_progress", MODE_PRIVATE)
             .getLong("position_${channel.url.hashCode()}", 0L)
+    }
+
+    private fun cardProgress(channel: Channel): Int {
+        if (!channel.type.equals("mp4", true) || channel.url.isBlank()) return 0
+        val p = getSharedPreferences("movie_progress", MODE_PRIVATE)
+        val position = p.getLong("position_${channel.url.hashCode()}", 0L)
+        val duration = p.getLong("duration_${channel.url.hashCode()}", 0L)
+        return if (duration > 0 && position > 5_000L && position < duration - 10_000L)
+            ((position.toDouble() / duration) * 1000).toInt() else 0
+    }
+
+    private fun playMovieWithResumeChoice(channel: Channel) {
+        val resume = movieResumePosition(channel)
+        if (resume <= 5_000L) {
+            playStream(channel.url, 0L)
+            return
+        }
+        AlertDialog.Builder(this)
+            .setTitle(channel.name)
+            .setMessage("Você parou em ${resume / 1000}s. Deseja continuar de onde parou?")
+            .setPositiveButton("Continuar") { _, _ -> playStream(channel.url, resume) }
+            .setNegativeButton("Começar do início") { _, _ -> playStream(channel.url, 0L) }
+            .show()
     }
 
     private fun seriesProgressKey(seriesName: String): String =
@@ -1603,9 +1655,10 @@ private fun openSeriesEpisodes(
         val preferences = getSharedPreferences("movie_progress", MODE_PRIVATE)
         val key = "position_${movie.url.hashCode()}"
         if (position < 5_000 || (duration > 0 && position >= duration - 10_000)) {
-            preferences.edit().remove(key).apply()
+            preferences.edit().remove(key).remove("duration_${movie.url.hashCode()}").apply()
         } else {
-            preferences.edit().putLong(key, position).apply()
+            preferences.edit().putLong(key, position)
+                .putLong("duration_${movie.url.hashCode()}", duration.coerceAtLeast(0L)).apply()
         }
     }
 
@@ -1667,6 +1720,7 @@ private fun openSeriesEpisodes(
 
     /** Player ocupa a TV inteira; navegação e catálogo voltam somente no BACK. */
     private fun enterPlayerMode() {
+        window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         binding.homeMenu.visibility = View.GONE
         binding.channelPanel.visibility = View.GONE
         binding.seriesGridPanel.visibility = View.GONE
@@ -1680,6 +1734,7 @@ private fun openSeriesEpisodes(
 private fun exitPlayerToCurrentMenu() {
     saveMovieProgress()
     exoPlayer.pause()
+    window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
     binding.iframeWebView.stopLoading()
     binding.iframeWebView.visibility = View.GONE
@@ -1711,9 +1766,27 @@ private fun exitPlayerToCurrentMenu() {
 }
 
 
+    override fun onStart() {
+        super.onStart()
+        binding.iframeWebView.resumeTimers()
+        binding.iframeWebView.onResume()
+    }
+
     override fun onStop() {
+        // O Android pode manter a Activity em memória ao abrir outro app
+        // (ex.: YouTube). Pare também o áudio, não apenas ao destruir a tela.
+        exoPlayer.pause()
+        exoPlayer.playWhenReady = false
+        binding.iframeWebView.onPause()
+        binding.iframeWebView.pauseTimers()
         saveMovieProgress()
         super.onStop()
+        // Não manter o TVBox em segundo plano quando o usuário abre outro app.
+        // O progresso já foi salvo acima; ao retornar, a Activity será criada
+        // novamente sem deixar áudio ou WebView ativos.
+        if (!isChangingConfigurations && !isFinishing) {
+            finishAndRemoveTask()
+        }
     }
 
     override fun onDestroy() {

@@ -4,6 +4,7 @@ const { PORT } = require("./src/config/env");
 const apiRoutes = require("./src/routes/api");
 const adminRoutes = require("./src/routes/admin");
 const hls = require("./src/services/hls");
+const remoteRoutes = require("./src/routes/remote");
 
 const app = express();
 app.set("trust proxy", 1);
@@ -12,6 +13,9 @@ app.use(express.json());
 
 app.use("/", apiRoutes);
 app.use("/tvbox", adminRoutes);
+app.use("/tvbox/remote", remoteRoutes);
+// Alias das APIs para o prefixo usado pelo Nginx.
+app.use("/tvbox", remoteRoutes);
 
 
 

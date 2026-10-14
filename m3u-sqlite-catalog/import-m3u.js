@@ -39,18 +39,27 @@ function parseM3u(content) {
 
 const channels = parseM3u(text);
 const insert = db.prepare(`
-  INSERT INTO channels (title, url, logo, group_name, tvg_id)
+  INSERT OR IGNORE INTO channels (title, url, logo, group_name, tvg_id)
   VALUES (?, ?, ?, ?, ?)
 `);
 
 db.exec('DELETE FROM channels');
 db.exec('BEGIN');
 try {
+  const seenUrls = new Set();
+  let duplicates = 0;
   for (const channel of channels) {
+    // Algumas listas repetem o mesmo stream em mais de uma entrada. Como a
+    // coluna URL é única, ignoramos duplicatas mantendo a primeira ocorrência.
+    if (seenUrls.has(channel.url)) {
+      duplicates++;
+      continue;
+    }
+    seenUrls.add(channel.url);
     insert.run(channel.title, channel.url, channel.logo, channel.group, channel.tvgId);
   }
   db.exec('COMMIT');
-  console.log(`${channels.length} itens importados para catalog.db`);
+  console.log(`${seenUrls.size} itens importados para catalog.db${duplicates ? ` (${duplicates} duplicatas ignoradas)` : ''}`);
 } catch (error) {
   db.exec('ROLLBACK');
   throw error;

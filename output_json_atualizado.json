@@ -1,815 +1,1192 @@
 {
-  "format": "tvbox-import/v1",
-  "exportedAt": "2026-10-11T22:58:24.337Z",
-  "filters": {
-    "group": "",
-    "query": ""
-  },
+  "categories": [
+    { "id": 0, "name": "Todos" },
+    { "id": 8, "name": "A Fazenda 18" },
+    { "id": 1, "name": "Esportes" },
+    { "id": 2, "name": "Infantil" },
+    { "id": 3, "name": "Documentarios" },
+    { "id": 4, "name": "Filmes e S\u00e9ries" },
+    { "id": 5, "name": "Noticias" },
+    { "id": 6, "name": "Abertos" },
+    { "id": 7, "name": "Variedades" },
+    { "id": 9, "name": "Portugal" }
+  ],
   "channels": [
     {
-      "name": "Mosaico Premiere FHD",
-      "url": "http://79.127.148.209:8880/live/7999833244/rhw8wx7ry7/74668.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgRXAQUKGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUltPRkAKXRpYQAJXC1IBUlQWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAlFXDRsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUCFFUFkQ=",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "afazenda",
+      "image": "https://img.faz-o-eli.online/afazenda.png",
+      "name": "A Fazenda 18 - 1",
+      "categories": [0, 8],
+      "preview": "https://img.faz-o-eli.online/afazenda.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/afazenda"
     },
     {
-      "name": "Mosaico Premiere HD",
-      "url": "http://79.127.148.209:8880/live/7999833244/rhw8wx7ry7/74669.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgRXAQULGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUlpPRkAKXRpYQAJXC1MGV1YWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1hRDBsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUCFNTFkQ=",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "afazenda2",
+      "image": "https://img.faz-o-eli.online/afazenda2.png",
+      "name": "A Fazenda 18 - 2",
+      "categories": [0, 8],
+      "preview": "https://img.faz-o-eli.online/afazenda2.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/afazenda2"
     },
     {
-      "name": "Premiere 2",
-      "url": "http://79.127.148.130:8880/live/7999833244/rhw8wx7ry7/37060.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwUCGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPU1NPRkAKXRpYQABUCF8JWVQWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFReFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwtXB1lESQ==",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "afazenda3",
+      "image": "https://img.faz-o-eli.online/afazenda3.png",
+      "name": "A Fazenda 18 - 3",
+      "categories": [0, 8],
+      "preview": "https://img.faz-o-eli.online/afazenda3.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/afazenda3"
     },
     {
-      "name": "Premiere 2 [4K]",
-      "url": "http://79.127.148.130:8880/live/7999833244/rhw8wx7ry7/215405.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgFSAgcCAh4XQhUGETtZBxsCQFYBWQBfBlZEGBtMUFwBEVkGBAsGBQMGXlZTSBITUFxAWBNTCV8DWF8WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1hRFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQw5eA1JESQ==",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "afazenda4",
+      "image": "https://img.faz-o-eli.online/afazenda4.png",
+      "name": "A Fazenda 18 - 4",
+      "categories": [0, 8],
+      "preview": "https://img.faz-o-eli.online/afazenda4.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/afazenda4"
     },
     {
-      "name": "Premiere 2 FHD",
-      "url": "http://212.102.60.187:8880/live/7999833244/rhw8wx7ry7/38410.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBbAwICGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPU1JPRkAKXRpYQANZAVIGWFcWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1heFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwtUAlRESQ==",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "afazenda5",
+      "image": "https://img.faz-o-eli.online/afazenda5.png",
+      "name": "A Fazenda 18 - 5",
+      "categories": [0, 8],
+      "preview": "https://img.faz-o-eli.online/afazenda5.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/afazenda5"
     },
     {
-      "name": "Premiere 2 H265",
-      "url": "http://89.187.173.71:8880/live/7999833244/rhw8wx7ry7/51259.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgZSBQYLGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPU1FPRkAKXRpYQAJWDVMDUFUWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1dQFhUaWl4RXRdFShANEGBkRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQw9WBldESQ==",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
+      "id": "ae",
+      "image": "https://img.faz-o-eli.online/ae.png",
+      "name": "AE",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/ae.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/ae"
     },
     {
-      "name": "Premiere 2 H265",
-      "url": "http://79.127.188.70:8880/live/7999833244/rhw8wx7ry7/62895.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVRDwoHGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPU1BPRkAKXRpYQABTCl4IUVIWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1dXFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwpWAVdESQ==",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
+      "id": "amc",
+      "image": "https://img.faz-o-eli.online/amc.png",
+      "name": "AMC",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/amc.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/amc"
     },
     {
-      "name": "Premiere 2 HD",
-      "url": "http://79.127.148.136:8880/live/7999833244/rhw8wx7ry7/36952.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgYAGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPU1BPRkAKXRpYQANUDlAHWF4WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFdUFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwtUB1lESQ==",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "axn",
+      "image": "https://img.faz-o-eli.online/axn.png",
+      "name": "AXN",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/axn.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/axn"
     },
     {
-      "name": "Premiere 3",
-      "url": "http://79.127.148.157:8880/live/7999833244/rhw8wx7ry7/37059.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwYLGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPU1dPRkAKXRpYQAZYAFYBU0QYG11BRQFBDVZfbVNXQ14FBkFeEkEVGg0MbgVcC1APAhYDGgkTSBEKREMQDVxAWwpPQQZZF0tZFgcTWxtVBVREGBtbVkQKRxFOEQgVe3EVSkEGHEQGV0sLDV9DA0RFEkQYG1FKbhZWEENBV1ZfUEVEWUFUEk8bVQMabgJWCF8EBUBQV1dCRglBBhEeFV9aWQ8XDBZvE1BcQFgTVgBeCFRWFkQ=",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "adultswim",
+      "image": "https://img.faz-o-eli.online/adultswim.png",
+      "name": "Adult Swim",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/adultswim.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/adultswim"
     },
     {
-      "name": "Premiere 3 FHD",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/38409.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "animalplanet",
+      "image": "https://img.faz-o-eli.online/animalplanet.png",
+      "name": "Animal Planet",
+      "categories": [0, 3],
+      "preview": "https://img.faz-o-eli.online/animalplanet.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/animalplanet"
     },
     {
-      "name": "Premiere 3 H265",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/51260.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
+      "id": "aparecida",
+      "image": "https://img.faz-o-eli.online/tvaparecida.png",
+      "name": "Aparecida",
+      "categories": [0, 7, 6],
+      "preview": "https://img.faz-o-eli.online/aparecida.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/aparecida"
     },
     {
-      "name": "Premiere 3 HD",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/36951.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "bandnews",
+      "image": "https://img.faz-o-eli.online/bandnews.png",
+      "name": "Band News",
+      "categories": [0, 5, 6],
+      "preview": "https://img.faz-o-eli.online/bandnews.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/bandnews"
     },
     {
-      "name": "Premiere 4",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/37058.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "bandrj",
+      "image": "https://img.faz-o-eli.online/band.png",
+      "name": "Band RJ",
+      "categories": [0, 6, 5],
+      "preview": "https://img.faz-o-eli.online/bandrj.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/bandrj"
     },
     {
-      "name": "Premiere 4 FHD",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/38408.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "bandsp",
+      "image": "https://img.faz-o-eli.online/band.png",
+      "name": "Band SP",
+      "categories": [0, 6, 5],
+      "preview": "https://img.faz-o-eli.online/bandsp.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/bandsp"
     },
     {
-      "name": "Premiere 4 H265",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/51261.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
+      "id": "bandsports",
+      "image": "https://img.faz-o-eli.online/bandsports.png",
+      "name": "Band Sports",
+      "categories": [0, 1, 5, 6],
+      "preview": "https://img.faz-o-eli.online/bandsports.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/bandsports"
     },
     {
-      "name": "Premiere 4 HD",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/36950.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "cnnbrasil",
+      "image": "https://img.faz-o-eli.online/cnnbrasil.png",
+      "name": "CNN Brasil",
+      "categories": [0, 5, 7],
+      "preview": "https://img.faz-o-eli.online/cnnbrasil.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/cnnbrasil"
     },
     {
-      "name": "Premiere 5",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/37057.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "cancaonova",
+      "image": "https://img.faz-o-eli.online/cancaonova.png",
+      "name": "Can\u00e7\u00e3o Nova",
+      "categories": [0, 7, 6],
+      "preview": "https://img.faz-o-eli.online/cancaonova.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/cancaonova"
     },
     {
-      "name": "Premiere 5 FHD",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/38407.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "cartoonnetwork",
+      "image": "https://img.faz-o-eli.online/cartoonnetwork.png",
+      "name": "Cartoon Network",
+      "categories": [0, 2],
+      "preview": "https://img.faz-o-eli.online/cartoonnetwork.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/cartoonnetwork"
     },
     {
-      "name": "Premiere 5 H265",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/51262.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
+      "id": "cartoonito",
+      "image": "https://img.faz-o-eli.online/cartoonito.png",
+      "name": "Cartoonito",
+      "categories": [0, 2],
+      "preview": "https://img.faz-o-eli.online/cartoonito.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/cartoonito"
     },
     {
-      "name": "Premiere 5 HD",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/36949.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "caze1",
+      "image": "https://img.faz-o-eli.online/cazetv.png",
+      "name": "CazeTV 1",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/caze1.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/caze1"
     },
     {
-      "name": "Premiere 6",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/37056.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "caze2",
+      "image": "https://img.faz-o-eli.online/cazetv.png",
+      "name": "CazeTV 2",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/caze2.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/caze2"
     },
     {
-      "name": "Premiere 6 FHD",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/38406.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "caze3",
+      "image": "https://img.faz-o-eli.online/cazetv.png",
+      "name": "CazeTV 3",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/caze3.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/caze3"
     },
     {
-      "name": "Premiere 6 H265",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/51263.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
+      "id": "cinemax",
+      "image": "https://img.faz-o-eli.online/cinemax.png",
+      "name": "Cinemax",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/cinemax.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/cinemax"
     },
     {
-      "name": "Premiere 6 HD",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/36906.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "combate",
+      "image": "https://img.faz-o-eli.online/combate.png",
+      "name": "Combate",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/combate.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/combate"
     },
     {
-      "name": "Premiere 7",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/37017.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "cultura",
+      "image": "https://img.faz-o-eli.online/cultura.png",
+      "name": "Cultura",
+      "categories": [0, 6, 7],
+      "preview": "https://img.faz-o-eli.online/cultura.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/cultura"
     },
     {
-      "name": "Premiere 7 FHD",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/38405.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "discoverychannel",
+      "image": "https://img.faz-o-eli.online/discoverychannel.png",
+      "name": "Discovery Channel",
+      "categories": [0, 3],
+      "preview": "https://img.faz-o-eli.online/discoverychannel.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoverychannel"
     },
     {
-      "name": "Premiere 7 FHD H265",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/91502.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
+      "id": "discoveryhh",
+      "image": "https://img.faz-o-eli.online/discoveryhh.png",
+      "name": "Discovery H&H",
+      "categories": [0, 3],
+      "preview": "https://img.faz-o-eli.online/discoveryhh.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoveryhh"
     },
     {
-      "name": "Premiere 7 HD",
-      "url": "http://79.127.188.70:8880/live/7999833244/rhw8wx7ry7/36905.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgMHGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUFFPRkAKXRpYQANQDF8GVFAWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFdVFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwtSB1FESQ==",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "discoveryid",
+      "image": "https://img.faz-o-eli.online/discoverychannel.png",
+      "name": "Discovery ID",
+      "categories": [0, 3],
+      "preview": "https://img.faz-o-eli.online/discoveryid.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoveryid"
     },
     {
-      "name": "Premiere 8",
-      "url": "http://79.127.148.130:8880/live/7999833244/rhw8wx7ry7/54120.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgZXBgECGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUFFPRkAKXRpYQABRD1YBUFAWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEBlVVFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwpeAlFESQ==",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "discoverykids",
+      "image": "https://img.faz-o-eli.online/discoverykids.png",
+      "name": "Discovery Kids",
+      "categories": [0, 2],
+      "preview": "https://img.faz-o-eli.online/discoverykids.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoverykids"
     },
     {
-      "name": "Premiere 8 FHD",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/931355.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "discoveryscience",
+      "image": "https://img.faz-o-eli.online/discoveryscience.png",
+      "name": "Discovery Science",
+      "categories": [0, 3, 7],
+      "preview": "https://img.faz-o-eli.online/discoveryscience.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoveryscience"
     },
     {
-      "name": "Premiere 8 HD",
-      "url": "http://79.127.188.70:8880/live/7999833244/rhw8wx7ry7/64657.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVXAQYFGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUFdPRkAKXRpYQABYD18CWFEWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFBeBhsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtVAVBfFkQ=",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "discoverytheather",
+      "image": "https://img.faz-o-eli.online/discoverytheater.png",
+      "name": "Discovery Theater",
+      "categories": [0, 3],
+      "preview": "https://img.faz-o-eli.online/discoverytheather.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoverytheather"
     },
     {
-      "name": "Premiere Clubes",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/37016.ts",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "discoveryturbo",
+      "image": "https://img.faz-o-eli.online/discoveryturbo.png",
+      "name": "Discovery Turbo",
+      "categories": [0, 3],
+      "preview": "https://img.faz-o-eli.online/discoveryturbo.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoveryturbo"
     },
     {
-      "name": "Premiere Clubes [4K]",
-      "url": "http://212.102.60.149:8880/live/7999833244/rhw8wx7ry7/40783.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgdTAAsBGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUFZPRkAKXRpYQANXDlMGVlcWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEBlZTARsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtfBlRSFkQ=",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "discoveryworld",
+      "image": "https://img.faz-o-eli.online/discoveryworld.png",
+      "name": "Discovery World",
+      "categories": [0, 3],
+      "preview": "https://img.faz-o-eli.online/discoveryworld.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoveryworld"
     },
     {
-      "name": "Premiere Clubes FHD",
-      "url": "http://212.102.60.157:8880/live/7999833244/rhw8wx7ry7/38411.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBbAwIDGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUFVPRkAKXRpYQAVTClUAVUQYG11BRQFBDVZfbVNXQ14FBkFeEkEVGg0MbgVcC1APAhYDGgkTSBEKREMQDVxAWwpPQQZZF0tZFgcTWxtUBlZSFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwhUAllTFkQ=",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "disneyplus1",
+      "image": "https://img.faz-o-eli.online/disneyplus.png",
+      "name": "Disney Plus 1",
+      "categories": [0, 1, 7],
+      "preview": "https://img.faz-o-eli.online/disneyplus1.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/disneyplus1"
     },
     {
-      "name": "Premiere Clubes H265",
-      "url": "http://79.127.148.209:8880/live/7999833244/rhw8wx7ry7/51265.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgZSBQUHGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUFVPRkAKXRpYQAJXC1UHU1IWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1deDBsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUCVFXFkQ=",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
+      "id": "disneyplus2",
+      "image": "https://img.faz-o-eli.online/disneyplus.png",
+      "name": "Disney Plus 2",
+      "categories": [0, 1, 7],
+      "preview": "https://img.faz-o-eli.online/disneyplus2.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/disneyplus2"
     },
     {
-      "name": "Premiere Clubes HD",
-      "url": "http://79.127.148.140:8880/live/7999833244/rhw8wx7ry7/36948.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgcKGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUFRPRkAKXRpYQABRAFQEVlMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1JTBxsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxteBlVeFkQ=",
-      "type": "hls",
-      "category": "Canais | Premiere",
-      "poster": "https://i.imgur.com/0hDut9Q.png"
+      "id": "disneyplus3",
+      "image": "https://img.faz-o-eli.online/disneyplus.png",
+      "name": "Disney Plus 3",
+      "categories": [0, 1, 7],
+      "preview": "https://img.faz-o-eli.online/disneyplus3.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/disneyplus3"
     },
     {
-      "name": "Paramount+ 1 (A)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/105804.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "espn",
+      "image": "https://img.faz-o-eli.online/espn.png",
+      "name": "Espn",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/espn.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/espn"
     },
     {
-      "name": "Paramount+ 1 FHD (B)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952468.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "espn2",
+      "image": "https://img.faz-o-eli.online/espn2.png",
+      "name": "Espn 2",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/espn2.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/espn2"
     },
     {
-      "name": "Paramount+ 1 HD (B)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/105801.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "espn3",
+      "image": "https://img.faz-o-eli.online/espn3.png",
+      "name": "Espn 3",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/espn3.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/espn3"
     },
     {
-      "name": "Paramount+ 1 SD (B)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952463.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "espn4",
+      "image": "https://img.faz-o-eli.online/espn4.png",
+      "name": "Espn 4",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/espn4.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/espn4"
     },
     {
-      "name": "Paramount+ 2 (A)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/105805.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "espn5",
+      "image": "https://img.faz-o-eli.online/espn5.png",
+      "name": "Espn 5",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/espn5.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/espn5"
     },
     {
-      "name": "Paramount+ 2 FHD (B)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952469.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "espn6",
+      "image": "https://img.faz-o-eli.online/espn6.png",
+      "name": "Espn 6",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/espn6.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/espn6"
     },
     {
-      "name": "Paramount+ 2 HD (B)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/105802.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "foodnetwork",
+      "image": "https://img.faz-o-eli.online/foodnetwork.png",
+      "name": "Food Network",
+      "categories": [0, 7],
+      "preview": "https://img.faz-o-eli.online/foodnetwork.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/foodnetwork"
     },
     {
-      "name": "Paramount+ 2 SD (B)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952464.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "gnt",
+      "image": "https://img.faz-o-eli.online/gnt.png",
+      "name": "GNT",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/gnt.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/gnt"
     },
     {
-      "name": "Paramount+ 3 (A)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/105806.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "globoam",
+      "image": "https://img.faz-o-eli.online/globosp.png",
+      "name": "Globo AM",
+      "categories": [0, 6],
+      "preview": "https://img.faz-o-eli.online/globoam.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globoam"
     },
     {
-      "name": "Paramount+ 3 FHD (B)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952470.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "globodf",
+      "image": "https://img.faz-o-eli.online/globosp.png",
+      "name": "Globo DF",
+      "categories": [0, 6],
+      "preview": "https://img.faz-o-eli.online/globodf.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globodf"
     },
     {
-      "name": "Paramount+ 3 HD (B)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/105803.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "globoce",
+      "image": "https://img.faz-o-eli.online/globosp.png",
+      "name": "Globo CE",
+      "categories": [0, 6],
+      "preview": "https://img.faz-o-eli.online/globoce.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globoce"
     },
     {
-      "name": "Paramount+ 3 SD (B)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952465.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "globoes",
+      "image": "https://img.faz-o-eli.online/globosp.png",
+      "name": "Globo ES",
+      "categories": [0, 6],
+      "preview": "https://img.faz-o-eli.online/globoes.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globoes"
     },
     {
-      "name": "Paramount+ 4 (A)",
-      "url": "http://79.127.148.134:8880/live/7999833244/rhw8wx7ry7/105807.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgJTAgsCAB4XQhUGETtZBxsCQFYBWQBfBlZEGBtMUFwBEVkGBAsGBQMGXlRWSBITUFxAWBNSDFIFVFINGxQbVBxHBkVdU1ttUVIQCgABElkbGk5AXg9mAlQMB1pdGgMTVBFPFVpBRxAPWRMPD0gSAVBMEANFBBtcE1BUAhsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtVBVBVFkQ=",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "globomg",
+      "image": "https://img.faz-o-eli.online/globosp.png",
+      "name": "Globo MG",
+      "categories": [0, 6],
+      "preview": "https://img.faz-o-eli.online/globomg.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globomg"
     },
     {
-      "name": "Paramount+ 4 FHD (B)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952471.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "globogo",
+      "image": "https://img.faz-o-eli.online/globosp.png",
+      "name": "Globo GO",
+      "categories": [0, 6],
+      "preview": "https://img.faz-o-eli.online/globogo.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globogo"
     },
     {
-      "name": "Paramount+ 4 HD (B)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/107583.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "globonews",
+      "image": "https://img.faz-o-eli.online/globonews.png",
+      "name": "Globo News",
+      "categories": [0, 5, 6],
+      "preview": "https://img.faz-o-eli.online/globonews.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globonews"
     },
     {
-      "name": "Paramount+ 4 SD (B)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952466.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "globonovelas",
+      "image": "https://img.faz-o-eli.online/globonovelas.png",
+      "name": "Globo Novelas",
+      "categories": [0, 6],
+      "preview": "https://img.faz-o-eli.online/globonovelas.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globonovelas"
     },
     {
-      "name": "Paramount+ 5 HD (B)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/952467.ts",
-      "type": "hls",
-      "category": "Canais | Paramount+",
-      "poster": "https://i.imgur.com/pjCU00K.png"
+      "id": "globopb",
+      "image": "https://img.faz-o-eli.online/globosp.png",
+      "name": "Globo PB",
+      "categories": [0, 6],
+      "preview": "https://img.faz-o-eli.online/globopb.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globopb"
     },
     {
-      "name": "UFC Fight Pass (A)",
-      "url": "http://79.127.148.157:8880/live/7999833244/rhw8wx7ry7/100815.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgJTBwsDAh4XQhUGETtZBxsCQFYBWQBfBlZEGBtMUFwBEVkGBAsGBQMGXlRbSBITUFxAWBNQDlUAVlUDGxQbVBxHBkVdU1ttUVIQCgABElkbGk5AXg9mAlQMB1pdGgMTVBFPFVpBRxAPWRMPD0gSAVBMEANFBBtcE1dRDQkaFRMHXBZZR0BOEA8VMzBBSBIGQUwHDEIIVggTW0RAShoVEw1APEVWQUNAUFYLBhFGCkEJGk5AXABBOVIOCFpcW01YC10QFQkQBhAZFQsMDQ1EDEtnEgtVQwNEAlZRBRtF",
-      "type": "hls",
-      "category": "Canais | UFC Fight Pass",
-      "poster": "https://i.imgur.com/GVyCH7T.png"
+      "id": "globope",
+      "image": "https://img.faz-o-eli.online/globosp.png",
+      "name": "Globo PE",
+      "categories": [0, 6],
+      "preview": "https://img.faz-o-eli.online/globope.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globope"
     },
     {
-      "name": "UFC Fight Pass 1 HD (B)",
-      "url": "http://89.187.173.71:8880/live/7999833244/rhw8wx7ry7/94688.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgpXAQsKGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPUVpPRkAKXRpYQAVQC1IFWF4WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFZXBRsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtSBFRSFkQ=",
-      "type": "hls",
-      "category": "Canais | UFC Fight Pass",
-      "poster": "https://i.imgur.com/GVyCH7T.png"
+      "id": "globorj",
+      "image": "https://img.faz-o-eli.online/globorj.png",
+      "name": "Globo RJ",
+      "categories": [0, 6],
+      "preview": "https://img.faz-o-eli.online/globorj.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globorj"
     },
     {
-      "name": "UFC Fight Pass 2 HD (B)",
-      "url": "http://89.187.173.71:8880/live/7999833244/rhw8wx7ry7/92272.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgpRBQQAGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlNPRkAKXRpYQAVRAFMDV1IWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFZXBRsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtSBFZUFkQ=",
-      "type": "hls",
-      "category": "Canais | UFC Fight Pass",
-      "poster": "https://i.imgur.com/GVyCH7T.png"
+      "id": "globors",
+      "image": "https://img.faz-o-eli.online/globosp.png",
+      "name": "Globo RS",
+      "categories": [0, 6],
+      "preview": "https://img.faz-o-eli.online/globors.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globors"
     },
     {
-      "name": "UFC Fight Pass 3 HD (B)",
-      "url": "http://195.181.163.138/live/7999833244/rhw8wx7ry7/177136.ts",
-      "type": "hls",
-      "category": "Canais | UFC Fight Pass",
-      "poster": "https://i.imgur.com/GVyCH7T.png"
+      "id": "globosp",
+      "image": "https://img.faz-o-eli.online/globosp.png",
+      "name": "Globo SP",
+      "categories": [0, 6],
+      "preview": "https://img.faz-o-eli.online/globosp.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globosp"
     },
     {
+      "id": "gloob",
+      "image": "https://img.faz-o-eli.online/gloob.png",
+      "name": "Gloob",
+      "categories": [0, 2],
+      "preview": "https://img.faz-o-eli.online/gloob.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/gloob"
+    },
+    {
+      "id": "hbo",
+      "image": "https://img.faz-o-eli.online/hbo.png",
       "name": "HBO",
-      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/65114.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVWBgIGGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlJPRkAKXRpYQAJTCVYDUVMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1dTBRsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtVBllSDAsaRA==",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/U5LrKAW.png"
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/hbo.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hbo"
     },
     {
+      "id": "hbo2",
+      "image": "https://img.faz-o-eli.online/hbo2.png",
       "name": "HBO 2",
-      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/37086.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwsEGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlFPRkAKXRpYQABQDlcCVFMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFRUDRsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtTA1lSFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/QTtMuR2.png"
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/hbo2.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hbo2"
     },
     {
-      "name": "HBO 2 FHD",
-      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/38423.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBbAwEBGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlBPRkAKXRpYQAJQAFEFUlMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1BSBBsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtTA1heFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/QTtMuR2.png"
-    },
-    {
-      "name": "HBO 2 FHD H265",
-      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/986820.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgpbAQsABx4XQhUGETtZBxsCQFYBWQBfBlZEGBtMUFwBEVkGBAsGBQMGXltXSBITUFxAWBNVCF4IWFYMGxQbVBxHBkVdU1ttUVIQCgABElkbGk5AXg9mAlQMB1pdGgMTVBFPFVpBRxAPWRMPD0gSAVBMEANFBBtcE1NQDA4aFRMHXBZZR0BOEA8VLydBSBIGQUwHDEIIVggTW0RAShoVEw1APEVWQUNAUFYLBhFGCkEJGk5AXABBOVIOCFpcW01YC10QFQkQBhAZFQsMDQ1EDEtnEgtVQwNECVNSAhtF",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
-    },
-    {
-      "name": "HBO 2 HD",
-      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/36966.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgUEGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXldPRkAKXRpYQAJQAF4JVFMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAlhfDBsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtXBVRRAwAOG0w=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/QTtMuR2.png"
-    },
-    {
+      "id": "hbofamily",
+      "image": "https://img.faz-o-eli.online/hbofamily.png",
       "name": "HBO Family",
-      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/37085.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwsHGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlZPRkAKXRpYQABQDlcCUV4WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFBRABsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtRA1ZUFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/f181m4I.png"
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/hbofamily.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hbofamily"
     },
     {
-      "name": "HBO Family FHD",
-      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/41486.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgdSAwsEGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlVPRkAKXRpYQABQDlcEVV4WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAlFeAxsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtfBFFUFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/f181m4I.png"
-    },
-    {
-      "name": "HBO Family H265",
-      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/62847.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVRDwcFGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlRPRkAKXRpYQABVDlAHVlMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1VeBhsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtfBFRXFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
-    },
-    {
-      "name": "HBO Family HD",
-      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/36965.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgUHGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXltPRkAKXRpYQAJTCVUCUF4WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1BTDRsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUCFRfBA4AG0w=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/f181m4I.png"
-    },
-    {
-      "name": "HBO FHD",
-      "url": "http://212.102.60.151:8880/live/7999833244/rhw8wx7ry7/61972.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVSDgQAGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXltPRkAKXRpYQAZUCVEIWUQYG11BRQFBDVZfbVNXQ14FBkFeEkEVGg0MbgVcC1APAhYDGgkTSBEKREMQDVxAWwpPQQZZF0tZFgcTWxtUBFlUFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwxfAFZESQ==",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/U5LrKAW.png"
-    },
-    {
-      "name": "HBO H265",
-      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/62848.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVRDwcKGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPXlpPRkAKXRpYQAJTCVIFVlMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1VeDBsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtVBFBRDAsaRA==",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
-    },
-    {
-      "name": "HBO HD",
-      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/36964.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgUGGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1NPRkAKXRpYQAJTCVYIWFMWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1NfBhsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtXBVlSBAgKG0w=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/U5LrKAW.png"
-    },
-    {
+      "id": "hbomundi",
+      "image": "https://img.faz-o-eli.online/hbomundi.png",
       "name": "HBO Mundi",
-      "url": "http://212.102.60.149:8880/live/7999833244/rhw8wx7ry7/37076.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwQEGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1NPRkAKXRpYQABWD1MHUFcWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFBTDRsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtSB1VVFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/B6EZjKx.png"
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/hbomundi.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hbomundi"
     },
     {
-      "name": "HBO Mundi FHD",
-      "url": "http://212.102.60.151:8880/live/7999833244/rhw8wx7ry7/40268.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgdTBQUKGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1JPRkAKXRpYQAZXCV4HVkQYG11BRQFBDVZfbVNXQ14FBkFeEkEVGg0MbgVcC1APAhYDGgkTSBEKREMQDVxAWwpPQQZZF0tZFgcTWxtUB1FUFhUaWl4RXRdFShANEGBkRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQwFUCFNESQ==",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/B6EZjKx.png"
-    },
-    {
-      "name": "HBO Mundi H265",
-      "url": "http://212.102.60.157:8880/live/7999833244/rhw8wx7ry7/62863.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVRDwUBGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1FPRkAKXRpYQAVRAFEHWVYWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1VRDBsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtXAVlQABtF",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
-    },
-    {
-      "name": "HBO Mundi HD",
-      "url": "http://212.102.60.174:8880/live/7999833244/rhw8wx7ry7/36913.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgIBGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1BPRkAKXRpYQANSC1AJWVUWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1BTDBsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtfAFBUFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/B6EZjKx.png"
-    },
-    {
-      "name": "HBO Plus",
-      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/37084.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwsGGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1BPRkAKXRpYQAJUCF8GU1QWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1VTBBsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUCVdVFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/AKrQpLY.png"
-    },
-    {
-      "name": "HBO Plus E",
-      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/37083.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwsBGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1ZPRkAKXRpYQAJQAFMHUFQWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNECVNfFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQw5UCFBESQ==",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/AKrQpLY.png"
-    },
-    {
-      "name": "HBO Plus FHD",
-      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/41487.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgdSAwsFGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1VPRkAKXRpYQAJTCVcBUFYWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1VeDBsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUBFFeBwANG0w=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/AKrQpLY.png"
-    },
-    {
-      "name": "HBO Plus H265",
-      "url": "http://212.102.60.174:8880/live/7999833244/rhw8wx7ry7/62852.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVRDwYAGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1RPRkAKXRpYQANRCVMJVV8WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1VRABsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtfA1RXFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
-    },
-    {
-      "name": "HBO Plus HD",
-      "url": "http://212.102.60.151:8880/live/7999833244/rhw8wx7ry7/36963.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgUBGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1tPRkAKXRpYQARVDVIAU0QYG11BRQFBDVZfbVNXQ14FBkFeEkEVGg0MbgVcC1APAhYDGgkTSBEKREMQDVxAWwpPQQZZF0tZFgcTWxtUAVVRFhUaWl4RXRdFShANEHxzRE9BAUgXXFYRC14PG1wTFRUWFRpQQjtBBkRHQFJTWFIUQVlGAEEVGg8DST5aCV8PA1dNUVZfFxFZFQIQGxBYWAgKFwtCPElRBkALQw9VCVhESQ==",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/AKrQpLY.png"
-    },
-    {
+      "id": "hbopop",
+      "image": "https://img.faz-o-eli.online/hbopop.png",
       "name": "HBO POP",
-      "url": "http://212.102.60.149:8880/live/7999833244/rhw8wx7ry7/37073.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwQBGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1tPRkAKXRpYQANRAVYJUl4WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1NeDRsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxteBVdQFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/5YkOnWL.png"
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/hbopop.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hbopop"
     },
     {
-      "name": "HBO POP FHD",
-      "url": "http://212.102.60.151:8880/live/7999833244/rhw8wx7ry7/40270.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgdTBQQCGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQPX1pPRkAKXRpYQAJQDVIFVFUWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFhRAhsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxteAlFfFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/5YkOnWL.png"
+      "id": "hboplus",
+      "image": "https://img.faz-o-eli.online/hboplus.png",
+      "name": "HBO Plus",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/hboplus.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hboplus"
     },
     {
-      "name": "HBO POP H265",
-      "url": "http://212.102.60.149:8880/live/7999833244/rhw8wx7ry7/62866.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVRDwUEGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVlNPRkAKXRpYQABZDFMFU1YWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFhRAhsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxteBFZeFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
-    },
-    {
-      "name": "HBO POP HD",
-      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/36911.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgIDGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVlJPRkAKXRpYQAJQAF8IUl4WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1BXDBsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtXBllRBAEOG0w=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/5YkOnWL.png"
-    },
-    {
-      "name": "HBO Signature",
-      "url": "http://212.102.60.157:8880/live/7999833244/rhw8wx7ry7/37082.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwsAGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVlJPRkAKXRpYQAJYDVAGUl8WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFNRBhsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtXAVlWAhtF",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/yR8vTk8.png"
-    },
-    {
-      "name": "HBO Signature FHD",
-      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/41488.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgdSAwsKGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVlFPRkAKXRpYQABQDlcDWVEWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFdSABsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtfBFBTFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/yR8vTk8.png"
-    },
-    {
-      "name": "HBO Signature FHD H265",
-      "url": "http://212.102.60.157:8880/live/7999833244/rhw8wx7ry7/986819.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgpbAQsDDh4XQhUGETtZBxsCQFYBWQBfBlZEGBtMUFwBEVkGBAsGBQMGX1NQSBITUFxAWBNSAVAAVVMMGxQbVBxHBkVdU1ttUVIQCgABElkbGk5AXg9mAlQMB1pdGgMTVBFPFVpBRxAPWRMPD0gSAVBMEANFBBtcE1NSDQsaFRMHXBZZR0BOEA8VLydBSBIGQUwHDEIIVggTW0RAShoVEw1APEVWQUNAUFYLBhFGCkEJGk5AXABBOVIOCFpcW01YC10QFQkQBhAZFQsMDQ1EDEtnEgtVQwNEAFFeDQAaRA==",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
-    },
-    {
-      "name": "HBO Signature HD",
-      "url": "http://212.102.60.174:8880/live/7999833244/rhw8wx7ry7/36962.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgUAGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVldPRkAKXRpYQANRAF8JWFIWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAlRSBhsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtRAFRTFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/yR8vTk8.png"
-    },
-    {
+      "id": "hboxtreme",
+      "image": "https://img.faz-o-eli.online/hboxtreme.png",
       "name": "HBO Xtreme",
-      "url": "http://212.102.60.149:8880/live/7999833244/rhw8wx7ry7/37075.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwQHGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVldPRkAKXRpYQANRDFQCU14WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFFRABsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUCFZSFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/KkyoQPI.png"
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/hboxtreme.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hboxtreme"
     },
     {
-      "name": "HBO Xtreme E",
-      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/37074.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBUBwQGGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVlZPRkAKXRpYQAJQAFUIVFEWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFFVBxsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtUAFFXBw8MG0w=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/KkyoQPI.png"
+      "id": "hgtv",
+      "image": "https://img.faz-o-eli.online/hgtv.png",
+      "name": "HGTV",
+      "categories": [0, 4, 7],
+      "preview": "https://img.faz-o-eli.online/hgtv.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hgtv"
     },
     {
-      "name": "HBO Xtreme FHD",
-      "url": "http://212.102.60.157:8880/live/7999833244/rhw8wx7ry7/42901.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgdRDgMDGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVlVPRkAKXRpYQABWClUDVVIWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEA1NVBxsUG1ILRg1DQUsVCBdiNUFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtTBFJfFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/KkyoQPI.png"
+      "id": "history",
+      "image": "https://img.faz-o-eli.online/history.png",
+      "name": "History",
+      "categories": [0, 3],
+      "preview": "https://img.faz-o-eli.online/history.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/history"
     },
     {
-      "name": "HBO Xtreme H265",
-      "url": "http://212.102.60.181:8880/live/7999833244/rhw8wx7ry7/62865.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgVRDwUHGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVlVPRkAKXRpYQAJQAFAIV14WFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFdeBxsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtSAFVXAgAJG0w=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/1pnZ4MD.png"
+      "id": "history2",
+      "image": "https://img.faz-o-eli.online/history2.png",
+      "name": "History 2",
+      "categories": [0, 3],
+      "preview": "https://img.faz-o-eli.online/history2.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/history2"
     },
     {
-      "name": "HBO Xtreme HD",
-      "url": "http://212.102.60.182:8880/live/7999833244/rhw8wx7ry7/36912.ts?token=HUELBUMLGwJAWwhYCFJTWFUGW1wKBgUGU1UKCgRRAFJRAFpUUQYACwBAHUNKEkMEB1lmUV0TXgBVDgIAGxBARAMRPA1UQQMaVlIJWABRBkNKFk1RVFRGCVIACgMABAQOVltPRkAKXRpYQABVD1IAVlIWFRpcSRBWEVlSXmhWUEEPAAZGCkEbFEANXz5dA1wACFAbAhsBRh9BXkBCFQhbQgoPT0ZSCk1KAxZUQwNEAFRSBRsUG1ILRg1DQUsVCBd+IkFPRlUbTV0MEVgOV0QLQxJHGxQbWBdsEVJARkVXVFoDEUFeElMbFEAPUBlmBV4PCFFaTFBeCkBBDREDFR4XWgkNChBfEWZICwYTWxtRBVhUFkQ=",
-      "type": "hls",
-      "category": "Canais | HBO",
-      "poster": "https://i.imgur.com/KkyoQPI.png"
+      "id": "mtv",
+      "image": "https://img.faz-o-eli.online/mtv.png",
+      "name": "MTV",
+      "categories": [0, 6, 7],
+      "preview": "https://img.faz-o-eli.online/mtv.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/mtv"
     },
     {
-      "name": "SporTV FHD",
-      "url": "http://195.178.110.110/sportv/index.m3u8",
-      "type": "hls",
-      "category": "Canais | SPORTV",
-      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi3zwxlNqafWKC8VMgyVyh4YdoJ4ZJMmHvaF16fyEOmg&s=10"
+      "id": "masterchef",
+      "image": "https://img.faz-o-eli.online/cheftv.png",
+      "name": "Master chef",
+      "categories": [0, 7],
+      "preview": "https://img.faz-o-eli.online/masterchef.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/masterchef"
     },
     {
-      "name": "SporTV 2 FHD",
-      "url": "http://195.178.110.110/sportv2/index.m3u8",
-      "type": "hls",
-      "category": "Canais | SPORTV",
-      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi3zwxlNqafWKC8VMgyVyh4YdoJ4ZJMmHvaF16fyEOmg&s=10"
+      "id": "max1",
+      "image": "https://img.faz-o-eli.online/max.png",
+      "name": "Max - 1",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/max1.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/max1"
     },
     {
-      "name": "SporTV 3 FHD",
-      "url": "http://195.178.110.110/sportv3/index.m3u8",
-      "type": "hls",
-      "category": "Canais | SPORTV",
-      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi3zwxlNqafWKC8VMgyVyh4YdoJ4ZJMmHvaF16fyEOmg&s=10"
+      "id": "max2",
+      "image": "https://img.faz-o-eli.online/max.png",
+      "name": "Max - 2",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/max2.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/max2"
     },
     {
-      "name": "Globo",
-      "url": "https://media2.cdntvms.com.br/tv_morena_dorados/index.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "max3",
+      "image": "https://img.faz-o-eli.online/max.png",
+      "name": "Max - 3",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/max3.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/max3"
     },
     {
-      "name": "Band",
-      "url": "http://170.84.165.204/BAND_HD/index.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "megapix",
+      "image": "https://img.faz-o-eli.online/megapix.png",
+      "name": "Megapix",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/megapix.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/megapix"
     },
     {
-      "name": "Record",
-      "url": "http://170.84.165.204/Record_HD/index.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "multishow",
+      "image": "https://img.faz-o-eli.online/multishow.png",
+      "name": "Multishow",
+      "categories": [0, 6, 7],
+      "preview": "https://img.faz-o-eli.online/multishow.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/multishow"
     },
     {
-      "name": "SBT",
-      "url": "https://cdn.live.br1.jmvstream.com/w/LVW-10801/LVW10801_Xvg4R0u57n/chunklist.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "off",
+      "image": "https://img.faz-o-eli.online/off.png",
+      "name": "OFF",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/off.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/off"
     },
     {
-      "name": "RedeTV!",
-      "url": "http://45.162.64.114/REDE_TV/index.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "paramountplus",
+      "image": "https://img.faz-o-eli.online/paramountplus.png",
+      "name": "Paramount Plus",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/paramountplus.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/paramountplus"
     },
     {
-      "name": "TV Cultura",
-      "url": "https://player-tvcultura.stream.uol.com.br/live/tvcultura.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "paramountplus2",
+      "image": "https://img.faz-o-eli.online/paramountplus.png",
+      "name": "Paramount Plus 2",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/paramountplus2.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/paramountplus2"
     },
     {
-      "name": "TV Brasil",
-      "url": "https://tvbrasil-stream.ebc.com.br/index.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "playboy",
+      "image": "https://img.faz-o-eli.online/playboy.png",
+      "name": "Play Boy",
+      "categories": [0],
+      "preview": "https://img.faz-o-eli.online/playboy.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/playboy"
     },
     {
-      "name": "TV Gazeta",
-      "url": "https://tv.nuvemplay.live/hls/40gtv/stream.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "premiere",
+      "image": "https://img.faz-o-eli.online/premiere.png",
+      "name": "Premiere 1",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/premiere.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere"
     },
     {
+      "id": "premiere2",
+      "image": "https://img.faz-o-eli.online/premiere.png",
+      "name": "Premiere 2",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/premiere2.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere2"
+    },
+    {
+      "id": "premiere3",
+      "image": "https://img.faz-o-eli.online/premiere.png",
+      "name": "Premiere 3",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/premiere3.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere3"
+    },
+    {
+      "id": "premiere4",
+      "image": "https://img.faz-o-eli.online/premiere.png",
+      "name": "Premiere 4",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/premiere4.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere4"
+    },
+    {
+      "id": "premiere5",
+      "image": "https://img.faz-o-eli.online/premiere.png",
+      "name": "Premiere 5",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/premiere5.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere5"
+    },
+    {
+      "id": "premiere6",
+      "image": "https://img.faz-o-eli.online/premiere.png",
+      "name": "Premiere 6",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/premiere6.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere6"
+    },
+    {
+      "id": "premiere7",
+      "image": "https://img.faz-o-eli.online/premiere.png",
+      "name": "Premiere 7",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/premiere7.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere7"
+    },
+    {
+      "id": "premiere8",
+      "image": "https://img.faz-o-eli.online/premiere.png",
+      "name": "Premiere 8",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/premiere8.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere8"
+    },
+    {
+      "id": "primevideo",
+      "image": "https://img.faz-o-eli.online/primevideo.png",
+      "name": "Prime Video",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/primevideo.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/primevideo"
+    },
+    {
+      "id": "primevideo2",
+      "image": "https://img.faz-o-eli.online/primevideo.png",
+      "name": "Prime Video 2",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/primevideo2.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/primevideo2"
+    },
+    {
+      "id": "primevideo3",
+      "image": "https://img.faz-o-eli.online/primevideo.png",
+      "name": "Prime Video 3",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/primevideo3.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/primevideo3"
+    },
+    {
+      "id": "primevideo4",
+      "image": "https://img.faz-o-eli.online/primevideo.png",
+      "name": "Prime Video 4",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/primevideo4.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/primevideo4"
+    },
+    {
+      "id": "recordmg",
+      "image": "https://img.faz-o-eli.online/record.png",
+      "name": "Record MG",
+      "categories": [0, 6, 5, 7],
+      "preview": "https://img.faz-o-eli.online/recordmg.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/recordmg"
+    },
+    {
+      "id": "recordrj",
+      "image": "https://img.faz-o-eli.online/record.png",
+      "name": "Record RJ",
+      "categories": [0, 6, 5, 7],
+      "preview": "https://img.faz-o-eli.online/recordrj.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/recordrj"
+    },
+    {
+      "id": "recordsp",
+      "image": "https://img.faz-o-eli.online/record.png",
+      "name": "Record SP",
+      "categories": [0, 6, 5, 7],
+      "preview": "https://img.faz-o-eli.online/recordsp.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/recordsp"
+    },
+    {
+      "id": "recordgo",
+      "image": "https://img.faz-o-eli.online/record.png",
+      "name": "Record GO",
+      "categories": [0, 6, 5, 7],
+      "preview": "https://img.faz-o-eli.online/recordgo.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/recordgo"
+    },
+    {
+      "id": "redevida",
+      "image": "https://img.faz-o-eli.online/redevida.png",
       "name": "Rede Vida",
-      "url": "http://168.197.104.22/REDE_VIDA/index.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "categories": [0, 7, 6],
+      "preview": "https://img.faz-o-eli.online/redevida.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/redevida"
     },
     {
-      "name": "TV Aparecida",
-      "url": "https://cdn.live.br1.jmvstream.com/w/LVW-9716/LVW9716_HbtQtezcaw/playlist.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "sbtrj",
+      "image": "https://img.faz-o-eli.online/sbt.png",
+      "name": "SBT RJ",
+      "categories": [0, 5, 6, 7],
+      "preview": "https://img.faz-o-eli.online/sbtrj.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sbtrj"
     },
     {
-      "name": "Canção Nova",
-      "url": "https://5c65286fc6ace.streamlock.net/cancaonova/CancaoNova.stream_720p/playlist.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "sbtsp",
+      "image": "https://img.faz-o-eli.online/sbt.png",
+      "name": "SBT SP",
+      "categories": [0, 5, 6, 7],
+      "preview": "https://img.faz-o-eli.online/sbtsp.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sbtsp"
     },
     {
-      "name": "TV Evangelizar",
-      "url": "https://cdn-tiva-tvevangelizar-brasilstream-com-br.smartbit.co/hls/tvevangelizar/index.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "sexyhot",
+      "image": "https://img.faz-o-eli.online/Sexy.png",
+      "name": "Sexy Hot",
+      "categories": [0],
+      "preview": "https://img.faz-o-eli.online/sexyhot.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sexyhot"
     },
     {
-      "name": "Rede Meio Norte",
-      "url": "https://maystreaming.cloudecast.com/redemeio/index.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "sonychannel",
+      "image": "https://img.faz-o-eli.online/sonychannel.png",
+      "name": "Sony Channel",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/sonychannel.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sonychannel"
     },
     {
-      "name": "TV Câmara",
-      "url": "https://stream3.camara.gov.br/tv1/manifest.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "space",
+      "image": "https://img.faz-o-eli.online/space.png",
+      "name": "Space",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/space.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/space"
     },
     {
-      "name": "TV Senado",
-      "url": "http://45.162.64.114/TV_SENADO/index.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "sportynet",
+      "image": "https://img.faz-o-eli.online/sportynet.png",
+      "name": "SportyNet",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/sportynet.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportynet"
     },
     {
-      "name": "Record News",
-      "url": "https://rnw-rn.otteravision.com/rnw/rn/rnw_rn.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "sportynetplus1",
+      "image": "https://img.faz-o-eli.online/sportynet.png",
+      "name": "SportyNet+ 1",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/sportynetplus1.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportynetplus1"
     },
     {
-      "name": "SBT News",
-      "url": "https://dai.google.com/linear/hls/pa/event/1XSOdtQ0SH2G8OEmEfGgjQ/stream/3fcacc90-62b1-40d9-9e23-f7e3245d2bb6:SCL2/master.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "sportynetplus2",
+      "image": "https://img.faz-o-eli.online/sportynet.png",
+      "name": "SportyNet+ 2",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/sportynetplus2.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportynetplus2"
     },
     {
-      "name": "Jovem Pan News",
-      "url": "https://d6yfbj4xxtrod.cloudfront.net/out/v1/7836eb391ec24452b149f3dc6df15bbd/index.m3u8",
-      "type": "hls",
-      "category": "Canais | ABERTOS",
-      "poster": null
+      "id": "sportynetplus3",
+      "image": "https://img.faz-o-eli.online/sportynet.png",
+      "name": "SportyNet+ 3",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/sportynetplus3.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportynetplus3"
     },
     {
-      "name": "ESPN FHD",
-      "url": "http://181.78.197.59:8000/play/a07z/index.m3u8",
-      "type": "hls",
-      "category": "Canais | ESPN",
-      "poster": null
+      "id": "sportv",
+      "image": "https://img.faz-o-eli.online/sportv.png",
+      "name": "Sportv",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/sportv.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportv"
     },
     {
-      "name": "ESPN 3 FHD",
-      "url": "http://190.83.2.182:8090/ESPN3/index.m3u8",
-      "type": "hls",
-      "category": "Canais | ESPN",
-      "poster": null
+      "id": "sportv2",
+      "image": "https://img.faz-o-eli.online/sportv2.png",
+      "name": "Sportv 2",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/sportv2.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportv2"
     },
     {
-      "name": "ESPN 4 FHD",
-      "url": "http://181.78.197.59:8000/play/a07n/index.m3u8",
-      "type": "hls",
-      "category": "Canais | ESPN",
-      "poster": null
+      "id": "sportv3",
+      "image": "https://img.faz-o-eli.online/sportv3.png",
+      "name": "Sportv 3",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/sportv3.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportv3"
+    },
+    {
+      "id": "sportv4",
+      "image": "https://img.faz-o-eli.online/sportv4.png",
+      "name": "Sportv 4",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/sportv4.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportv4"
+    },
+    {
+      "id": "starchannel",
+      "image": "https://img.faz-o-eli.online/starchannel.png",
+      "name": "Star Channel",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/starchannel.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/starchannel"
+    },
+    {
+      "id": "studiouniversal",
+      "image": "https://img.faz-o-eli.online/studiouniversal.png",
+      "name": "Studio Universal",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/studiouniversal.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/studiouniversal"
+    },
+    {
+      "id": "tcm",
+      "image": "https://img.faz-o-eli.online/tcm.png",
+      "name": "TCM",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/tcm.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/tcm"
+    },
+    {
+      "id": "tlc",
+      "image": "https://img.faz-o-eli.online/tlc.png",
+      "name": "TLC",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/tlc.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/tlc"
+    },
+    {
+      "id": "tnt",
+      "image": "https://img.faz-o-eli.online/tnt.png",
+      "name": "TNT",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/tnt.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/tnt"
+    },
+    {
+      "id": "tntnovelas",
+      "image": "https://img.faz-o-eli.online/tntnovelas.png",
+      "name": "TNT Novelas",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/tntnovelas.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/tntnovelas"
+    },
+    {
+      "id": "tntseries",
+      "image": "https://img.faz-o-eli.online/tntseries.png",
+      "name": "TNT Series",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/tntseries.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/tntseries"
+    },
+    {
+      "id": "tvpaieterno",
+      "image": "https://img.faz-o-eli.online/tvpaieterno.png",
+      "name": "TV Pai Eterno",
+      "categories": [0, 7, 6],
+      "preview": "https://img.faz-o-eli.online/tvpaieterno.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/tvpaieterno"
+    },
+    {
+      "id": "telecineaction",
+      "image": "https://img.faz-o-eli.online/telecineaction.png",
+      "name": "Telecine Action",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/telecineaction.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/telecineaction"
+    },
+    {
+      "id": "telecinecult",
+      "image": "https://img.faz-o-eli.online/telecinecult.png",
+      "name": "Telecine Cult",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/telecinecult.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/telecinecult"
+    },
+    {
+      "id": "telecinefun",
+      "image": "https://img.faz-o-eli.online/telecinefun.png",
+      "name": "Telecine Fun",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/telecinefun.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/telecinefun"
+    },
+    {
+      "id": "telecinepipoca",
+      "image": "https://img.faz-o-eli.online/telecinepipoca.png",
+      "name": "Telecine Pipoca",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/telecinepipoca.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/telecinepipoca"
+    },
+    {
+      "id": "telecinepremium",
+      "image": "https://img.faz-o-eli.online/telecinepremium.png",
+      "name": "Telecine Premium",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/telecinepremium.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/telecinepremium"
+    },
+    {
+      "id": "telecinetouch",
+      "image": "https://img.faz-o-eli.online/telecinetouch.png",
+      "name": "Telecine Touch",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/telecinetouch.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/telecinetouch"
+    },
+    {
+      "id": "ufcfightpass",
+      "image": "https://img.faz-o-eli.online/ufcfightpass.png",
+      "name": "UFC Fight Pass",
+      "categories": [0, 1],
+      "preview": "https://img.faz-o-eli.online/ufcfightpass.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/ufcfightpass"
+    },
+    {
+      "id": "universaltv",
+      "image": "https://img.faz-o-eli.online/universaltv.png",
+      "name": "Universal",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/universaltv.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/universaltv"
+    },
+    {
+      "id": "warnerchannel",
+      "image": "https://img.faz-o-eli.online/warnerchannel.png",
+      "name": "Warnerchannel",
+      "categories": [0, 4],
+      "preview": "https://img.faz-o-eli.online/warnerchannel.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/warnerchannel"
+    },
+    {
+      "id": "xsports",
+      "image": "https://img.faz-o-eli.online/xsports.png",
+      "name": "XSports",
+      "categories": [0, 1, 7],
+      "preview": "https://img.faz-o-eli.online/xsports.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/xsports"
+    },
+    {
+      "id": "pt_abola",
+      "image": "https://img.faz-o-eli.online/pt_abola.png",
+      "name": "PT - A Bola",
+      "categories": [0, 9, 1],
+      "preview": "https://img.faz-o-eli.online/pt_abola.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_abola"
+    },
+    {
+      "id": "pt_benficatv",
+      "image": "https://img.faz-o-eli.online/pt_benficatv.png",
+      "name": "PT - Benfica TV",
+      "categories": [0, 9, 1],
+      "preview": "https://img.faz-o-eli.online/pt_benficatv.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_benficatv"
+    },
+    {
+      "id": "pt_canal11",
+      "image": "https://img.faz-o-eli.online/.png",
+      "name": "PT - Canal 11",
+      "categories": [0, 9, 1],
+      "preview": "https://img.faz-o-eli.online/pt_canal11.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_canal11"
+    },
+    {
+      "id": "pt_eleven1",
+      "image": "https://img.faz-o-eli.online/eleven.png",
+      "name": "PT - Eleven 1",
+      "categories": [0, 9, 1],
+      "preview": "https://img.faz-o-eli.online/pt_eleven1.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_eleven1"
+    },
+    {
+      "id": "pt_eleven2",
+      "image": "https://img.faz-o-eli.online/eleven.png",
+      "name": "PT - Eleven 2",
+      "categories": [0, 9, 1],
+      "preview": "https://img.faz-o-eli.online/pt_eleven2.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_eleven2"
+    },
+    {
+      "id": "pt_eleven3",
+      "image": "https://img.faz-o-eli.online/eleven.png",
+      "name": "PT - Eleven 3",
+      "categories": [0, 9, 1],
+      "preview": "https://img.faz-o-eli.online/pt_eleven3.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_eleven3"
+    },
+    {
+      "id": "pt_sportv1",
+      "image": "https://img.faz-o-eli.online/sportv.png",
+      "name": "PT - Sporttv 1",
+      "categories": [0, 9, 1],
+      "preview": "https://img.faz-o-eli.online/pt_sportv1.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_sportv1"
+    },
+    {
+      "id": "pt_sportv2",
+      "image": "https://img.faz-o-eli.online/sportv.png",
+      "name": "PT - Sporttv 2",
+      "categories": [0, 9, 1],
+      "preview": "https://img.faz-o-eli.online/pt_sportv2.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_sportv2"
+    },
+    {
+      "id": "pt_sportv3",
+      "image": "https://img.faz-o-eli.online/sportv.png",
+      "name": "PT - Sporttv 3",
+      "categories": [0, 9, 1],
+      "preview": "https://img.faz-o-eli.online/pt_sportv3.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_sportv3"
+    },
+    {
+      "id": "pt_sportv4",
+      "image": "https://img.faz-o-eli.online/sportv.png",
+      "name": "PT - Sporttv 4",
+      "categories": [0, 9, 1],
+      "preview": "https://img.faz-o-eli.online/pt_sportv4.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_sportv4"
+    },
+    {
+      "id": "pt_sportv5",
+      "image": "https://img.faz-o-eli.online/sportv.png",
+      "name": "PT - Sporttv 5",
+      "categories": [0, 9, 1],
+      "preview": "https://img.faz-o-eli.online/pt_sportv5.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_sportv5"
+    },
+    {
+      "id": "pt_sportv6",
+      "image": "https://img.faz-o-eli.online/sportv.png",
+      "name": "PT - Sporttv 6",
+      "categories": [0, 9, 1],
+      "preview": "https://img.faz-o-eli.online/pt_sportv6.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_sportv6"
+    },
+    {
+      "id": "pt_sportv7",
+      "image": "https://img.faz-o-eli.online/sportv.png",
+      "name": "PT - Sporttv 7",
+      "categories": [0, 9, 1],
+      "preview": "https://img.faz-o-eli.online/pt_sportv7.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_sportv7"
+    },
+    {
+      "id": "24h_chaves",
+      "image": "https://img.faz-o-eli.online/24h.png",
+      "name": "24H Chaves",
+      "categories": [0, 7, 2],
+      "preview": "https://img.faz-o-eli.online/24h_chaves.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_chaves"
+    },
+    {
+      "id": "24h_dragonball",
+      "image": "https://img.faz-o-eli.online/24h.png",
+      "name": "24H Dragon Ball Z",
+      "categories": [0, 7, 2],
+      "preview": "https://img.faz-o-eli.online/24h_dragonball.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_dragonball"
+    },
+    {
+      "id": "24h_friends",
+      "image": "https://img.faz-o-eli.online/24h.png",
+      "name": "24H Friends",
+      "categories": [0, 7],
+      "preview": "https://img.faz-o-eli.online/24h_friends.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_friends"
+    },
+    {
+      "id": "24h_naruto",
+      "image": "https://img.faz-o-eli.online/24h.png",
+      "name": "24H Naruto Cl\u00e1ssico",
+      "categories": [0, 7, 2],
+      "preview": "https://img.faz-o-eli.online/24h_naruto.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_naruto"
+    },
+    {
+      "id": "24h_simpsons",
+      "image": "https://img.faz-o-eli.online/24h.png",
+      "name": "24H Os Simpsons",
+      "categories": [0, 7, 2],
+      "preview": "https://img.faz-o-eli.online/24h_simpsons.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_simpsons"
+    },
+    {
+      "id": "24h_odeiachris",
+      "image": "https://img.faz-o-eli.online/24h.png",
+      "name": "24H Todo Mundo Odeia o Cris",
+      "categories": [0, 7],
+      "preview": "https://img.faz-o-eli.online/24h_odeiachris.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_odeiachris"
+    },
+    {
+      "id": "24h_picapau",
+      "image": "https://img.faz-o-eli.online/24h.png",
+      "name": "24H Pica Pau",
+      "categories": [0, 7, 2],
+      "preview": "https://img.faz-o-eli.online/24h_picapau.prev.png",
+      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_picapau"
     }
   ]
 }

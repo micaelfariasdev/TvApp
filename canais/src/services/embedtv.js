@@ -34,7 +34,10 @@ function normalize(value) {
 }
 
 function isBrasileirao(event) {
-  return normalize(event?.league?.name) === "brasileirao - serie a";
+  const league = normalize(event?.league?.name);
+  // A EmbedTV já retornou variações como "Brasileirão Série A" e
+  // "Brasileirão - Série A". Não depender de uma única pontuação.
+  return league.includes("brasileirao") && league.includes("serie a");
 }
 
 function extractPlayer(player) {
@@ -43,7 +46,7 @@ function extractPlayer(player) {
   }
 
   if (player && typeof player === "object") {
-    return player.url || player.embedUrl || player.src || null;
+    return player.url || player.apiUrl || player.embedUrl || player.src || null;
   }
 
   return null;
@@ -188,10 +191,34 @@ async function syncChannels(force = false) {
   for (const channel of imported) byId.set(channel.id, { ...byId.get(channel.id), ...channel });
   saveDB([...byId.values()]);
   for (const channel of imported) {
-    try { await hls.add({ id: channel.id, name: channel.name, url: channel.originUrl, automatic: false }); }
+    try {
+      const existing = hls.channelById(channel.id);
+      if (existing && existing.url !== channel.originUrl) hls.remove(channel.id);
+      await hls.add({ id: channel.id, name: channel.name, url: channel.originUrl, automatic: false });
+    }
     catch (error) { console.warn("[EMBEDTV] Canal não registrado no proxy:", channel.id, error.message); }
   }
   return { categories: payload.categories.length, imported: imported.length, updatedAt: new Date(channelsUpdatedAt).toISOString() };
+}
+
+async function resetChannels() {
+  const current = loadDB();
+  const embedChannels = current.filter((item) => item.source === "embedtv-channels");
+  // Limpa também registros órfãos que ficaram apenas no hls-channels.json.
+  // Sem isso, hls.add() recusa o mesmo ID quando a origem/token mudou.
+  const proxyIds = hls.list()
+    .map((channel) => String(channel.id || ""))
+    .filter((id) => id.startsWith("embedtv-channel-"));
+  for (const id of new Set([
+    ...embedChannels.map((channel) => String(channel.id)),
+    ...proxyIds,
+  ])) hls.remove(id);
+  saveDB(current.filter((item) => item.source !== "embedtv-channels"));
+  channelsCache = null;
+  channelsUpdatedAt = 0;
+  const payload = await loadChannels(true);
+  const result = await syncChannels(true);
+  return { removed: embedChannels.length, ...result, apiChannels: payload.channels.length };
 }
 
 async function syncPlayers(events) {
@@ -201,7 +228,10 @@ async function syncPlayers(events) {
 }
 
 async function registerPlayers(events) {
-  const selected = events.filter(isBrasileirao);
+  // A sincronização deve registrar qualquer evento com player válido.
+  // O filtro de Brasileirão é aplicado somente quando solicitado pela rota,
+  // não durante o registro interno dos HLS.
+  const selected = Array.isArray(events) ? events : [];
   let registered = 0;
   let failed = 0;
   for (const event of selected) {
@@ -313,6 +343,7 @@ module.exports = {
   events,
   channels: loadChannels,
   syncChannels,
+  resetChannels,
   load,
   status,
 };

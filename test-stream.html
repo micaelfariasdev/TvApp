@@ -1,55 +1,143 @@
-<!doctype html>
-<html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WatchFooty — partidas populares</title>
-  <style>
-    :root { color-scheme: dark; font-family: system-ui, sans-serif; } * { box-sizing: border-box; }
-    body { margin: 0; background: #0b1020; color: #eef2ff; }
-    header { padding: 28px clamp(18px,4vw,56px); background: linear-gradient(115deg,#152754,#0b1020); }
-    h1 { margin: 0; font-size: clamp(24px,4vw,38px); } #status { margin: 8px 0 0; color: #aab7d5; }
-    main { padding: 24px clamp(18px,4vw,56px) 48px; } #player-area { display:none; margin-bottom:30px; background:#111a31; border-radius:14px; overflow:hidden; }
-    #player { width:100%; height:min(70vh,720px); border:0; background:#000; display:block; } #stream-options { padding:12px; display:flex; flex-wrap:wrap; gap:8px; }
-    button { border:0; border-radius:8px; padding:9px 13px; color:#fff; background:#263c75; cursor:pointer; font:inherit; }
-    button:hover,button:focus { background:#3b82f6; outline:2px solid #93c5fd; outline-offset:2px; }
-    #matches { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
-    .card { padding:0; overflow:hidden; text-align:left; background:#151d33; transition:transform .15s,background .15s; }.card:hover { transform:translateY(-3px); background:#1d2a4c; }
-    .poster { width:100%; height:135px; object-fit:cover; background:#202a42; display:block; }.info { padding:13px; }.league { color:#8bb5ff; font-size:12px; font-weight:650; }
-    .teams { margin:7px 0; font-weight:700; line-height:1.35; }.meta,.empty { color:#b8c3da; font-size:13px; }.empty { grid-column:1/-1; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Stream Player</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f172a',
+                        cardBg: '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-  <header><h1>Partidas populares</h1><p id="status">Carregando partidas…</p></header>
-  <main>
-    <section id="player-area"><iframe id="player" title="Transmissão" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="origin"></iframe><div id="stream-options"></div></section>
-    <section id="matches" aria-live="polite"></section>
-  </main>
-  <script>
-    const apiOrigin = "https://api.watchfooty.st";
-    const apiUrl = `${apiOrigin}/api/v1/matches/live`;
-    const status = document.querySelector("#status"), matchesElement = document.querySelector("#matches");
-    const playerArea = document.querySelector("#player-area"), player = document.querySelector("#player"), streamOptions = document.querySelector("#stream-options");
-    const absoluteUrl = (url) => url ? new URL(url, apiOrigin).href : "";
-    function playStream(stream) {
-      playerArea.style.display = "block"; playerArea.scrollIntoView({behavior:"smooth",block:"start"});
-      const streamUrl = absoluteUrl(stream.url);
-      player.src = streamUrl;
-      status.textContent = `Abrindo ${stream.quality || "stream"} em player incorporado.`;
-    }
-    function showMatch(match) {
-      const card=document.createElement("button"); card.className="card"; card.type="button"; card.setAttribute("aria-label",`Assistir ${match.title}`);
-      if(match.poster){const poster=document.createElement("img");poster.className="poster";poster.src=absoluteUrl(match.poster);poster.alt="";card.append(poster);}
-      const info=document.createElement("div");info.className="info";
-      const league=document.createElement("div");league.className="league";league.textContent=match.league||"Futebol";
-      const teams=document.createElement("div");teams.className="teams";teams.textContent=`${match.teams.home.name} ${match.scores.home} × ${match.scores.away} ${match.teams.away.name}`;
-      const meta=document.createElement("div");meta.className="meta";meta.textContent=[match.status,match.currentMinute&&`${match.currentMinute}'`].filter(Boolean).join(" · ");
-      info.append(league,teams,meta);card.append(info);
-      card.addEventListener("click",()=>{const streams=match.streams.filter(s=>s.url&&!s.nsfw);if(!streams.length){status.textContent="Esta partida não possui stream disponível.";return;}streamOptions.replaceChildren();streams.forEach((stream,index)=>{const option=document.createElement("button");option.textContent=`${stream.quality||"Auto"} · ${stream.language||"Sem idioma"}`;option.addEventListener("click",()=>playStream(stream));streamOptions.append(option);if(index===0)playStream(stream);});});
-      matchesElement.append(card);
-    }
-    async function loadMatches() { try { const response=await fetch(apiUrl);if(!response.ok)throw new Error(`HTTP ${response.status}`);const matches=await response.json();matchesElement.replaceChildren();matches.forEach(showMatch);status.textContent=`${matches.length} partidas carregadas.`;if(!matches.length)matchesElement.innerHTML='<p class="empty">Nenhuma partida encontrada.</p>'; } catch(error) { status.textContent=`Não foi possível carregar a API: ${error.message}`; } }
-    loadMatches();
-  </script>
+<body class="bg-darkBg text-slate-100 min-h-screen flex flex-col justify-between font-sans antialiased">
+    
+    <header class="w-full py-4 px-6 border-b border-slate-800 bg-cardBg/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <h1 class="text-lg md:text-xl font-bold tracking-tight text-emerald-400 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Stream Player
+            </h1>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 font-medium border border-emerald-500/20">HLS / TS Support</span>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-6 flex flex-col gap-6">
+        
+        <div class="bg-cardBg p-4 md:p-6 rounded-2xl shadow-xl border border-slate-800 flex flex-col gap-4">
+            <label for="streamUrl" class="text-sm font-semibold text-slate-300">URL do Stream</label>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <input 
+                    type="url" 
+                    id="streamUrl" 
+                    placeholder="Cole o link do vídeo (.ts, .m3u8, etc)..." 
+                    value="http://195.181.163.138/live/7999833244/rhw8wx7ry7/65114.ts"
+                    class="flex-1 bg-slate-900 border border-slate-700 text-slate-100 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm transition-all"
+                >
+                <button 
+                    onclick="loadStream()"
+                    class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-lg shadow-emerald-600/20 text-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    </svg>
+                    Carregar
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-cardBg rounded-2xl shadow-2xl border border-slate-800 overflow-hidden flex flex-col relative group">
+            <div class="relative w-full aspect-video bg-black flex items-center justify-center">
+                <video 
+                    id="videoPlayer" 
+                    controls 
+                    playsinline
+                    class="w-full h-full object-contain"
+                ></video>
+                <div id="loadingOverlay" class="absolute inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center gap-3 text-emerald-400 font-medium hidden">
+                    <svg class="animate-spin -ml-1 mr-3 h-6 w-6 text-emerald-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Carregando stream...
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="w-full py-4 px-6 border-t border-slate-800 bg-cardBg/30 text-center text-xs text-slate-500">
+        Desenvolvido com Tailwind CSS & HLS.js
+    </footer>
+
+    <script>
+        const video = document.getElementById('videoPlayer');
+        const urlInput = document.getElementById('streamUrl');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        let hls = null;
+
+        function showLoading(show) {
+            if (show) {
+                loadingOverlay.classList.remove('hidden');
+            } else {
+                loadingOverlay.classList.add('hidden');
+            }
+        }
+
+        function loadStream() {
+            const url = urlInput.value.trim();
+            if (!url) return;
+
+            showLoading(true);
+
+            if (hls) {
+                hls.destroy();
+                hls = null;
+            }
+
+            if (Hls.isSupported() && (url.includes('.m3u8') || url.includes('.ts'))) {
+                hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    showLoading(false);
+                    video.play().catch(e => console.log("Autoplay bloqueado:", e));
+                });
+                hls.on(Hls.Events.ERROR, function(event, data) {
+                    if (data.fatal) {
+                        showLoading(false);
+                        console.error("Erro fatal HLS:", data);
+                    }
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl') || url.endsWith('.ts')) {
+                video.src = url;
+                video.addEventListener('loadedmetadata', function() {
+                    showLoading(false);
+                    video.play().catch(e => console.log("Autoplay bloqueado:", e));
+                });
+            } else {
+                video.src = url;
+                showLoading(false);
+                video.play().catch(e => console.log("Autoplay bloqueado:", e));
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadStream();
+        });
+    </script>
 </body>
 </html>

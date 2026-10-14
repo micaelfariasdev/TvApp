@@ -6,19 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 
 class MediaCardAdapter(
     private var items: List<Channel>,
     private val gridMode: Boolean = false,
-    private val onClick: (Channel) -> Unit
+    private val onClick: (Channel) -> Unit,
+    private val progressProvider: (Channel) -> Int = { 0 }
 ) : RecyclerView.Adapter<MediaCardAdapter.Holder>() {
 
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         val poster: ImageView = view.findViewById(R.id.media_card_poster)
         val title: TextView = view.findViewById(R.id.media_card_title)
         val category: TextView = view.findViewById(R.id.media_card_category)
+        val progress: ProgressBar = view.findViewById(R.id.media_card_progress)
     }
 
     fun submit(newItems: List<Channel>) {
@@ -56,6 +59,9 @@ class MediaCardAdapter(
         updateGridCardSize(holder, isLive)
 
         holder.title.text = item.name
+        val progress = progressProvider(item).coerceIn(0, 1000)
+        holder.progress.visibility = if (progress > 0 && !isLive) View.VISIBLE else View.GONE
+        holder.progress.progress = progress
 
         holder.category.text = when {
             isEpisode -> {

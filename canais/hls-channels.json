@@ -1,1568 +1,966 @@
 [
   {
-    "id": "embedtv-a375fd52e07e8a1b",
-    "name": "embedtv-a375fd52e07e8a1b",
-    "url": "https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/espn2",
-    "automatic": true
+    "id": "test-af",
+    "name": "test",
+    "url": "https://6f55c6cb4aa14a499ce9b01493c0ddbf.embedtv.cc/afazenda",
+    "automatic": false
   },
   {
-    "id": "embedtv-daa50702114d0dfd",
-    "name": "embedtv-daa50702114d0dfd",
-    "url": "https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/espn4",
-    "automatic": true
+    "id": "embedtv-channel-afazenda",
+    "name": "A Fazenda 18 - 1",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/afazenda",
+    "automatic": false
   },
   {
-    "id": "embedtv-ad0ec705b40bac92",
-    "name": "embedtv-ad0ec705b40bac92",
-    "url": "https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/espn",
-    "automatic": true
+    "id": "embedtv-channel-afazenda2",
+    "name": "A Fazenda 18 - 2",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/afazenda2",
+    "automatic": false
   },
   {
-    "id": "embedtv-973b9fc06375e33c",
-    "name": "embedtv-973b9fc06375e33c",
-    "url": "https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/caze1",
-    "automatic": true
+    "id": "embedtv-channel-afazenda3",
+    "name": "A Fazenda 18 - 3",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/afazenda3",
+    "automatic": false
   },
   {
-    "id": "embedtv-99f2da83239edec3",
-    "name": "embedtv-99f2da83239edec3",
-    "url": "https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/xsports",
-    "automatic": true
+    "id": "embedtv-channel-afazenda4",
+    "name": "A Fazenda 18 - 4",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/afazenda4",
+    "automatic": false
   },
   {
-    "id": "embedtv-ae34fc5e5d6e988e",
-    "name": "embedtv-ae34fc5e5d6e988e",
-    "url": "https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/sportv2",
-    "automatic": true
+    "id": "embedtv-channel-afazenda5",
+    "name": "A Fazenda 18 - 5",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/afazenda5",
+    "automatic": false
   },
   {
-    "id": "embedtv-d11c900d9bae6fd1",
-    "name": "embedtv-d11c900d9bae6fd1",
-    "url": "https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/sportv",
-    "automatic": true
+    "id": "embedtv-channel-ae",
+    "name": "AE",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/ae",
+    "automatic": false
   },
   {
-    "id": "embedtv-4b7a89a82fb71523",
-    "name": "embedtv-4b7a89a82fb71523",
-    "url": "https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/sportv3",
-    "automatic": true
+    "id": "embedtv-channel-amc",
+    "name": "AMC",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/amc",
+    "automatic": false
   },
   {
-    "id": "embedtv-0ba72e5fbce3e22c",
-    "name": "embedtv-0ba72e5fbce3e22c",
-    "url": "https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/bandsports",
-    "automatic": true
+    "id": "embedtv-channel-axn",
+    "name": "AXN",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/axn",
+    "automatic": false
   },
   {
-    "id": "embedtv-938c813103a73886",
-    "name": "embedtv-938c813103a73886",
-    "url": "https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/premiere",
-    "automatic": true
+    "id": "embedtv-channel-adultswim",
+    "name": "Adult Swim",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/adultswim",
+    "automatic": false
   },
   {
-    "id": "embedtv-032f1b77cd8c67b7",
-    "name": "embedtv-032f1b77cd8c67b7",
-    "url": "https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/globors",
-    "automatic": true
+    "id": "embedtv-channel-animalplanet",
+    "name": "Animal Planet",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/animalplanet",
+    "automatic": false
   },
   {
-    "id": "embedtv-5c2959fc8adc28ec",
-    "name": "embedtv-5c2959fc8adc28ec",
-    "url": "https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/globosp",
-    "automatic": true
+    "id": "embedtv-channel-aparecida",
+    "name": "Aparecida",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/aparecida",
+    "automatic": false
   },
   {
-    "id": "embedtv-14b4a986678028a0",
-    "name": "embedtv-14b4a986678028a0",
-    "url": "https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/globorj",
-    "automatic": true
+    "id": "embedtv-channel-bandnews",
+    "name": "Band News",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/bandnews",
+    "automatic": false
   },
   {
-    "id": "embedtv-7db3a13b5fe9325d",
-    "name": "embedtv-7db3a13b5fe9325d",
-    "url": "https://adc529d06af33ab1bb8904c469f257fc.embedtv.lat/espn3",
-    "automatic": true
+    "id": "embedtv-channel-bandrj",
+    "name": "Band RJ",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/bandrj",
+    "automatic": false
   },
   {
-    "id": "embedtv-893fa30c2b12306f",
-    "name": "embedtv-893fa30c2b12306f",
-    "url": "https://d5053c97088995c33eb227b0594fa043.embedtv.lat/espn4",
-    "automatic": true
+    "id": "embedtv-channel-bandsp",
+    "name": "Band SP",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/bandsp",
+    "automatic": false
   },
   {
-    "id": "embedtv-618b5e58620174b0",
-    "name": "embedtv-618b5e58620174b0",
-    "url": "https://d5053c97088995c33eb227b0594fa043.embedtv.lat/espn2",
-    "automatic": true
+    "id": "embedtv-channel-bandsports",
+    "name": "Band Sports",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/bandsports",
+    "automatic": false
   },
   {
-    "id": "embedtv-5557ef343b870ec4",
-    "name": "embedtv-5557ef343b870ec4",
-    "url": "https://d5053c97088995c33eb227b0594fa043.embedtv.lat/espn",
-    "automatic": true
+    "id": "embedtv-channel-cnnbrasil",
+    "name": "CNN Brasil",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/cnnbrasil",
+    "automatic": false
   },
   {
-    "id": "embedtv-d5c463187e6b352f",
-    "name": "embedtv-d5c463187e6b352f",
-    "url": "https://d5053c97088995c33eb227b0594fa043.embedtv.lat/caze1",
-    "automatic": true
+    "id": "embedtv-channel-cancaonova",
+    "name": "Canção Nova",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/cancaonova",
+    "automatic": false
   },
   {
-    "id": "embedtv-06e68fbb46a349e5",
-    "name": "embedtv-06e68fbb46a349e5",
-    "url": "https://d5053c97088995c33eb227b0594fa043.embedtv.lat/xsports",
-    "automatic": true
+    "id": "embedtv-channel-cartoonnetwork",
+    "name": "Cartoon Network",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/cartoonnetwork",
+    "automatic": false
   },
   {
-    "id": "embedtv-5f468a5578a2e257",
-    "name": "embedtv-5f468a5578a2e257",
-    "url": "https://d5053c97088995c33eb227b0594fa043.embedtv.lat/sportv2",
-    "automatic": true
+    "id": "embedtv-channel-cartoonito",
+    "name": "Cartoonito",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/cartoonito",
+    "automatic": false
   },
   {
-    "id": "embedtv-952943cc3911262a",
-    "name": "embedtv-952943cc3911262a",
-    "url": "https://d5053c97088995c33eb227b0594fa043.embedtv.lat/sportv",
-    "automatic": true
+    "id": "embedtv-channel-caze1",
+    "name": "CazeTV 1",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/caze1",
+    "automatic": false
   },
   {
-    "id": "embedtv-372ffcf31d50d013",
-    "name": "embedtv-372ffcf31d50d013",
-    "url": "https://d5053c97088995c33eb227b0594fa043.embedtv.lat/sportv3",
-    "automatic": true
+    "id": "embedtv-channel-caze2",
+    "name": "CazeTV 2",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/caze2",
+    "automatic": false
   },
   {
-    "id": "embedtv-904d524c4158bcd6",
-    "name": "embedtv-904d524c4158bcd6",
-    "url": "https://d5053c97088995c33eb227b0594fa043.embedtv.lat/bandsports",
-    "automatic": true
+    "id": "embedtv-channel-caze3",
+    "name": "CazeTV 3",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/caze3",
+    "automatic": false
   },
   {
-    "id": "embedtv-69f56812ec9ef5b5",
-    "name": "embedtv-69f56812ec9ef5b5",
-    "url": "https://d5053c97088995c33eb227b0594fa043.embedtv.lat/premiere",
-    "automatic": true
+    "id": "embedtv-channel-cinemax",
+    "name": "Cinemax",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/cinemax",
+    "automatic": false
   },
   {
-    "id": "embedtv-219bdd383dfcbcfb",
-    "name": "embedtv-219bdd383dfcbcfb",
-    "url": "https://d5053c97088995c33eb227b0594fa043.embedtv.lat/globors",
-    "automatic": true
+    "id": "embedtv-channel-combate",
+    "name": "Combate",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/combate",
+    "automatic": false
   },
   {
-    "id": "embedtv-1a1f1bfa9e89bf0f",
-    "name": "embedtv-1a1f1bfa9e89bf0f",
-    "url": "https://d5053c97088995c33eb227b0594fa043.embedtv.lat/globosp",
-    "automatic": true
+    "id": "embedtv-channel-cultura",
+    "name": "Cultura",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/cultura",
+    "automatic": false
   },
   {
-    "id": "embedtv-388093005c96c4e4",
-    "name": "embedtv-388093005c96c4e4",
-    "url": "https://d5053c97088995c33eb227b0594fa043.embedtv.lat/globorj",
-    "automatic": true
+    "id": "embedtv-channel-discoverychannel",
+    "name": "Discovery Channel",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/discoverychannel",
+    "automatic": false
   },
   {
-    "id": "embedtv-29cd1d59817d239e",
-    "name": "embedtv-29cd1d59817d239e",
-    "url": "https://d5053c97088995c33eb227b0594fa043.embedtv.lat/espn3",
-    "automatic": true
+    "id": "embedtv-channel-discoveryhh",
+    "name": "Discovery H&H",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/discoveryhh",
+    "automatic": false
   },
   {
-    "id": "embedtv-0e2e1a66e6432f00",
-    "name": "embedtv-0e2e1a66e6432f00",
-    "url": "https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/espn2",
-    "automatic": true
+    "id": "embedtv-channel-discoveryid",
+    "name": "Discovery ID",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/discoveryid",
+    "automatic": false
   },
   {
-    "id": "embedtv-ba147650f13abd29",
-    "name": "embedtv-ba147650f13abd29",
-    "url": "https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/espn4",
-    "automatic": true
+    "id": "embedtv-channel-discoverykids",
+    "name": "Discovery Kids",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/discoverykids",
+    "automatic": false
   },
   {
-    "id": "embedtv-e1da55bab9836a50",
-    "name": "embedtv-e1da55bab9836a50",
-    "url": "https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/espn",
-    "automatic": true
+    "id": "embedtv-channel-discoveryscience",
+    "name": "Discovery Science",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/discoveryscience",
+    "automatic": false
   },
   {
-    "id": "embedtv-11fa7dc57886874d",
-    "name": "embedtv-11fa7dc57886874d",
-    "url": "https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/caze1",
-    "automatic": true
+    "id": "embedtv-channel-discoverytheather",
+    "name": "Discovery Theater",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/discoverytheather",
+    "automatic": false
   },
   {
-    "id": "embedtv-7248b1e02844c4e5",
-    "name": "embedtv-7248b1e02844c4e5",
-    "url": "https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/xsports",
-    "automatic": true
+    "id": "embedtv-channel-discoveryturbo",
+    "name": "Discovery Turbo",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/discoveryturbo",
+    "automatic": false
   },
   {
-    "id": "embedtv-51ca60d8b3803d8a",
-    "name": "embedtv-51ca60d8b3803d8a",
-    "url": "https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/sportv2",
-    "automatic": true
+    "id": "embedtv-channel-discoveryworld",
+    "name": "Discovery World",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/discoveryworld",
+    "automatic": false
   },
   {
-    "id": "embedtv-4c9e0289ef749b1a",
-    "name": "embedtv-4c9e0289ef749b1a",
-    "url": "https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/sportv",
-    "automatic": true
+    "id": "embedtv-channel-disneyplus1",
+    "name": "Disney Plus 1",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/disneyplus1",
+    "automatic": false
   },
   {
-    "id": "embedtv-45cf50340bdd94a8",
-    "name": "embedtv-45cf50340bdd94a8",
-    "url": "https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/sportv3",
-    "automatic": true
+    "id": "embedtv-channel-disneyplus2",
+    "name": "Disney Plus 2",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/disneyplus2",
+    "automatic": false
   },
   {
-    "id": "embedtv-d152ff8a1f8c05db",
-    "name": "embedtv-d152ff8a1f8c05db",
-    "url": "https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/bandsports",
-    "automatic": true
+    "id": "embedtv-channel-disneyplus3",
+    "name": "Disney Plus 3",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/disneyplus3",
+    "automatic": false
   },
   {
-    "id": "embedtv-8e6e82227982b2a5",
-    "name": "embedtv-8e6e82227982b2a5",
-    "url": "https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/premiere",
-    "automatic": true
+    "id": "embedtv-channel-espn",
+    "name": "Espn",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/espn",
+    "automatic": false
   },
   {
-    "id": "embedtv-473101ece18dac1c",
-    "name": "embedtv-473101ece18dac1c",
-    "url": "https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/globors",
-    "automatic": true
+    "id": "embedtv-channel-espn2",
+    "name": "Espn 2",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/espn2",
+    "automatic": false
   },
   {
-    "id": "embedtv-d2675a134cba996a",
-    "name": "embedtv-d2675a134cba996a",
-    "url": "https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/globosp",
-    "automatic": true
+    "id": "embedtv-channel-espn3",
+    "name": "Espn 3",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/espn3",
+    "automatic": false
   },
   {
-    "id": "embedtv-38b21821b868fee3",
-    "name": "embedtv-38b21821b868fee3",
-    "url": "https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/globorj",
-    "automatic": true
+    "id": "embedtv-channel-espn4",
+    "name": "Espn 4",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/espn4",
+    "automatic": false
   },
   {
-    "id": "embedtv-091ed07c500ec1a2",
-    "name": "embedtv-091ed07c500ec1a2",
-    "url": "https://fc39b9d946dff35c8e7f0986d8bddd8d.embedtv.lat/espn3",
-    "automatic": true
+    "id": "embedtv-channel-espn5",
+    "name": "Espn 5",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/espn5",
+    "automatic": false
   },
   {
-    "id": "embedtv-9008b9ef22d45c47",
-    "name": "embedtv-9008b9ef22d45c47",
-    "url": "https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/espn4",
-    "automatic": true
+    "id": "embedtv-channel-espn6",
+    "name": "Espn 6",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/espn6",
+    "automatic": false
   },
   {
-    "id": "embedtv-722bba9d12146453",
-    "name": "embedtv-722bba9d12146453",
-    "url": "https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/espn2",
-    "automatic": true
+    "id": "embedtv-channel-foodnetwork",
+    "name": "Food Network",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/foodnetwork",
+    "automatic": false
   },
   {
-    "id": "embedtv-a9e79e420791d7bd",
-    "name": "embedtv-a9e79e420791d7bd",
-    "url": "https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/espn",
-    "automatic": true
+    "id": "embedtv-channel-gnt",
+    "name": "GNT",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/gnt",
+    "automatic": false
   },
   {
-    "id": "embedtv-450f5359999317ad",
-    "name": "embedtv-450f5359999317ad",
-    "url": "https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/caze1",
-    "automatic": true
+    "id": "embedtv-channel-globoam",
+    "name": "Globo AM",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/globoam",
+    "automatic": false
   },
   {
-    "id": "embedtv-7e1b6d5c1f34cab4",
-    "name": "embedtv-7e1b6d5c1f34cab4",
-    "url": "https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/xsports",
-    "automatic": true
+    "id": "embedtv-channel-globodf",
+    "name": "Globo DF",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/globodf",
+    "automatic": false
   },
   {
-    "id": "embedtv-79b8c75df8cb7d70",
-    "name": "embedtv-79b8c75df8cb7d70",
-    "url": "https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/sportv2",
-    "automatic": true
+    "id": "embedtv-channel-globoce",
+    "name": "Globo CE",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/globoce",
+    "automatic": false
   },
   {
-    "id": "embedtv-a9cbf282f9f07fcd",
-    "name": "embedtv-a9cbf282f9f07fcd",
-    "url": "https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/sportv",
-    "automatic": true
+    "id": "embedtv-channel-globoes",
+    "name": "Globo ES",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/globoes",
+    "automatic": false
   },
   {
-    "id": "embedtv-10a5855b3374a6e5",
-    "name": "embedtv-10a5855b3374a6e5",
-    "url": "https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/sportv3",
-    "automatic": true
+    "id": "embedtv-channel-globomg",
+    "name": "Globo MG",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/globomg",
+    "automatic": false
   },
   {
-    "id": "embedtv-60ce91210070431a",
-    "name": "embedtv-60ce91210070431a",
-    "url": "https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/bandsports",
-    "automatic": true
+    "id": "embedtv-channel-globogo",
+    "name": "Globo GO",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/globogo",
+    "automatic": false
   },
   {
-    "id": "embedtv-f78827f59afc90fd",
-    "name": "embedtv-f78827f59afc90fd",
-    "url": "https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/premiere",
-    "automatic": true
+    "id": "embedtv-channel-globonews",
+    "name": "Globo News",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/globonews",
+    "automatic": false
   },
   {
-    "id": "embedtv-469404728a555ee0",
-    "name": "embedtv-469404728a555ee0",
-    "url": "https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/globors",
-    "automatic": true
+    "id": "embedtv-channel-globonovelas",
+    "name": "Globo Novelas",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/globonovelas",
+    "automatic": false
   },
   {
-    "id": "embedtv-fc4e44823555a816",
-    "name": "embedtv-fc4e44823555a816",
-    "url": "https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/globosp",
-    "automatic": true
+    "id": "embedtv-channel-globopb",
+    "name": "Globo PB",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/globopb",
+    "automatic": false
   },
   {
-    "id": "embedtv-1eeeb4a81cfab3b9",
-    "name": "embedtv-1eeeb4a81cfab3b9",
-    "url": "https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/globorj",
-    "automatic": true
+    "id": "embedtv-channel-globope",
+    "name": "Globo PE",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/globope",
+    "automatic": false
   },
   {
-    "id": "embedtv-acf90bfeb5e73e79",
-    "name": "embedtv-acf90bfeb5e73e79",
-    "url": "https://70b530e872e65135efebec4e1c6021c7.embedtv.lat/espn3",
-    "automatic": true
+    "id": "embedtv-channel-globorj",
+    "name": "Globo RJ",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/globorj",
+    "automatic": false
   },
   {
-    "id": "embedtv-4b5509f6d27eb1bc",
-    "name": "embedtv-4b5509f6d27eb1bc",
-    "url": "https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/espn4",
-    "automatic": true
+    "id": "embedtv-channel-globors",
+    "name": "Globo RS",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/globors",
+    "automatic": false
   },
   {
-    "id": "embedtv-a1cd90ed124b792b",
-    "name": "embedtv-a1cd90ed124b792b",
-    "url": "https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/espn2",
-    "automatic": true
+    "id": "embedtv-channel-globosp",
+    "name": "Globo SP",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/globosp",
+    "automatic": false
   },
   {
-    "id": "embedtv-7a60eec9227718d0",
-    "name": "embedtv-7a60eec9227718d0",
-    "url": "https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/espn",
-    "automatic": true
+    "id": "embedtv-channel-gloob",
+    "name": "Gloob",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/gloob",
+    "automatic": false
   },
   {
-    "id": "embedtv-8fa0d813f71e5e6d",
-    "name": "embedtv-8fa0d813f71e5e6d",
-    "url": "https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/caze1",
-    "automatic": true
+    "id": "embedtv-channel-hbo",
+    "name": "HBO",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/hbo",
+    "automatic": false
   },
   {
-    "id": "embedtv-886e390aa514cf8b",
-    "name": "embedtv-886e390aa514cf8b",
-    "url": "https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/xsports",
-    "automatic": true
+    "id": "embedtv-channel-hbo2",
+    "name": "HBO 2",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/hbo2",
+    "automatic": false
   },
   {
-    "id": "embedtv-8ae77595df577243",
-    "name": "embedtv-8ae77595df577243",
-    "url": "https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/sportv2",
-    "automatic": true
+    "id": "embedtv-channel-hbofamily",
+    "name": "HBO Family",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/hbofamily",
+    "automatic": false
   },
   {
-    "id": "embedtv-da9ee91070f6a3c0",
-    "name": "embedtv-da9ee91070f6a3c0",
-    "url": "https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/sportv",
-    "automatic": true
+    "id": "embedtv-channel-hbomundi",
+    "name": "HBO Mundi",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/hbomundi",
+    "automatic": false
   },
   {
-    "id": "embedtv-2ddf458dfa70fc25",
-    "name": "embedtv-2ddf458dfa70fc25",
-    "url": "https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/sportv3",
-    "automatic": true
+    "id": "embedtv-channel-hbopop",
+    "name": "HBO POP",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/hbopop",
+    "automatic": false
   },
   {
-    "id": "embedtv-867c45328caad864",
-    "name": "embedtv-867c45328caad864",
-    "url": "https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/bandsports",
-    "automatic": true
+    "id": "embedtv-channel-hboplus",
+    "name": "HBO Plus",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/hboplus",
+    "automatic": false
   },
   {
-    "id": "embedtv-b2caa52a0ce87d73",
-    "name": "embedtv-b2caa52a0ce87d73",
-    "url": "https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/premiere",
-    "automatic": true
+    "id": "embedtv-channel-hboxtreme",
+    "name": "HBO Xtreme",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/hboxtreme",
+    "automatic": false
   },
   {
-    "id": "embedtv-11be56f073be1802",
-    "name": "embedtv-11be56f073be1802",
-    "url": "https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/globors",
-    "automatic": true
+    "id": "embedtv-channel-hgtv",
+    "name": "HGTV",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/hgtv",
+    "automatic": false
   },
   {
-    "id": "embedtv-a326caaf0bc7bafa",
-    "name": "embedtv-a326caaf0bc7bafa",
-    "url": "https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/globosp",
-    "automatic": true
+    "id": "embedtv-channel-history",
+    "name": "History",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/history",
+    "automatic": false
   },
   {
-    "id": "embedtv-7ba2d33f205fce07",
-    "name": "embedtv-7ba2d33f205fce07",
-    "url": "https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/globorj",
-    "automatic": true
+    "id": "embedtv-channel-history2",
+    "name": "History 2",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/history2",
+    "automatic": false
   },
   {
-    "id": "embedtv-8e1cc6c98a52619a",
-    "name": "embedtv-8e1cc6c98a52619a",
-    "url": "https://96190faf9adbf8b6e1ad7328ced06a89.embedtv.lat/espn3",
-    "automatic": true
+    "id": "embedtv-channel-mtv",
+    "name": "MTV",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/mtv",
+    "automatic": false
   },
   {
-    "id": "embedtv-21d8b586a559b430",
-    "name": "embedtv-21d8b586a559b430",
-    "url": "https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/espn4",
-    "automatic": true
+    "id": "embedtv-channel-masterchef",
+    "name": "Master chef",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/masterchef",
+    "automatic": false
   },
   {
-    "id": "embedtv-529a879542587c7b",
-    "name": "embedtv-529a879542587c7b",
-    "url": "https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/espn2",
-    "automatic": true
+    "id": "embedtv-channel-max1",
+    "name": "Max - 1",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/max1",
+    "automatic": false
   },
   {
-    "id": "embedtv-66aecd3cec83e256",
-    "name": "embedtv-66aecd3cec83e256",
-    "url": "https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/espn",
-    "automatic": true
+    "id": "embedtv-channel-max2",
+    "name": "Max - 2",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/max2",
+    "automatic": false
   },
   {
-    "id": "embedtv-55ae49806a039e21",
-    "name": "embedtv-55ae49806a039e21",
-    "url": "https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/caze1",
-    "automatic": true
+    "id": "embedtv-channel-max3",
+    "name": "Max - 3",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/max3",
+    "automatic": false
   },
   {
-    "id": "embedtv-6251554dfc90c7c3",
-    "name": "embedtv-6251554dfc90c7c3",
-    "url": "https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/xsports",
-    "automatic": true
+    "id": "embedtv-channel-megapix",
+    "name": "Megapix",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/megapix",
+    "automatic": false
   },
   {
-    "id": "embedtv-9b5a652318e752a3",
-    "name": "embedtv-9b5a652318e752a3",
-    "url": "https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/sportv2",
-    "automatic": true
+    "id": "embedtv-channel-multishow",
+    "name": "Multishow",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/multishow",
+    "automatic": false
   },
   {
-    "id": "embedtv-b76541eb44f01bac",
-    "name": "embedtv-b76541eb44f01bac",
-    "url": "https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/sportv",
-    "automatic": true
+    "id": "embedtv-channel-off",
+    "name": "OFF",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/off",
+    "automatic": false
   },
   {
-    "id": "embedtv-943501e43de1276b",
-    "name": "embedtv-943501e43de1276b",
-    "url": "https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/sportv3",
-    "automatic": true
+    "id": "embedtv-channel-paramountplus",
+    "name": "Paramount Plus",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/paramountplus",
+    "automatic": false
   },
   {
-    "id": "embedtv-a9b418367a691d83",
-    "name": "embedtv-a9b418367a691d83",
-    "url": "https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/bandsports",
-    "automatic": true
+    "id": "embedtv-channel-paramountplus2",
+    "name": "Paramount Plus 2",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/paramountplus2",
+    "automatic": false
   },
   {
-    "id": "embedtv-7f0d26bd7fa55b71",
-    "name": "embedtv-7f0d26bd7fa55b71",
-    "url": "https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/premiere",
-    "automatic": true
+    "id": "embedtv-channel-playboy",
+    "name": "Play Boy",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/playboy",
+    "automatic": false
   },
   {
-    "id": "embedtv-62c24e585fac1286",
-    "name": "embedtv-62c24e585fac1286",
-    "url": "https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/globors",
-    "automatic": true
+    "id": "embedtv-channel-premiere",
+    "name": "Premiere 1",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/premiere",
+    "automatic": false
   },
   {
-    "id": "embedtv-0efa21de488ea8b0",
-    "name": "embedtv-0efa21de488ea8b0",
-    "url": "https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/globosp",
-    "automatic": true
+    "id": "embedtv-channel-premiere2",
+    "name": "Premiere 2",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/premiere2",
+    "automatic": false
   },
   {
-    "id": "embedtv-5bfa9cce6c00ee8c",
-    "name": "embedtv-5bfa9cce6c00ee8c",
-    "url": "https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/globorj",
-    "automatic": true
+    "id": "embedtv-channel-premiere3",
+    "name": "Premiere 3",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/premiere3",
+    "automatic": false
   },
   {
-    "id": "embedtv-2277b90cf1b5e5e0",
-    "name": "embedtv-2277b90cf1b5e5e0",
-    "url": "https://1cf0ec03e6449787a61057dfbd91f043.embedtv.lat/espn3",
-    "automatic": true
+    "id": "embedtv-channel-premiere4",
+    "name": "Premiere 4",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/premiere4",
+    "automatic": false
   },
   {
-    "id": "embedtv-c83010a858baf853",
-    "name": "embedtv-c83010a858baf853",
-    "url": "https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/espn4",
-    "automatic": true
+    "id": "embedtv-channel-premiere5",
+    "name": "Premiere 5",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/premiere5",
+    "automatic": false
   },
   {
-    "id": "embedtv-bfd7401deafe49e6",
-    "name": "embedtv-bfd7401deafe49e6",
-    "url": "https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/espn2",
-    "automatic": true
+    "id": "embedtv-channel-premiere6",
+    "name": "Premiere 6",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/premiere6",
+    "automatic": false
   },
   {
-    "id": "embedtv-a36a74a3526186a2",
-    "name": "embedtv-a36a74a3526186a2",
-    "url": "https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/espn",
-    "automatic": true
+    "id": "embedtv-channel-premiere7",
+    "name": "Premiere 7",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/premiere7",
+    "automatic": false
   },
   {
-    "id": "embedtv-c177e14287c0a650",
-    "name": "embedtv-c177e14287c0a650",
-    "url": "https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/caze1",
-    "automatic": true
+    "id": "embedtv-channel-premiere8",
+    "name": "Premiere 8",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/premiere8",
+    "automatic": false
   },
   {
-    "id": "embedtv-dda8fe7817ca4ed5",
-    "name": "embedtv-dda8fe7817ca4ed5",
-    "url": "https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/xsports",
-    "automatic": true
+    "id": "embedtv-channel-primevideo",
+    "name": "Prime Video",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/primevideo",
+    "automatic": false
   },
   {
-    "id": "embedtv-6d0e490dd313fcf0",
-    "name": "embedtv-6d0e490dd313fcf0",
-    "url": "https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/sportv2",
-    "automatic": true
+    "id": "embedtv-channel-primevideo2",
+    "name": "Prime Video 2",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/primevideo2",
+    "automatic": false
   },
   {
-    "id": "embedtv-faebb3188e80eff8",
-    "name": "embedtv-faebb3188e80eff8",
-    "url": "https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/sportv",
-    "automatic": true
+    "id": "embedtv-channel-primevideo3",
+    "name": "Prime Video 3",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/primevideo3",
+    "automatic": false
   },
   {
-    "id": "embedtv-ef26d2c0382496ec",
-    "name": "embedtv-ef26d2c0382496ec",
-    "url": "https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/sportv3",
-    "automatic": true
+    "id": "embedtv-channel-primevideo4",
+    "name": "Prime Video 4",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/primevideo4",
+    "automatic": false
   },
   {
-    "id": "embedtv-71fcfede957aa2a4",
-    "name": "embedtv-71fcfede957aa2a4",
-    "url": "https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/bandsports",
-    "automatic": true
+    "id": "embedtv-channel-recordmg",
+    "name": "Record MG",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/recordmg",
+    "automatic": false
   },
   {
-    "id": "embedtv-6bc0e20251e047ed",
-    "name": "embedtv-6bc0e20251e047ed",
-    "url": "https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/premiere",
-    "automatic": true
+    "id": "embedtv-channel-recordrj",
+    "name": "Record RJ",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/recordrj",
+    "automatic": false
   },
   {
-    "id": "embedtv-9c86c2007bb114ce",
-    "name": "embedtv-9c86c2007bb114ce",
-    "url": "https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/globors",
-    "automatic": true
+    "id": "embedtv-channel-recordsp",
+    "name": "Record SP",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/recordsp",
+    "automatic": false
   },
   {
-    "id": "embedtv-23ff489424047ea9",
-    "name": "embedtv-23ff489424047ea9",
-    "url": "https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/globosp",
-    "automatic": true
+    "id": "embedtv-channel-recordgo",
+    "name": "Record GO",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/recordgo",
+    "automatic": false
   },
   {
-    "id": "embedtv-675dceec6268f986",
-    "name": "embedtv-675dceec6268f986",
-    "url": "https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/globorj",
-    "automatic": true
+    "id": "embedtv-channel-redevida",
+    "name": "Rede Vida",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/redevida",
+    "automatic": false
   },
   {
-    "id": "embedtv-f1d94eed0f5159ba",
-    "name": "embedtv-f1d94eed0f5159ba",
-    "url": "https://a143714b46c683c97abaa86aa4311df8.embedtv.lat/espn3",
-    "automatic": true
+    "id": "embedtv-channel-sbtrj",
+    "name": "SBT RJ",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/sbtrj",
+    "automatic": false
   },
   {
-    "id": "embedtv-a0c6b51532224014",
-    "name": "embedtv-a0c6b51532224014",
-    "url": "https://986395d843c756db33bda602a542ad7e.embedtv.lat/espn2",
-    "automatic": true
+    "id": "embedtv-channel-sbtsp",
+    "name": "SBT SP",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/sbtsp",
+    "automatic": false
   },
   {
-    "id": "embedtv-1e7e40eae0f6d791",
-    "name": "embedtv-1e7e40eae0f6d791",
-    "url": "https://986395d843c756db33bda602a542ad7e.embedtv.lat/espn4",
-    "automatic": true
+    "id": "embedtv-channel-sexyhot",
+    "name": "Sexy Hot",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/sexyhot",
+    "automatic": false
   },
   {
-    "id": "embedtv-741236ce4880de4f",
-    "name": "embedtv-741236ce4880de4f",
-    "url": "https://986395d843c756db33bda602a542ad7e.embedtv.lat/espn",
-    "automatic": true
+    "id": "embedtv-channel-sonychannel",
+    "name": "Sony Channel",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/sonychannel",
+    "automatic": false
   },
   {
-    "id": "embedtv-5d64402b6ba99494",
-    "name": "embedtv-5d64402b6ba99494",
-    "url": "https://986395d843c756db33bda602a542ad7e.embedtv.lat/caze1",
-    "automatic": true
+    "id": "embedtv-channel-space",
+    "name": "Space",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/space",
+    "automatic": false
   },
   {
-    "id": "embedtv-7db53e6a52c7e95a",
-    "name": "embedtv-7db53e6a52c7e95a",
-    "url": "https://986395d843c756db33bda602a542ad7e.embedtv.lat/xsports",
-    "automatic": true
+    "id": "embedtv-channel-sportynet",
+    "name": "SportyNet",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/sportynet",
+    "automatic": false
   },
   {
-    "id": "embedtv-e0e4f4bed072db2c",
-    "name": "embedtv-e0e4f4bed072db2c",
-    "url": "https://986395d843c756db33bda602a542ad7e.embedtv.lat/sportv2",
-    "automatic": true
+    "id": "embedtv-channel-sportynetplus1",
+    "name": "SportyNet+ 1",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/sportynetplus1",
+    "automatic": false
   },
   {
-    "id": "embedtv-8db69b2b15da2b63",
-    "name": "embedtv-8db69b2b15da2b63",
-    "url": "https://986395d843c756db33bda602a542ad7e.embedtv.lat/sportv",
-    "automatic": true
+    "id": "embedtv-channel-sportynetplus2",
+    "name": "SportyNet+ 2",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/sportynetplus2",
+    "automatic": false
   },
   {
-    "id": "embedtv-00eeeab23362d26f",
-    "name": "embedtv-00eeeab23362d26f",
-    "url": "https://986395d843c756db33bda602a542ad7e.embedtv.lat/sportv3",
-    "automatic": true
+    "id": "embedtv-channel-sportynetplus3",
+    "name": "SportyNet+ 3",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/sportynetplus3",
+    "automatic": false
   },
   {
-    "id": "embedtv-1eaeeb95aa5b3069",
-    "name": "embedtv-1eaeeb95aa5b3069",
-    "url": "https://986395d843c756db33bda602a542ad7e.embedtv.lat/bandsports",
-    "automatic": true
+    "id": "embedtv-channel-sportv",
+    "name": "Sportv",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/sportv",
+    "automatic": false
   },
   {
-    "id": "embedtv-0a71c60b4cff8d5d",
-    "name": "embedtv-0a71c60b4cff8d5d",
-    "url": "https://986395d843c756db33bda602a542ad7e.embedtv.lat/premiere",
-    "automatic": true
+    "id": "embedtv-channel-sportv2",
+    "name": "Sportv 2",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/sportv2",
+    "automatic": false
   },
   {
-    "id": "embedtv-9844061c6aebbc72",
-    "name": "embedtv-9844061c6aebbc72",
-    "url": "https://986395d843c756db33bda602a542ad7e.embedtv.lat/globors",
-    "automatic": true
+    "id": "embedtv-channel-sportv3",
+    "name": "Sportv 3",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/sportv3",
+    "automatic": false
   },
   {
-    "id": "embedtv-f2979e4ffc46ec8a",
-    "name": "embedtv-f2979e4ffc46ec8a",
-    "url": "https://986395d843c756db33bda602a542ad7e.embedtv.lat/globosp",
-    "automatic": true
+    "id": "embedtv-channel-sportv4",
+    "name": "Sportv 4",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/sportv4",
+    "automatic": false
   },
   {
-    "id": "embedtv-809ef5d759bde6f3",
-    "name": "embedtv-809ef5d759bde6f3",
-    "url": "https://986395d843c756db33bda602a542ad7e.embedtv.lat/globorj",
-    "automatic": true
+    "id": "embedtv-channel-starchannel",
+    "name": "Star Channel",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/starchannel",
+    "automatic": false
   },
   {
-    "id": "embedtv-f2780b7b568cf1ca",
-    "name": "embedtv-f2780b7b568cf1ca",
-    "url": "https://986395d843c756db33bda602a542ad7e.embedtv.lat/espn3",
-    "automatic": true
+    "id": "embedtv-channel-studiouniversal",
+    "name": "Studio Universal",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/studiouniversal",
+    "automatic": false
   },
   {
-    "id": "embedtv-81961448ea9d8a4e",
-    "name": "embedtv-81961448ea9d8a4e",
-    "url": "https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/espn4",
-    "automatic": true
+    "id": "embedtv-channel-tcm",
+    "name": "TCM",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/tcm",
+    "automatic": false
   },
   {
-    "id": "embedtv-de93357b65fad188",
-    "name": "embedtv-de93357b65fad188",
-    "url": "https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/espn2",
-    "automatic": true
+    "id": "embedtv-channel-tlc",
+    "name": "TLC",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/tlc",
+    "automatic": false
   },
   {
-    "id": "embedtv-364ebb092c5c1bc0",
-    "name": "embedtv-364ebb092c5c1bc0",
-    "url": "https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/espn",
-    "automatic": true
+    "id": "embedtv-channel-tnt",
+    "name": "TNT",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/tnt",
+    "automatic": false
   },
   {
-    "id": "embedtv-c7f360352c2056aa",
-    "name": "embedtv-c7f360352c2056aa",
-    "url": "https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/caze1",
-    "automatic": true
+    "id": "embedtv-channel-tntnovelas",
+    "name": "TNT Novelas",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/tntnovelas",
+    "automatic": false
   },
   {
-    "id": "embedtv-a780cd5683bb98d7",
-    "name": "embedtv-a780cd5683bb98d7",
-    "url": "https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/xsports",
-    "automatic": true
+    "id": "embedtv-channel-tntseries",
+    "name": "TNT Series",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/tntseries",
+    "automatic": false
   },
   {
-    "id": "embedtv-85bc8d6d7a3f2e71",
-    "name": "embedtv-85bc8d6d7a3f2e71",
-    "url": "https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/sportv2",
-    "automatic": true
+    "id": "embedtv-channel-tvpaieterno",
+    "name": "TV Pai Eterno",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/tvpaieterno",
+    "automatic": false
   },
   {
-    "id": "embedtv-bb1b842a8b38d1db",
-    "name": "embedtv-bb1b842a8b38d1db",
-    "url": "https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/sportv",
-    "automatic": true
+    "id": "embedtv-channel-telecineaction",
+    "name": "Telecine Action",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/telecineaction",
+    "automatic": false
   },
   {
-    "id": "embedtv-6a669ca337801cd7",
-    "name": "embedtv-6a669ca337801cd7",
-    "url": "https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/sportv3",
-    "automatic": true
+    "id": "embedtv-channel-telecinecult",
+    "name": "Telecine Cult",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/telecinecult",
+    "automatic": false
   },
   {
-    "id": "embedtv-a437835c3ee778b5",
-    "name": "embedtv-a437835c3ee778b5",
-    "url": "https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/bandsports",
-    "automatic": true
+    "id": "embedtv-channel-telecinefun",
+    "name": "Telecine Fun",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/telecinefun",
+    "automatic": false
   },
   {
-    "id": "embedtv-1d128835f9d1c286",
-    "name": "embedtv-1d128835f9d1c286",
-    "url": "https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/premiere",
-    "automatic": true
+    "id": "embedtv-channel-telecinepipoca",
+    "name": "Telecine Pipoca",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/telecinepipoca",
+    "automatic": false
   },
   {
-    "id": "embedtv-f499fe891872065e",
-    "name": "embedtv-f499fe891872065e",
-    "url": "https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/globors",
-    "automatic": true
+    "id": "embedtv-channel-telecinepremium",
+    "name": "Telecine Premium",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/telecinepremium",
+    "automatic": false
   },
   {
-    "id": "embedtv-a48b5eb476cda4c9",
-    "name": "embedtv-a48b5eb476cda4c9",
-    "url": "https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/globosp",
-    "automatic": true
+    "id": "embedtv-channel-telecinetouch",
+    "name": "Telecine Touch",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/telecinetouch",
+    "automatic": false
   },
   {
-    "id": "embedtv-23435b907b418997",
-    "name": "embedtv-23435b907b418997",
-    "url": "https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/globorj",
-    "automatic": true
+    "id": "embedtv-channel-ufcfightpass",
+    "name": "UFC Fight Pass",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/ufcfightpass",
+    "automatic": false
   },
   {
-    "id": "embedtv-086a49b1e24bea9f",
-    "name": "embedtv-086a49b1e24bea9f",
-    "url": "https://c94a5402cabbe2f9b6456e66485dc241.embedtv.lat/espn3",
-    "automatic": true
+    "id": "embedtv-channel-universaltv",
+    "name": "Universal",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/universaltv",
+    "automatic": false
   },
   {
-    "id": "embedtv-f6653d61fb9046eb",
-    "name": "embedtv-f6653d61fb9046eb",
-    "url": "https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/espn2",
-    "automatic": true
+    "id": "embedtv-channel-warnerchannel",
+    "name": "Warnerchannel",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/warnerchannel",
+    "automatic": false
   },
   {
-    "id": "embedtv-acaff9e6a1c39ce4",
-    "name": "embedtv-acaff9e6a1c39ce4",
-    "url": "https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/espn4",
-    "automatic": true
+    "id": "embedtv-channel-xsports",
+    "name": "XSports",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/xsports",
+    "automatic": false
   },
   {
-    "id": "embedtv-5d294474b622e198",
-    "name": "embedtv-5d294474b622e198",
-    "url": "https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/espn",
-    "automatic": true
+    "id": "embedtv-channel-pt-abola",
+    "name": "PT - A Bola",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/pt_abola",
+    "automatic": false
   },
   {
-    "id": "embedtv-9baf90682631a7ed",
-    "name": "embedtv-9baf90682631a7ed",
-    "url": "https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/caze1",
-    "automatic": true
+    "id": "embedtv-channel-pt-benficatv",
+    "name": "PT - Benfica TV",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/pt_benficatv",
+    "automatic": false
   },
   {
-    "id": "embedtv-e37e8067406609bc",
-    "name": "embedtv-e37e8067406609bc",
-    "url": "https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/xsports",
-    "automatic": true
+    "id": "embedtv-channel-pt-canal11",
+    "name": "PT - Canal 11",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/pt_canal11",
+    "automatic": false
   },
   {
-    "id": "embedtv-933b8db5ea63393a",
-    "name": "embedtv-933b8db5ea63393a",
-    "url": "https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/sportv2",
-    "automatic": true
+    "id": "embedtv-channel-pt-eleven1",
+    "name": "PT - Eleven 1",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/pt_eleven1",
+    "automatic": false
   },
   {
-    "id": "embedtv-e86efb6dad1c5066",
-    "name": "embedtv-e86efb6dad1c5066",
-    "url": "https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/sportv",
-    "automatic": true
+    "id": "embedtv-channel-pt-eleven2",
+    "name": "PT - Eleven 2",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/pt_eleven2",
+    "automatic": false
   },
   {
-    "id": "embedtv-931146c676c39206",
-    "name": "embedtv-931146c676c39206",
-    "url": "https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/sportv3",
-    "automatic": true
+    "id": "embedtv-channel-pt-eleven3",
+    "name": "PT - Eleven 3",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/pt_eleven3",
+    "automatic": false
   },
   {
-    "id": "embedtv-caf63936955b86ae",
-    "name": "embedtv-caf63936955b86ae",
-    "url": "https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/bandsports",
-    "automatic": true
+    "id": "embedtv-channel-pt-sportv1",
+    "name": "PT - Sporttv 1",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/pt_sportv1",
+    "automatic": false
   },
   {
-    "id": "embedtv-31c3b6d4fb4d9840",
-    "name": "embedtv-31c3b6d4fb4d9840",
-    "url": "https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/premiere",
-    "automatic": true
+    "id": "embedtv-channel-pt-sportv2",
+    "name": "PT - Sporttv 2",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/pt_sportv2",
+    "automatic": false
   },
   {
-    "id": "embedtv-aa4ba6253ca00826",
-    "name": "embedtv-aa4ba6253ca00826",
-    "url": "https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/globors",
-    "automatic": true
+    "id": "embedtv-channel-pt-sportv3",
+    "name": "PT - Sporttv 3",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/pt_sportv3",
+    "automatic": false
   },
   {
-    "id": "embedtv-8bca87209e93a264",
-    "name": "embedtv-8bca87209e93a264",
-    "url": "https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/globosp",
-    "automatic": true
+    "id": "embedtv-channel-pt-sportv4",
+    "name": "PT - Sporttv 4",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/pt_sportv4",
+    "automatic": false
   },
   {
-    "id": "embedtv-915a3d36cc4f007f",
-    "name": "embedtv-915a3d36cc4f007f",
-    "url": "https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/globorj",
-    "automatic": true
+    "id": "embedtv-channel-pt-sportv5",
+    "name": "PT - Sporttv 5",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/pt_sportv5",
+    "automatic": false
   },
   {
-    "id": "embedtv-9bf8e1730c097fc6",
-    "name": "embedtv-9bf8e1730c097fc6",
-    "url": "https://4f57361695b8bbc5b5a2b507f399619a.embedtv.lat/espn3",
-    "automatic": true
+    "id": "embedtv-channel-pt-sportv6",
+    "name": "PT - Sporttv 6",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/pt_sportv6",
+    "automatic": false
   },
   {
-    "id": "embedtv-8bda2fd8b783747c",
-    "name": "embedtv-8bda2fd8b783747c",
-    "url": "https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/espn2",
-    "automatic": true
+    "id": "embedtv-channel-pt-sportv7",
+    "name": "PT - Sporttv 7",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/pt_sportv7",
+    "automatic": false
   },
   {
-    "id": "embedtv-399a1be76f670640",
-    "name": "embedtv-399a1be76f670640",
-    "url": "https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/espn4",
-    "automatic": true
+    "id": "embedtv-channel-24h-chaves",
+    "name": "24H Chaves",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/24h_chaves",
+    "automatic": false
   },
   {
-    "id": "embedtv-30f3dcd3ba66e168",
-    "name": "embedtv-30f3dcd3ba66e168",
-    "url": "https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/espn",
-    "automatic": true
+    "id": "embedtv-channel-24h-dragonball",
+    "name": "24H Dragon Ball Z",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/24h_dragonball",
+    "automatic": false
   },
   {
-    "id": "embedtv-ec27998b0362729a",
-    "name": "embedtv-ec27998b0362729a",
-    "url": "https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/caze1",
-    "automatic": true
+    "id": "embedtv-channel-24h-friends",
+    "name": "24H Friends",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/24h_friends",
+    "automatic": false
   },
   {
-    "id": "embedtv-fac5dfd34191e484",
-    "name": "embedtv-fac5dfd34191e484",
-    "url": "https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/xsports",
-    "automatic": true
+    "id": "embedtv-channel-24h-naruto",
+    "name": "24H Naruto Clássico",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/24h_naruto",
+    "automatic": false
   },
   {
-    "id": "embedtv-300881e5fbbb402a",
-    "name": "embedtv-300881e5fbbb402a",
-    "url": "https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/sportv2",
-    "automatic": true
+    "id": "embedtv-channel-24h-simpsons",
+    "name": "24H Os Simpsons",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/24h_simpsons",
+    "automatic": false
   },
   {
-    "id": "embedtv-ac01b2e1f78acc7c",
-    "name": "embedtv-ac01b2e1f78acc7c",
-    "url": "https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/sportv",
-    "automatic": true
+    "id": "embedtv-channel-24h-odeiachris",
+    "name": "24H Todo Mundo Odeia o Cris",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/24h_odeiachris",
+    "automatic": false
   },
   {
-    "id": "embedtv-1078ec4317f49136",
-    "name": "embedtv-1078ec4317f49136",
-    "url": "https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/sportv3",
-    "automatic": true
+    "id": "embedtv-channel-24h-picapau",
+    "name": "24H Pica Pau",
+    "url": "https://a4ecf4534ceed5d78f1f9d6dc8ea13ab.embedtv.cc/24h_picapau",
+    "automatic": false
   },
   {
-    "id": "embedtv-d902b19749bf93ef",
-    "name": "embedtv-d902b19749bf93ef",
-    "url": "https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/bandsports",
-    "automatic": true
+    "id": "detroit-red-wings-x-new-jersey-devils",
+    "name": "Detroit Red Wings x New Jersey Devils",
+    "url": "https://e61539ae8f358dde9300a57774d3f457.embedtv.cc/espn3",
+    "automatic": true,
+    "createdAt": 1791946088341,
+    "expiresAt": 1791964088341
   },
   {
-    "id": "embedtv-d3869e0478c2cbda",
-    "name": "embedtv-d3869e0478c2cbda",
-    "url": "https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/premiere",
-    "automatic": true
+    "id": "athletic-club-x-londrina",
+    "name": "Athletic Club x Londrina",
+    "url": "https://e61539ae8f358dde9300a57774d3f457.embedtv.cc/espn4",
+    "automatic": true,
+    "createdAt": 1791946088344,
+    "expiresAt": 1791964088344
   },
   {
-    "id": "embedtv-9ea5963c4fc55752",
-    "name": "embedtv-9ea5963c4fc55752",
-    "url": "https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/globors",
-    "automatic": true
+    "id": "brasil-f-x-argentina-f",
+    "name": "Brasil (F) x Argentina (F)",
+    "url": "https://e61539ae8f358dde9300a57774d3f457.embedtv.cc/sportv",
+    "automatic": true,
+    "createdAt": 1791946088347,
+    "expiresAt": 1791964088347
   },
   {
-    "id": "embedtv-e1298bfba9ab06f5",
-    "name": "embedtv-e1298bfba9ab06f5",
-    "url": "https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/globosp",
-    "automatic": true
+    "id": "tampa-bay-rays-x-cleveland-guardians",
+    "name": "Tampa Bay Rays x Cleveland Guardians",
+    "url": "https://e61539ae8f358dde9300a57774d3f457.embedtv.cc/espn2",
+    "automatic": true,
+    "createdAt": 1791946089123,
+    "expiresAt": 1791964089123
   },
   {
-    "id": "embedtv-8826b9bb1f4e6a66",
-    "name": "embedtv-8826b9bb1f4e6a66",
-    "url": "https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/globorj",
-    "automatic": true
+    "id": "dallas-stars-x-colorado-avalanche",
+    "name": "Dallas Stars x Colorado Avalanche",
+    "url": "https://e61539ae8f358dde9300a57774d3f457.embedtv.cc/espn3",
+    "automatic": true,
+    "createdAt": 1791946089128,
+    "expiresAt": 1791964089128
   },
   {
-    "id": "embedtv-983221287e346a78",
-    "name": "embedtv-983221287e346a78",
-    "url": "https://ea1a83db996ad7bc2240fa9f40ed7782.embedtv.lat/espn3",
-    "automatic": true
+    "id": "boca-juniors-x-vasco-da-gama",
+    "name": "Boca Juniors x Vasco da Gama",
+    "url": "https://e61539ae8f358dde9300a57774d3f457.embedtv.cc/sbtrj",
+    "automatic": true,
+    "createdAt": 1791946089132,
+    "expiresAt": 1791964089132
   },
   {
-    "id": "embedtv-53eb7318a6f84aa9",
-    "name": "embedtv-53eb7318a6f84aa9",
-    "url": "https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/espn4",
-    "automatic": true
+    "id": "bauru-f-x-osasco-f",
+    "name": "Bauru (F) x Osasco (F)",
+    "url": "https://e61539ae8f358dde9300a57774d3f457.embedtv.cc/sportv2",
+    "automatic": true,
+    "createdAt": 1791946089135,
+    "expiresAt": 1791964089135
   },
   {
-    "id": "embedtv-e5b7efd49ab1f0ba",
-    "name": "embedtv-e5b7efd49ab1f0ba",
-    "url": "https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/espn2",
-    "automatic": true
+    "id": "mexico-f-x-jamaica-f",
+    "name": "México (F) x Jamaica (F)",
+    "url": "https://e61539ae8f358dde9300a57774d3f457.embedtv.cc/sportv",
+    "automatic": true,
+    "createdAt": 1791946089136,
+    "expiresAt": 1791964089136
   },
   {
-    "id": "embedtv-1f1e48a31291cf14",
-    "name": "embedtv-1f1e48a31291cf14",
-    "url": "https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/espn",
-    "automatic": true
+    "id": "pic-test",
+    "name": "pic",
+    "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_picapau",
+    "automatic": false
   },
   {
-    "id": "embedtv-dabaa1512adc9cb2",
-    "name": "embedtv-dabaa1512adc9cb2",
-    "url": "https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/caze1",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-e1c392119bfbbff7",
-    "name": "embedtv-e1c392119bfbbff7",
-    "url": "https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/xsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-d90f5141efc3f655",
-    "name": "embedtv-d90f5141efc3f655",
-    "url": "https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/sportv2",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-825c51bde9c30648",
-    "name": "embedtv-825c51bde9c30648",
-    "url": "https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/sportv",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-52f0caed15d7f280",
-    "name": "embedtv-52f0caed15d7f280",
-    "url": "https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/sportv3",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-c45864e60e90c6af",
-    "name": "embedtv-c45864e60e90c6af",
-    "url": "https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/bandsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-62a452a23e48aab4",
-    "name": "embedtv-62a452a23e48aab4",
-    "url": "https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/premiere",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-ee82bd3930688ae4",
-    "name": "embedtv-ee82bd3930688ae4",
-    "url": "https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/globors",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-6c41e933919e331d",
-    "name": "embedtv-6c41e933919e331d",
-    "url": "https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/globosp",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-eecbe4495a0b89f4",
-    "name": "embedtv-eecbe4495a0b89f4",
-    "url": "https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/globorj",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-707f583cdb50d99c",
-    "name": "embedtv-707f583cdb50d99c",
-    "url": "https://75309ef17d59fff96a2afc13de10e02b.embedtv.lat/espn3",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-e9ab7a6adc78b2f7",
-    "name": "embedtv-e9ab7a6adc78b2f7",
-    "url": "https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/espn4",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-67f2d4bdc72d58c7",
-    "name": "embedtv-67f2d4bdc72d58c7",
-    "url": "https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/espn2",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-4775c04eda568bb1",
-    "name": "embedtv-4775c04eda568bb1",
-    "url": "https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/espn",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-8a85157b4d7d8a05",
-    "name": "embedtv-8a85157b4d7d8a05",
-    "url": "https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/caze1",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-47fe4684d757224c",
-    "name": "embedtv-47fe4684d757224c",
-    "url": "https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/xsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-f918ffbbffd49b16",
-    "name": "embedtv-f918ffbbffd49b16",
-    "url": "https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/sportv2",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-3f855fa39c590a00",
-    "name": "embedtv-3f855fa39c590a00",
-    "url": "https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/sportv",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-6b41e474de729342",
-    "name": "embedtv-6b41e474de729342",
-    "url": "https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/sportv3",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-fc2140bae6730600",
-    "name": "embedtv-fc2140bae6730600",
-    "url": "https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/bandsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-af10a1aafd2e166e",
-    "name": "embedtv-af10a1aafd2e166e",
-    "url": "https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/premiere",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-76fa92f143fb9fc8",
-    "name": "embedtv-76fa92f143fb9fc8",
-    "url": "https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/globors",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-6fee30ee87f4d995",
-    "name": "embedtv-6fee30ee87f4d995",
-    "url": "https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/globosp",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-93e79a7a74fcd8d9",
-    "name": "embedtv-93e79a7a74fcd8d9",
-    "url": "https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/globorj",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-e8e0514dff6e27ee",
-    "name": "embedtv-e8e0514dff6e27ee",
-    "url": "https://f838d8d72a9ab31eb4e471a0e1a5c30e.embedtv.lat/espn3",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-d88ade384cbd5e48",
-    "name": "embedtv-d88ade384cbd5e48",
-    "url": "https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/espn4",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-6531bf10fab57ee5",
-    "name": "embedtv-6531bf10fab57ee5",
-    "url": "https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/espn2",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-1b3d86d3f55fa9d1",
-    "name": "embedtv-1b3d86d3f55fa9d1",
-    "url": "https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/espn",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-4580f9f945493a15",
-    "name": "embedtv-4580f9f945493a15",
-    "url": "https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/caze1",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-9791425b7c91ae61",
-    "name": "embedtv-9791425b7c91ae61",
-    "url": "https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/xsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-6f8051893c1fc1ac",
-    "name": "embedtv-6f8051893c1fc1ac",
-    "url": "https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/sportv2",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-c4f64ae42d6551e0",
-    "name": "embedtv-c4f64ae42d6551e0",
-    "url": "https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/sportv",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-f6be3d15323aff34",
-    "name": "embedtv-f6be3d15323aff34",
-    "url": "https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/sportv3",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-5c6134446fe50f6b",
-    "name": "embedtv-5c6134446fe50f6b",
-    "url": "https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/bandsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-7895161fc675bcec",
-    "name": "embedtv-7895161fc675bcec",
-    "url": "https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/premiere",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-2d8ebcd9a2266967",
-    "name": "embedtv-2d8ebcd9a2266967",
-    "url": "https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/globors",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-e279129ff693ecec",
-    "name": "embedtv-e279129ff693ecec",
-    "url": "https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/globosp",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-deb2684ec2b0784f",
-    "name": "embedtv-deb2684ec2b0784f",
-    "url": "https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/globorj",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-d3fd8f5357fbd58e",
-    "name": "embedtv-d3fd8f5357fbd58e",
-    "url": "https://a8a079706f9fbfb5219325f68ea16b6f.embedtv.lat/espn3",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-d6d97298373427b3",
-    "name": "embedtv-d6d97298373427b3",
-    "url": "https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/espn4",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-b964173e52f2de3c",
-    "name": "embedtv-b964173e52f2de3c",
-    "url": "https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/espn2",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-6830669e2ede57d1",
-    "name": "embedtv-6830669e2ede57d1",
-    "url": "https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/espn",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-0f2054d568e7696b",
-    "name": "embedtv-0f2054d568e7696b",
-    "url": "https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/caze1",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-f24b44528427f00d",
-    "name": "embedtv-f24b44528427f00d",
-    "url": "https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/xsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-06832c21e2ad94e9",
-    "name": "embedtv-06832c21e2ad94e9",
-    "url": "https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/sportv2",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-42b3fc96b1dc40d5",
-    "name": "embedtv-42b3fc96b1dc40d5",
-    "url": "https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/sportv",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-4bd2edeba65376e8",
-    "name": "embedtv-4bd2edeba65376e8",
-    "url": "https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/sportv3",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-e5790a6186ca2e90",
-    "name": "embedtv-e5790a6186ca2e90",
-    "url": "https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/bandsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-7167f19117e16c35",
-    "name": "embedtv-7167f19117e16c35",
-    "url": "https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/premiere",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-12d1b38c1382c0c8",
-    "name": "embedtv-12d1b38c1382c0c8",
-    "url": "https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/globors",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-b096874f0bc39fce",
-    "name": "embedtv-b096874f0bc39fce",
-    "url": "https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/globosp",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-b8e41da6e8c41bfa",
-    "name": "embedtv-b8e41da6e8c41bfa",
-    "url": "https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/globorj",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-37959fd1e1466b7e",
-    "name": "embedtv-37959fd1e1466b7e",
-    "url": "https://fad27bfd91995bb8b834df52eaa4cf81.embedtv.lat/espn3",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-ff10eee3554a8724",
-    "name": "embedtv-ff10eee3554a8724",
-    "url": "https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/espn2",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-758b0b699e3628cc",
-    "name": "embedtv-758b0b699e3628cc",
-    "url": "https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/espn4",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-2b129655e9ef6336",
-    "name": "embedtv-2b129655e9ef6336",
-    "url": "https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/espn",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-6d65a7b05d66e9eb",
-    "name": "embedtv-6d65a7b05d66e9eb",
-    "url": "https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/caze1",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-1018d26c24c10480",
-    "name": "embedtv-1018d26c24c10480",
-    "url": "https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/xsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-bc2672bfcc1aabf5",
-    "name": "embedtv-bc2672bfcc1aabf5",
-    "url": "https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/sportv2",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-99afd549be908a71",
-    "name": "embedtv-99afd549be908a71",
-    "url": "https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/sportv",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-fcc2f9985c152e58",
-    "name": "embedtv-fcc2f9985c152e58",
-    "url": "https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/sportv3",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-60dde9ce0d7be0cf",
-    "name": "embedtv-60dde9ce0d7be0cf",
-    "url": "https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/bandsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-6983055b3d9514eb",
-    "name": "embedtv-6983055b3d9514eb",
-    "url": "https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/premiere",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-f73fdbe649a2968f",
-    "name": "embedtv-f73fdbe649a2968f",
-    "url": "https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/globors",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-d6ae5b9ed573c4b7",
-    "name": "embedtv-d6ae5b9ed573c4b7",
-    "url": "https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/globosp",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-f116359a641567c9",
-    "name": "embedtv-f116359a641567c9",
-    "url": "https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/globorj",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-9dc5f9e87b7aadd0",
-    "name": "embedtv-9dc5f9e87b7aadd0",
-    "url": "https://6423ba36347aa19ae4af2b25d1179b34.embedtv.lat/espn3",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-e454e7380001a1ad",
-    "name": "embedtv-e454e7380001a1ad",
-    "url": "https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/espn4",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-cbacd44e43f2696c",
-    "name": "embedtv-cbacd44e43f2696c",
-    "url": "https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/espn2",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-a42365e5ec63cb5f",
-    "name": "embedtv-a42365e5ec63cb5f",
-    "url": "https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/espn",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-d93743546d1bda2e",
-    "name": "embedtv-d93743546d1bda2e",
-    "url": "https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/caze1",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-1c922d263282fb33",
-    "name": "embedtv-1c922d263282fb33",
-    "url": "https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/xsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-a7c71c7ee4775bf8",
-    "name": "embedtv-a7c71c7ee4775bf8",
-    "url": "https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/sportv2",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-5cddde1eb3b27ec0",
-    "name": "embedtv-5cddde1eb3b27ec0",
-    "url": "https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/sportv",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-bf6b5e3ff35aac8c",
-    "name": "embedtv-bf6b5e3ff35aac8c",
-    "url": "https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/sportv3",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-5446b5630195bdcc",
-    "name": "embedtv-5446b5630195bdcc",
-    "url": "https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/bandsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-318471871af39fc9",
-    "name": "embedtv-318471871af39fc9",
-    "url": "https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/premiere",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-d84ad80a44ec36c5",
-    "name": "embedtv-d84ad80a44ec36c5",
-    "url": "https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/globors",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-845514cc461dc853",
-    "name": "embedtv-845514cc461dc853",
-    "url": "https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/globosp",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-09f20e1c47c73c64",
-    "name": "embedtv-09f20e1c47c73c64",
-    "url": "https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/globorj",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-b883366e78d96de5",
-    "name": "embedtv-b883366e78d96de5",
-    "url": "https://d00efee85cc4fb3e70416a22346f4016.embedtv.lat/espn3",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-69c0868e78032eed",
-    "name": "embedtv-69c0868e78032eed",
-    "url": "https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/espn4",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-ebf9a76430a5dd66",
-    "name": "embedtv-ebf9a76430a5dd66",
-    "url": "https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/espn2",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-7474c717057b2e53",
-    "name": "embedtv-7474c717057b2e53",
-    "url": "https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/espn",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-a7619ef08ba19e49",
-    "name": "embedtv-a7619ef08ba19e49",
-    "url": "https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/caze1",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-ddccbd7985d68f47",
-    "name": "embedtv-ddccbd7985d68f47",
-    "url": "https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/xsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-3c1527f18a48256b",
-    "name": "embedtv-3c1527f18a48256b",
-    "url": "https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/sportv2",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-40b39c6c7af4287b",
-    "name": "embedtv-40b39c6c7af4287b",
-    "url": "https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/sportv",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-60b797ab4a0245a3",
-    "name": "embedtv-60b797ab4a0245a3",
-    "url": "https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/sportv3",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-3ee17239ff489aa7",
-    "name": "embedtv-3ee17239ff489aa7",
-    "url": "https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/bandsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-fce7b44dec63ef1a",
-    "name": "embedtv-fce7b44dec63ef1a",
-    "url": "https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/premiere",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-909b21ecec34eb69",
-    "name": "embedtv-909b21ecec34eb69",
-    "url": "https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/globors",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-456e172fc3c99c76",
-    "name": "embedtv-456e172fc3c99c76",
-    "url": "https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/globosp",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-6074822b34499519",
-    "name": "embedtv-6074822b34499519",
-    "url": "https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/globorj",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-3161c66e7af2d711",
-    "name": "embedtv-3161c66e7af2d711",
-    "url": "https://c066ab7165c3ac2d9ff6ed2436157bbf.embedtv.lat/espn3",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-74e204cfacfcd986",
-    "name": "embedtv-74e204cfacfcd986",
-    "url": "https://b1435299b30b759437d08169c7da09a6.embedtv.lat/espn2",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-c7d9881289ae7ed8",
-    "name": "embedtv-c7d9881289ae7ed8",
-    "url": "https://b1435299b30b759437d08169c7da09a6.embedtv.lat/espn",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-621286473a3a8838",
-    "name": "embedtv-621286473a3a8838",
-    "url": "https://b1435299b30b759437d08169c7da09a6.embedtv.lat/xsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-6aa1ce3f0158a7af",
-    "name": "embedtv-6aa1ce3f0158a7af",
-    "url": "https://b1435299b30b759437d08169c7da09a6.embedtv.lat/espn4",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-bdc1c437ded2e8cb",
-    "name": "embedtv-bdc1c437ded2e8cb",
-    "url": "https://b1435299b30b759437d08169c7da09a6.embedtv.lat/primevideo",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-2ad7e3e11f58825b",
-    "name": "embedtv-2ad7e3e11f58825b",
-    "url": "https://b1435299b30b759437d08169c7da09a6.embedtv.lat/caze1",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-305983ea5f7aafe5",
-    "name": "embedtv-305983ea5f7aafe5",
-    "url": "https://b1435299b30b759437d08169c7da09a6.embedtv.lat/bandsports",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-65f714b9edefe141",
-    "name": "embedtv-65f714b9edefe141",
-    "url": "https://b1435299b30b759437d08169c7da09a6.embedtv.lat/premiere",
-    "automatic": true
-  },
-  {
-    "id": "embedtv-f0d508881aeeedd3",
-    "name": "embedtv-f0d508881aeeedd3",
-    "url": "https://b1435299b30b759437d08169c7da09a6.embedtv.lat/sportv",
-    "automatic": true
+    "id": "debug-pic2",
+    "name": "pic",
+    "url": "https://797881614e51151b3423eb62a5289000.embedtv.cc/24h_picapau",
+    "automatic": false
   }
 ]

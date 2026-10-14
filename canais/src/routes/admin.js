@@ -1269,6 +1269,17 @@ router.post("/hls/sync-embedtv", async (req, res) => {
   }
 });
 
+router.post("/hls/reset-embedtv-channels", async (req, res) => {
+  try {
+    console.log("[EMBEDTV] Reset manual dos canais solicitado pelo painel");
+    const result = await embedtv.resetChannels();
+    res.json({ ok: true, ...result, message: "Canais EmbedTV removidos e sincronizados novamente." });
+  } catch (error) {
+    console.error("[EMBEDTV] Falha no reset dos canais:", error);
+    res.status(502).json({ error: error.message });
+  }
+});
+
 
 
 router.get("/api/kick/live", async (req, res) => {

@@ -79,6 +79,14 @@
 
     <button
       class="btn danger"
+      id="resetEmbedChannels"
+      type="button"
+    >
+      Resetar canais EmbedTV
+    </button>
+
+    <button
+      class="btn danger"
       id="deleteAllHls"
       type="button"
     >
@@ -680,6 +688,23 @@
 
     } catch (error) {
       output.textContent = formatError(error);
+      message(formatError(error), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  $("resetEmbedChannels").addEventListener("click", async function () {
+    const button = $("resetEmbedChannels");
+    if (!confirm("Apagar os canais EmbedTV e consultar a API novamente?")) return;
+    button.disabled = true;
+    message("Resetando canais EmbedTV e procurando novas playlists...");
+    try {
+      const result = await api("/reset-embedtv-channels", { method: "POST" });
+      message(`${result.removed || 0} removidos; ${result.imported || 0} canais cadastrados novamente.`);
+      await loadChannels();
+      await loadSettings();
+    } catch (error) {
       message(formatError(error), true);
     } finally {
       button.disabled = false;

@@ -13,8 +13,8 @@ android {
         targetSdk = 35
         // O script scripts/publish-release.ps1 pode sobrescrever estes valores
         // com -PappVersionCode e -PappVersionName ao publicar uma release.
-        versionCode = (project.findProperty("appVersionCode") as String?)?.toIntOrNull() ?: 10
-        versionName = (project.findProperty("appVersionName") as String?) ?: "1.0.10"
+        versionCode = (project.findProperty("appVersionCode") as String?)?.toIntOrNull() ?: 200
+        versionName = (project.findProperty("appVersionName") as String?) ?: "2.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

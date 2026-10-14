@@ -6,6 +6,8 @@ const dns = require("node:dns/promises");
 const net = require("node:net");
 const { Readable } = require("node:stream");
 const { pipeline } = require("node:stream/promises");
+const axios = require("axios");
+const { SocksProxyAgent } = require("socks-proxy-agent");
 const FILE = path.join(__dirname, "../../hls-channels.json");
 const SETTINGS = path.join(__dirname, "../../hls-settings.json");
 // Mantém os tokens de recursos por tempo suficiente para uma reprodução em
@@ -20,6 +22,8 @@ let interval = null,
   lastRun = null,
   running = false;
 let settings = { pollingSeconds: 300, embedtvSeconds: 60 };
+const WARP_SOCKS_URL = process.env.WARP_SOCKS_URL || "socks5h://127.0.0.1:40000";
+const warpAgent = new SocksProxyAgent(WARP_SOCKS_URL, { keepAlive: true });
 try {
   settings = { ...settings, ...JSON.parse(fs.readFileSync(SETTINGS, "utf8")) };
 } catch {}
@@ -99,16 +103,62 @@ async function textLimited(response) {
   if (data.byteLength > 2_000_000) throw Error("HTML/playlist grande demais");
   return Buffer.from(data).toString("utf8");
 }
+
+// A página EmbedTV e o endereço temporário podem ter bloqueio/região por IP.
+// A resolução usa o WARP quando HLS_USE_WARP não estiver explicitamente
+// desativado. O fallback direto mantém o serviço funcionando caso o WARP
+// esteja parado durante uma reinicialização.
+async function requestEmbed(raw, headers = {}) {
+  if (String(process.env.HLS_USE_WARP || "1") === "0") return request(raw, headers);
+  try {
+    let url = raw;
+    for (let i = 0; i < 5; i++) {
+      const target = await validate(url);
+      const response = await axios.get(target, {
+        httpAgent: warpAgent,
+        httpsAgent: warpAgent,
+        proxy: false,
+        maxRedirects: 0,
+        responseType: "arraybuffer",
+        timeout: 15000,
+        validateStatus: () => true,
+        headers: { "User-Agent": "Mozilla/5.0", Accept: "*/*", ...headers },
+      });
+      if (response.status >= 300 && response.status < 400 && response.headers.location) {
+        url = new URL(response.headers.location, target).href;
+        continue;
+      }
+      const body = Buffer.from(response.data || []);
+      return {
+        url: target,
+        response: {
+          ok: response.status >= 200 && response.status < 300,
+          status: response.status,
+          headers: { get: (name) => response.headers[String(name).toLowerCase()] || null },
+          arrayBuffer: async () => body,
+        },
+      };
+    }
+    throw Error("Redirecionamentos demais");
+  } catch (error) {
+    console.warn(`[HLS] WARP indisponível; usando conexão direta: ${error.message}`);
+    return request(raw, headers);
+  }
+}
 function candidates(body, base) {
   const txt = body
     .replace(/\\u002f/gi, "/")
+    .replace(/\\u003a/gi, ":")
+    .replace(/\\u0026/gi, "&")
     .replace(/\\\//g, "/")
-    .replace(/&amp;/g, "&");
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#x2f;/gi, "/");
   const found = new Set();
   for (const m of txt.matchAll(
     /(?:https?:\/\/[^\s"'<>]+|["']([^"']+)["'])/gi,
   )) {
-    const candidate = m[1] || m[0];
+    const candidate = (m[1] || m[0]).replace(/[\\'";,)>]+$/g, "");
     if (!/\.(?:m3u8|txt)(?:[?#]|$)/i.test(candidate)) continue;
     try {
       found.add(new URL(candidate, base).href);
@@ -117,20 +167,41 @@ function candidates(body, base) {
   return [...found].slice(0, 30);
 }
 async function resolve(channel) {
-  const root = await request(channel.url);
+  const root = await requestEmbed(channel.url);
   if (!root.response.ok) throw Error("Origem HTTP " + root.response.status);
   const body = await textLimited(root.response);
   if (body.trimStart().startsWith("#EXTM3U")) return { url: root.url };
-  for (const candidate of candidates(body, root.url)) {
+  const urls = candidates(body, root.url);
+  const rootCookie = root.response.headers.get("set-cookie");
+  console.log(`[HLS] Embed ${channel.id || channel.url}: ${urls.length} candidato(s)`);
+  for (const candidate of urls) {
     try {
-      const p = await request(candidate);
-      if (!p.response.ok) continue;
+      const candidateHeaders = {
+        Referer: root.url,
+        Origin: new URL(root.url).origin,
+        ...(rootCookie ? { Cookie: rootCookie.split(",").map((v) => v.split(";")[0]).join("; ") } : {}),
+      };
+      let p = await requestEmbed(candidate, candidateHeaders);
+      // Alguns hosts recusam o IP do WARP, mas aceitam a conexão direta.
+      // Tenta a origem uma segunda vez antes de descartar o canal.
+      if ([401, 403].includes(p.response.status)) {
+        console.warn(`[HLS] ${channel.id || channel.url}: WARP recusado (${p.response.status}), tentando direto`);
+        p = await request(candidate, candidateHeaders);
+      }
+      if (!p.response.ok) {
+        console.warn(`[HLS] ${channel.id || channel.url}: candidato HTTP ${p.response.status} ${candidate}`);
+        continue;
+      }
       const t = await textLimited(p.response);
       if (t.trimStart().startsWith("#EXTM3U")) return { url: p.url };
-    } catch {}
+      console.warn(`[HLS] ${channel.id || channel.url}: candidato não é playlist ${candidate}`);
+    } catch (e) {
+      console.warn(`[HLS] ${channel.id || channel.url}: falha no candidato ${candidate}: ${e.message}`);
+    }
   }
   throw Error("Não foi encontrada playlist HLS no embed");
 }
+
 async function refresh(channel, force = false) {
   const old = cache.get(channel.id);
   if (old?.pending) return old.pending;
@@ -347,12 +418,18 @@ async function play(req, res) {
     let state = await refresh(c);
     if (!state.url) throw Error(state.error || "Origem indisponível");
     // Playlist sempre nova, nunca guardar segmentos ao longo do polling.
-    let p = await request(state.url);
+    // A playlist temporária também precisa ser buscada pelo mesmo caminho
+    // (WARP + Referer do embed); consultar direto costuma retornar 403.
+    const sourceHeaders = {
+      Referer: c.url,
+      Origin: new URL(c.url).origin,
+    };
+    let p = await requestEmbed(state.url, sourceHeaders);
     if (!p.response.ok && [401, 403, 404, 410].includes(p.response.status)) {
       await p.response.body?.cancel();
       state = await refresh(c, true);
       if (!state.url) throw Error(state.error || "Unable to renew stream source");
-      p = await request(state.url);
+      p = await requestEmbed(state.url, sourceHeaders);
     }
     if (!p.response.ok) throw Error("Origem HTTP " + p.response.status);
     const body = await textLimited(p.response);
