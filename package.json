@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "canais": "scp -r canais/* ubuntu@164.152.62.129:~/canais/ && ssh ubuntu@164.152.62.129 \"bash -lc 'cd ~/canais && npm install --omit=dev && pm2 restart scraper'\"",
+    "canais": "bash scripts/deploy-canais.sh",
     "release:apk": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish-release.ps1"
   },
   "dependencies": {

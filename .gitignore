@@ -31,3 +31,8 @@ np
 
 
 test/
+
+# Estado persistente do servidor: nunca incluir no deploy de código.
+canais/database.json
+canais/hls-channels.json
+canais/*.log
