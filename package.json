@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "canais": "bash scripts/deploy-canais.sh",
+    "canais": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/deploy-canais.ps1",
     "release:apk": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish-release.ps1"
   },
   "dependencies": {
