@@ -837,6 +837,27 @@ router.get("/kick", (req, res) => {
   res.send(tvboxPage("Buscar na Kick", body));
 });
 
+router.get("/api/kick/catalog", (req, res) => {
+  const items = loadDB().filter((item) => String(item.type || "").toLowerCase() === "kick").map((item) => ({ id: item.id, name: item.name, username: String(item.url || "").match(/channels\/([^/]+)\/playback-url/i)?.[1] || "", poster: item.poster || "", category: item.category || "kick" }));
+  res.json({ results: items });
+});
+
+router.post("/kick/refresh-photo", async (req, res) => {
+  try {
+    const username = String(req.body.username || "").trim().replace(/^@/, "");
+    const response = await fetch(`https://kick.com/api/v2/channels/${encodeURIComponent(username)}`, { headers: { Accept: "application/json", "User-Agent": "Mozilla/5.0", Referer: "https://kick.com/" }, signal: AbortSignal.timeout(15000) });
+    if (!response.ok) throw Error(`Kick retornou HTTP ${response.status}`);
+    const data = await response.json();
+    const poster = data.user?.profile_pic || data.user?.profile_picture || data.profile_pic || data.profile_picture || data.banner_picture || "";
+    if (!poster) throw Error("A API não retornou foto");
+    const dbData = loadDB();
+    const item = dbData.find((x) => String(x.url || "").toLowerCase().includes(`/channels/${username.toLowerCase()}/playback-url`));
+    if (!item) throw Error("Live não encontrada no catálogo");
+    item.poster = poster; item.name = item.name || data.user?.username || username; saveDB(dbData);
+    res.json({ ok: true, poster });
+  } catch (error) { res.status(502).json({ error: error.message }); }
+});
+
 router.get("/api/kick/search", async (req, res) => {
   try {
     const query = String(req.query.query || "").trim();
