@@ -831,6 +831,44 @@ router.get("/add", (req, res) => {
   return res.send(tvboxPage("Adicionar item", body));
 });
 
+// Busca e cadastro manual de lives da Kick.
+router.get("/kick", (req, res) => {
+  const body = fs.readFileSync(path.join(TEMPLATES_DIRECTORY, "tvbox-kick.html"), "utf-8");
+  res.send(tvboxPage("Buscar na Kick", body));
+});
+
+router.get("/api/kick/search", async (req, res) => {
+  try {
+    const query = String(req.query.query || "").trim();
+    if (!query) return res.json({ results: [] });
+    const response = await fetch(`https://search.kick.com/api/v1/search/enriched?query=${encodeURIComponent(query)}`, {
+      headers: { Accept: "application/json", "User-Agent": "Mozilla/5.0", Referer: "https://kick.com/" },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!response.ok) throw Error(`Kick retornou HTTP ${response.status}`);
+    const payload = await response.json();
+    const raw = Array.isArray(payload) ? payload : (payload.results || payload.channels || payload.data || []);
+    const results = raw.map((item) => item.channel || item.user || item).map((item) => ({
+      name: item.name || item.username || item.slug || "",
+      username: item.username || item.slug || item.channel_slug || "",
+      poster: item.avatar_url || item.profile_pic || item.profile_picture || item.banner_picture || item.user?.profile_pic || "",
+    })).filter((item) => item.username);
+    res.json({ results: results.filter((item, i, all) => all.findIndex((x) => x.username.toLowerCase() === item.username.toLowerCase()) === i) });
+  } catch (error) { res.status(502).json({ error: error.message, results: [] }); }
+});
+
+router.post("/kick/add", (req, res) => {
+  const username = String(req.body.username || "").trim().replace(/^@/, "");
+  const name = String(req.body.name || username).trim();
+  const poster = String(req.body.poster || "").trim();
+  if (!/^[a-zA-Z0-9_\-\.]{2,80}$/.test(username)) return res.status(400).json({ error: "Username inválido" });
+  const dbData = loadDB();
+  if (dbData.some((item) => String(item.url || "").includes(`/channels/${username}/playback-url`))) return res.json({ ok: true, exists: true });
+  dbData.push({ id: Date.now(), name, url: `https://kick.com/api/v2/channels/${encodeURIComponent(username)}/playback-url`, type: "kick", category: "kick", ...( /^https?:\/\//i.test(poster) ? { poster } : {}) });
+  saveDB(dbData);
+  res.json({ ok: true });
+});
+
 router.post("/add", (req, res) => {
   const { name, url, type, category, poster } = req.body;
   const imageUrl = String(poster || "").trim();

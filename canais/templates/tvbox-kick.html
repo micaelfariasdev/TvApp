@@ -1,0 +1,7 @@
+<section class="panel"><h1>Buscar lives da Kick</h1><p>Pesquise pelo nome ou username e adicione a live ao catálogo.</p>
+<form id="search" style="display:flex;gap:10px"><input id="q" required placeholder="Ex.: brabox" style="flex:1"><button class="btn primary">Pesquisar</button></form>
+<p id="msg"></p><div id="results" class="card-grid"></div></section>
+<script>
+const form=document.getElementById('search'),q=document.getElementById('q'),msg=document.getElementById('msg'),out=document.getElementById('results');
+form.onsubmit=async e=>{e.preventDefault();msg.textContent='Buscando...';out.innerHTML='';try{const r=await fetch('/tvbox/api/kick/search?query='+encodeURIComponent(q.value));const j=await r.json();if(j.error)throw Error(j.error);msg.textContent=(j.results||[]).length+' resultado(s)';(j.results||[]).forEach(x=>{const card=document.createElement('article');card.className='panel';card.innerHTML=`<div style="display:flex;gap:14px;align-items:center"><img src="${x.poster||''}" style="width:76px;height:76px;object-fit:cover;border-radius:50%;background:#26334a"><div><h2>${x.name}</h2><small>@${x.username}</small></div></div><button class="btn primary" style="margin-top:14px">Adicionar live</button>`;card.querySelector('button').onclick=async()=>{const r=await fetch('/tvbox/kick/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(x)});const j=await r.json();msg.textContent=j.error||'Live adicionada ao catálogo';};out.appendChild(card)})}catch(err){msg.textContent=err.message}};
+</script>
