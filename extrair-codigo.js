@@ -13,16 +13,12 @@ const IGNORE_DIRS = new Set([
     "build",
     "coverage",
     ".cache",
+    ".idea",
     ".turbo"
 ]);
 
 const EXTENSIONS = new Set([
-    ".js",
-    ".jsx",
-    ".mjs",
-    ".cjs",
-    ".html",
-    ".htm"
+    ".xml",
 ]);
 
 const IGNORE_FILES = new Set([

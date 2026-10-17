@@ -7,16 +7,15 @@
     android:background="@drawable/channel_item_background"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:gravity="center_vertical"
+    android:minHeight="76dp"
     android:orientation="horizontal"
-    android:minHeight="58dp"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:gravity="center_vertical">
+    android:paddingHorizontal="16dp">
 
     <ImageView
         android:id="@+id/channel_poster"
-        android:layout_width="58dp"
-        android:layout_height="58dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginEnd="14dp"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
@@ -25,10 +24,10 @@
     <TextView
         android:id="@+id/channel_name"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="sans-serif-medium"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:fontFamily="sans-serif-medium" />
+        android:textSize="15sp" />
 
 </LinearLayout>

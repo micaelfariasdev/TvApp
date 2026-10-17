@@ -86,3 +86,18 @@
     </div>
   </form>
 </section>
+{{bannerEditor}}
+<script>
+(() => {
+ const rows = document.getElementById("banner-rows");
+ document.getElementById("banner-add").addEventListener("click", () => {
+   if (rows.children.length < 12) rows.append(document.getElementById("banner-template").content.cloneNode(true));
+ });
+ rows.addEventListener("click", event => {
+   const row = event.target.closest("fieldset"); if (!row) return;
+   if (event.target.matches("[data-banner-remove]")) row.remove();
+   if (event.target.matches("[data-banner-up]") && row.previousElementSibling) rows.insertBefore(row, row.previousElementSibling);
+   if (event.target.matches("[data-banner-down]") && row.nextElementSibling) rows.insertBefore(row.nextElementSibling, row);
+ });
+})();
+</script>

@@ -13,6 +13,8 @@ data class TodayMatch(
     val homeImage: String?,
     val awayName: String,
     val awayImage: String?,
+    val leagueName: String?,
+    val leagueImage: String?,
     val time: String,
     val apiUrl: String?
 )
@@ -28,6 +30,8 @@ class TodayMatchAdapter(
         val homeName: TextView = view.findViewById(R.id.match_home_name)
         val awayName: TextView = view.findViewById(R.id.match_away_name)
         val time: TextView = view.findViewById(R.id.match_time)
+        val leagueName: TextView = view.findViewById(R.id.match_league_name)
+        val leagueImage: ImageView = view.findViewById(R.id.match_league_image)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(
@@ -39,6 +43,11 @@ class TodayMatchAdapter(
         holder.homeName.text = item.homeName
         holder.awayName.text = item.awayName
         holder.time.text = item.time
+        holder.leagueName.text = item.leagueName.orEmpty()
+        holder.leagueImage.load(item.leagueImage) {
+            placeholder(R.drawable.media_poster_placeholder)
+            error(R.drawable.media_poster_placeholder)
+        }
         holder.homeImage.load(item.homeImage) {
             placeholder(R.drawable.media_poster_placeholder)
             error(R.drawable.media_poster_placeholder)

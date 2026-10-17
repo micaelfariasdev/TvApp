@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_gravity="bottom" android:background="#E6110E1B"
+        android:orientation="vertical" android:padding="16dp">
+        <TextView android:id="@+id/player_title_overlay" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:maxLines="2" android:ellipsize="end"
+            android:textSize="16sp" android:textColor="#FFFFFF" android:fontFamily="sans-serif-medium"/>
+        <androidx.media3.ui.DefaultTimeBar android:id="@id/exo_progress"
+            android:layout_width="match_parent" android:layout_height="36dp"
+            app:played_color="#B68AFF" app:scrubber_color="#FFFFFF" app:buffered_color="#71627E"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="center_vertical" android:orientation="horizontal">
+            <ImageButton android:id="@id/exo_rew" android:layout_width="48dp" android:layout_height="48dp"
+                android:background="@drawable/sidebar_item_background" android:src="@android:drawable/ic_media_rew"
+                android:tint="#FFFFFF" android:contentDescription="Voltar alguns segundos"/>
+            <ImageButton android:id="@id/exo_play_pause" android:layout_width="52dp" android:layout_height="48dp"
+                android:background="@drawable/sidebar_item_background" android:src="@android:drawable/ic_media_play"
+                android:tint="#FFFFFF" android:contentDescription="Reproduzir ou pausar"/>
+            <ImageButton android:id="@id/exo_ffwd" android:layout_width="48dp" android:layout_height="48dp"
+                android:background="@drawable/sidebar_item_background" android:src="@android:drawable/ic_media_ff"
+                android:tint="#FFFFFF" android:contentDescription="Avançar alguns segundos"/>
+            <TextView android:id="@id/exo_position" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:paddingStart="8dp" android:textColor="#FFFFFF" android:textSize="12sp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text=" / " android:textColor="#BFB4D1" android:textSize="12sp"/>
+            <TextView android:id="@id/exo_duration" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textColor="#BFB4D1" android:textSize="12sp"/>
+            <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+            <Button android:id="@+id/fullscreen_button" android:layout_width="48dp" android:layout_height="48dp"
+                android:minWidth="0dp" android:padding="0dp" android:text="⛶" android:textColor="#FFFFFF"
+                android:background="@drawable/sidebar_item_background" android:textSize="24sp"
+                android:contentDescription="Alternar tela cheia"/>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

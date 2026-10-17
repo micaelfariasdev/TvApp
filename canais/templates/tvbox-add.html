@@ -28,12 +28,10 @@
     <p class="muted" style="margin: 8px 0 0">
       Embed abre a página diretamente no navegador interno do app.
     </p>
-    <label>Categoria</label
-    ><select name="category">
-      <option value="filmes">Filmes</option>
-      <option value="futebol">Futebol</option>
-      <option value="kick">Kick</option>
-    </select>
+    <label>Categorias (marque uma ou mais)</label>
+    <div style="max-height:240px;overflow:auto;padding:12px;border:1px solid #46516a;border-radius:10px">{{categoryOptions}}</div>
+    <label>Novas categorias (separe por ponto e vírgula)</label>
+    <input name="newCategories" placeholder="Ex.: Marvel; Ação">
     <div class="actions" style="margin-top: 20px">
       <button class="btn primary" type="submit">Salvar item</button
       ><a class="btn" href="/tvbox?pass={{password}}">Cancelar</a>

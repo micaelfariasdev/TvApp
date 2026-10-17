@@ -40,7 +40,7 @@ try {
     if ($releaseTags -contains $tag) {
         gh release upload $tag $apk --clobber
     } else {
-        gh release create $tag $apk --title "TV Box $tag" --generate-notes
+        gh release create $tag $apk --title "CINEDARK $tag" --generate-notes
     }
     if ($LASTEXITCODE -ne 0) { throw 'Não foi possível publicar a release no GitHub.' }
     Write-Host "Release $tag publicada com sucesso."

@@ -1,0 +1,12 @@
+<resources>
+    <dimen name="nav_width">144dp</dimen>
+    <dimen name="nav_text_size">10sp</dimen>
+    <dimen name="nav_brand_size">10sp</dimen>
+    <dimen name="page_padding">12dp</dimen>
+    <dimen name="page_title_size">22sp</dimen>
+    <dimen name="hero_height">246dp</dimen>
+    <dimen name="hero_title_size">18sp</dimen>
+    <dimen name="hero_poster_width">72dp</dimen>
+    <dimen name="channel_panel_width">230dp</dimen>
+    <integer name="catalog_columns">2</integer>
+</resources>

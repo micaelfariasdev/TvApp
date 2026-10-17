@@ -1,1192 +1,738 @@
-{
-  "categories": [
-    { "id": 0, "name": "Todos" },
-    { "id": 8, "name": "A Fazenda 18" },
-    { "id": 1, "name": "Esportes" },
-    { "id": 2, "name": "Infantil" },
-    { "id": 3, "name": "Documentarios" },
-    { "id": 4, "name": "Filmes e S\u00e9ries" },
-    { "id": 5, "name": "Noticias" },
-    { "id": 6, "name": "Abertos" },
-    { "id": 7, "name": "Variedades" },
-    { "id": 9, "name": "Portugal" }
-  ],
-  "channels": [
-    {
-      "id": "afazenda",
-      "image": "https://img.faz-o-eli.online/afazenda.png",
-      "name": "A Fazenda 18 - 1",
-      "categories": [0, 8],
-      "preview": "https://img.faz-o-eli.online/afazenda.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/afazenda"
-    },
-    {
-      "id": "afazenda2",
-      "image": "https://img.faz-o-eli.online/afazenda2.png",
-      "name": "A Fazenda 18 - 2",
-      "categories": [0, 8],
-      "preview": "https://img.faz-o-eli.online/afazenda2.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/afazenda2"
-    },
-    {
-      "id": "afazenda3",
-      "image": "https://img.faz-o-eli.online/afazenda3.png",
-      "name": "A Fazenda 18 - 3",
-      "categories": [0, 8],
-      "preview": "https://img.faz-o-eli.online/afazenda3.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/afazenda3"
-    },
-    {
-      "id": "afazenda4",
-      "image": "https://img.faz-o-eli.online/afazenda4.png",
-      "name": "A Fazenda 18 - 4",
-      "categories": [0, 8],
-      "preview": "https://img.faz-o-eli.online/afazenda4.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/afazenda4"
-    },
-    {
-      "id": "afazenda5",
-      "image": "https://img.faz-o-eli.online/afazenda5.png",
-      "name": "A Fazenda 18 - 5",
-      "categories": [0, 8],
-      "preview": "https://img.faz-o-eli.online/afazenda5.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/afazenda5"
-    },
-    {
-      "id": "ae",
-      "image": "https://img.faz-o-eli.online/ae.png",
-      "name": "AE",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/ae.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/ae"
-    },
-    {
-      "id": "amc",
-      "image": "https://img.faz-o-eli.online/amc.png",
-      "name": "AMC",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/amc.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/amc"
-    },
-    {
-      "id": "axn",
-      "image": "https://img.faz-o-eli.online/axn.png",
-      "name": "AXN",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/axn.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/axn"
-    },
-    {
-      "id": "adultswim",
-      "image": "https://img.faz-o-eli.online/adultswim.png",
-      "name": "Adult Swim",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/adultswim.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/adultswim"
-    },
-    {
-      "id": "animalplanet",
-      "image": "https://img.faz-o-eli.online/animalplanet.png",
-      "name": "Animal Planet",
-      "categories": [0, 3],
-      "preview": "https://img.faz-o-eli.online/animalplanet.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/animalplanet"
-    },
-    {
-      "id": "aparecida",
-      "image": "https://img.faz-o-eli.online/tvaparecida.png",
-      "name": "Aparecida",
-      "categories": [0, 7, 6],
-      "preview": "https://img.faz-o-eli.online/aparecida.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/aparecida"
-    },
-    {
-      "id": "bandnews",
-      "image": "https://img.faz-o-eli.online/bandnews.png",
-      "name": "Band News",
-      "categories": [0, 5, 6],
-      "preview": "https://img.faz-o-eli.online/bandnews.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/bandnews"
-    },
-    {
-      "id": "bandrj",
-      "image": "https://img.faz-o-eli.online/band.png",
-      "name": "Band RJ",
-      "categories": [0, 6, 5],
-      "preview": "https://img.faz-o-eli.online/bandrj.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/bandrj"
-    },
-    {
-      "id": "bandsp",
-      "image": "https://img.faz-o-eli.online/band.png",
-      "name": "Band SP",
-      "categories": [0, 6, 5],
-      "preview": "https://img.faz-o-eli.online/bandsp.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/bandsp"
-    },
-    {
-      "id": "bandsports",
-      "image": "https://img.faz-o-eli.online/bandsports.png",
-      "name": "Band Sports",
-      "categories": [0, 1, 5, 6],
-      "preview": "https://img.faz-o-eli.online/bandsports.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/bandsports"
-    },
-    {
-      "id": "cnnbrasil",
-      "image": "https://img.faz-o-eli.online/cnnbrasil.png",
-      "name": "CNN Brasil",
-      "categories": [0, 5, 7],
-      "preview": "https://img.faz-o-eli.online/cnnbrasil.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/cnnbrasil"
-    },
-    {
-      "id": "cancaonova",
-      "image": "https://img.faz-o-eli.online/cancaonova.png",
-      "name": "Can\u00e7\u00e3o Nova",
-      "categories": [0, 7, 6],
-      "preview": "https://img.faz-o-eli.online/cancaonova.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/cancaonova"
-    },
-    {
-      "id": "cartoonnetwork",
-      "image": "https://img.faz-o-eli.online/cartoonnetwork.png",
-      "name": "Cartoon Network",
-      "categories": [0, 2],
-      "preview": "https://img.faz-o-eli.online/cartoonnetwork.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/cartoonnetwork"
-    },
-    {
-      "id": "cartoonito",
-      "image": "https://img.faz-o-eli.online/cartoonito.png",
-      "name": "Cartoonito",
-      "categories": [0, 2],
-      "preview": "https://img.faz-o-eli.online/cartoonito.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/cartoonito"
-    },
-    {
-      "id": "caze1",
-      "image": "https://img.faz-o-eli.online/cazetv.png",
-      "name": "CazeTV 1",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/caze1.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/caze1"
-    },
-    {
-      "id": "caze2",
-      "image": "https://img.faz-o-eli.online/cazetv.png",
-      "name": "CazeTV 2",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/caze2.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/caze2"
-    },
-    {
-      "id": "caze3",
-      "image": "https://img.faz-o-eli.online/cazetv.png",
-      "name": "CazeTV 3",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/caze3.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/caze3"
-    },
-    {
-      "id": "cinemax",
-      "image": "https://img.faz-o-eli.online/cinemax.png",
-      "name": "Cinemax",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/cinemax.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/cinemax"
-    },
-    {
-      "id": "combate",
-      "image": "https://img.faz-o-eli.online/combate.png",
-      "name": "Combate",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/combate.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/combate"
-    },
-    {
-      "id": "cultura",
-      "image": "https://img.faz-o-eli.online/cultura.png",
-      "name": "Cultura",
-      "categories": [0, 6, 7],
-      "preview": "https://img.faz-o-eli.online/cultura.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/cultura"
-    },
-    {
-      "id": "discoverychannel",
-      "image": "https://img.faz-o-eli.online/discoverychannel.png",
-      "name": "Discovery Channel",
-      "categories": [0, 3],
-      "preview": "https://img.faz-o-eli.online/discoverychannel.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoverychannel"
-    },
-    {
-      "id": "discoveryhh",
-      "image": "https://img.faz-o-eli.online/discoveryhh.png",
-      "name": "Discovery H&H",
-      "categories": [0, 3],
-      "preview": "https://img.faz-o-eli.online/discoveryhh.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoveryhh"
-    },
-    {
-      "id": "discoveryid",
-      "image": "https://img.faz-o-eli.online/discoverychannel.png",
-      "name": "Discovery ID",
-      "categories": [0, 3],
-      "preview": "https://img.faz-o-eli.online/discoveryid.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoveryid"
-    },
-    {
-      "id": "discoverykids",
-      "image": "https://img.faz-o-eli.online/discoverykids.png",
-      "name": "Discovery Kids",
-      "categories": [0, 2],
-      "preview": "https://img.faz-o-eli.online/discoverykids.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoverykids"
-    },
-    {
-      "id": "discoveryscience",
-      "image": "https://img.faz-o-eli.online/discoveryscience.png",
-      "name": "Discovery Science",
-      "categories": [0, 3, 7],
-      "preview": "https://img.faz-o-eli.online/discoveryscience.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoveryscience"
-    },
-    {
-      "id": "discoverytheather",
-      "image": "https://img.faz-o-eli.online/discoverytheater.png",
-      "name": "Discovery Theater",
-      "categories": [0, 3],
-      "preview": "https://img.faz-o-eli.online/discoverytheather.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoverytheather"
-    },
-    {
-      "id": "discoveryturbo",
-      "image": "https://img.faz-o-eli.online/discoveryturbo.png",
-      "name": "Discovery Turbo",
-      "categories": [0, 3],
-      "preview": "https://img.faz-o-eli.online/discoveryturbo.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoveryturbo"
-    },
-    {
-      "id": "discoveryworld",
-      "image": "https://img.faz-o-eli.online/discoveryworld.png",
-      "name": "Discovery World",
-      "categories": [0, 3],
-      "preview": "https://img.faz-o-eli.online/discoveryworld.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/discoveryworld"
-    },
-    {
-      "id": "disneyplus1",
-      "image": "https://img.faz-o-eli.online/disneyplus.png",
-      "name": "Disney Plus 1",
-      "categories": [0, 1, 7],
-      "preview": "https://img.faz-o-eli.online/disneyplus1.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/disneyplus1"
-    },
-    {
-      "id": "disneyplus2",
-      "image": "https://img.faz-o-eli.online/disneyplus.png",
-      "name": "Disney Plus 2",
-      "categories": [0, 1, 7],
-      "preview": "https://img.faz-o-eli.online/disneyplus2.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/disneyplus2"
-    },
-    {
-      "id": "disneyplus3",
-      "image": "https://img.faz-o-eli.online/disneyplus.png",
-      "name": "Disney Plus 3",
-      "categories": [0, 1, 7],
-      "preview": "https://img.faz-o-eli.online/disneyplus3.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/disneyplus3"
-    },
-    {
-      "id": "espn",
-      "image": "https://img.faz-o-eli.online/espn.png",
-      "name": "Espn",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/espn.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/espn"
-    },
-    {
-      "id": "espn2",
-      "image": "https://img.faz-o-eli.online/espn2.png",
-      "name": "Espn 2",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/espn2.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/espn2"
-    },
-    {
-      "id": "espn3",
-      "image": "https://img.faz-o-eli.online/espn3.png",
-      "name": "Espn 3",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/espn3.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/espn3"
-    },
-    {
-      "id": "espn4",
-      "image": "https://img.faz-o-eli.online/espn4.png",
-      "name": "Espn 4",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/espn4.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/espn4"
-    },
-    {
-      "id": "espn5",
-      "image": "https://img.faz-o-eli.online/espn5.png",
-      "name": "Espn 5",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/espn5.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/espn5"
-    },
-    {
-      "id": "espn6",
-      "image": "https://img.faz-o-eli.online/espn6.png",
-      "name": "Espn 6",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/espn6.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/espn6"
-    },
-    {
-      "id": "foodnetwork",
-      "image": "https://img.faz-o-eli.online/foodnetwork.png",
-      "name": "Food Network",
-      "categories": [0, 7],
-      "preview": "https://img.faz-o-eli.online/foodnetwork.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/foodnetwork"
-    },
-    {
-      "id": "gnt",
-      "image": "https://img.faz-o-eli.online/gnt.png",
-      "name": "GNT",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/gnt.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/gnt"
-    },
-    {
-      "id": "globoam",
-      "image": "https://img.faz-o-eli.online/globosp.png",
-      "name": "Globo AM",
-      "categories": [0, 6],
-      "preview": "https://img.faz-o-eli.online/globoam.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globoam"
-    },
-    {
-      "id": "globodf",
-      "image": "https://img.faz-o-eli.online/globosp.png",
-      "name": "Globo DF",
-      "categories": [0, 6],
-      "preview": "https://img.faz-o-eli.online/globodf.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globodf"
-    },
-    {
-      "id": "globoce",
-      "image": "https://img.faz-o-eli.online/globosp.png",
-      "name": "Globo CE",
-      "categories": [0, 6],
-      "preview": "https://img.faz-o-eli.online/globoce.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globoce"
-    },
-    {
-      "id": "globoes",
-      "image": "https://img.faz-o-eli.online/globosp.png",
-      "name": "Globo ES",
-      "categories": [0, 6],
-      "preview": "https://img.faz-o-eli.online/globoes.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globoes"
-    },
-    {
-      "id": "globomg",
-      "image": "https://img.faz-o-eli.online/globosp.png",
-      "name": "Globo MG",
-      "categories": [0, 6],
-      "preview": "https://img.faz-o-eli.online/globomg.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globomg"
-    },
-    {
-      "id": "globogo",
-      "image": "https://img.faz-o-eli.online/globosp.png",
-      "name": "Globo GO",
-      "categories": [0, 6],
-      "preview": "https://img.faz-o-eli.online/globogo.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globogo"
-    },
-    {
-      "id": "globonews",
-      "image": "https://img.faz-o-eli.online/globonews.png",
-      "name": "Globo News",
-      "categories": [0, 5, 6],
-      "preview": "https://img.faz-o-eli.online/globonews.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globonews"
-    },
-    {
-      "id": "globonovelas",
-      "image": "https://img.faz-o-eli.online/globonovelas.png",
-      "name": "Globo Novelas",
-      "categories": [0, 6],
-      "preview": "https://img.faz-o-eli.online/globonovelas.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globonovelas"
-    },
-    {
-      "id": "globopb",
-      "image": "https://img.faz-o-eli.online/globosp.png",
-      "name": "Globo PB",
-      "categories": [0, 6],
-      "preview": "https://img.faz-o-eli.online/globopb.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globopb"
-    },
-    {
-      "id": "globope",
-      "image": "https://img.faz-o-eli.online/globosp.png",
-      "name": "Globo PE",
-      "categories": [0, 6],
-      "preview": "https://img.faz-o-eli.online/globope.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globope"
-    },
-    {
-      "id": "globorj",
-      "image": "https://img.faz-o-eli.online/globorj.png",
-      "name": "Globo RJ",
-      "categories": [0, 6],
-      "preview": "https://img.faz-o-eli.online/globorj.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globorj"
-    },
-    {
-      "id": "globors",
-      "image": "https://img.faz-o-eli.online/globosp.png",
-      "name": "Globo RS",
-      "categories": [0, 6],
-      "preview": "https://img.faz-o-eli.online/globors.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globors"
-    },
-    {
-      "id": "globosp",
-      "image": "https://img.faz-o-eli.online/globosp.png",
-      "name": "Globo SP",
-      "categories": [0, 6],
-      "preview": "https://img.faz-o-eli.online/globosp.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/globosp"
-    },
-    {
-      "id": "gloob",
-      "image": "https://img.faz-o-eli.online/gloob.png",
-      "name": "Gloob",
-      "categories": [0, 2],
-      "preview": "https://img.faz-o-eli.online/gloob.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/gloob"
-    },
-    {
-      "id": "hbo",
-      "image": "https://img.faz-o-eli.online/hbo.png",
-      "name": "HBO",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/hbo.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hbo"
-    },
-    {
-      "id": "hbo2",
-      "image": "https://img.faz-o-eli.online/hbo2.png",
-      "name": "HBO 2",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/hbo2.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hbo2"
-    },
-    {
-      "id": "hbofamily",
-      "image": "https://img.faz-o-eli.online/hbofamily.png",
-      "name": "HBO Family",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/hbofamily.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hbofamily"
-    },
-    {
-      "id": "hbomundi",
-      "image": "https://img.faz-o-eli.online/hbomundi.png",
-      "name": "HBO Mundi",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/hbomundi.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hbomundi"
-    },
-    {
-      "id": "hbopop",
-      "image": "https://img.faz-o-eli.online/hbopop.png",
-      "name": "HBO POP",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/hbopop.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hbopop"
-    },
-    {
-      "id": "hboplus",
-      "image": "https://img.faz-o-eli.online/hboplus.png",
-      "name": "HBO Plus",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/hboplus.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hboplus"
-    },
-    {
-      "id": "hboxtreme",
-      "image": "https://img.faz-o-eli.online/hboxtreme.png",
-      "name": "HBO Xtreme",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/hboxtreme.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hboxtreme"
-    },
-    {
-      "id": "hgtv",
-      "image": "https://img.faz-o-eli.online/hgtv.png",
-      "name": "HGTV",
-      "categories": [0, 4, 7],
-      "preview": "https://img.faz-o-eli.online/hgtv.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/hgtv"
-    },
-    {
-      "id": "history",
-      "image": "https://img.faz-o-eli.online/history.png",
-      "name": "History",
-      "categories": [0, 3],
-      "preview": "https://img.faz-o-eli.online/history.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/history"
-    },
-    {
-      "id": "history2",
-      "image": "https://img.faz-o-eli.online/history2.png",
-      "name": "History 2",
-      "categories": [0, 3],
-      "preview": "https://img.faz-o-eli.online/history2.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/history2"
-    },
-    {
-      "id": "mtv",
-      "image": "https://img.faz-o-eli.online/mtv.png",
-      "name": "MTV",
-      "categories": [0, 6, 7],
-      "preview": "https://img.faz-o-eli.online/mtv.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/mtv"
-    },
-    {
-      "id": "masterchef",
-      "image": "https://img.faz-o-eli.online/cheftv.png",
-      "name": "Master chef",
-      "categories": [0, 7],
-      "preview": "https://img.faz-o-eli.online/masterchef.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/masterchef"
-    },
-    {
-      "id": "max1",
-      "image": "https://img.faz-o-eli.online/max.png",
-      "name": "Max - 1",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/max1.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/max1"
-    },
-    {
-      "id": "max2",
-      "image": "https://img.faz-o-eli.online/max.png",
-      "name": "Max - 2",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/max2.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/max2"
-    },
-    {
-      "id": "max3",
-      "image": "https://img.faz-o-eli.online/max.png",
-      "name": "Max - 3",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/max3.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/max3"
-    },
-    {
-      "id": "megapix",
-      "image": "https://img.faz-o-eli.online/megapix.png",
-      "name": "Megapix",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/megapix.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/megapix"
-    },
-    {
-      "id": "multishow",
-      "image": "https://img.faz-o-eli.online/multishow.png",
-      "name": "Multishow",
-      "categories": [0, 6, 7],
-      "preview": "https://img.faz-o-eli.online/multishow.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/multishow"
-    },
-    {
-      "id": "off",
-      "image": "https://img.faz-o-eli.online/off.png",
-      "name": "OFF",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/off.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/off"
-    },
-    {
-      "id": "paramountplus",
-      "image": "https://img.faz-o-eli.online/paramountplus.png",
-      "name": "Paramount Plus",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/paramountplus.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/paramountplus"
-    },
-    {
-      "id": "paramountplus2",
-      "image": "https://img.faz-o-eli.online/paramountplus.png",
-      "name": "Paramount Plus 2",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/paramountplus2.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/paramountplus2"
-    },
-    {
-      "id": "playboy",
-      "image": "https://img.faz-o-eli.online/playboy.png",
-      "name": "Play Boy",
-      "categories": [0],
-      "preview": "https://img.faz-o-eli.online/playboy.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/playboy"
-    },
-    {
-      "id": "premiere",
-      "image": "https://img.faz-o-eli.online/premiere.png",
-      "name": "Premiere 1",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/premiere.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere"
-    },
-    {
-      "id": "premiere2",
-      "image": "https://img.faz-o-eli.online/premiere.png",
-      "name": "Premiere 2",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/premiere2.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere2"
-    },
-    {
-      "id": "premiere3",
-      "image": "https://img.faz-o-eli.online/premiere.png",
-      "name": "Premiere 3",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/premiere3.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere3"
-    },
-    {
-      "id": "premiere4",
-      "image": "https://img.faz-o-eli.online/premiere.png",
-      "name": "Premiere 4",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/premiere4.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere4"
-    },
-    {
-      "id": "premiere5",
-      "image": "https://img.faz-o-eli.online/premiere.png",
-      "name": "Premiere 5",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/premiere5.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere5"
-    },
-    {
-      "id": "premiere6",
-      "image": "https://img.faz-o-eli.online/premiere.png",
-      "name": "Premiere 6",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/premiere6.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere6"
-    },
-    {
-      "id": "premiere7",
-      "image": "https://img.faz-o-eli.online/premiere.png",
-      "name": "Premiere 7",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/premiere7.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere7"
-    },
-    {
-      "id": "premiere8",
-      "image": "https://img.faz-o-eli.online/premiere.png",
-      "name": "Premiere 8",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/premiere8.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/premiere8"
-    },
-    {
-      "id": "primevideo",
-      "image": "https://img.faz-o-eli.online/primevideo.png",
-      "name": "Prime Video",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/primevideo.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/primevideo"
-    },
-    {
-      "id": "primevideo2",
-      "image": "https://img.faz-o-eli.online/primevideo.png",
-      "name": "Prime Video 2",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/primevideo2.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/primevideo2"
-    },
-    {
-      "id": "primevideo3",
-      "image": "https://img.faz-o-eli.online/primevideo.png",
-      "name": "Prime Video 3",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/primevideo3.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/primevideo3"
-    },
-    {
-      "id": "primevideo4",
-      "image": "https://img.faz-o-eli.online/primevideo.png",
-      "name": "Prime Video 4",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/primevideo4.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/primevideo4"
-    },
-    {
-      "id": "recordmg",
-      "image": "https://img.faz-o-eli.online/record.png",
-      "name": "Record MG",
-      "categories": [0, 6, 5, 7],
-      "preview": "https://img.faz-o-eli.online/recordmg.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/recordmg"
-    },
-    {
-      "id": "recordrj",
-      "image": "https://img.faz-o-eli.online/record.png",
-      "name": "Record RJ",
-      "categories": [0, 6, 5, 7],
-      "preview": "https://img.faz-o-eli.online/recordrj.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/recordrj"
-    },
-    {
-      "id": "recordsp",
-      "image": "https://img.faz-o-eli.online/record.png",
-      "name": "Record SP",
-      "categories": [0, 6, 5, 7],
-      "preview": "https://img.faz-o-eli.online/recordsp.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/recordsp"
-    },
-    {
-      "id": "recordgo",
-      "image": "https://img.faz-o-eli.online/record.png",
-      "name": "Record GO",
-      "categories": [0, 6, 5, 7],
-      "preview": "https://img.faz-o-eli.online/recordgo.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/recordgo"
-    },
-    {
-      "id": "redevida",
-      "image": "https://img.faz-o-eli.online/redevida.png",
-      "name": "Rede Vida",
-      "categories": [0, 7, 6],
-      "preview": "https://img.faz-o-eli.online/redevida.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/redevida"
-    },
-    {
-      "id": "sbtrj",
-      "image": "https://img.faz-o-eli.online/sbt.png",
-      "name": "SBT RJ",
-      "categories": [0, 5, 6, 7],
-      "preview": "https://img.faz-o-eli.online/sbtrj.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sbtrj"
-    },
-    {
-      "id": "sbtsp",
-      "image": "https://img.faz-o-eli.online/sbt.png",
-      "name": "SBT SP",
-      "categories": [0, 5, 6, 7],
-      "preview": "https://img.faz-o-eli.online/sbtsp.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sbtsp"
-    },
-    {
-      "id": "sexyhot",
-      "image": "https://img.faz-o-eli.online/Sexy.png",
-      "name": "Sexy Hot",
-      "categories": [0],
-      "preview": "https://img.faz-o-eli.online/sexyhot.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sexyhot"
-    },
-    {
-      "id": "sonychannel",
-      "image": "https://img.faz-o-eli.online/sonychannel.png",
-      "name": "Sony Channel",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/sonychannel.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sonychannel"
-    },
-    {
-      "id": "space",
-      "image": "https://img.faz-o-eli.online/space.png",
-      "name": "Space",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/space.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/space"
-    },
-    {
-      "id": "sportynet",
-      "image": "https://img.faz-o-eli.online/sportynet.png",
-      "name": "SportyNet",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/sportynet.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportynet"
-    },
-    {
-      "id": "sportynetplus1",
-      "image": "https://img.faz-o-eli.online/sportynet.png",
-      "name": "SportyNet+ 1",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/sportynetplus1.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportynetplus1"
-    },
-    {
-      "id": "sportynetplus2",
-      "image": "https://img.faz-o-eli.online/sportynet.png",
-      "name": "SportyNet+ 2",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/sportynetplus2.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportynetplus2"
-    },
-    {
-      "id": "sportynetplus3",
-      "image": "https://img.faz-o-eli.online/sportynet.png",
-      "name": "SportyNet+ 3",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/sportynetplus3.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportynetplus3"
-    },
-    {
-      "id": "sportv",
-      "image": "https://img.faz-o-eli.online/sportv.png",
-      "name": "Sportv",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/sportv.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportv"
-    },
-    {
-      "id": "sportv2",
-      "image": "https://img.faz-o-eli.online/sportv2.png",
-      "name": "Sportv 2",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/sportv2.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportv2"
-    },
-    {
-      "id": "sportv3",
-      "image": "https://img.faz-o-eli.online/sportv3.png",
-      "name": "Sportv 3",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/sportv3.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportv3"
-    },
-    {
-      "id": "sportv4",
-      "image": "https://img.faz-o-eli.online/sportv4.png",
-      "name": "Sportv 4",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/sportv4.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/sportv4"
-    },
-    {
-      "id": "starchannel",
-      "image": "https://img.faz-o-eli.online/starchannel.png",
-      "name": "Star Channel",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/starchannel.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/starchannel"
-    },
-    {
-      "id": "studiouniversal",
-      "image": "https://img.faz-o-eli.online/studiouniversal.png",
-      "name": "Studio Universal",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/studiouniversal.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/studiouniversal"
-    },
-    {
-      "id": "tcm",
-      "image": "https://img.faz-o-eli.online/tcm.png",
-      "name": "TCM",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/tcm.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/tcm"
-    },
-    {
-      "id": "tlc",
-      "image": "https://img.faz-o-eli.online/tlc.png",
-      "name": "TLC",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/tlc.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/tlc"
-    },
-    {
-      "id": "tnt",
-      "image": "https://img.faz-o-eli.online/tnt.png",
-      "name": "TNT",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/tnt.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/tnt"
-    },
-    {
-      "id": "tntnovelas",
-      "image": "https://img.faz-o-eli.online/tntnovelas.png",
-      "name": "TNT Novelas",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/tntnovelas.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/tntnovelas"
-    },
-    {
-      "id": "tntseries",
-      "image": "https://img.faz-o-eli.online/tntseries.png",
-      "name": "TNT Series",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/tntseries.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/tntseries"
-    },
-    {
-      "id": "tvpaieterno",
-      "image": "https://img.faz-o-eli.online/tvpaieterno.png",
-      "name": "TV Pai Eterno",
-      "categories": [0, 7, 6],
-      "preview": "https://img.faz-o-eli.online/tvpaieterno.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/tvpaieterno"
-    },
-    {
-      "id": "telecineaction",
-      "image": "https://img.faz-o-eli.online/telecineaction.png",
-      "name": "Telecine Action",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/telecineaction.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/telecineaction"
-    },
-    {
-      "id": "telecinecult",
-      "image": "https://img.faz-o-eli.online/telecinecult.png",
-      "name": "Telecine Cult",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/telecinecult.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/telecinecult"
-    },
-    {
-      "id": "telecinefun",
-      "image": "https://img.faz-o-eli.online/telecinefun.png",
-      "name": "Telecine Fun",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/telecinefun.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/telecinefun"
-    },
-    {
-      "id": "telecinepipoca",
-      "image": "https://img.faz-o-eli.online/telecinepipoca.png",
-      "name": "Telecine Pipoca",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/telecinepipoca.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/telecinepipoca"
-    },
-    {
-      "id": "telecinepremium",
-      "image": "https://img.faz-o-eli.online/telecinepremium.png",
-      "name": "Telecine Premium",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/telecinepremium.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/telecinepremium"
-    },
-    {
-      "id": "telecinetouch",
-      "image": "https://img.faz-o-eli.online/telecinetouch.png",
-      "name": "Telecine Touch",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/telecinetouch.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/telecinetouch"
-    },
-    {
-      "id": "ufcfightpass",
-      "image": "https://img.faz-o-eli.online/ufcfightpass.png",
-      "name": "UFC Fight Pass",
-      "categories": [0, 1],
-      "preview": "https://img.faz-o-eli.online/ufcfightpass.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/ufcfightpass"
-    },
-    {
-      "id": "universaltv",
-      "image": "https://img.faz-o-eli.online/universaltv.png",
-      "name": "Universal",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/universaltv.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/universaltv"
-    },
-    {
-      "id": "warnerchannel",
-      "image": "https://img.faz-o-eli.online/warnerchannel.png",
-      "name": "Warnerchannel",
-      "categories": [0, 4],
-      "preview": "https://img.faz-o-eli.online/warnerchannel.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/warnerchannel"
-    },
-    {
-      "id": "xsports",
-      "image": "https://img.faz-o-eli.online/xsports.png",
-      "name": "XSports",
-      "categories": [0, 1, 7],
-      "preview": "https://img.faz-o-eli.online/xsports.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/xsports"
-    },
-    {
-      "id": "pt_abola",
-      "image": "https://img.faz-o-eli.online/pt_abola.png",
-      "name": "PT - A Bola",
-      "categories": [0, 9, 1],
-      "preview": "https://img.faz-o-eli.online/pt_abola.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_abola"
-    },
-    {
-      "id": "pt_benficatv",
-      "image": "https://img.faz-o-eli.online/pt_benficatv.png",
-      "name": "PT - Benfica TV",
-      "categories": [0, 9, 1],
-      "preview": "https://img.faz-o-eli.online/pt_benficatv.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_benficatv"
-    },
-    {
-      "id": "pt_canal11",
-      "image": "https://img.faz-o-eli.online/.png",
-      "name": "PT - Canal 11",
-      "categories": [0, 9, 1],
-      "preview": "https://img.faz-o-eli.online/pt_canal11.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_canal11"
-    },
-    {
-      "id": "pt_eleven1",
-      "image": "https://img.faz-o-eli.online/eleven.png",
-      "name": "PT - Eleven 1",
-      "categories": [0, 9, 1],
-      "preview": "https://img.faz-o-eli.online/pt_eleven1.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_eleven1"
-    },
-    {
-      "id": "pt_eleven2",
-      "image": "https://img.faz-o-eli.online/eleven.png",
-      "name": "PT - Eleven 2",
-      "categories": [0, 9, 1],
-      "preview": "https://img.faz-o-eli.online/pt_eleven2.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_eleven2"
-    },
-    {
-      "id": "pt_eleven3",
-      "image": "https://img.faz-o-eli.online/eleven.png",
-      "name": "PT - Eleven 3",
-      "categories": [0, 9, 1],
-      "preview": "https://img.faz-o-eli.online/pt_eleven3.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_eleven3"
-    },
-    {
-      "id": "pt_sportv1",
-      "image": "https://img.faz-o-eli.online/sportv.png",
-      "name": "PT - Sporttv 1",
-      "categories": [0, 9, 1],
-      "preview": "https://img.faz-o-eli.online/pt_sportv1.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_sportv1"
-    },
-    {
-      "id": "pt_sportv2",
-      "image": "https://img.faz-o-eli.online/sportv.png",
-      "name": "PT - Sporttv 2",
-      "categories": [0, 9, 1],
-      "preview": "https://img.faz-o-eli.online/pt_sportv2.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_sportv2"
-    },
-    {
-      "id": "pt_sportv3",
-      "image": "https://img.faz-o-eli.online/sportv.png",
-      "name": "PT - Sporttv 3",
-      "categories": [0, 9, 1],
-      "preview": "https://img.faz-o-eli.online/pt_sportv3.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_sportv3"
-    },
-    {
-      "id": "pt_sportv4",
-      "image": "https://img.faz-o-eli.online/sportv.png",
-      "name": "PT - Sporttv 4",
-      "categories": [0, 9, 1],
-      "preview": "https://img.faz-o-eli.online/pt_sportv4.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_sportv4"
-    },
-    {
-      "id": "pt_sportv5",
-      "image": "https://img.faz-o-eli.online/sportv.png",
-      "name": "PT - Sporttv 5",
-      "categories": [0, 9, 1],
-      "preview": "https://img.faz-o-eli.online/pt_sportv5.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_sportv5"
-    },
-    {
-      "id": "pt_sportv6",
-      "image": "https://img.faz-o-eli.online/sportv.png",
-      "name": "PT - Sporttv 6",
-      "categories": [0, 9, 1],
-      "preview": "https://img.faz-o-eli.online/pt_sportv6.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_sportv6"
-    },
-    {
-      "id": "pt_sportv7",
-      "image": "https://img.faz-o-eli.online/sportv.png",
-      "name": "PT - Sporttv 7",
-      "categories": [0, 9, 1],
-      "preview": "https://img.faz-o-eli.online/pt_sportv7.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/pt_sportv7"
-    },
-    {
-      "id": "24h_chaves",
-      "image": "https://img.faz-o-eli.online/24h.png",
-      "name": "24H Chaves",
-      "categories": [0, 7, 2],
-      "preview": "https://img.faz-o-eli.online/24h_chaves.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_chaves"
-    },
-    {
-      "id": "24h_dragonball",
-      "image": "https://img.faz-o-eli.online/24h.png",
-      "name": "24H Dragon Ball Z",
-      "categories": [0, 7, 2],
-      "preview": "https://img.faz-o-eli.online/24h_dragonball.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_dragonball"
-    },
-    {
-      "id": "24h_friends",
-      "image": "https://img.faz-o-eli.online/24h.png",
-      "name": "24H Friends",
-      "categories": [0, 7],
-      "preview": "https://img.faz-o-eli.online/24h_friends.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_friends"
-    },
-    {
-      "id": "24h_naruto",
-      "image": "https://img.faz-o-eli.online/24h.png",
-      "name": "24H Naruto Cl\u00e1ssico",
-      "categories": [0, 7, 2],
-      "preview": "https://img.faz-o-eli.online/24h_naruto.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_naruto"
-    },
-    {
-      "id": "24h_simpsons",
-      "image": "https://img.faz-o-eli.online/24h.png",
-      "name": "24H Os Simpsons",
-      "categories": [0, 7, 2],
-      "preview": "https://img.faz-o-eli.online/24h_simpsons.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_simpsons"
-    },
-    {
-      "id": "24h_odeiachris",
-      "image": "https://img.faz-o-eli.online/24h.png",
-      "name": "24H Todo Mundo Odeia o Cris",
-      "categories": [0, 7],
-      "preview": "https://img.faz-o-eli.online/24h_odeiachris.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_odeiachris"
-    },
-    {
-      "id": "24h_picapau",
-      "image": "https://img.faz-o-eli.online/24h.png",
-      "name": "24H Pica Pau",
-      "categories": [0, 7, 2],
-      "preview": "https://img.faz-o-eli.online/24h_picapau.prev.png",
-      "url": "https://e845a4f51ef7d663d0ba28fc16acfd19.embedtv.cc/24h_picapau"
-    }
-  ]
-}
+[
+  {
+    "id": 4876120,
+    "slug": "arthur-gea-x-alejandro-davidovich-fokina",
+    "title": "Arthur Gea x Alejandro Davidovich Fokina",
+    "league": {
+      "name": "Xangai - Quartas Finais",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/364"
+    },
+    "teams": {
+      "home": {
+        "name": "Arthur Gea",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/74412"
+      },
+      "away": {
+        "name": "Alejandro Davidovich Fokina",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/48106"
+      }
+    },
+    "time_start": "2026-10-15T03:30:00-03:00",
+    "time_end": "2026-10-15T05:42:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/espn2"]
+  },
+  {
+    "id": 4876097,
+    "slug": "alexander-zverev-x-alex-de-minaur",
+    "title": "Alexander Zverev x Alex De Minaur",
+    "league": {
+      "name": "Xangai - Quartas Finais",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/364"
+    },
+    "teams": {
+      "home": {
+        "name": "Alexander Zverev",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/12954"
+      },
+      "away": {
+        "name": "Alex De Minaur",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/46472"
+      }
+    },
+    "time_start": "2026-10-15T07:00:00-03:00",
+    "time_end": "2026-10-15T09:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/espn2"]
+  },
+  {
+    "id": 4828737,
+    "slug": "az-alkmaar-x-hapoel-beer-sheva",
+    "title": "AZ Alkmaar x Hapoel Beer Sheva",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "AZ Alkmaar",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/699"
+      },
+      "away": {
+        "name": "Hapoel Beer Sheva",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/579"
+      }
+    },
+    "time_start": "2026-10-15T13:45:00-03:00",
+    "time_end": "2026-10-15T15:57:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828740,
+    "slug": "union-st-gilloise-x-real-sociedad",
+    "title": "Union St. Gilloise x Real Sociedad",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "Union St. Gilloise",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1204"
+      },
+      "away": {
+        "name": "Real Sociedad",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/154"
+      }
+    },
+    "time_start": "2026-10-15T13:45:00-03:00",
+    "time_end": "2026-10-15T15:57:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828741,
+    "slug": "lech-poznan-x-bayer-leverkusen",
+    "title": "Lech Poznan x Bayer Leverkusen",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "Lech Poznan",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2211"
+      },
+      "away": {
+        "name": "Bayer Leverkusen",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/333"
+      }
+    },
+    "time_start": "2026-10-15T13:45:00-03:00",
+    "time_end": "2026-10-15T15:57:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828742,
+    "slug": "torreense-x-sunderland",
+    "title": "Torreense x Sunderland",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "Torreense",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/921"
+      },
+      "away": {
+        "name": "Sunderland",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/117"
+      }
+    },
+    "time_start": "2026-10-15T13:45:00-03:00",
+    "time_end": "2026-10-15T15:57:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828743,
+    "slug": "lyon-x-crystal-palace",
+    "title": "Lyon x Crystal Palace",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "Lyon",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/465"
+      },
+      "away": {
+        "name": "Crystal Palace",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/10"
+      }
+    },
+    "time_start": "2026-10-15T13:45:00-03:00",
+    "time_end": "2026-10-15T15:57:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828744,
+    "slug": "sparta-praha-x-lillestrom",
+    "title": "Sparta Praha x Lillestrom",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "Sparta Praha",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1788"
+      },
+      "away": {
+        "name": "Lillestrom",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1985"
+      }
+    },
+    "time_start": "2026-10-15T13:45:00-03:00",
+    "time_end": "2026-10-15T15:57:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828745,
+    "slug": "nk-celje-x-omonia",
+    "title": "NK Celje x Omonia",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "NK Celje",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2345"
+      },
+      "away": {
+        "name": "Omonia",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2262"
+      }
+    },
+    "time_start": "2026-10-15T13:45:00-03:00",
+    "time_end": "2026-10-15T15:57:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828746,
+    "slug": "red-bull-salzburg-x-ac-milan",
+    "title": "Red Bull Salzburg x AC Milan",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "Red Bull Salzburg",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1739"
+      },
+      "away": {
+        "name": "AC Milan",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/227"
+      }
+    },
+    "time_start": "2026-10-15T13:45:00-03:00",
+    "time_end": "2026-10-15T15:57:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828934,
+    "slug": "cska-sofia-x-monaco",
+    "title": "CSKA Sofia x Monaco",
+    "league": {
+      "name": "Liga Confer\u00eancia",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/7685"
+    },
+    "teams": {
+      "home": {
+        "name": "CSKA Sofia",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2276"
+      },
+      "away": {
+        "name": "Monaco",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/471"
+      }
+    },
+    "time_start": "2026-10-15T13:45:00-03:00",
+    "time_end": "2026-10-15T15:57:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828937,
+    "slug": "kups-x-trabzonspor",
+    "title": "KuPS x Trabzonspor",
+    "league": {
+      "name": "Liga Confer\u00eancia",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/7685"
+    },
+    "teams": {
+      "home": {
+        "name": "KuPS",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1935"
+      },
+      "away": {
+        "name": "Trabzonspor",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/950"
+      }
+    },
+    "time_start": "2026-10-15T13:45:00-03:00",
+    "time_end": "2026-10-15T15:57:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4875424,
+    "slug": "cleveland-guardians-x-tampa-bay-rays",
+    "title": "Cleveland Guardians x Tampa Bay Rays",
+    "league": {
+      "name": "MLB - Championship Series - ALCS",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/438"
+    },
+    "teams": {
+      "home": {
+        "name": "Cleveland Guardians",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/7416"
+      },
+      "away": {
+        "name": "Tampa Bay Rays",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/7434"
+      }
+    },
+    "time_start": "2026-10-15T14:00:00-03:00",
+    "time_end": "2026-10-15T16:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/espn2"]
+  },
+  {
+    "id": 4828729,
+    "slug": "dinamo-zagreb-x-anderlecht",
+    "title": "Dinamo Zagreb x Anderlecht",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "Dinamo Zagreb",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2245"
+      },
+      "away": {
+        "name": "Anderlecht",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1173"
+      }
+    },
+    "time_start": "2026-10-15T16:00:00-03:00",
+    "time_end": "2026-10-15T18:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828730,
+    "slug": "olympique-de-marseille-x-olympiacos",
+    "title": "Olympique de Marseille x Olympiacos",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "Olympique de Marseille",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/469"
+      },
+      "away": {
+        "name": "Olympiacos",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1023"
+      }
+    },
+    "time_start": "2026-10-15T16:00:00-03:00",
+    "time_end": "2026-10-15T18:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828731,
+    "slug": "celta-vigo-x-juventus",
+    "title": "Celta Vigo x Juventus",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "Celta Vigo",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/158"
+      },
+      "away": {
+        "name": "Juventus",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/226"
+      }
+    },
+    "time_start": "2026-10-15T16:00:00-03:00",
+    "time_end": "2026-10-15T18:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828732,
+    "slug": "bournemouth-x-sturm-graz",
+    "title": "Bournemouth x Sturm Graz",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "Bournemouth",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/50"
+      },
+      "away": {
+        "name": "Sturm Graz",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1741"
+      }
+    },
+    "time_start": "2026-10-15T16:00:00-03:00",
+    "time_end": "2026-10-15T18:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828733,
+    "slug": "jagiellonia-x-fc-ararat-armenia",
+    "title": "Jagiellonia x FC Ararat-Armenia",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "Jagiellonia",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2220"
+      },
+      "away": {
+        "name": "FC Ararat-Armenia",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/48879"
+      }
+    },
+    "time_start": "2026-10-15T16:00:00-03:00",
+    "time_end": "2026-10-15T18:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828734,
+    "slug": "rennes-x-ofi-crete",
+    "title": "Rennes x OFI Crete",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "Rennes",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/477"
+      },
+      "away": {
+        "name": "OFI Crete",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1032"
+      }
+    },
+    "time_start": "2026-10-15T16:00:00-03:00",
+    "time_end": "2026-10-15T18:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828735,
+    "slug": "sl-benfica-x-celtic",
+    "title": "SL Benfica x Celtic",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "SL Benfica",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/888"
+      },
+      "away": {
+        "name": "Celtic",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/754"
+      }
+    },
+    "time_start": "2026-10-15T16:00:00-03:00",
+    "time_end": "2026-10-15T18:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828736,
+    "slug": "hoffenheim-x-besiktas",
+    "title": "Hoffenheim x Besiktas",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "Hoffenheim",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/351"
+      },
+      "away": {
+        "name": "Besiktas",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/947"
+      }
+    },
+    "time_start": "2026-10-15T16:00:00-03:00",
+    "time_end": "2026-10-15T18:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828738,
+    "slug": "ferencvaros-x-viktoria-plzen",
+    "title": "Ferencvaros x Viktoria Plzen",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "Ferencvaros",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/6020"
+      },
+      "away": {
+        "name": "Viktoria Plzen",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1796"
+      }
+    },
+    "time_start": "2026-10-15T16:00:00-03:00",
+    "time_end": "2026-10-15T18:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828739,
+    "slug": "nec-nijmegen-x-levski-sofia",
+    "title": "N.E.C. Nijmegen x Levski Sofia",
+    "league": {
+      "name": "Liga Europa",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
+    },
+    "teams": {
+      "home": {
+        "name": "N.E.C. Nijmegen",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/700"
+      },
+      "away": {
+        "name": "Levski Sofia",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2277"
+      }
+    },
+    "time_start": "2026-10-15T16:00:00-03:00",
+    "time_end": "2026-10-15T18:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828929,
+    "slug": "fc-copenhagen-x-sc-braga",
+    "title": "FC Copenhagen x SC Braga",
+    "league": {
+      "name": "Liga Confer\u00eancia",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/7685"
+    },
+    "teams": {
+      "home": {
+        "name": "FC Copenhagen",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1824"
+      },
+      "away": {
+        "name": "SC Braga",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/895"
+      }
+    },
+    "time_start": "2026-10-15T16:00:00-03:00",
+    "time_end": "2026-10-15T18:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4828931,
+    "slug": "atalanta-x-pafos-fc",
+    "title": "Atalanta x Pafos FC",
+    "league": {
+      "name": "Liga Confer\u00eancia",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/7685"
+    },
+    "teams": {
+      "home": {
+        "name": "Atalanta",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/232"
+      },
+      "away": {
+        "name": "Pafos FC",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2273"
+      }
+    },
+    "time_start": "2026-10-15T16:00:00-03:00",
+    "time_end": "2026-10-15T18:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
+  },
+  {
+    "id": 4861407,
+    "slug": "corinthians-f-x-colo-colo-f",
+    "title": "Corinthians (F) x Colo Colo (F)",
+    "league": {
+      "name": "Copa Libertadores (F) - Fase de Grupos",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/6226"
+    },
+    "teams": {
+      "home": {
+        "name": "Corinthians (F)",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/47480"
+      },
+      "away": {
+        "name": "Colo Colo (F)",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/28243"
+      }
+    },
+    "time_start": "2026-10-15T17:00:00-03:00",
+    "time_end": "2026-10-15T19:12:00-03:00",
+    "players": [
+      "https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/sportv",
+      "https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1",
+      "https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/xsports"
+    ]
+  },
+  {
+    "id": 4800807,
+    "slug": "flamengo-f-x-fluminense-f",
+    "title": "Flamengo (F) x Fluminense (F)",
+    "league": {
+      "name": "Copa do Brasil (F) - Quartas Finais",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/8702"
+    },
+    "teams": {
+      "home": {
+        "name": "Flamengo (F)",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/26648"
+      },
+      "away": {
+        "name": "Fluminense (F)",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/78696"
+      }
+    },
+    "time_start": "2026-10-15T19:00:00-03:00",
+    "time_end": "2026-10-15T21:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/sportv"]
+  },
+  {
+    "id": 4876217,
+    "slug": "sesi-franca-x-mogi-das-cruzes",
+    "title": "Sesi Franca x Mogi das Cruzes",
+    "league": {
+      "name": "Paulista de Basquete",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/7976"
+    },
+    "teams": {
+      "home": {
+        "name": "Sesi Franca",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/15650"
+      },
+      "away": {
+        "name": "Mogi das Cruzes",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/15646"
+      }
+    },
+    "time_start": "2026-10-15T20:00:00-03:00",
+    "time_end": "2026-10-15T22:12:00-03:00",
+    "players": [
+      "https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/bandsports"
+    ]
+  },
+  {
+    "id": 4706656,
+    "slug": "uab-x-east-carolina",
+    "title": "UAB x East Carolina",
+    "league": {
+      "name": "NCAAF (FBS)",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/382"
+    },
+    "teams": {
+      "home": {
+        "name": "UAB",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/6590"
+      },
+      "away": {
+        "name": "East Carolina",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/6766"
+      }
+    },
+    "time_start": "2026-10-15T20:30:00-03:00",
+    "time_end": "2026-10-15T22:42:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/espn3"]
+  },
+  {
+    "id": 4861405,
+    "slug": "universitario-f-x-palmeiras-f",
+    "title": "Universitario (F) x Palmeiras (F)",
+    "league": {
+      "name": "Copa Libertadores (F) - Fase de Grupos",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/6226"
+    },
+    "teams": {
+      "home": {
+        "name": "Universitario (F)",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/28245"
+      },
+      "away": {
+        "name": "Palmeiras (F)",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/57566"
+      }
+    },
+    "time_start": "2026-10-15T21:00:00-03:00",
+    "time_end": "2026-10-15T23:12:00-03:00",
+    "players": [
+      "https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/sportv",
+      "https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1",
+      "https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/xsports"
+    ]
+  },
+  {
+    "id": 4873563,
+    "slug": "los-angeles-dodgers-x-milwaukee-brewers",
+    "title": "Los Angeles Dodgers x Milwaukee Brewers",
+    "league": {
+      "name": "MLB - Championship Series - NLCS",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/438"
+    },
+    "teams": {
+      "home": {
+        "name": "Los Angeles Dodgers",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/7410"
+      },
+      "away": {
+        "name": "Milwaukee Brewers",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/7405"
+      }
+    },
+    "time_start": "2026-10-15T21:00:00-03:00",
+    "time_end": "2026-10-15T23:12:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/espn2"]
+  },
+  {
+    "id": 4714988,
+    "slug": "denver-broncos-x-seattle-seahawks",
+    "title": "Denver Broncos x Seattle Seahawks",
+    "league": {
+      "name": "NFL",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/352"
+    },
+    "teams": {
+      "home": {
+        "name": "Denver Broncos",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/6656"
+      },
+      "away": {
+        "name": "Seattle Seahawks",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/6662"
+      }
+    },
+    "time_start": "2026-10-15T21:15:00-03:00",
+    "time_end": "2026-10-15T23:27:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/sportv2"]
+  },
+  {
+    "id": 4858847,
+    "slug": "estudiantes-de-la-plata-x-flamengo",
+    "title": "Estudiantes de La Plata x Flamengo",
+    "league": {
+      "name": "Copa Libertadores - Meia-final",
+      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/102"
+    },
+    "teams": {
+      "home": {
+        "name": "Estudiantes de La Plata",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/867"
+      },
+      "away": {
+        "name": "Flamengo",
+        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1215"
+      }
+    },
+    "time_start": "2026-10-15T21:30:00-03:00",
+    "time_end": "2026-10-15T23:42:00-03:00",
+    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/espn"]
+  }
+]

@@ -216,6 +216,11 @@
   </label>
 </section>
 
+<section class="panel" id="event-search-panel" hidden>
+  <h2>Jogos encontrados</h2>
+  <div id="event-search-results"></div>
+</section>
+
 <section class="category-list" id="category-list">
   {{categorySections}}
 </section>
@@ -223,9 +228,30 @@
 <script>
   const filter = document.getElementById('category-filter');
   const groups = [...document.querySelectorAll('.category-group')];
+  const eventPanel = document.getElementById('event-search-panel');
+  const eventResults = document.getElementById('event-search-results');
+  let eventCache = null;
+
+  async function searchEvents(query) {
+    if (!query) { eventPanel.hidden = true; return; }
+    try {
+      eventCache ||= (await fetch('/tvbox/api/embedtv/events').then(r => r.json())).events || [];
+      const competitions = ['libertadores', 'sul-americana', 'sulamericana', 'copa sul'];
+      const found = eventCache.filter(event => {
+        const league = String(event.league?.name || '').toLocaleLowerCase('pt-BR');
+        const title = String(event.title || '').toLocaleLowerCase('pt-BR');
+        return competitions.some(term => league.includes(term)) && (title.includes(query) || league.includes(query));
+      });
+      eventResults.innerHTML = found.length
+        ? found.map(event => `<article class="category-item"><strong>${event.title || 'Jogo'}</strong><br><small>${event.league?.name || ''} · ${event.time_start ? new Date(event.time_start).toLocaleString('pt-BR') : 'horário a confirmar'}</small></article>`).join('')
+        : '<p class="muted">Nenhum jogo encontrado.</p>';
+      eventPanel.hidden = false;
+    } catch (_) { eventPanel.hidden = true; }
+  }
 
   filter.addEventListener('input', () => {
     const query = filter.value.trim().toLocaleLowerCase('pt-BR');
+    searchEvents(query);
 
     groups.forEach(group => {
       const categoryMatches = (group.dataset.category || '').toLocaleLowerCase('pt-BR').includes(query);

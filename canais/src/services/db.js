@@ -76,7 +76,7 @@ function loadHomeConfig() {
   try {
     const config = JSON.parse(fs.readFileSync(HOME_FILE, "utf-8"));
     return Array.isArray(config?.sections)
-      ? { sections: config.sections }
+      ? { ...config, sections: config.sections, banners: Array.isArray(config.banners) ? config.banners : [] }
       : structuredClone(DEFAULT_HOME_CONFIG);
   } catch {
     return structuredClone(DEFAULT_HOME_CONFIG);
@@ -85,7 +85,7 @@ function loadHomeConfig() {
 
 function saveHomeConfig(data) {
   const sections = Array.isArray(data?.sections) ? data.sections : [];
-  fs.writeFileSync(HOME_FILE, JSON.stringify({ sections }, null, 2), "utf-8");
+  fs.writeFileSync(HOME_FILE, JSON.stringify({ ...data, sections, banners: Array.isArray(data?.banners) ? data.banners : [] }, null, 2), "utf-8");
 }
 
 module.exports = {

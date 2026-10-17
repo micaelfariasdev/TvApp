@@ -15,6 +15,10 @@ const SETTINGS = path.join(__dirname, "../../hls-settings.json");
 // mesmo que o app ainda estivesse assistindo.
 const RESOURCE_IDLE_TTL_MS = 15 * 60 * 1000;
 const AUTO_TTL_MS = 5 * 60 * 60 * 1000;
+// Evita consultar centenas de origens ao mesmo tempo. A atualização normal é
+// feita sob demanda pelo player; o polling serve apenas para manter o cache.
+const POLL_CONCURRENCY = 2;
+const MAX_REFRESH_PER_RUN = 20;
 const channels = new Map(),
   cache = new Map(),
   resources = new Map();
@@ -202,18 +206,33 @@ async function resolve(channel) {
   throw Error("Não foi encontrada playlist HLS no embed");
 }
 
+// Modo opcional para origens que bloqueiam o IP do servidor: o Node apenas
+// descobre o endereço temporário (`error.txt`/`.m3u8`) e o cliente acessa a
+// playlist diretamente. O token fica exposto ao cliente e pode expirar.
+async function resolveRedirect(channel) {
+  const root = await requestEmbed(channel.url);
+  if (!root.response.ok) throw Error("Origem HTTP " + root.response.status);
+  const body = await textLimited(root.response);
+  if (body.trimStart().startsWith("#EXTM3U")) return root.url;
+  const urls = candidates(body, root.url);
+  if (!urls.length) throw Error("Não foi encontrada playlist HLS no embed");
+  return urls[0];
+}
+
 async function refresh(channel, force = false) {
   const old = cache.get(channel.id);
   if (old?.pending) return old.pending;
   // A URL HLS extraída de um embed pode ter token temporário. Ela fica em
   // cache normalmente, mas um refresh forçado deve consultar o embed de novo.
   if (channel.automatic && old?.url && !force) return old;
-  if (
-    !force &&
-    old?.url &&
-    Date.now() - old.checked < settings.pollingSeconds * 1000
-  )
-    return old;
+  if (!force && old?.checked) {
+    // Após falha (especialmente 403), aguarda mais tempo antes de tentar de
+    // novo. Repetir a requisição a cada ciclo só aumenta o bloqueio no host.
+    const waitMs = old.error
+      ? Math.max(settings.pollingSeconds * 2 * 1000, 10 * 60 * 1000)
+      : settings.pollingSeconds * 1000;
+    if (Date.now() - old.checked < waitMs) return old;
+  }
   const promise = (async () => {
     try {
       const found = await resolve(channel);
@@ -415,6 +434,14 @@ async function play(req, res) {
   const c = channels.get(req.params.id);
   if (!c) return res.status(404).send("Canal não encontrado");
   try {
+    if (
+      String(process.env.HLS_DIRECT_REDIRECT || "0") === "1" &&
+      !c.automatic &&
+      /embedtv\.cc$/i.test(new URL(c.url).hostname)
+    ) {
+      const target = await resolveRedirect(c);
+      return res.redirect(302, target);
+    }
     let state = await refresh(c);
     if (!state.url) throw Error(state.error || "Origem indisponível");
     // Playlist sempre nova, nunca guardar segmentos ao longo do polling.
@@ -512,14 +539,18 @@ async function poll() {
   if (running) return;
   running = true;
   try {
-    const list = [...channels.values()];
+    // Não força uma nova descoberta em todos os canais. O cache e o backoff
+    // controlam a frequência; canais em reprodução são renovados por play().
+    const list = [...channels.values()]
+      .filter((channel) => !channel.automatic)
+      .sort((a, b) => (cache.get(a.id)?.checked || 0) - (cache.get(b.id)?.checked || 0))
+      .slice(0, MAX_REFRESH_PER_RUN);
     let i = 0;
     await Promise.all(
-      Array.from({ length: Math.min(3, list.length) }, async () => {
+      Array.from({ length: Math.min(POLL_CONCURRENCY, list.length) }, async () => {
         while (i < list.length) {
           const channel = list[i++];
-          if (channel.automatic) continue;
-          await refresh(channel, true);
+          await refresh(channel, false);
         }
       }),
     );

@@ -24,6 +24,11 @@ const {
   SESSION_COOKIE,
 } = require("../utils/helpers");
 
+const { itemCategories, categoriesFromForm, allCategoryNames, hasCategory } = require("../services/categories");
+function categoryFields(items, selected = []) {
+  const names = allCategoryNames(items, loadCategoriesMeta());
+  return names.map(cat => `<label style="display:flex;gap:8px;align-items:center"><input style="width:auto" type="checkbox" name="categories" value="${safeText(cat)}" ${selected.includes(cat) ? "checked" : ""}>${safeText(cat)}</label>`).join("");
+}
 const router = express.Router();
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -122,7 +127,7 @@ router.get("/api/channels", (req, res) => {
   const forwardedProto = String(req.headers["x-forwarded-proto"] || "").split(",")[0];
   const baseUrl = `${forwardedProto || req.protocol}://${req.get("host")}`;
 
-  const cleanData = dbData.map(({ id, name, url, type, category, poster, source }) => {
+  const cleanData = dbData.map(({ id, name, url, type, category, categories, poster, source }) => {
     const categoryKey = String(category || "outros").trim();
     const categoryPoster = categoriesMeta[categoryKey]?.poster || null;
 
@@ -135,6 +140,7 @@ router.get("/api/channels", (req, res) => {
       url: proxyUrl,
       type,
       category,
+      categories: itemCategories({ category, categories }),
       poster: poster || categoryPoster,
     };
   });
@@ -150,14 +156,54 @@ router.get("/api/home", (req, res) => {
   res.json(loadHomeConfig());
 });
 
+
+function bannerCatalog() {
+  return [
+    ...loadDB().map(item => ({ key: "item:" + item.id, name: item.name })),
+    ...loadSeriesCatalog().map(item => ({ key: "series:" + item.id, name: item.title || item.name || item.id }))
+  ];
+}
+function bannerEditor(config) {
+  const catalog = bannerCatalog();
+  function row(banner = {}) {
+    const options = catalog.map(item => `<option value="${safeText(item.key)}" ${item.key === banner.target ? "selected" : ""}>${safeText(item.name)}</option>`).join("");
+    return `<fieldset style="margin:16px 0;padding:16px;border:1px solid #46516a;border-radius:12px">
+      <label>Conteúdo</label><select name="bannerTarget"><option value="">Selecione um item</option>${options}</select>
+      <label>Título (vazio usa o nome do item)</label><input name="bannerTitle" value="${safeText(banner.title || "")}">
+      <label>Descrição</label><input name="bannerSubtitle" value="${safeText(banner.subtitle || "")}">
+      <label>Imagem horizontal (opcional)</label><input type="url" name="bannerImage" value="${safeText(banner.image || "")}" placeholder="https://...">
+      <label>Exibir</label><select name="bannerEnabled"><option value="true">Sim</option><option value="false" ${banner.enabled === false ? "selected" : ""}>Não</option></select>
+      <div class="actions" style="margin-top:12px"><button class="btn" type="button" data-banner-up>Subir</button><button class="btn" type="button" data-banner-down>Descer</button><button class="btn danger" type="button" data-banner-remove>Remover</button></div>
+    </fieldset>`;
+  }
+  return `<section class="panel"><h2>Banners do carrossel CINEDARK</h2>
+    <p>Escolha até 12 destaques. A ordem abaixo será a ordem no app. Sem banners cadastrados, o app usa as capas do catálogo.</p>
+    <form method="post" action="/tvbox/home/banners"><div id="banner-rows">${(config.banners || []).map(row).join("")}</div>
+      <template id="banner-template">${row()}</template>
+      <div class="actions"><button type="button" class="btn" id="banner-add">Adicionar banner</button><button class="btn primary" type="submit">Salvar banners</button></div>
+    </form></section>`;
+}
+router.post("/home/banners", (req, res) => {
+  const list = value => Array.isArray(value) ? value : value == null ? [] : [value];
+  const targets = list(req.body.bannerTarget), titles = list(req.body.bannerTitle);
+  const subtitles = list(req.body.bannerSubtitle), images = list(req.body.bannerImage), enabled = list(req.body.bannerEnabled);
+  const known = new Set(bannerCatalog().map(item => item.key));
+  const banners = targets.map((target, index) => ({
+    target: String(target), title: String(titles[index] || "").trim().slice(0, 160),
+    subtitle: String(subtitles[index] || "").trim().slice(0, 320),
+    image: /^https?:\/\//i.test(String(images[index] || "")) ? String(images[index]).trim() : "",
+    enabled: enabled[index] !== "false"
+  })).filter(banner => known.has(banner.target)).slice(0, 12);
+  saveHomeConfig({ ...loadHomeConfig(), banners });
+  res.redirect("/tvbox/home?saved=1");
+});
+
 router.get("/home", (req, res) => {
   const config = loadHomeConfig();
 
   const categories = [
     ...new Set(
-      loadDB().map(
-        (item) => String(item.category || "outros").trim() || "outros",
-      ),
+      loadDB().flatMap(itemCategories),
     ),
   ].sort((a, b) => a.localeCompare(b, "pt-BR"));
 
@@ -224,7 +270,7 @@ router.get("/home", (req, res) => {
         : "",
     );
 
-  res.send(tvboxPage("Página inicial", body));
+  res.send(tvboxPage("Página inicial", body.replace("{{bannerEditor}}", bannerEditor(config))));
 });
 
 // Dados dinâmicos da Home
@@ -234,9 +280,7 @@ router.get("/home/data", (req, res) => {
 
     const categories = [
       ...new Set(
-        loadDB().map(
-          (item) => String(item.category || "outros").trim() || "outros",
-        ),
+        loadDB().flatMap(itemCategories),
       ),
     ].sort((a, b) => a.localeCompare(b, "pt-BR"));
 
@@ -309,7 +353,7 @@ router.post("/home", (req, res) => {
       enabled: true,
       limit: 18,
     });
-  saveHomeConfig({ sections });
+  saveHomeConfig({ ...loadHomeConfig(), sections });
   res.redirect("/tvbox/home?saved=1");
 });
 
@@ -730,8 +774,9 @@ router.post("/import/m3u", upload.single("catalog"), (req, res) => {
 
 router.get("/categories", (req, res) => {
   const categories = loadDB().reduce((groups, item) => {
-    const category = String(item.category || "outros").trim() || "outros";
-    (groups[category] ||= []).push(item);
+    for (const category of itemCategories(item).length ? itemCategories(item) : ["outros"]) {
+      (groups[category] ||= []).push(item);
+    }
     return groups;
   }, {});
 
@@ -776,12 +821,12 @@ router.post("/category/delete", (req, res) => {
 
   const normalizedCategory = category.toLocaleLowerCase("pt-BR");
   const remaining = loadDB().filter((item) => {
-    const itemCategory = (
-      String(item.category || "outros").trim() || "outros"
-    ).toLocaleLowerCase("pt-BR");
-    return itemCategory !== normalizedCategory;
+    return !hasCategory(item, normalizedCategory) || itemCategories(item).length > 1;
   });
-  saveDB(remaining);
+  saveDB(remaining.map(item => {
+    const categories = itemCategories(item).filter(value => value.toLocaleLowerCase("pt-BR") !== normalizedCategory);
+    return { ...item, category: categories[0] || "outros", categories };
+  }));
   res.redirect("/tvbox/categories");
 });
 
@@ -791,8 +836,7 @@ router.get("/", (req, res) => {
   const series = loadSeriesCatalog();
 
   const byCategory = channels.reduce((total, item) => {
-    const key = item.category || "outros";
-    total[key] = (total[key] || 0) + 1;
+    for (const key of itemCategories(item).length ? itemCategories(item) : ["outros"]) total[key] = (total[key] || 0) + 1;
     return total;
   }, {});
 
@@ -828,7 +872,7 @@ router.get("/add", (req, res) => {
     path.join(TEMPLATES_DIRECTORY, "tvbox-add.html"),
     "utf-8",
   );
-  return res.send(tvboxPage("Adicionar item", body));
+  return res.send(tvboxPage("Adicionar item", body.replace("{{categoryOptions}}", categoryFields(loadDB()))));
 });
 
 // Busca e cadastro manual de lives da Kick.
@@ -868,7 +912,9 @@ router.get("/api/kick/search", async (req, res) => {
     });
     if (!response.ok) throw Error(`Kick retornou HTTP ${response.status}`);
     const payload = await response.json();
-    const raw = Array.isArray(payload) ? payload : (payload.results || payload.channels || payload.data || []);
+    const raw = Array.isArray(payload)
+      ? payload
+      : (payload.results || payload.channels || payload.data?.channels || payload.data?.results || []);
     const results = raw.map((item) => item.channel || item.user || item).map((item) => ({
       name: item.name || item.username || item.slug || "",
       username: item.username || item.slug || item.channel_slug || "",
@@ -891,7 +937,9 @@ router.post("/kick/add", (req, res) => {
 });
 
 router.post("/add", (req, res) => {
-  const { name, url, type, category, poster } = req.body;
+  const { name, url, type, poster } = req.body;
+  const categories = categoriesFromForm(req.body);
+  const category = categories[0];
   const imageUrl = String(poster || "").trim();
 
   let dbData = loadDB();
@@ -901,6 +949,7 @@ router.post("/add", (req, res) => {
     url,
     type,
     category,
+    categories,
     ...(/^https?:\/\//i.test(imageUrl) ? { poster: imageUrl } : {}),
   });
   saveDB(dbData);
@@ -932,20 +981,7 @@ router.get("/edit/:id", (req, res) => {
         ),
       );
 
-  // Extrai todas as categorias únicas já presentes no banco de dados
-  const uniqueCategories = [
-    ...new Set(
-      dbData.map((i) => String(i.category || "outros").trim() || "outros"),
-    ),
-  ].sort((a, b) => a.localeCompare(b, "pt-BR"));
-
-  // Gera as opções do select dinamicamente
-  const categoryOptions = uniqueCategories
-    .map(
-      (cat) =>
-        `<option value="${safeText(cat)}" ${item.category === cat ? "selected" : ""}>${safeText(cat)}</option>`,
-    )
-    .join("");
+  const categoryOptions = categoryFields(dbData, itemCategories(item));
 
   const typeKey = (item.type || "").toLowerCase();
   const posterValue = safeText(item.poster || "");
@@ -967,7 +1003,9 @@ router.get("/edit/:id", (req, res) => {
 
 router.post("/edit/:id", (req, res) => {
   const id = req.params.id;
-  const { name, url, type, category, poster } = req.body;
+  const { name, url, type, poster } = req.body;
+  const categories = categoriesFromForm(req.body);
+  const category = categories[0];
   const imageUrl = String(poster || "").trim();
 
   let dbData = loadDB();
@@ -983,11 +1021,13 @@ router.post("/edit/:id", (req, res) => {
       );
 
   dbData[index] = {
+    ...dbData[index],
     id: dbData[index].id,
     name,
     url,
     type,
     category,
+    categories,
     ...(/^https?:\/\//i.test(imageUrl)
       ? { poster: imageUrl }
       : { poster: null }),
@@ -1009,8 +1049,7 @@ router.get("/category/:name", (req, res) => {
   const channels = loadDB();
   const items = channels.filter(
     (item) =>
-      (String(item.category || "outros").trim() || "outros").toLowerCase() ===
-      categoryName.toLowerCase(),
+      hasCategory(item, categoryName),
   );
 
   const categoriesMeta = loadCategoriesMeta();

@@ -4,6 +4,7 @@ package com.example.tvbox
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.content.res.Configuration
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ProgressBar
@@ -84,6 +85,12 @@ class MediaCardAdapter(
         holder.itemView.setOnClickListener {
             onClick(item)
         }
+        val isTv = (holder.itemView.resources.configuration.uiMode and Configuration.UI_MODE_TYPE_MASK) ==
+            Configuration.UI_MODE_TYPE_TELEVISION
+        // No celular/tablet o primeiro toque já deve abrir o item; o foco
+        // visual é necessário apenas para navegação por controle remoto.
+        holder.itemView.isFocusable = isTv
+        holder.itemView.isFocusableInTouchMode = isTv
     }
 
     override fun getItemCount(): Int = items.size
@@ -95,7 +102,7 @@ class MediaCardAdapter(
             val width = holder.itemView.width
             if (width <= 0) return@post
 
-            val targetHeight = if (isLive) width else dp(holder.itemView, 220)
+            val targetHeight = if (isLive) width else (width * 1.25f).toInt()
             val params = holder.itemView.layoutParams ?: return@post
             if (params.height != targetHeight) {
                 params.height = targetHeight
