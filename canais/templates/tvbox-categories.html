@@ -211,16 +211,22 @@
     <h1>Listas por categoria</h1>
     <p class="muted"><strong>{{categoryCount}}</strong> categorias. As listas ficam fechadas para manter o painel organizado.</p>
   </div>
-  <label class="category-search">Buscar categoria ou conteúdo
-    <input id="category-filter" type="search" autocomplete="off" placeholder="Ex.: filmes, premiere, naruto...">
+  <label class="category-search">Buscar filme pelo nome
+    <input id="category-filter" type="search" autocomplete="off" placeholder="Digite o nome do filme...">
   </label>
 </section>
 
-<section class="panel" id="event-search-panel" hidden>
-  <h2>Jogos encontrados</h2>
-  <div id="event-search-results"></div>
+<section class="panel">
+  <h2>Importar JSON para uma categoria</h2>
+  <p class="muted">Use o mesmo arquivo JSON do Importar M3U. Atualiza os links por nome, preservando nomes e capas existentes, e adiciona filmes novos.</p>
+  <form method="post" action="/tvbox/import/m3u" enctype="multipart/form-data">
+    <input type="hidden" name="target" value="category">
+    <label>Categoria</label><select name="category" required>{{categorySelectOptions}}</select>
+    <label>Arquivo JSON do catálogo M3U</label><input type="file" name="catalog" accept=".json,application/json" required>
+    <button class="btn primary" type="submit">Importar e atualizar</button>
+  </form>
 </section>
-
+<section class="category-list" id="movie-results" hidden></section>
 <section class="category-list" id="category-list">
   {{categorySections}}
 </section>
@@ -228,46 +234,17 @@
 <script>
   const filter = document.getElementById('category-filter');
   const groups = [...document.querySelectorAll('.category-group')];
-  const eventPanel = document.getElementById('event-search-panel');
-  const eventResults = document.getElementById('event-search-results');
-  let eventCache = null;
-
-  async function searchEvents(query) {
-    if (!query) { eventPanel.hidden = true; return; }
-    try {
-      eventCache ||= (await fetch('/tvbox/api/embedtv/events').then(r => r.json())).events || [];
-      const competitions = ['libertadores', 'sul-americana', 'sulamericana', 'copa sul'];
-      const found = eventCache.filter(event => {
-        const league = String(event.league?.name || '').toLocaleLowerCase('pt-BR');
-        const title = String(event.title || '').toLocaleLowerCase('pt-BR');
-        return competitions.some(term => league.includes(term)) && (title.includes(query) || league.includes(query));
-      });
-      eventResults.innerHTML = found.length
-        ? found.map(event => `<article class="category-item"><strong>${event.title || 'Jogo'}</strong><br><small>${event.league?.name || ''} · ${event.time_start ? new Date(event.time_start).toLocaleString('pt-BR') : 'horário a confirmar'}</small></article>`).join('')
-        : '<p class="muted">Nenhum jogo encontrado.</p>';
-      eventPanel.hidden = false;
-    } catch (_) { eventPanel.hidden = true; }
-  }
-
+  const results = document.getElementById('movie-results');
+  const list = document.getElementById('category-list');
+  const normalize = text => String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR');
+  const movies = [...document.querySelectorAll('.category-group .category-item')];
   filter.addEventListener('input', () => {
-    const query = filter.value.trim().toLocaleLowerCase('pt-BR');
-    searchEvents(query);
-
-    groups.forEach(group => {
-      const categoryMatches = (group.dataset.category || '').toLocaleLowerCase('pt-BR').includes(query);
-      let itemMatches = false;
-
-      group.querySelectorAll('.category-item').forEach(item => {
-        const visible = !query || categoryMatches || (item.dataset.name || '').toLocaleLowerCase('pt-BR').includes(query);
-        item.hidden = !visible;
-        if (visible) itemMatches = true;
-      });
-
-      group.hidden = !categoryMatches && !itemMatches;
-      
-      if (query && !group.hidden) {
-        group.open = true;
-      }
-    });
+    const query = normalize(filter.value.trim());
+    list.hidden = Boolean(query);
+    results.hidden = !query;
+    if (!query) { results.replaceChildren(); return; }
+    const matched = movies.filter(item => normalize(item.dataset.name).includes(query));
+    results.replaceChildren(...matched.map(item => item.cloneNode(true)));
+    if (!matched.length) results.textContent = 'Nenhum filme encontrado.';
   });
 </script>

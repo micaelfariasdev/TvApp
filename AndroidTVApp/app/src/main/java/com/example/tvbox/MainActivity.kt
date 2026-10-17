@@ -369,14 +369,18 @@ class MainActivity : AppCompatActivity() {
         val bootstrapClient = OkHttpClient.Builder().build()
         val doh = DnsOverHttps.Builder()
             .client(bootstrapClient)
-            .url("https://cloudflare-dns.com/dns-query".toHttpUrl())
+            .url("https://dns.google/dns-query".toHttpUrl())
             .bootstrapDnsHosts(
-                InetAddress.getByName("1.1.1.1"),
-                InetAddress.getByName("1.0.0.1")
+                InetAddress.getByName("8.8.8.8"),
+                InetAddress.getByName("8.8.4.4")
             )
             .build()
         val httpClient = OkHttpClient.Builder()
             .dns(doh)
+            .connectTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
+            .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
+            .callTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
             .followRedirects(true)
             .followSslRedirects(true)
             .build()

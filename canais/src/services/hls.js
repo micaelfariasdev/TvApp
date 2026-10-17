@@ -26,14 +26,20 @@ let interval = null,
   lastRun = null,
   running = false;
 let settings = { pollingSeconds: 300, embedtvSeconds: 60 };
-const WARP_SOCKS_URL = process.env.WARP_SOCKS_URL || "socks5h://127.0.0.1:40000";
+const WARP_SOCKS_URL =
+  process.env.WARP_SOCKS_URL || "socks5h://127.0.0.1:40000";
 const warpAgent = new SocksProxyAgent(WARP_SOCKS_URL, { keepAlive: true });
 try {
   settings = { ...settings, ...JSON.parse(fs.readFileSync(SETTINGS, "utf8")) };
 } catch {}
 try {
   for (const c of JSON.parse(fs.readFileSync(FILE, "utf8")))
-    if (c.id && c.url && (!c.automatic || (c.expiresAt && c.expiresAt > Date.now()))) channels.set(c.id, c);
+    if (
+      c.id &&
+      c.url &&
+      (!c.automatic || (c.expiresAt && c.expiresAt > Date.now()))
+    )
+      channels.set(c.id, c);
 } catch {}
 const slug = (s) =>
   String(s || "")
@@ -113,7 +119,8 @@ async function textLimited(response) {
 // desativado. O fallback direto mantém o serviço funcionando caso o WARP
 // esteja parado durante uma reinicialização.
 async function requestEmbed(raw, headers = {}) {
-  if (String(process.env.HLS_USE_WARP || "1") === "0") return request(raw, headers);
+  if (String(process.env.HLS_USE_WARP || "1") === "0")
+    return request(raw, headers);
   try {
     let url = raw;
     for (let i = 0; i < 5; i++) {
@@ -128,7 +135,11 @@ async function requestEmbed(raw, headers = {}) {
         validateStatus: () => true,
         headers: { "User-Agent": "Mozilla/5.0", Accept: "*/*", ...headers },
       });
-      if (response.status >= 300 && response.status < 400 && response.headers.location) {
+      if (
+        response.status >= 300 &&
+        response.status < 400 &&
+        response.headers.location
+      ) {
         url = new URL(response.headers.location, target).href;
         continue;
       }
@@ -138,14 +149,18 @@ async function requestEmbed(raw, headers = {}) {
         response: {
           ok: response.status >= 200 && response.status < 300,
           status: response.status,
-          headers: { get: (name) => response.headers[String(name).toLowerCase()] || null },
+          headers: {
+            get: (name) => response.headers[String(name).toLowerCase()] || null,
+          },
           arrayBuffer: async () => body,
         },
       };
     }
     throw Error("Redirecionamentos demais");
   } catch (error) {
-    console.warn(`[HLS] WARP indisponível; usando conexão direta: ${error.message}`);
+    console.warn(
+      `[HLS] WARP indisponível; usando conexão direta: ${error.message}`,
+    );
     return request(raw, headers);
   }
 }
@@ -177,30 +192,47 @@ async function resolve(channel) {
   if (body.trimStart().startsWith("#EXTM3U")) return { url: root.url };
   const urls = candidates(body, root.url);
   const rootCookie = root.response.headers.get("set-cookie");
-  console.log(`[HLS] Embed ${channel.id || channel.url}: ${urls.length} candidato(s)`);
+  console.log(
+    `[HLS] Embed ${channel.id || channel.url}: ${urls.length} candidato(s)`,
+  );
   for (const candidate of urls) {
     try {
       const candidateHeaders = {
         Referer: root.url,
         Origin: new URL(root.url).origin,
-        ...(rootCookie ? { Cookie: rootCookie.split(",").map((v) => v.split(";")[0]).join("; ") } : {}),
+        ...(rootCookie
+          ? {
+              Cookie: rootCookie
+                .split(",")
+                .map((v) => v.split(";")[0])
+                .join("; "),
+            }
+          : {}),
       };
       let p = await requestEmbed(candidate, candidateHeaders);
       // Alguns hosts recusam o IP do WARP, mas aceitam a conexão direta.
       // Tenta a origem uma segunda vez antes de descartar o canal.
       if ([401, 403].includes(p.response.status)) {
-        console.warn(`[HLS] ${channel.id || channel.url}: WARP recusado (${p.response.status}), tentando direto`);
+        console.warn(
+          `[HLS] ${channel.id || channel.url}: WARP recusado (${p.response.status}), tentando direto`,
+        );
         p = await request(candidate, candidateHeaders);
       }
       if (!p.response.ok) {
-        console.warn(`[HLS] ${channel.id || channel.url}: candidato HTTP ${p.response.status} ${candidate}`);
+        console.warn(
+          `[HLS] ${channel.id || channel.url}: candidato HTTP ${p.response.status} ${candidate}`,
+        );
         continue;
       }
       const t = await textLimited(p.response);
       if (t.trimStart().startsWith("#EXTM3U")) return { url: p.url };
-      console.warn(`[HLS] ${channel.id || channel.url}: candidato não é playlist ${candidate}`);
+      console.warn(
+        `[HLS] ${channel.id || channel.url}: candidato não é playlist ${candidate}`,
+      );
     } catch (e) {
-      console.warn(`[HLS] ${channel.id || channel.url}: falha no candidato ${candidate}: ${e.message}`);
+      console.warn(
+        `[HLS] ${channel.id || channel.url}: falha no candidato ${candidate}: ${e.message}`,
+      );
     }
   }
   throw Error("Não foi encontrada playlist HLS no embed");
@@ -266,14 +298,21 @@ function persist() {
 function cleanup() {
   let changed = false;
   for (const [id, channel] of channels) {
-    if (channel.automatic && (!channel.expiresAt || channel.expiresAt <= Date.now())) {
+    if (
+      channel.automatic &&
+      (!channel.expiresAt || channel.expiresAt <= Date.now())
+    ) {
       channels.delete(id);
       cache.delete(id);
       changed = true;
     }
   }
   for (const [token, resource] of resources) {
-    if (!channels.has(resource.channelId) || Date.now() - resource.lastAccess > RESOURCE_IDLE_TTL_MS) resources.delete(token);
+    if (
+      !channels.has(resource.channelId) ||
+      Date.now() - resource.lastAccess > RESOURCE_IDLE_TTL_MS
+    )
+      resources.delete(token);
   }
   if (changed) persist();
 }
@@ -347,7 +386,9 @@ async function add({ name, url, id, automatic = false }) {
     name,
     url,
     automatic,
-    ...(automatic ? { createdAt: Date.now(), expiresAt: Date.now() + AUTO_TTL_MS } : {}),
+    ...(automatic
+      ? { createdAt: Date.now(), expiresAt: Date.now() + AUTO_TTL_MS }
+      : {}),
   };
 
   channels.set(id, channel);
@@ -367,7 +408,8 @@ function remove(id) {
   if (!channels.has(id)) return false;
   channels.delete(id);
   cache.delete(id);
-  for (const [token, entry] of resources) if (entry.channelId === id) resources.delete(token);
+  for (const [token, entry] of resources)
+    if (entry.channelId === id) resources.delete(token);
   persist();
   return true;
 }
@@ -381,10 +423,19 @@ function removeAll() {
 }
 
 function tokenFor(channelId, url) {
-  const token = crypto.createHash("sha256").update(channelId + "\0" + url).digest("hex").slice(0, 32);
+  const token = crypto
+    .createHash("sha256")
+    .update(channelId + "\0" + url)
+    .digest("hex")
+    .slice(0, 32);
   const now = Date.now();
   const previous = resources.get(token);
-  resources.set(token, { channelId, url, created: previous?.created || now, lastAccess: now });
+  resources.set(token, {
+    channelId,
+    url,
+    created: previous?.created || now,
+    lastAccess: now,
+  });
   return token;
 }
 
@@ -395,36 +446,20 @@ function rewrite(body, base, id) {
       if (!line.trim()) return line;
 
       if (line.trimStart().startsWith("#")) {
-        return line.replace(
-          /URI="([^"]+)"/g,
-          (_, relative) => {
-            const absolute = new URL(
-              relative,
-              base
-            ).href;
+        return line.replace(/URI="([^"]+)"/g, (_, relative) => {
+          const absolute = new URL(relative, base).href;
 
-            const token = tokenFor(
-              id,
-              absolute
-            );
+          const token = tokenFor(id, absolute);
 
-            return (
-              `URI="/tvbox/api/live/resource/${token}"`
-            );
-          }
-        );
+          return `URI="/tvbox/api/live/resource/${token}"`;
+        });
       }
 
-      const absolute = new URL(
-        line.trim(),
-        base
-      ).href;
+      const absolute = new URL(line.trim(), base).href;
 
       const token = tokenFor(id, absolute);
 
-      return (
-        `/tvbox/api/live/resource/${token}`
-      );
+      return `/tvbox/api/live/resource/${token}`;
     })
     .join("\n");
 }
@@ -436,8 +471,7 @@ async function play(req, res) {
   try {
     if (
       String(process.env.HLS_DIRECT_REDIRECT || "0") === "1" &&
-      !c.automatic &&
-      /embedtv\.cc$/i.test(new URL(c.url).hostname)
+      /(^|\.)embedtv\.cc$/i.test(new URL(c.url).hostname)
     ) {
       const target = await resolveRedirect(c);
       return res.redirect(302, target);
@@ -455,7 +489,8 @@ async function play(req, res) {
     if (!p.response.ok && [401, 403, 404, 410].includes(p.response.status)) {
       await p.response.body?.cancel();
       state = await refresh(c, true);
-      if (!state.url) throw Error(state.error || "Unable to renew stream source");
+      if (!state.url)
+        throw Error(state.error || "Unable to renew stream source");
       p = await requestEmbed(state.url, sourceHeaders);
     }
     if (!p.response.ok) throw Error("Origem HTTP " + p.response.status);
@@ -543,16 +578,22 @@ async function poll() {
     // controlam a frequência; canais em reprodução são renovados por play().
     const list = [...channels.values()]
       .filter((channel) => !channel.automatic)
-      .sort((a, b) => (cache.get(a.id)?.checked || 0) - (cache.get(b.id)?.checked || 0))
+      .sort(
+        (a, b) =>
+          (cache.get(a.id)?.checked || 0) - (cache.get(b.id)?.checked || 0),
+      )
       .slice(0, MAX_REFRESH_PER_RUN);
     let i = 0;
     await Promise.all(
-      Array.from({ length: Math.min(POLL_CONCURRENCY, list.length) }, async () => {
-        while (i < list.length) {
-          const channel = list[i++];
-          await refresh(channel, false);
-        }
-      }),
+      Array.from(
+        { length: Math.min(POLL_CONCURRENCY, list.length) },
+        async () => {
+          while (i < list.length) {
+            const channel = list[i++];
+            await refresh(channel, false);
+          }
+        },
+      ),
     );
     lastRun = new Date().toISOString();
   } finally {

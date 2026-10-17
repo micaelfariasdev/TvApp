@@ -1,738 +1,82 @@
-[
-  {
-    "id": 4876120,
-    "slug": "arthur-gea-x-alejandro-davidovich-fokina",
-    "title": "Arthur Gea x Alejandro Davidovich Fokina",
-    "league": {
-      "name": "Xangai - Quartas Finais",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/364"
-    },
-    "teams": {
-      "home": {
-        "name": "Arthur Gea",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/74412"
-      },
-      "away": {
-        "name": "Alejandro Davidovich Fokina",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/48106"
-      }
-    },
-    "time_start": "2026-10-15T03:30:00-03:00",
-    "time_end": "2026-10-15T05:42:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/espn2"]
+{
+  "format": "tvbox-import/v1",
+  "exportedAt": "2026-10-17T22:13:03.576Z",
+  "filters": {
+    "group": "",
+    "query": "amor da minha vida s"
   },
-  {
-    "id": 4876097,
-    "slug": "alexander-zverev-x-alex-de-minaur",
-    "title": "Alexander Zverev x Alex De Minaur",
-    "league": {
-      "name": "Xangai - Quartas Finais",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/364"
-    },
-    "teams": {
-      "home": {
-        "name": "Alexander Zverev",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/12954"
-      },
-      "away": {
-        "name": "Alex De Minaur",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/46472"
-      }
-    },
-    "time_start": "2026-10-15T07:00:00-03:00",
-    "time_end": "2026-10-15T09:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/espn2"]
-  },
-  {
-    "id": 4828737,
-    "slug": "az-alkmaar-x-hapoel-beer-sheva",
-    "title": "AZ Alkmaar x Hapoel Beer Sheva",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "AZ Alkmaar",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/699"
-      },
-      "away": {
-        "name": "Hapoel Beer Sheva",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/579"
-      }
-    },
-    "time_start": "2026-10-15T13:45:00-03:00",
-    "time_end": "2026-10-15T15:57:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828740,
-    "slug": "union-st-gilloise-x-real-sociedad",
-    "title": "Union St. Gilloise x Real Sociedad",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "Union St. Gilloise",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1204"
-      },
-      "away": {
-        "name": "Real Sociedad",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/154"
-      }
-    },
-    "time_start": "2026-10-15T13:45:00-03:00",
-    "time_end": "2026-10-15T15:57:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828741,
-    "slug": "lech-poznan-x-bayer-leverkusen",
-    "title": "Lech Poznan x Bayer Leverkusen",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "Lech Poznan",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2211"
-      },
-      "away": {
-        "name": "Bayer Leverkusen",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/333"
-      }
-    },
-    "time_start": "2026-10-15T13:45:00-03:00",
-    "time_end": "2026-10-15T15:57:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828742,
-    "slug": "torreense-x-sunderland",
-    "title": "Torreense x Sunderland",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "Torreense",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/921"
-      },
-      "away": {
-        "name": "Sunderland",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/117"
-      }
-    },
-    "time_start": "2026-10-15T13:45:00-03:00",
-    "time_end": "2026-10-15T15:57:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828743,
-    "slug": "lyon-x-crystal-palace",
-    "title": "Lyon x Crystal Palace",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "Lyon",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/465"
-      },
-      "away": {
-        "name": "Crystal Palace",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/10"
-      }
-    },
-    "time_start": "2026-10-15T13:45:00-03:00",
-    "time_end": "2026-10-15T15:57:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828744,
-    "slug": "sparta-praha-x-lillestrom",
-    "title": "Sparta Praha x Lillestrom",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "Sparta Praha",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1788"
-      },
-      "away": {
-        "name": "Lillestrom",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1985"
-      }
-    },
-    "time_start": "2026-10-15T13:45:00-03:00",
-    "time_end": "2026-10-15T15:57:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828745,
-    "slug": "nk-celje-x-omonia",
-    "title": "NK Celje x Omonia",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "NK Celje",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2345"
-      },
-      "away": {
-        "name": "Omonia",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2262"
-      }
-    },
-    "time_start": "2026-10-15T13:45:00-03:00",
-    "time_end": "2026-10-15T15:57:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828746,
-    "slug": "red-bull-salzburg-x-ac-milan",
-    "title": "Red Bull Salzburg x AC Milan",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "Red Bull Salzburg",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1739"
-      },
-      "away": {
-        "name": "AC Milan",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/227"
-      }
-    },
-    "time_start": "2026-10-15T13:45:00-03:00",
-    "time_end": "2026-10-15T15:57:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828934,
-    "slug": "cska-sofia-x-monaco",
-    "title": "CSKA Sofia x Monaco",
-    "league": {
-      "name": "Liga Confer\u00eancia",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/7685"
-    },
-    "teams": {
-      "home": {
-        "name": "CSKA Sofia",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2276"
-      },
-      "away": {
-        "name": "Monaco",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/471"
-      }
-    },
-    "time_start": "2026-10-15T13:45:00-03:00",
-    "time_end": "2026-10-15T15:57:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828937,
-    "slug": "kups-x-trabzonspor",
-    "title": "KuPS x Trabzonspor",
-    "league": {
-      "name": "Liga Confer\u00eancia",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/7685"
-    },
-    "teams": {
-      "home": {
-        "name": "KuPS",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1935"
-      },
-      "away": {
-        "name": "Trabzonspor",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/950"
-      }
-    },
-    "time_start": "2026-10-15T13:45:00-03:00",
-    "time_end": "2026-10-15T15:57:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4875424,
-    "slug": "cleveland-guardians-x-tampa-bay-rays",
-    "title": "Cleveland Guardians x Tampa Bay Rays",
-    "league": {
-      "name": "MLB - Championship Series - ALCS",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/438"
-    },
-    "teams": {
-      "home": {
-        "name": "Cleveland Guardians",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/7416"
-      },
-      "away": {
-        "name": "Tampa Bay Rays",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/7434"
-      }
-    },
-    "time_start": "2026-10-15T14:00:00-03:00",
-    "time_end": "2026-10-15T16:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/espn2"]
-  },
-  {
-    "id": 4828729,
-    "slug": "dinamo-zagreb-x-anderlecht",
-    "title": "Dinamo Zagreb x Anderlecht",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "Dinamo Zagreb",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2245"
-      },
-      "away": {
-        "name": "Anderlecht",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1173"
-      }
-    },
-    "time_start": "2026-10-15T16:00:00-03:00",
-    "time_end": "2026-10-15T18:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828730,
-    "slug": "olympique-de-marseille-x-olympiacos",
-    "title": "Olympique de Marseille x Olympiacos",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "Olympique de Marseille",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/469"
-      },
-      "away": {
-        "name": "Olympiacos",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1023"
-      }
-    },
-    "time_start": "2026-10-15T16:00:00-03:00",
-    "time_end": "2026-10-15T18:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828731,
-    "slug": "celta-vigo-x-juventus",
-    "title": "Celta Vigo x Juventus",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "Celta Vigo",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/158"
-      },
-      "away": {
-        "name": "Juventus",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/226"
-      }
-    },
-    "time_start": "2026-10-15T16:00:00-03:00",
-    "time_end": "2026-10-15T18:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828732,
-    "slug": "bournemouth-x-sturm-graz",
-    "title": "Bournemouth x Sturm Graz",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "Bournemouth",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/50"
-      },
-      "away": {
-        "name": "Sturm Graz",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1741"
-      }
-    },
-    "time_start": "2026-10-15T16:00:00-03:00",
-    "time_end": "2026-10-15T18:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828733,
-    "slug": "jagiellonia-x-fc-ararat-armenia",
-    "title": "Jagiellonia x FC Ararat-Armenia",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "Jagiellonia",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2220"
-      },
-      "away": {
-        "name": "FC Ararat-Armenia",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/48879"
-      }
-    },
-    "time_start": "2026-10-15T16:00:00-03:00",
-    "time_end": "2026-10-15T18:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828734,
-    "slug": "rennes-x-ofi-crete",
-    "title": "Rennes x OFI Crete",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "Rennes",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/477"
-      },
-      "away": {
-        "name": "OFI Crete",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1032"
-      }
-    },
-    "time_start": "2026-10-15T16:00:00-03:00",
-    "time_end": "2026-10-15T18:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828735,
-    "slug": "sl-benfica-x-celtic",
-    "title": "SL Benfica x Celtic",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "SL Benfica",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/888"
-      },
-      "away": {
-        "name": "Celtic",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/754"
-      }
-    },
-    "time_start": "2026-10-15T16:00:00-03:00",
-    "time_end": "2026-10-15T18:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828736,
-    "slug": "hoffenheim-x-besiktas",
-    "title": "Hoffenheim x Besiktas",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "Hoffenheim",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/351"
-      },
-      "away": {
-        "name": "Besiktas",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/947"
-      }
-    },
-    "time_start": "2026-10-15T16:00:00-03:00",
-    "time_end": "2026-10-15T18:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828738,
-    "slug": "ferencvaros-x-viktoria-plzen",
-    "title": "Ferencvaros x Viktoria Plzen",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "Ferencvaros",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/6020"
-      },
-      "away": {
-        "name": "Viktoria Plzen",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1796"
-      }
-    },
-    "time_start": "2026-10-15T16:00:00-03:00",
-    "time_end": "2026-10-15T18:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828739,
-    "slug": "nec-nijmegen-x-levski-sofia",
-    "title": "N.E.C. Nijmegen x Levski Sofia",
-    "league": {
-      "name": "Liga Europa",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/573"
-    },
-    "teams": {
-      "home": {
-        "name": "N.E.C. Nijmegen",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/700"
-      },
-      "away": {
-        "name": "Levski Sofia",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2277"
-      }
-    },
-    "time_start": "2026-10-15T16:00:00-03:00",
-    "time_end": "2026-10-15T18:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828929,
-    "slug": "fc-copenhagen-x-sc-braga",
-    "title": "FC Copenhagen x SC Braga",
-    "league": {
-      "name": "Liga Confer\u00eancia",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/7685"
-    },
-    "teams": {
-      "home": {
-        "name": "FC Copenhagen",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1824"
-      },
-      "away": {
-        "name": "SC Braga",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/895"
-      }
-    },
-    "time_start": "2026-10-15T16:00:00-03:00",
-    "time_end": "2026-10-15T18:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4828931,
-    "slug": "atalanta-x-pafos-fc",
-    "title": "Atalanta x Pafos FC",
-    "league": {
-      "name": "Liga Confer\u00eancia",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/7685"
-    },
-    "teams": {
-      "home": {
-        "name": "Atalanta",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/232"
-      },
-      "away": {
-        "name": "Pafos FC",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/2273"
-      }
-    },
-    "time_start": "2026-10-15T16:00:00-03:00",
-    "time_end": "2026-10-15T18:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1"]
-  },
-  {
-    "id": 4861407,
-    "slug": "corinthians-f-x-colo-colo-f",
-    "title": "Corinthians (F) x Colo Colo (F)",
-    "league": {
-      "name": "Copa Libertadores (F) - Fase de Grupos",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/6226"
-    },
-    "teams": {
-      "home": {
-        "name": "Corinthians (F)",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/47480"
-      },
-      "away": {
-        "name": "Colo Colo (F)",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/28243"
-      }
-    },
-    "time_start": "2026-10-15T17:00:00-03:00",
-    "time_end": "2026-10-15T19:12:00-03:00",
-    "players": [
-      "https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/sportv",
-      "https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1",
-      "https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/xsports"
-    ]
-  },
-  {
-    "id": 4800807,
-    "slug": "flamengo-f-x-fluminense-f",
-    "title": "Flamengo (F) x Fluminense (F)",
-    "league": {
-      "name": "Copa do Brasil (F) - Quartas Finais",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/8702"
-    },
-    "teams": {
-      "home": {
-        "name": "Flamengo (F)",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/26648"
-      },
-      "away": {
-        "name": "Fluminense (F)",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/78696"
-      }
-    },
-    "time_start": "2026-10-15T19:00:00-03:00",
-    "time_end": "2026-10-15T21:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/sportv"]
-  },
-  {
-    "id": 4876217,
-    "slug": "sesi-franca-x-mogi-das-cruzes",
-    "title": "Sesi Franca x Mogi das Cruzes",
-    "league": {
-      "name": "Paulista de Basquete",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/7976"
-    },
-    "teams": {
-      "home": {
-        "name": "Sesi Franca",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/15650"
-      },
-      "away": {
-        "name": "Mogi das Cruzes",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/15646"
-      }
-    },
-    "time_start": "2026-10-15T20:00:00-03:00",
-    "time_end": "2026-10-15T22:12:00-03:00",
-    "players": [
-      "https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/bandsports"
-    ]
-  },
-  {
-    "id": 4706656,
-    "slug": "uab-x-east-carolina",
-    "title": "UAB x East Carolina",
-    "league": {
-      "name": "NCAAF (FBS)",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/382"
-    },
-    "teams": {
-      "home": {
-        "name": "UAB",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/6590"
-      },
-      "away": {
-        "name": "East Carolina",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/6766"
-      }
-    },
-    "time_start": "2026-10-15T20:30:00-03:00",
-    "time_end": "2026-10-15T22:42:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/espn3"]
-  },
-  {
-    "id": 4861405,
-    "slug": "universitario-f-x-palmeiras-f",
-    "title": "Universitario (F) x Palmeiras (F)",
-    "league": {
-      "name": "Copa Libertadores (F) - Fase de Grupos",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/6226"
-    },
-    "teams": {
-      "home": {
-        "name": "Universitario (F)",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/28245"
-      },
-      "away": {
-        "name": "Palmeiras (F)",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/57566"
-      }
-    },
-    "time_start": "2026-10-15T21:00:00-03:00",
-    "time_end": "2026-10-15T23:12:00-03:00",
-    "players": [
-      "https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/sportv",
-      "https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/caze1",
-      "https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/xsports"
-    ]
-  },
-  {
-    "id": 4873563,
-    "slug": "los-angeles-dodgers-x-milwaukee-brewers",
-    "title": "Los Angeles Dodgers x Milwaukee Brewers",
-    "league": {
-      "name": "MLB - Championship Series - NLCS",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/438"
-    },
-    "teams": {
-      "home": {
-        "name": "Los Angeles Dodgers",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/7410"
-      },
-      "away": {
-        "name": "Milwaukee Brewers",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/7405"
-      }
-    },
-    "time_start": "2026-10-15T21:00:00-03:00",
-    "time_end": "2026-10-15T23:12:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/espn2"]
-  },
-  {
-    "id": 4714988,
-    "slug": "denver-broncos-x-seattle-seahawks",
-    "title": "Denver Broncos x Seattle Seahawks",
-    "league": {
-      "name": "NFL",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/352"
-    },
-    "teams": {
-      "home": {
-        "name": "Denver Broncos",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/6656"
-      },
-      "away": {
-        "name": "Seattle Seahawks",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/6662"
-      }
-    },
-    "time_start": "2026-10-15T21:15:00-03:00",
-    "time_end": "2026-10-15T23:27:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/sportv2"]
-  },
-  {
-    "id": 4858847,
-    "slug": "estudiantes-de-la-plata-x-flamengo",
-    "title": "Estudiantes de La Plata x Flamengo",
-    "league": {
-      "name": "Copa Libertadores - Meia-final",
-      "image": "https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_2,d_Countries:Round:54.png/v19/Competitions/102"
-    },
-    "teams": {
-      "home": {
-        "name": "Estudiantes de La Plata",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/867"
-      },
-      "away": {
-        "name": "Flamengo",
-        "image": "https://imagecache.365scores.com/image/upload/f_png,w_34,h_34,c_limit,q_auto:eco,dpr_2,d_Competitors:default1.png/v2/Competitors/1215"
-      }
-    },
-    "time_start": "2026-10-15T21:30:00-03:00",
-    "time_end": "2026-10-15T23:42:00-03:00",
-    "players": ["https://97045243d8fd1c72a69ccd3cf7790014.embedtv.cc/espn"]
-  }
-]
+  "channels": [
+    {
+      "name": "Amor da Minha Vida",
+      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E01.mp4",
+      "type": "mp4",
+      "category": "Series | Disney+",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "tvgId": ""
+    },
+    {
+      "name": "Amor da Minha Vida",
+      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E02.mp4",
+      "type": "mp4",
+      "category": "Series | Disney+",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "tvgId": ""
+    },
+    {
+      "name": "Amor da Minha Vida",
+      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E03.mp4",
+      "type": "mp4",
+      "category": "Series | Disney+",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "tvgId": ""
+    },
+    {
+      "name": "Amor da Minha Vida",
+      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E04.mp4",
+      "type": "mp4",
+      "category": "Series | Disney+",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "tvgId": ""
+    },
+    {
+      "name": "Amor da Minha Vida",
+      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E05.mp4",
+      "type": "mp4",
+      "category": "Series | Disney+",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "tvgId": ""
+    },
+    {
+      "name": "Amor da Minha Vida",
+      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E06.mp4",
+      "type": "mp4",
+      "category": "Series | Disney+",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "tvgId": ""
+    },
+    {
+      "name": "Amor da Minha Vida",
+      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E07.mp4",
+      "type": "mp4",
+      "category": "Series | Disney+",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "tvgId": ""
+    },
+    {
+      "name": "Amor da Minha Vida",
+      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E08.mp4",
+      "type": "mp4",
+      "category": "Series | Disney+",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "tvgId": ""
+    }
+  ]
+}

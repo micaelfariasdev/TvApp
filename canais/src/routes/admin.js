@@ -678,6 +678,8 @@ router.post("/import/m3u", upload.single("catalog"), (req, res) => {
           '<section class="panel"><h1>Formato inválido</h1><p class="muted">Use o arquivo gerado pelo catálogo M3U.</p></section>',
         ),
       );
+  if (req.body.target === "category") return importM3UCategory(req, res, incoming);
+
   if (req.body.target === "episodes") {
     const seriesId = String(req.body.seriesId || "");
     const seasonNumber = Number(req.body.seasonNumber);
@@ -772,6 +774,40 @@ router.post("/import/m3u", upload.single("catalog"), (req, res) => {
   );
 });
 
+
+function importM3UCategory(req, res, incoming) {
+  const category = String(req.body.category || "").trim();
+  if (!category) return res.status(400).send("Categoria ausente");
+  const normalize = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLocaleLowerCase("pt-BR").replace(/\s+/g, " ");
+  const db = loadDB();
+  let added = 0, updated = 0, ignored = 0;
+  const used = new Set(db.map(item => String(item.id)));
+  let nextId = Math.max(Date.now(), ...db.map(item => Number(item.id) || 0)) + 1;
+  for (const raw of incoming) {
+    const name = String(raw?.name || raw?.title || "").trim();
+    const url = String(raw?.url || "").trim();
+    if (!name || !/^https?:\/\//i.test(url) || !["http:", "https:"].includes(new URL(url).protocol)) { ignored++; continue; }
+    const matches = db.filter(item => hasCategory(item, category) && normalize(item.name) === normalize(name));
+    if (matches.length > 1) { ignored++; continue; }
+    if (matches.length === 1) {
+      if (matches[0].url !== url || matches[0].type !== "mp4") {
+        matches[0].url = url;
+        matches[0].type = "mp4";
+        updated++;
+      } else ignored++;
+      continue;
+    }
+    const poster = String(raw.poster || raw.logo || "").trim();
+    while (used.has(String(nextId))) nextId++;
+    const id = nextId++;
+    used.add(String(id));
+    db.push({ id, name, url, type: "mp4", category, categories: [category], ...(/^https?:\/\//i.test(poster) ? { poster } : {}) });
+    added++;
+  }
+  if (added || updated) saveDB(db);
+  res.send(tvboxPage("Importação concluída", `<section class="panel"><h1>Importação concluída</h1><p>${updated} atualizados · ${added} adicionados · ${ignored} ignorados</p><a class="btn primary" href="/tvbox/categories">Voltar às categorias</a></section>`));
+}
+
 router.get("/categories", (req, res) => {
   const categories = loadDB().reduce((groups, item) => {
     for (const category of itemCategories(item).length ? itemCategories(item) : ["outros"]) {
@@ -793,7 +829,7 @@ router.get("/categories", (req, res) => {
               `<article class="category-item" data-name="${safeText(`${item.name}${item.type || ""}`)}"><div><strong>${safeText(item.name)}</strong><span class="badge">${safeText(item.type || "hls")}</span><p class="url">${safeText(item.url)}</p></div><div class="actions"><a class="btn" href="/tvbox/edit/${item.id}">Editar</a><a class="btn danger" href="/tvbox/delete/${item.id}" onclick="return confirm('Excluir este item?')">Excluir</a></div></article>`,
           )
           .join("");
-        return `<details class="category-group" data-category="${safeText(category)}"><summary><div><span class="badge">CATEGORIA</span><strong>${safeText(category)}</strong></div><div class="summary-actions" onclick="event.stopPropagation()"><a class="btn" href="/tvbox/category/${encodeURIComponent(category)}">Gerenciar Capa</a><span class="count">${items.length} item(ns)</span></div></summary><div class="category-content"><div class="category-tools"><span class="muted">Abra somente a lista que quiser administrar.</span><form method="post" action="/tvbox/category/delete" onsubmit="return confirm('Excluir todos os ${items.length} itens da categoria?')"><input type="hidden" name="category" value="${safeText(category)}"><button class="btn danger" type="submit">Excluir categoria</button></form></div><div class="category-items">${rows}</div></div></details>`;
+        return `<details class="category-group" data-category="${safeText(category)}"><summary><div><span class="badge">CATEGORIA</span><strong>${safeText(category)}</strong></div><div class="summary-actions" onclick="event.stopPropagation()"><a class="btn" href="/tvbox/category/${encodeURIComponent(category)}">Gerenciar / Renomear</a><span class="count">${items.length} item(ns)</span></div></summary><div class="category-content"><div class="category-tools"><span class="muted">Abra somente a lista que quiser administrar.</span><form method="post" action="/tvbox/category/delete" onsubmit="return confirm('Excluir todos os ${items.length} itens da categoria?')"><input type="hidden" name="category" value="${safeText(category)}"><button class="btn danger" type="submit">Excluir categoria</button></form></div><div class="category-items">${rows}</div></div></details>`;
       })
       .join("") ||
     '<section class="panel"><div class="empty">Nenhuma categoria cadastrada.</div></section>';
@@ -803,7 +839,8 @@ router.get("/categories", (req, res) => {
       "utf-8",
     )
     .replaceAll("{{categoryCount}}", String(Object.keys(categories).length))
-    .replace("{{categorySections}}", categorySections);
+    .replace("{{categorySections}}", categorySections)
+    .replace("{{categorySelectOptions}}", Object.keys(categories).sort().map(category => `<option value="${safeText(category)}">${safeText(category)}</option>`).join(""));
   res.send(tvboxPage("Categorias", body));
 });
 
@@ -1069,6 +1106,7 @@ router.get("/category/:name", (req, res) => {
                 </div>
                 <div class="actions" style="display: flex; gap: 8px; flex-shrink: 0;">
                     <a class="btn" href="/tvbox/edit/${item.id}" style="background: #374151; color: #f3f4f6; text-decoration: none; padding: 8px 14px; font-size: 13px; font-weight: 500; border-radius: 8px; border: 1px solid #4b5563; transition: background 0.2s;" onmouseover="this.style.background='#4b5563'" onmouseout="this.style.background='#374151'">Editar</a>
+                    <form method="post" action="/tvbox/category/item/delete" onsubmit="return confirm('Excluir este filme do catálogo?')" style="margin:0"><input type="hidden" name="itemId" value="${safeText(item.id)}"><input type="hidden" name="category" value="${safeText(categoryName)}"><button type="submit" class="btn danger">Excluir</button></form>
                 </div>
             </article>
             `,
@@ -1080,13 +1118,55 @@ router.get("/category/:name", (req, res) => {
     path.join(TEMPLATES_DIRECTORY, "tvbox-category-detail.html"),
     "utf-8",
   );
+  const renameForm = `<section class="panel" style="margin:18px 0"><h2>Renomear categoria</h2><form method="post" action="/tvbox/category/rename" style="display:flex;gap:12px;align-items:end;flex-wrap:wrap"><input type="hidden" name="oldName" value="${safeText(categoryName)}"><div style="flex:1;min-width:220px"><label>Novo nome da categoria</label><input name="newName" maxlength="120" value="${safeText(categoryName)}" required></div><button class="btn primary" type="submit">Salvar nome</button></form></section>`;
   const body = templateContent
     .replaceAll("{{categoryName}}", safeText(categoryName))
     .replaceAll("{{categorySlug}}", encodeURIComponent(categoryName))
     .replaceAll("{{poster}}", safeText(currentPoster))
     .replaceAll("{{itemsRows}}", itemsRows);
 
-  res.send(tvboxPage(`Categoria: ${categoryName}`, body));
+  res.send(tvboxPage(`Categoria: ${categoryName}`, renameForm + body));
+});
+
+router.post("/category/rename", (req, res) => {
+  const oldName = String(req.body.oldName || "").trim();
+  const newName = String(req.body.newName || "").trim();
+  if (!oldName || !newName || newName.length > 120) return res.status(400).send("Nome de categoria inválido");
+  const key = value => String(value).trim().toLocaleLowerCase("pt-BR");
+  const current = loadDB();
+  if (!current.some(item => hasCategory(item, oldName))) return res.status(404).send("Categoria não encontrada");
+  if (key(oldName) !== key(newName) && current.some(item => hasCategory(item, newName))) return res.status(409).send("Já existe uma categoria com esse nome");
+  for (const item of current) {
+    if (!hasCategory(item, oldName)) continue;
+    const names = itemCategories(item).map(name => key(name) === key(oldName) ? newName : name);
+    item.categories = [...new Set(names)];
+    item.category = key(item.category) === key(oldName) ? newName : (item.category || item.categories[0]);
+  }
+  saveDB(current);
+  const meta = loadCategoriesMeta();
+  const previousKey = Object.keys(meta).find(name => key(name) === key(oldName));
+  if (previousKey && previousKey !== newName) {
+    meta[newName] = meta[previousKey];
+    delete meta[previousKey];
+    saveCategoriesMeta(meta);
+  }
+  const home = loadHomeConfig();
+  if (Array.isArray(home.sections)) {
+    home.sections = home.sections.map(section => section.type === "category" && key(section.category) === key(oldName)
+      ? { ...section, category: newName, title: newName, id: `category-${key(newName)}` } : section);
+    saveHomeConfig(home);
+  }
+  res.redirect(`/tvbox/category/${encodeURIComponent(newName)}`);
+});
+
+router.post("/category/item/delete", (req, res) => {
+  const itemId = String(req.body.itemId || "");
+  const category = String(req.body.category || "");
+  const current = loadDB();
+  const target = current.find(item => String(item.id) === itemId);
+  if (!target || !hasCategory(target, category)) return res.status(404).send("Item não encontrado nesta categoria");
+  saveDB(current.filter(item => String(item.id) !== itemId));
+  res.redirect(`/tvbox/category/${encodeURIComponent(category)}`);
 });
 
 // Rota para Salvar a Capa da Categoria

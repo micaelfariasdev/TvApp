@@ -253,6 +253,73 @@ async function registerPlayers(events) {
   return { registered, failed };
 }
 
+const EVENT_SOURCE = "embedtv-events";
+const EVENT_CATEGORY = "Jogos de Hoje";
+const EVENT_SYNC_INTERVAL_MS = 60 * 1000;
+let catalogSyncing = null;
+
+function localDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Sao_Paulo",
+    year: "numeric", month: "2-digit", day: "2-digit",
+  }).format(date);
+}
+
+function syncEventCatalog(eventsList) {
+  const today = localDate(Date.now());
+  const active = new Map(
+    hls.list().filter(channel => channel.automatic).map(channel => [channel.id, channel])
+  );
+  const desired = new Map();
+
+  for (const event of eventsList) {
+    const id = idFor(event);
+    const channel = active.get(id);
+    if (!channel || !event.time_start || localDate(event.time_start) !== today) continue;
+    const poster = event.teams?.home?.image || null;
+    desired.set(id, {
+      id,
+      name: event.title || id,
+      url: `${BASE_URL}/tvbox/api/live/${encodeURIComponent(id)}.m3u8`,
+      type: "hls",
+      category: EVENT_CATEGORY,
+      categories: [EVENT_CATEGORY],
+      poster,
+      source: EVENT_SOURCE,
+      sourceId: String(event.id || event.slug || id),
+    });
+  }
+
+  const existing = loadDB();
+  const preserved = existing.filter(item => item.source !== EVENT_SOURCE);
+  const occupied = new Set(preserved.map(item => String(item.id)));
+  const previous = new Map(
+    existing.filter(item => item.source === EVENT_SOURCE).map(item => [String(item.id), item])
+  );
+  for (const [id, item] of desired) {
+    if (occupied.has(id)) {
+      console.warn("[EMBEDTV] ID ocupado no catálogo:", id);
+      continue;
+    }
+    preserved.push({ ...previous.get(id), ...item });
+  }
+  saveDB(preserved);
+  return { active: desired.size, removed: previous.size - [...desired.keys()].filter(id => previous.has(id)).length };
+}
+
+async function refreshEventCatalog(force = false) {
+  if (catalogSyncing) return catalogSyncing;
+  catalogSyncing = (async () => {
+    const all = await load(force);
+    await syncPlayers(all);
+    return syncEventCatalog(all);
+  })();
+  try { return await catalogSyncing; }
+  finally { catalogSyncing = null; }
+}
+
 function mapEvent(event, baseUrl = "") {
   const channels = new Map(hls.list().map((channel) => [channel.id, channel]));
 
@@ -315,6 +382,7 @@ async function events(options = {}) {
   let syncResult = null;
   if (sync) {
     syncResult = await syncPlayers(selected);
+    if (!brasileirao) syncEventCatalog(allEvents);
   }
 
   return {
@@ -346,6 +414,7 @@ module.exports = {
   resetChannels,
   load,
   status,
+  refreshEventCatalog,
 };
 
 // Consulta inicial e sincronização dos canais.
@@ -353,10 +422,7 @@ setImmediate(async () => {
   try {
     console.log("[EMBEDTV] Iniciando consulta automática...");
 
-    await events({
-      force: true,
-      sync: true,
-    });
+    await refreshEventCatalog(true);
     await syncChannels(false);
 
     console.log("[EMBEDTV] Consulta inicial concluída.");
@@ -376,3 +442,8 @@ const timer = setInterval(async () => {
 }, CHANNEL_SYNC_INTERVAL_MS);
 
 timer.unref?.();
+setInterval(() => {
+  refreshEventCatalog(false).catch(error => {
+    console.error("[EMBEDTV] Erro na sincronização de jogos:", error.message);
+  });
+}, EVENT_SYNC_INTERVAL_MS).unref?.();
