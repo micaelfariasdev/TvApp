@@ -8,6 +8,10 @@
         <TextView android:id="@+id/player_title_overlay" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:maxLines="2" android:ellipsize="end"
             android:textSize="16sp" android:textColor="#FFFFFF" android:fontFamily="sans-serif-medium"/>
+        <TextView android:id="@+id/player_epg_overlay"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="4dp" android:maxLines="1" android:ellipsize="end"
+            android:textColor="#B79AFF" android:textSize="12sp" android:visibility="gone"/>
         <androidx.media3.ui.DefaultTimeBar android:id="@id/exo_progress"
             android:layout_width="match_parent" android:layout_height="36dp"
             app:played_color="#B68AFF" app:scrubber_color="#FFFFFF" app:buffered_color="#71627E"/>
@@ -29,10 +33,25 @@
             <TextView android:id="@id/exo_duration" android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:textColor="#BFB4D1" android:textSize="12sp"/>
             <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+            <Button android:id="@+id/audio_track_button" android:layout_width="wrap_content" android:layout_height="48dp"
+                android:minWidth="0dp" android:paddingStart="10dp" android:paddingEnd="10dp"
+                android:text="Áudio" android:textColor="#FFFFFF"
+                android:background="@drawable/sidebar_item_background" android:textSize="12sp"
+                android:contentDescription="Selecionar faixa de áudio" android:visibility="gone"/>
             <Button android:id="@+id/fullscreen_button" android:layout_width="48dp" android:layout_height="48dp"
                 android:minWidth="0dp" android:padding="0dp" android:text="⛶" android:textColor="#FFFFFF"
                 android:background="@drawable/sidebar_item_background" android:textSize="24sp"
                 android:contentDescription="Alternar tela cheia"/>
         </LinearLayout>
     </LinearLayout>
+    <Button
+        android:id="@+id/epg_guide_button"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="16dp"
+        android:backgroundTint="#6442A3"
+        android:text="Programação"
+        android:textColor="#FFFFFF"
+        android:visibility="gone" />
 </FrameLayout>

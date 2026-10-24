@@ -1,8 +1,9 @@
 const express = require("express");
+const crypto = require("crypto");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const { PASSWORD } = require("../config/env");
+const { EXTENSION_API_TOKEN, PASSWORD } = require("../config/env");
 const {
   loadDB,
   saveDB,
@@ -24,16 +25,28 @@ const {
   SESSION_COOKIE,
 } = require("../utils/helpers");
 
-const { itemCategories, categoriesFromForm, allCategoryNames, hasCategory } = require("../services/categories");
+const {
+  itemCategories,
+  categoriesFromForm,
+  allCategoryNames,
+  hasCategory,
+} = require("../services/categories");
 function categoryFields(items, selected = []) {
   const names = allCategoryNames(items, loadCategoriesMeta());
-  return names.map(cat => `<label style="display:flex;gap:8px;align-items:center"><input style="width:auto" type="checkbox" name="categories" value="${safeText(cat)}" ${selected.includes(cat) ? "checked" : ""}>${safeText(cat)}</label>`).join("");
+  return names
+    .map(
+      (cat) =>
+        `<label style="display:flex;gap:8px;align-items:center"><input style="width:auto" type="checkbox" name="categories" value="${safeText(cat)}" ${selected.includes(cat) ? "checked" : ""}>${safeText(cat)}</label>`,
+    )
+    .join("");
 }
 const router = express.Router();
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 100 * 1024 * 1024 },
 });
+const extensionRequestNonces = new Map();
+const EXTENSION_REQUEST_WINDOW_MS = 2 * 60 * 1000;
 
 const SERIES_DIRECTORY = path.join(__dirname, "../../series");
 const TEMPLATES_DIRECTORY = path.join(__dirname, "../../templates");
@@ -111,39 +124,191 @@ router.post("/logout", (req, res) => {
 });
 
 router.use((req, res, next) => {
-  if (
-    req.path === "/login" ||
-    req.path.startsWith("/api/")
-  ) {
+  if (req.path === "/login" || req.path.startsWith("/api/")) {
     return next();
   }
 
   if (requireTvboxAccess(req, res)) return next();
 });
 
+function setExtensionCors(req, res) {
+  const origin = String(req.headers.origin || "");
+  if (origin.startsWith("chrome-extension://") || origin.startsWith("moz-extension://")) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, X-Request-Timestamp, X-Request-Nonce, X-Request-Signature",
+    );
+  }
+}
+
+function validExtensionRequest(req) {
+  if (Buffer.byteLength(EXTENSION_API_TOKEN) < 32) return false;
+  const timestamp = String(req.headers["x-request-timestamp"] || "");
+  const nonce = String(req.headers["x-request-nonce"] || "");
+  const signature = String(req.headers["x-request-signature"] || "");
+  const timestampMs = Number(timestamp);
+  if (
+    !Number.isSafeInteger(timestampMs) ||
+    Math.abs(Date.now() - timestampMs) > EXTENSION_REQUEST_WINDOW_MS ||
+    !/^[a-f0-9-]{36}$/i.test(nonce) ||
+    !/^[a-f0-9]{64}$/i.test(signature)
+  ) {
+    return false;
+  }
+
+  for (const [storedNonce, expiresAt] of extensionRequestNonces) {
+    if (expiresAt <= Date.now()) extensionRequestNonces.delete(storedNonce);
+  }
+  if (extensionRequestNonces.has(nonce)) return false;
+
+  const signedPayload = `${timestamp}.${nonce}.${JSON.stringify(req.body)}`;
+  const expected = crypto
+    .createHmac("sha256", EXTENSION_API_TOKEN)
+    .update(signedPayload)
+    .digest();
+  const received = Buffer.from(signature, "hex");
+  if (received.length !== expected.length || !crypto.timingSafeEqual(received, expected)) {
+    return false;
+  }
+
+  if (extensionRequestNonces.size >= 10_000) return false;
+  extensionRequestNonces.set(nonce, timestampMs + EXTENSION_REQUEST_WINDOW_MS);
+  return true;
+}
+
+router.options("/api/extension/import", (req, res) => {
+  setExtensionCors(req, res);
+  res.sendStatus(204);
+});
+
+router.post("/api/extension/import", (req, res) => {
+  setExtensionCors(req, res);
+  if (!validExtensionRequest(req)) {
+    return res.status(401).json({
+      error: "Assinatura inválida, expirada ou repetida. Verifique a chave da extensão no servidor.",
+    });
+  }
+
+  const kind = String(req.body.kind || "");
+  const title = String(req.body.title || "").trim();
+  const url = String(req.body.url || "").trim();
+  const type = String(req.body.type || "hls").toLowerCase();
+  if (!["channel", "movie", "series"].includes(kind)) {
+    return res.status(400).json({ error: "Tipo de conteúdo inválido." });
+  }
+  if (!title || title.length > 200 || !/^https?:\/\//i.test(url) || url.length > 4096) {
+    return res.status(400).json({ error: "Informe título e URL HTTP(S) válidos." });
+  }
+  if (!["hls", "mp4"].includes(type)) {
+    return res.status(400).json({ error: "Formato de mídia inválido." });
+  }
+
+  if (kind === "series") {
+    const seriesId = String(req.body.seriesId || "").trim();
+    const seriesTitle = String(req.body.seriesTitle || "").trim();
+    const seasonNumber = Number(req.body.seasonNumber);
+    const episodeNumber = Number(req.body.episodeNumber);
+    if (
+      !/^[A-Za-z0-9_-]{1,80}$/.test(seriesId) ||
+      !Number.isInteger(seasonNumber) || seasonNumber < 1 || seasonNumber > 999 ||
+      !Number.isInteger(episodeNumber) || episodeNumber < 1 || episodeNumber > 9999
+    ) {
+      return res.status(400).json({ error: "Série, temporada ou episódio inválido." });
+    }
+
+    const seriesFile = path.join(SERIES_DIRECTORY, `${seriesId}.json`);
+    const catalog = loadSeriesCatalog();
+    const existingEntry = catalog.find((item) => item.id === seriesId);
+    let seriesData;
+    if (fs.existsSync(seriesFile)) {
+      seriesData = JSON.parse(fs.readFileSync(seriesFile, "utf-8"));
+    } else {
+      if (!seriesTitle || seriesTitle.length > 200) {
+        return res.status(400).json({ error: "Informe o título da nova série." });
+      }
+      if (existingEntry) {
+        return res.status(409).json({ error: "O catálogo da série está inconsistente." });
+      }
+      seriesData = { title: seriesTitle, poster: null, seasons: [] };
+      catalog.push({
+        id: seriesId,
+        title: seriesTitle,
+        endpoint: `series/${seriesId}.json`,
+        poster: null,
+      });
+    }
+
+    seriesData.seasons = Array.isArray(seriesData.seasons) ? seriesData.seasons : [];
+    let season = seriesData.seasons.find((item) => Number(item.number) === seasonNumber);
+    if (!season) {
+      season = { number: seasonNumber, episodes: [] };
+      seriesData.seasons.push(season);
+    }
+    season.episodes = Array.isArray(season.episodes) ? season.episodes : [];
+    if (season.episodes.some((item) =>
+      Number(item.number) === episodeNumber || String(item.url || "") === url
+    )) {
+      return res.status(409).json({ error: "Esse episódio ou URL já está cadastrado." });
+    }
+
+    season.episodes.push({ number: episodeNumber, title, url, type });
+    season.episodes.sort((a, b) => Number(a.number) - Number(b.number));
+    fs.mkdirSync(SERIES_DIRECTORY, { recursive: true });
+    fs.writeFileSync(seriesFile, JSON.stringify(seriesData, null, 2), "utf-8");
+    saveSeriesCatalog(catalog);
+    return res.status(201).json({ ok: true, message: "Episódio adicionado à série." });
+  }
+
+  const dbData = loadDB();
+  if (dbData.some((item) => String(item.url || "") === url)) {
+    return res.status(409).json({ error: "Essa URL já está cadastrada." });
+  }
+  const category = String(req.body.category || (kind === "movie" ? "filmes" : "m3u"))
+    .trim()
+    .slice(0, 100) || (kind === "movie" ? "filmes" : "m3u");
+  dbData.push({
+    id: Date.now(),
+    name: title,
+    url,
+    type,
+    category,
+    categories: [category],
+  });
+  saveDB(dbData);
+  return res.status(201).json({ ok: true, message: "Item adicionado ao catálogo." });
+});
+
 router.get("/api/channels", (req, res) => {
   const dbData = loadDB();
   const categoriesMeta = loadCategoriesMeta();
-  const forwardedProto = String(req.headers["x-forwarded-proto"] || "").split(",")[0];
+  const forwardedProto = String(req.headers["x-forwarded-proto"] || "").split(
+    ",",
+  )[0];
   const baseUrl = `${forwardedProto || req.protocol}://${req.get("host")}`;
 
-  const cleanData = dbData.map(({ id, name, url, type, category, categories, poster, source }) => {
-    const categoryKey = String(category || "outros").trim();
-    const categoryPoster = categoriesMeta[categoryKey]?.poster || null;
+  const cleanData = dbData.map(
+    ({ id, name, url, type, category, categories, poster, source }) => {
+      const categoryKey = String(category || "outros").trim();
+      const categoryPoster = categoriesMeta[categoryKey]?.poster || null;
 
-    const proxyUrl = source === "embedtv-channels"
-      ? `${baseUrl}/tvbox/api/live/${encodeURIComponent(id)}.m3u8`
-      : url;
-    return {
-      id,
-      name,
-      url: proxyUrl,
-      type,
-      category,
-      categories: itemCategories({ category, categories }),
-      poster: poster || categoryPoster,
-    };
-  });
+      const proxyUrl =
+        source === "embedtv-channels"
+          ? `${baseUrl}/tvbox/api/live/${encodeURIComponent(id)}.m3u8`
+          : url;
+      return {
+        id,
+        name,
+        url: proxyUrl,
+        type,
+        category,
+        categories: itemCategories({ category, categories }),
+        poster: poster || categoryPoster,
+      };
+    },
+  );
 
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.json(cleanData);
@@ -156,17 +321,24 @@ router.get("/api/home", (req, res) => {
   res.json(loadHomeConfig());
 });
 
-
 function bannerCatalog() {
   return [
-    ...loadDB().map(item => ({ key: "item:" + item.id, name: item.name })),
-    ...loadSeriesCatalog().map(item => ({ key: "series:" + item.id, name: item.title || item.name || item.id }))
+    ...loadDB().map((item) => ({ key: "item:" + item.id, name: item.name })),
+    ...loadSeriesCatalog().map((item) => ({
+      key: "series:" + item.id,
+      name: item.title || item.name || item.id,
+    })),
   ];
 }
 function bannerEditor(config) {
   const catalog = bannerCatalog();
   function row(banner = {}) {
-    const options = catalog.map(item => `<option value="${safeText(item.key)}" ${item.key === banner.target ? "selected" : ""}>${safeText(item.name)}</option>`).join("");
+    const options = catalog
+      .map(
+        (item) =>
+          `<option value="${safeText(item.key)}" ${item.key === banner.target ? "selected" : ""}>${safeText(item.name)}</option>`,
+      )
+      .join("");
     return `<fieldset style="margin:16px 0;padding:16px;border:1px solid #46516a;border-radius:12px">
       <label>Conteúdo</label><select name="bannerTarget"><option value="">Selecione um item</option>${options}</select>
       <label>Título (vazio usa o nome do item)</label><input name="bannerTitle" value="${safeText(banner.title || "")}">
@@ -184,16 +356,30 @@ function bannerEditor(config) {
     </form></section>`;
 }
 router.post("/home/banners", (req, res) => {
-  const list = value => Array.isArray(value) ? value : value == null ? [] : [value];
-  const targets = list(req.body.bannerTarget), titles = list(req.body.bannerTitle);
-  const subtitles = list(req.body.bannerSubtitle), images = list(req.body.bannerImage), enabled = list(req.body.bannerEnabled);
-  const known = new Set(bannerCatalog().map(item => item.key));
-  const banners = targets.map((target, index) => ({
-    target: String(target), title: String(titles[index] || "").trim().slice(0, 160),
-    subtitle: String(subtitles[index] || "").trim().slice(0, 320),
-    image: /^https?:\/\//i.test(String(images[index] || "")) ? String(images[index]).trim() : "",
-    enabled: enabled[index] !== "false"
-  })).filter(banner => known.has(banner.target)).slice(0, 12);
+  const list = (value) =>
+    Array.isArray(value) ? value : value == null ? [] : [value];
+  const targets = list(req.body.bannerTarget),
+    titles = list(req.body.bannerTitle);
+  const subtitles = list(req.body.bannerSubtitle),
+    images = list(req.body.bannerImage),
+    enabled = list(req.body.bannerEnabled);
+  const known = new Set(bannerCatalog().map((item) => item.key));
+  const banners = targets
+    .map((target, index) => ({
+      target: String(target),
+      title: String(titles[index] || "")
+        .trim()
+        .slice(0, 160),
+      subtitle: String(subtitles[index] || "")
+        .trim()
+        .slice(0, 320),
+      image: /^https?:\/\//i.test(String(images[index] || ""))
+        ? String(images[index]).trim()
+        : "",
+      enabled: enabled[index] !== "false",
+    }))
+    .filter((banner) => known.has(banner.target))
+    .slice(0, 12);
   saveHomeConfig({ ...loadHomeConfig(), banners });
   res.redirect("/tvbox/home?saved=1");
 });
@@ -201,11 +387,9 @@ router.post("/home/banners", (req, res) => {
 router.get("/home", (req, res) => {
   const config = loadHomeConfig();
 
-  const categories = [
-    ...new Set(
-      loadDB().flatMap(itemCategories),
-    ),
-  ].sort((a, b) => a.localeCompare(b, "pt-BR"));
+  const categories = [...new Set(loadDB().flatMap(itemCategories))].sort(
+    (a, b) => a.localeCompare(b, "pt-BR"),
+  );
 
   const enabledCategories = new Set(
     config.sections
@@ -270,7 +454,12 @@ router.get("/home", (req, res) => {
         : "",
     );
 
-  res.send(tvboxPage("Página inicial", body.replace("{{bannerEditor}}", bannerEditor(config))));
+  res.send(
+    tvboxPage(
+      "Página inicial",
+      body.replace("{{bannerEditor}}", bannerEditor(config)),
+    ),
+  );
 });
 
 // Dados dinâmicos da Home
@@ -278,11 +467,9 @@ router.get("/home/data", (req, res) => {
   try {
     const config = loadHomeConfig();
 
-    const categories = [
-      ...new Set(
-        loadDB().flatMap(itemCategories),
-      ),
-    ].sort((a, b) => a.localeCompare(b, "pt-BR"));
+    const categories = [...new Set(loadDB().flatMap(itemCategories))].sort(
+      (a, b) => a.localeCompare(b, "pt-BR"),
+    );
 
     const enabledCategories = config.sections
       .filter(
@@ -678,7 +865,8 @@ router.post("/import/m3u", upload.single("catalog"), (req, res) => {
           '<section class="panel"><h1>Formato inválido</h1><p class="muted">Use o arquivo gerado pelo catálogo M3U.</p></section>',
         ),
       );
-  if (req.body.target === "category") return importM3UCategory(req, res, incoming);
+  if (req.body.target === "category")
+    return importM3UCategory(req, res, incoming);
 
   if (req.body.target === "episodes") {
     const seriesId = String(req.body.seriesId || "");
@@ -774,21 +962,42 @@ router.post("/import/m3u", upload.single("catalog"), (req, res) => {
   );
 });
 
-
 function importM3UCategory(req, res, incoming) {
   const category = String(req.body.category || "").trim();
   if (!category) return res.status(400).send("Categoria ausente");
-  const normalize = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLocaleLowerCase("pt-BR").replace(/\s+/g, " ");
+  const normalize = (value) =>
+    String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim()
+      .toLocaleLowerCase("pt-BR")
+      .replace(/\s+/g, " ");
   const db = loadDB();
-  let added = 0, updated = 0, ignored = 0;
-  const used = new Set(db.map(item => String(item.id)));
-  let nextId = Math.max(Date.now(), ...db.map(item => Number(item.id) || 0)) + 1;
+  let added = 0,
+    updated = 0,
+    ignored = 0;
+  const used = new Set(db.map((item) => String(item.id)));
+  let nextId =
+    Math.max(Date.now(), ...db.map((item) => Number(item.id) || 0)) + 1;
   for (const raw of incoming) {
     const name = String(raw?.name || raw?.title || "").trim();
     const url = String(raw?.url || "").trim();
-    if (!name || !/^https?:\/\//i.test(url) || !["http:", "https:"].includes(new URL(url).protocol)) { ignored++; continue; }
-    const matches = db.filter(item => hasCategory(item, category) && normalize(item.name) === normalize(name));
-    if (matches.length > 1) { ignored++; continue; }
+    if (
+      !name ||
+      !/^https?:\/\//i.test(url) ||
+      !["http:", "https:"].includes(new URL(url).protocol)
+    ) {
+      ignored++;
+      continue;
+    }
+    const matches = db.filter(
+      (item) =>
+        hasCategory(item, category) && normalize(item.name) === normalize(name),
+    );
+    if (matches.length > 1) {
+      ignored++;
+      continue;
+    }
     if (matches.length === 1) {
       if (matches[0].url !== url || matches[0].type !== "mp4") {
         matches[0].url = url;
@@ -801,16 +1010,31 @@ function importM3UCategory(req, res, incoming) {
     while (used.has(String(nextId))) nextId++;
     const id = nextId++;
     used.add(String(id));
-    db.push({ id, name, url, type: "mp4", category, categories: [category], ...(/^https?:\/\//i.test(poster) ? { poster } : {}) });
+    db.push({
+      id,
+      name,
+      url,
+      type: "mp4",
+      category,
+      categories: [category],
+      ...(/^https?:\/\//i.test(poster) ? { poster } : {}),
+    });
     added++;
   }
   if (added || updated) saveDB(db);
-  res.send(tvboxPage("Importação concluída", `<section class="panel"><h1>Importação concluída</h1><p>${updated} atualizados · ${added} adicionados · ${ignored} ignorados</p><a class="btn primary" href="/tvbox/categories">Voltar às categorias</a></section>`));
+  res.send(
+    tvboxPage(
+      "Importação concluída",
+      `<section class="panel"><h1>Importação concluída</h1><p>${updated} atualizados · ${added} adicionados · ${ignored} ignorados</p><a class="btn primary" href="/tvbox/categories">Voltar às categorias</a></section>`,
+    ),
+  );
 }
 
 router.get("/categories", (req, res) => {
   const categories = loadDB().reduce((groups, item) => {
-    for (const category of itemCategories(item).length ? itemCategories(item) : ["outros"]) {
+    for (const category of itemCategories(item).length
+      ? itemCategories(item)
+      : ["outros"]) {
       (groups[category] ||= []).push(item);
     }
     return groups;
@@ -840,7 +1064,16 @@ router.get("/categories", (req, res) => {
     )
     .replaceAll("{{categoryCount}}", String(Object.keys(categories).length))
     .replace("{{categorySections}}", categorySections)
-    .replace("{{categorySelectOptions}}", Object.keys(categories).sort().map(category => `<option value="${safeText(category)}">${safeText(category)}</option>`).join(""));
+    .replace(
+      "{{categorySelectOptions}}",
+      Object.keys(categories)
+        .sort()
+        .map(
+          (category) =>
+            `<option value="${safeText(category)}">${safeText(category)}</option>`,
+        )
+        .join(""),
+    );
   res.send(tvboxPage("Categorias", body));
 });
 
@@ -858,12 +1091,18 @@ router.post("/category/delete", (req, res) => {
 
   const normalizedCategory = category.toLocaleLowerCase("pt-BR");
   const remaining = loadDB().filter((item) => {
-    return !hasCategory(item, normalizedCategory) || itemCategories(item).length > 1;
+    return (
+      !hasCategory(item, normalizedCategory) || itemCategories(item).length > 1
+    );
   });
-  saveDB(remaining.map(item => {
-    const categories = itemCategories(item).filter(value => value.toLocaleLowerCase("pt-BR") !== normalizedCategory);
-    return { ...item, category: categories[0] || "outros", categories };
-  }));
+  saveDB(
+    remaining.map((item) => {
+      const categories = itemCategories(item).filter(
+        (value) => value.toLocaleLowerCase("pt-BR") !== normalizedCategory,
+      );
+      return { ...item, category: categories[0] || "outros", categories };
+    }),
+  );
   res.redirect("/tvbox/categories");
 });
 
@@ -873,7 +1112,10 @@ router.get("/", (req, res) => {
   const series = loadSeriesCatalog();
 
   const byCategory = channels.reduce((total, item) => {
-    for (const key of itemCategories(item).length ? itemCategories(item) : ["outros"]) total[key] = (total[key] || 0) + 1;
+    for (const key of itemCategories(item).length
+      ? itemCategories(item)
+      : ["outros"])
+      total[key] = (total[key] || 0) + 1;
     return total;
   }, {});
 
@@ -909,66 +1151,154 @@ router.get("/add", (req, res) => {
     path.join(TEMPLATES_DIRECTORY, "tvbox-add.html"),
     "utf-8",
   );
-  return res.send(tvboxPage("Adicionar item", body.replace("{{categoryOptions}}", categoryFields(loadDB()))));
+  return res.send(
+    tvboxPage(
+      "Adicionar item",
+      body.replace("{{categoryOptions}}", categoryFields(loadDB())),
+    ),
+  );
 });
 
 // Busca e cadastro manual de lives da Kick.
 router.get("/kick", (req, res) => {
-  const body = fs.readFileSync(path.join(TEMPLATES_DIRECTORY, "tvbox-kick.html"), "utf-8");
+  const body = fs.readFileSync(
+    path.join(TEMPLATES_DIRECTORY, "tvbox-kick.html"),
+    "utf-8",
+  );
   res.send(tvboxPage("Buscar na Kick", body));
 });
 
 router.get("/api/kick/catalog", (req, res) => {
-  const items = loadDB().filter((item) => String(item.type || "").toLowerCase() === "kick").map((item) => ({ id: item.id, name: item.name, username: String(item.url || "").match(/channels\/([^/]+)\/playback-url/i)?.[1] || "", poster: item.poster || "", category: item.category || "kick" }));
+  const items = loadDB()
+    .filter((item) => String(item.type || "").toLowerCase() === "kick")
+    .map((item) => ({
+      id: item.id,
+      name: item.name,
+      username:
+        String(item.url || "").match(/channels\/([^/]+)\/playback-url/i)?.[1] ||
+        "",
+      poster: item.poster || "",
+      category: item.category || "kick",
+    }));
   res.json({ results: items });
 });
 
 router.post("/kick/refresh-photo", async (req, res) => {
   try {
-    const username = String(req.body.username || "").trim().replace(/^@/, "");
-    const response = await fetch(`https://kick.com/api/v2/channels/${encodeURIComponent(username)}`, { headers: { Accept: "application/json", "User-Agent": "Mozilla/5.0", Referer: "https://kick.com/" }, signal: AbortSignal.timeout(15000) });
+    const username = String(req.body.username || "")
+      .trim()
+      .replace(/^@/, "");
+    const response = await fetch(
+      `https://kick.com/api/v2/channels/${encodeURIComponent(username)}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "Mozilla/5.0",
+          Referer: "https://kick.com/",
+        },
+        signal: AbortSignal.timeout(15000),
+      },
+    );
     if (!response.ok) throw Error(`Kick retornou HTTP ${response.status}`);
     const data = await response.json();
-    const poster = data.user?.profile_pic || data.user?.profile_picture || data.profile_pic || data.profile_picture || data.banner_picture || "";
+    const poster =
+      data.user?.profile_pic ||
+      data.user?.profile_picture ||
+      data.profile_pic ||
+      data.profile_picture ||
+      data.banner_picture ||
+      "";
     if (!poster) throw Error("A API não retornou foto");
     const dbData = loadDB();
-    const item = dbData.find((x) => String(x.url || "").toLowerCase().includes(`/channels/${username.toLowerCase()}/playback-url`));
+    const item = dbData.find((x) =>
+      String(x.url || "")
+        .toLowerCase()
+        .includes(`/channels/${username.toLowerCase()}/playback-url`),
+    );
     if (!item) throw Error("Live não encontrada no catálogo");
-    item.poster = poster; item.name = item.name || data.user?.username || username; saveDB(dbData);
+    item.poster = poster;
+    item.name = item.name || data.user?.username || username;
+    saveDB(dbData);
     res.json({ ok: true, poster });
-  } catch (error) { res.status(502).json({ error: error.message }); }
+  } catch (error) {
+    res.status(502).json({ error: error.message });
+  }
 });
 
 router.get("/api/kick/search", async (req, res) => {
   try {
     const query = String(req.query.query || "").trim();
     if (!query) return res.json({ results: [] });
-    const response = await fetch(`https://search.kick.com/api/v1/search/enriched?query=${encodeURIComponent(query)}`, {
-      headers: { Accept: "application/json", "User-Agent": "Mozilla/5.0", Referer: "https://kick.com/" },
-      signal: AbortSignal.timeout(15000),
-    });
+    const response = await fetch(
+      `https://search.kick.com/api/v1/search/enriched?query=${encodeURIComponent(query)}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "Mozilla/5.0",
+          Referer: "https://kick.com/",
+        },
+        signal: AbortSignal.timeout(15000),
+      },
+    );
     if (!response.ok) throw Error(`Kick retornou HTTP ${response.status}`);
     const payload = await response.json();
     const raw = Array.isArray(payload)
       ? payload
-      : (payload.results || payload.channels || payload.data?.channels || payload.data?.results || []);
-    const results = raw.map((item) => item.channel || item.user || item).map((item) => ({
-      name: item.name || item.username || item.slug || "",
-      username: item.username || item.slug || item.channel_slug || "",
-      poster: item.avatar_url || item.profile_pic || item.profile_picture || item.banner_picture || item.user?.profile_pic || "",
-    })).filter((item) => item.username);
-    res.json({ results: results.filter((item, i, all) => all.findIndex((x) => x.username.toLowerCase() === item.username.toLowerCase()) === i) });
-  } catch (error) { res.status(502).json({ error: error.message, results: [] }); }
+      : payload.results ||
+        payload.channels ||
+        payload.data?.channels ||
+        payload.data?.results ||
+        [];
+    const results = raw
+      .map((item) => item.channel || item.user || item)
+      .map((item) => ({
+        name: item.name || item.username || item.slug || "",
+        username: item.username || item.slug || item.channel_slug || "",
+        poster:
+          item.avatar_url ||
+          item.profile_pic ||
+          item.profile_picture ||
+          item.banner_picture ||
+          item.user?.profile_pic ||
+          "",
+      }))
+      .filter((item) => item.username);
+    res.json({
+      results: results.filter(
+        (item, i, all) =>
+          all.findIndex(
+            (x) => x.username.toLowerCase() === item.username.toLowerCase(),
+          ) === i,
+      ),
+    });
+  } catch (error) {
+    res.status(502).json({ error: error.message, results: [] });
+  }
 });
 
 router.post("/kick/add", (req, res) => {
-  const username = String(req.body.username || "").trim().replace(/^@/, "");
+  const username = String(req.body.username || "")
+    .trim()
+    .replace(/^@/, "");
   const name = String(req.body.name || username).trim();
   const poster = String(req.body.poster || "").trim();
-  if (!/^[a-zA-Z0-9_\-\.]{2,80}$/.test(username)) return res.status(400).json({ error: "Username inválido" });
+  if (!/^[a-zA-Z0-9_\-\.]{2,80}$/.test(username))
+    return res.status(400).json({ error: "Username inválido" });
   const dbData = loadDB();
-  if (dbData.some((item) => String(item.url || "").includes(`/channels/${username}/playback-url`))) return res.json({ ok: true, exists: true });
-  dbData.push({ id: Date.now(), name, url: `https://kick.com/api/v2/channels/${encodeURIComponent(username)}/playback-url`, type: "kick", category: "kick", ...( /^https?:\/\//i.test(poster) ? { poster } : {}) });
+  if (
+    dbData.some((item) =>
+      String(item.url || "").includes(`/channels/${username}/playback-url`),
+    )
+  )
+    return res.json({ ok: true, exists: true });
+  dbData.push({
+    id: Date.now(),
+    name,
+    url: `https://kick.com/api/v2/channels/${encodeURIComponent(username)}/playback-url`,
+    type: "kick",
+    category: "kick",
+    ...(/^https?:\/\//i.test(poster) ? { poster } : {}),
+  });
   saveDB(dbData);
   res.json({ ok: true });
 });
@@ -1084,10 +1414,7 @@ router.get("/delete/:id", (req, res) => {
 router.get("/category/:name", (req, res) => {
   const categoryName = decodeURIComponent(req.params.name);
   const channels = loadDB();
-  const items = channels.filter(
-    (item) =>
-      hasCategory(item, categoryName),
-  );
+  const items = channels.filter((item) => hasCategory(item, categoryName));
 
   const categoriesMeta = loadCategoriesMeta();
   const currentPoster = categoriesMeta[categoryName]?.poster || "";
@@ -1131,20 +1458,33 @@ router.get("/category/:name", (req, res) => {
 router.post("/category/rename", (req, res) => {
   const oldName = String(req.body.oldName || "").trim();
   const newName = String(req.body.newName || "").trim();
-  if (!oldName || !newName || newName.length > 120) return res.status(400).send("Nome de categoria inválido");
-  const key = value => String(value).trim().toLocaleLowerCase("pt-BR");
+  if (!oldName || !newName || newName.length > 120)
+    return res.status(400).send("Nome de categoria inválido");
+  const key = (value) => String(value).trim().toLocaleLowerCase("pt-BR");
   const current = loadDB();
-  if (!current.some(item => hasCategory(item, oldName))) return res.status(404).send("Categoria não encontrada");
-  if (key(oldName) !== key(newName) && current.some(item => hasCategory(item, newName))) return res.status(409).send("Já existe uma categoria com esse nome");
+  if (!current.some((item) => hasCategory(item, oldName)))
+    return res.status(404).send("Categoria não encontrada");
+  if (
+    key(oldName) !== key(newName) &&
+    current.some((item) => hasCategory(item, newName))
+  )
+    return res.status(409).send("Já existe uma categoria com esse nome");
   for (const item of current) {
     if (!hasCategory(item, oldName)) continue;
-    const names = itemCategories(item).map(name => key(name) === key(oldName) ? newName : name);
+    const names = itemCategories(item).map((name) =>
+      key(name) === key(oldName) ? newName : name,
+    );
     item.categories = [...new Set(names)];
-    item.category = key(item.category) === key(oldName) ? newName : (item.category || item.categories[0]);
+    item.category =
+      key(item.category) === key(oldName)
+        ? newName
+        : item.category || item.categories[0];
   }
   saveDB(current);
   const meta = loadCategoriesMeta();
-  const previousKey = Object.keys(meta).find(name => key(name) === key(oldName));
+  const previousKey = Object.keys(meta).find(
+    (name) => key(name) === key(oldName),
+  );
   if (previousKey && previousKey !== newName) {
     meta[newName] = meta[previousKey];
     delete meta[previousKey];
@@ -1152,8 +1492,16 @@ router.post("/category/rename", (req, res) => {
   }
   const home = loadHomeConfig();
   if (Array.isArray(home.sections)) {
-    home.sections = home.sections.map(section => section.type === "category" && key(section.category) === key(oldName)
-      ? { ...section, category: newName, title: newName, id: `category-${key(newName)}` } : section);
+    home.sections = home.sections.map((section) =>
+      section.type === "category" && key(section.category) === key(oldName)
+        ? {
+            ...section,
+            category: newName,
+            title: newName,
+            id: `category-${key(newName)}`,
+          }
+        : section,
+    );
     saveHomeConfig(home);
   }
   res.redirect(`/tvbox/category/${encodeURIComponent(newName)}`);
@@ -1163,9 +1511,10 @@ router.post("/category/item/delete", (req, res) => {
   const itemId = String(req.body.itemId || "");
   const category = String(req.body.category || "");
   const current = loadDB();
-  const target = current.find(item => String(item.id) === itemId);
-  if (!target || !hasCategory(target, category)) return res.status(404).send("Item não encontrado nesta categoria");
-  saveDB(current.filter(item => String(item.id) !== itemId));
+  const target = current.find((item) => String(item.id) === itemId);
+  if (!target || !hasCategory(target, category))
+    return res.status(404).send("Item não encontrado nesta categoria");
+  saveDB(current.filter((item) => String(item.id) !== itemId));
   res.redirect(`/tvbox/category/${encodeURIComponent(category)}`);
 });
 
@@ -1187,7 +1536,6 @@ let kickCache = null;
 let kickCacheAt = 0;
 let kickPending = null;
 
-
 const hls = require("../services/hls");
 const embedtv = require("../services/embedtv");
 // Reprodução HLS usando o prefixo /tvbox
@@ -1199,35 +1547,26 @@ function getPublicBaseUrl(req) {
 }
 
 // API do Brasileirão Série A
-router.get(
-  "/api/events/brasileirao-serie-a",
-  async (req, res) => {
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      "*"
-    );
+router.get("/api/events/brasileirao-serie-a", async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
 
-    try {
-      const result = await embedtv.events({
-        brasileirao: true,
-        baseUrl: getPublicBaseUrl(req),
-        sync: true,
-      });
+  try {
+    const result = await embedtv.events({
+      brasileirao: true,
+      baseUrl: getPublicBaseUrl(req),
+      sync: true,
+    });
 
-      res.json(result);
-    } catch (error) {
-      console.error(
-        "[EMBEDTV] Brasileirão:",
-        error.message
-      );
+    res.json(result);
+  } catch (error) {
+    console.error("[EMBEDTV] Brasileirão:", error.message);
 
-      res.status(502).json({
-        events: [],
-        error: error.message,
-      });
-    }
+    res.status(502).json({
+      events: [],
+      error: error.message,
+    });
   }
-);
+});
 
 // API de todos os eventos
 router.get("/api/embedtv/epg", async (_req, res) => {
@@ -1237,88 +1576,84 @@ router.get("/api/embedtv/epg", async (_req, res) => {
     return res.json(epg);
   } catch (error) {
     console.error("[EMBEDTV] Falha ao servir EPG:", error.message);
-    return res.status(502).json({ error: "Falha ao consultar programação EmbedTV" });
+    return res
+      .status(502)
+      .json({ error: "Falha ao consultar programação EmbedTV" });
   }
 });
 
-router.get(
-  "/api/embedtv/events",
-  async (req, res) => {
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      "*"
+router.get("/api/embedtv/epg/:channelId", async (req, res) => {
+  try {
+    const schedule = await embedtv.epgForChannel(req.params.channelId);
+    if (!schedule)
+      return res
+        .status(404)
+        .json({ error: "Programação do canal não encontrada" });
+    res.setHeader("Cache-Control", "private, max-age=600");
+    return res.json(schedule);
+  } catch (error) {
+    console.error(
+      "[EMBEDTV] Falha ao servir programação do canal:",
+      error.message,
     );
-
-    try {
-      const result = await embedtv.events({
-        baseUrl: getPublicBaseUrl(req),
-        sync: true,
-      });
-
-      res.json(result);
-    } catch (error) {
-      console.error(
-        "[EMBEDTV] Todos os eventos:",
-        error.message
-      );
-
-      res.status(502).json({
-        events: [],
-        error: error.message,
-      });
-    }
+    return res
+      .status(502)
+      .json({ error: "Falha ao consultar programação EmbedTV" });
   }
-);
+});
+
+router.get("/api/embedtv/events", async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  try {
+    const result = await embedtv.events({
+      baseUrl: getPublicBaseUrl(req),
+      sync: true,
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.error("[EMBEDTV] Todos os eventos:", error.message);
+
+    res.status(502).json({
+      events: [],
+      error: error.message,
+    });
+  }
+});
 
 // Painel HLS
 
 router.get("/hls", (req, res) => {
   try {
-    const file = path.join(
-      TEMPLATES_DIRECTORY,
-      "tvbox-hls.html"
-    );
+    const file = path.join(TEMPLATES_DIRECTORY, "tvbox-hls.html");
 
     console.log("[TVBOX HLS] Abrindo:", file);
 
     if (!fs.existsSync(file)) {
-      return res.status(500).send(
-        "ERRO: arquivo tvbox-hls.html não encontrado em " + file
-      );
+      return res
+        .status(500)
+        .send("ERRO: arquivo tvbox-hls.html não encontrado em " + file);
     }
 
     const html = fs.readFileSync(file, "utf8");
 
-    console.log(
-      "[TVBOX HLS] HTML carregado:",
-      html.length,
-      "caracteres"
-    );
+    console.log("[TVBOX HLS] HTML carregado:", html.length, "caracteres");
 
     const page = tvboxPage("Canais HLS", html);
 
-    console.log(
-      "[TVBOX HLS] Página montada com sucesso"
-    );
+    console.log("[TVBOX HLS] Página montada com sucesso");
+
+    return res.status(200).type("html").send(page);
+  } catch (error) {
+    console.error("[TVBOX HLS] ERRO AO ABRIR PÁGINA:", error.stack);
 
     return res
-      .status(200)
-      .type("html")
-      .send(page);
-
-  } catch (error) {
-    console.error(
-      "[TVBOX HLS] ERRO AO ABRIR PÁGINA:",
-      error.stack
-    );
-
-    return res.status(500).type("text").send(
-      "Erro ao abrir painel HLS:\n\n" +
-      error.stack
-    );
+      .status(500)
+      .type("text")
+      .send("Erro ao abrir painel HLS:\n\n" + error.stack);
   }
 });
-
 
 // Canais cadastrados
 router.get("/hls/channels", (req, res) => {
@@ -1355,61 +1690,49 @@ router.post("/hls/channels", async (req, res) => {
 
 // Atualizar canal manualmente
 
-router.post(
-  "/hls/channels/:id/refresh",
-  async (req, res) => {
-    const channel = hls.channelById(req.params.id);
+router.post("/hls/channels/:id/refresh", async (req, res) => {
+  const channel = hls.channelById(req.params.id);
 
-    if (!channel) {
-      return res.status(404).json({
-        error: "Canal não encontrado",
-      });
-    }
-
-    try {
-      const result = await hls.refresh(
-        channel,
-        true
-      );
-
-      if (result.error) {
-        return res.status(502).json({
-          error: result.error,
-          status: "error",
-        });
-      }
-
-      return res.json({
-        ok: true,
-        status: "online",
-        checks: result.checks,
-        changes: result.changes,
-        lastCheck: new Date(
-          result.checked
-        ).toISOString(),
-      });
-    } catch (error) {
-      return res.status(502).json({
-        error: error.message,
-      });
-    }
+  if (!channel) {
+    return res.status(404).json({
+      error: "Canal não encontrado",
+    });
   }
-);
 
+  try {
+    const result = await hls.refresh(channel, true);
+
+    if (result.error) {
+      return res.status(502).json({
+        error: result.error,
+        status: "error",
+      });
+    }
+
+    return res.json({
+      ok: true,
+      status: "online",
+      checks: result.checks,
+      changes: result.changes,
+      lastCheck: new Date(result.checked).toISOString(),
+    });
+  } catch (error) {
+    return res.status(502).json({
+      error: error.message,
+    });
+  }
+});
 
 // Excluir canal
-router.delete(
-  "/hls/channels/:id",
-  (req, res) => {
-    if (!hls.remove(req.params.id)) {
-      return res.status(404).json({
-        error: "Canal não encontrado",
-      });
-    }
-
-    res.json({ ok: true });
+router.delete("/hls/channels/:id", (req, res) => {
+  if (!hls.remove(req.params.id)) {
+    return res.status(404).json({
+      error: "Canal não encontrado",
+    });
   }
-);
+
+  res.json({ ok: true });
+});
 
 router.delete("/hls/channels", (req, res) => {
   try {
@@ -1421,19 +1744,13 @@ router.delete("/hls/channels", (req, res) => {
 });
 
 // Diagnóstico da EmbedTV
-router.get(
-  "/hls/embedtv-status",
-  (req, res) => {
-    res.json(embedtv.status());
-  }
-);
-
+router.get("/hls/embedtv-status", (req, res) => {
+  res.json(embedtv.status());
+});
 
 router.post("/hls/sync-embedtv", async (req, res) => {
   try {
-    console.log(
-      "[EMBEDTV] Sincronização solicitada pelo painel"
-    );
+    console.log("[EMBEDTV] Sincronização solicitada pelo painel");
 
     const result = await embedtv.events({
       force: true,
@@ -1443,14 +1760,10 @@ router.post("/hls/sync-embedtv", async (req, res) => {
 
     return res.json({
       ...result,
-      message:
-        "Eventos consultados. Sincronização HLS iniciada.",
+      message: "Eventos consultados. Sincronização HLS iniciada.",
     });
   } catch (error) {
-    console.error(
-      "[EMBEDTV] Falha na consulta:",
-      error
-    );
+    console.error("[EMBEDTV] Falha na consulta:", error);
 
     return res.status(502).json({
       error: error.message,
@@ -1462,14 +1775,16 @@ router.post("/hls/reset-embedtv-channels", async (req, res) => {
   try {
     console.log("[EMBEDTV] Reset manual dos canais solicitado pelo painel");
     const result = await embedtv.resetChannels();
-    res.json({ ok: true, ...result, message: "Canais EmbedTV removidos e sincronizados novamente." });
+    res.json({
+      ok: true,
+      ...result,
+      message: "Canais EmbedTV removidos e sincronizados novamente.",
+    });
   } catch (error) {
     console.error("[EMBEDTV] Falha no reset dos canais:", error);
     res.status(502).json({ error: error.message });
   }
 });
-
-
 
 router.get("/api/kick/live", async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");

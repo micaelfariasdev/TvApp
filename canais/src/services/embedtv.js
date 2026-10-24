@@ -217,6 +217,14 @@ async function epgAll(force = false) {
   }
 }
 
+async function epgForChannel(channelId) {
+  const id = hls.slug(String(channelId || "").replace(/^embedtv-channel-/i, ""));
+  if (!id) return null;
+
+  const schedules = await epgAll();
+  return schedules.find((schedule) => hls.slug(schedule.id) === id) || null;
+}
+
 async function syncChannels(force = false) {
   const payload = await loadChannels(force);
   const categoryById = new Map(payload.categories.map((category) => [Number(category.id), String(category.name || "outros").trim()]));
@@ -465,6 +473,7 @@ function status() {
 module.exports = {
   events,
   epgAll,
+  epgForChannel,
   channels: loadChannels,
   syncChannels,
   resetChannels,

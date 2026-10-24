@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "TVBox M3U Collector",
+  "version": "1.6.0",
+  "description": "Collect M3U request URLs, browse server series, and add media to your TVBox server.",
+  "action": {
+    "default_title": "Find M3U playlists",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "storage",
+    "webRequest"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ]
+}

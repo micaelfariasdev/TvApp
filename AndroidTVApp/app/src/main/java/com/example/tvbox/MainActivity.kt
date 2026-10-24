@@ -19,6 +19,7 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.EditText
 import android.widget.ArrayAdapter
 import android.widget.AdapterView
 import androidx.appcompat.app.AlertDialog
@@ -32,6 +33,9 @@ import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.Player
+import androidx.media3.common.Timeline
+import androidx.media3.common.TrackGroup
+import androidx.media3.common.Tracks
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
@@ -49,6 +53,7 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -58,6 +63,7 @@ import okhttp3.dnsoverhttps.DnsOverHttps
 import java.net.InetAddress
 import okhttp3.Request
 import java.io.File
+import java.text.Normalizer
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -180,6 +186,13 @@ private data class EpgProgram(
 
 class MainActivity : AppCompatActivity() {
 
+    private data class AudioTrackChoice(
+        val group: TrackGroup,
+        val trackIndex: Int,
+        val language: String?,
+        val label: String
+    )
+
     private companion object {
         const val TVBOX_API_BASE = "http://164.152.62.129/tvbox/api"
         const val EPG_CACHE_INTERVAL_MS = 10 * 60 * 1000L
@@ -190,7 +203,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var hlsMediaSourceFactory: HlsMediaSource.Factory
     private lateinit var epgGuideAdapter: EpgGuideAdapter
     private lateinit var playerTitleOverlay: TextView
+    private lateinit var playerEpgOverlay: TextView
     private lateinit var fullscreenButton: android.widget.Button
+    private lateinit var epgGuideButton: android.widget.Button
+    private lateinit var audioTrackButton: android.widget.Button
     private lateinit var kickLiveAdapter: KickLiveAdapter
     private var kickLiveLoading = false
     private val kickLiveClient = OkHttpClient()
@@ -198,6 +214,9 @@ class MainActivity : AppCompatActivity() {
         OkHttpClient.Builder()
             .callTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
             .build()
+    }
+    private val epgCachePreferences by lazy {
+        getSharedPreferences("embedtv_epg_cache", MODE_PRIVATE)
     }
     private val dnsOverHttps: Dns by lazy {
         val bootstrapClient = OkHttpClient.Builder().build()
@@ -228,9 +247,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var episodesGridAdapter: MediaCardAdapter
     private lateinit var catalogGridAdapter: MediaCardAdapter
     private var allChannels: List<Channel> = emptyList()
-    private var epgSchedulesById: Map<String, List<EpgProgram>> = emptyMap()
-    private var epgSchedulesFetchedAt = 0L
     private var epgGuideLoading = false
+    private val loadingChannelEpgIds = mutableSetOf<String>()
     private var channelsLoading = false
     private var initialCatalogLoaded = false
     private var sidebarExpanded: Boolean? = null
@@ -270,6 +288,7 @@ class MainActivity : AppCompatActivity() {
     private var seriesEpisodeMenuOpen = false
     private var footballGroupMenuOpen = false
     private var movieCategoryMenuOpen = false
+    private var searchPageOpen = false
     private var playerReturnWasChannels = false
     private var playerReturnWasHome = true
     private var streamReloadAttempts = 0
@@ -281,6 +300,7 @@ class MainActivity : AppCompatActivity() {
     private var hlsRecovering = false
     private var hlsRecoveryAttempts = 0
     private var hlsStartedAt = 0L
+    private var pendingResumePositionMs = 0L
     private val mainHandler = Handler(Looper.getMainLooper())
     private val playbackWatchdog = object : Runnable {
         override fun run() {
@@ -296,11 +316,21 @@ class MainActivity : AppCompatActivity() {
                     refreshCurrentStream("o player permaneceu carregando por 15 segundos")
                     bufferingStartedAt = now
                 }
+
             }
             mainHandler.postDelayed(this, 5_000)
         }
     }
-    
+
+    private val movieProgressSaver = object : Runnable {
+        override fun run() {
+            if (::exoPlayer.isInitialized && binding.playerView.visibility == View.VISIBLE) {
+                saveMovieProgress()
+            }
+            mainHandler.postDelayed(this, 10_000L)
+        }
+    }
+
     // Monitor exclusivo dos canais HLS. Não altera Kick, MP4 ou iframe.
     private val hlsFreezeMonitor = object : Runnable {
         override fun run() {
@@ -353,8 +383,9 @@ class MainActivity : AppCompatActivity() {
             "Reabrindo HLS: $reason (tentativa $hlsRecoveryAttempts, pos=${exoPlayer.currentPosition}ms, estado=${exoPlayer.playbackState}, url=${channel.url})"
         )
 
+        val resumePosition = if (isResumableMovie(channel)) exoPlayer.currentPosition else 0L
         exoPlayer.stop()
-        playStream(channel.url, showController = false)
+        playStream(channel.url, resumePositionMs = resumePosition, showController = false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -363,10 +394,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         playerTitleOverlay = binding.playerView.findViewById(R.id.player_title_overlay)
+        playerEpgOverlay = binding.playerView.findViewById(R.id.player_epg_overlay)
         fullscreenButton = binding.playerView.findViewById(R.id.fullscreen_button)
+        epgGuideButton = binding.playerView.findViewById(R.id.epg_guide_button)
+        audioTrackButton = binding.playerView.findViewById(R.id.audio_track_button)
         setupPlayer()
         mainHandler.postDelayed(bannerRotation, 8_000)
         fullscreenButton.setOnClickListener { toggleMobileFullscreen() }
+        epgGuideButton.setOnClickListener { showEpgGuide() }
+        audioTrackButton.setOnClickListener { showAudioTrackSelector() }
         mainHandler.post(hlsFreezeMonitor)
         setupIFrameWebView()
         setupRecyclerView()
@@ -376,6 +412,7 @@ class MainActivity : AppCompatActivity() {
         binding.startupRetry.setOnClickListener { loadChannels() }
         loadChannels()
         mainHandler.postDelayed(kickLiveRefresh, 60_000)
+        mainHandler.postDelayed(movieProgressSaver, 10_000L)
     }
 
     private fun toggleMobileFullscreen() {
@@ -446,13 +483,28 @@ class MainActivity : AppCompatActivity() {
     .setMediaSourceFactory(DefaultMediaSourceFactory(httpDataSourceFactory))
     .setLoadControl(loadControl)
     .build()
-        binding.playerView.setControllerVisibilityListener(PlayerView.ControllerVisibilityListener { visibility ->
+       exoPlayer.trackSelectionParameters = exoPlayer.trackSelectionParameters
+           .buildUpon()
+           .setPreferredAudioLanguages("por", "pt", "pt-BR")
+           .build()
+       binding.playerView.setControllerVisibilityListener(PlayerView.ControllerVisibilityListener { visibility ->
             // O título e o botão de tela cheia acompanham a overlay do player.
             // Ao ocultar os controles, ambos somem junto; ao sair do player,
             // nunca devem reaparecer sobre as telas de catálogo.
             val overlayVisible = visibility == View.VISIBLE && binding.playerView.visibility == View.VISIBLE
             fullscreenButton.visibility = if (overlayVisible) View.VISIBLE else View.GONE
             playerTitleOverlay.visibility = if (overlayVisible) View.VISIBLE else View.GONE
+            playerEpgOverlay.visibility = if (
+                overlayVisible &&
+                isEmbedTvLiveChannel(currentChannel) &&
+                playerEpgOverlay.text.isNotBlank()
+            ) View.VISIBLE else View.GONE
+            epgGuideButton.visibility = if (
+                overlayVisible &&
+                isMobileDevice() &&
+                isEmbedTvLiveChannel(currentChannel)
+            ) View.VISIBLE else View.GONE
+            updateAudioTrackButton(overlayVisible)
         })
         exoPlayer.setAudioAttributes(
             AudioAttributes.Builder()
@@ -468,6 +520,14 @@ class MainActivity : AppCompatActivity() {
         binding.playerView.setControllerShowTimeoutMs(1800)
         mainHandler.post(playbackWatchdog)
         exoPlayer.addListener(object : Player.Listener {
+            override fun onTracksChanged(tracks: Tracks) {
+                updateAudioTrackButton(binding.playerView.isControllerFullyVisible)
+            }
+
+            override fun onTimelineChanged(timeline: Timeline, reason: Int) {
+                applyPendingResumePosition()
+            }
+
             override fun onPlayerError(error: androidx.media3.common.PlaybackException) {
     Log.e(
         "TVBOX_PLAYER",
@@ -500,13 +560,20 @@ class MainActivity : AppCompatActivity() {
         Player.STATE_READY -> {
             streamReloadAttempts = 0
             bufferingStartedAt = 0L
+            applyPendingResumePosition()
         }
 
         Player.STATE_ENDED -> {
             bufferingStartedAt = 0L
+            if (currentChannel?.let(::isResumableMovie) == true) {
+                clearMovieProgress(currentChannel!!)
+            }
 
-            // Reiniciar automaticamente somente canais HLS
-            if (currentChannel?.type.equals("hls", ignoreCase = true)) {
+            // Reiniciar automaticamente somente canais HLS ao vivo.
+            if (
+                currentChannel?.type.equals("hls", ignoreCase = true) &&
+                currentChannel?.let(::isResumableMovie) != true
+            ) {
                 Log.w(
                     "TVBOX_HLS",
                     "Live HLS terminou. Reabrindo transmissão..."
@@ -534,6 +601,90 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun audioTrackChoices(): List<AudioTrackChoice> {
+        val choices = mutableListOf<AudioTrackChoice>()
+        val seenTracks = mutableSetOf<String>()
+        exoPlayer.currentTracks.groups
+            .filter { it.type == C.TRACK_TYPE_AUDIO }
+            .forEach { group ->
+                for (index in 0 until group.length) {
+                    if (!group.isTrackSupported(index)) continue
+                    val format = group.getTrackFormat(index)
+                    val language = format.language?.takeUnless {
+                        it.isBlank() || it.equals("und", ignoreCase = true)
+                    }
+                    val trackLabel = format.label?.takeIf(String::isNotBlank)
+                    val displayLabel = when (language?.lowercase(Locale.ROOT)) {
+                        "por", "pt", "pt-br" -> "Português"
+                        "eng", "en", "en-us", "en-gb" -> "English"
+                        else -> trackLabel ?: language?.let {
+                            Locale.forLanguageTag(it).getDisplayLanguage(Locale("pt", "BR"))
+                        } ?: "Faixa de áudio"
+                    }
+                    val identity = language?.lowercase(Locale.ROOT) ?: displayLabel.lowercase(Locale.ROOT)
+                    if (seenTracks.add(identity)) {
+                        choices += AudioTrackChoice(
+                            group.mediaTrackGroup,
+                            index,
+                            language,
+                            displayLabel
+                        )
+                    }
+                }
+            }
+        return choices
+    }
+
+    private fun updateAudioTrackButton(controllerVisible: Boolean) {
+        if (!::audioTrackButton.isInitialized) return
+        audioTrackButton.visibility = if (controllerVisible && audioTrackChoices().size > 1) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
+
+    private fun showAudioTrackSelector() {
+        val choices = audioTrackChoices()
+        if (choices.size < 2) {
+            Toast.makeText(this, "Não há outras faixas de áudio", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val options = listOf("Automático (Português)") + choices.map { it.label }
+        AlertDialog.Builder(this)
+            .setTitle("Faixa de áudio")
+            .setItems(options.toTypedArray()) { _, selectedIndex ->
+                val parameters = exoPlayer.trackSelectionParameters.buildUpon()
+                    .clearOverridesOfType(C.TRACK_TYPE_AUDIO)
+                if (selectedIndex == 0) {
+                    parameters.setPreferredAudioLanguages("por", "pt", "pt-BR")
+                } else {
+                    val choice = choices[selectedIndex - 1]
+                    if (choice.language != null) {
+                        parameters.setPreferredAudioLanguages(choice.language)
+                    } else {
+                        parameters
+                            .setPreferredAudioLanguages("por", "pt", "pt-BR")
+                            .addOverride(
+                                androidx.media3.common.TrackSelectionOverride(
+                                    choice.group,
+                                    listOf(choice.trackIndex)
+                                )
+                            )
+                    }
+                }
+                exoPlayer.trackSelectionParameters = parameters.build()
+                Toast.makeText(
+                    this,
+                    if (selectedIndex == 0) "Áudio em português automático"
+                    else "Áudio: ${choices[selectedIndex - 1].label}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            .show()
+    }
+
     private fun setupRecyclerView() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         channelAdapter = ChannelAdapter(emptyList()) { channel ->
@@ -550,6 +701,25 @@ class MainActivity : AppCompatActivity() {
         }
         binding.epgGuideList.adapter = epgGuideAdapter
         binding.epgGuideRetry.setOnClickListener { loadEpgGuide() }
+        val guidePanel = binding.epgGuideOverlay.getChildAt(0)
+        guidePanel.layoutParams = guidePanel.layoutParams.apply {
+            width = if (isMobileDevice()) {
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT
+            } else {
+                (520 * resources.displayMetrics.density).toInt()
+            }
+        }
+    }
+
+    private fun isMobileDevice(): Boolean {
+        val uiMode = resources.configuration.uiMode and Configuration.UI_MODE_TYPE_MASK
+        val isTelevision = uiMode == Configuration.UI_MODE_TYPE_TELEVISION ||
+            packageManager.hasSystemFeature("android.software.leanback")
+        val hasTouchInput = android.view.InputDevice.getDeviceIds().any { deviceId ->
+            android.view.InputDevice.getDevice(deviceId)
+                ?.supportsSource(android.view.InputDevice.SOURCE_TOUCHSCREEN) == true
+        }
+        return !isTelevision && hasTouchInput
     }
 
     private fun isEmbedTvLiveChannel(channel: Channel?): Boolean =
@@ -562,7 +732,12 @@ class MainActivity : AppCompatActivity() {
         binding.playerView.hideController()
         binding.epgGuideOverlay.visibility = View.VISIBLE
         binding.epgGuideRetry.visibility = View.GONE
-        if (epgSchedulesById.isNotEmpty()) renderEpgGuide()
+        binding.epgGuideChannelTitle.text = "Programação de todos os canais"
+        if (epgGuideAdapter.itemCount == 0) {
+            binding.epgGuideStatus.text = "Carregando programação..."
+            binding.epgGuideStatus.visibility = View.VISIBLE
+        }
+        displayCachedGeneralEpg()
         loadEpgGuide()
         binding.epgGuideList.post {
             if (binding.epgGuideOverlay.visibility == View.VISIBLE) {
@@ -576,103 +751,278 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadEpgGuide() {
-        if (
-            epgSchedulesFetchedAt > 0L &&
-            SystemClock.elapsedRealtime() - epgSchedulesFetchedAt < EPG_CACHE_INTERVAL_MS
-        ) return
         if (epgGuideLoading) return
-
         epgGuideLoading = true
         binding.epgGuideRetry.visibility = View.GONE
-        if (epgGuideAdapter.itemCount == 0) {
-            binding.epgGuideStatus.text = "Carregando programação..."
-            binding.epgGuideStatus.visibility = View.VISIBLE
-        }
 
         lifecycleScope.launch(Dispatchers.IO) {
-            val result = runCatching {
-                val request = Request.Builder()
-                    .url("$TVBOX_API_BASE/embedtv/epg")
-                    .header("Accept", "application/json")
-                    .header("User-Agent", "Mozilla/5.0 (Android; TVBox)")
-                    .build()
-                epgClient.newCall(request)
-                    .execute()
-                    .use { response ->
-                        if (!response.isSuccessful) {
-                            throw java.io.IOException("EPG retornou HTTP ${response.code}")
-                        }
-                        val body = response.body?.string()
-                            ?.takeIf { it.isNotBlank() }
-                            ?: throw java.io.IOException("Resposta vazia do EPG")
-                        val schedules = Gson().fromJson<List<EpgScheduleChannel>>(
-                            body,
-                            object : TypeToken<List<EpgScheduleChannel>>() {}.type
-                        ) ?: throw java.io.IOException("Formato do EPG inválido")
-                        if (schedules.isEmpty()) throw java.io.IOException("EPG sem programação")
-                        schedules.mapNotNull { schedule ->
-                            schedule.id?.trim()?.lowercase(Locale.ROOT)?.takeIf { it.isNotEmpty() }
-                                ?.let { id -> id to schedule.data.orEmpty() }
-                        }.toMap()
+            try {
+                val cachedSchedules = readCachedGeneralEpg()
+                val cachedAt = epgCachePreferences.getLong("all:updatedAt", 0L)
+                val cacheAge = System.currentTimeMillis() - cachedAt
+                val cacheIsFresh = cachedAt > 0L && cacheAge in 0 until EPG_CACHE_INTERVAL_MS
+                if (cachedSchedules != null) {
+                    val rows = withContext(Dispatchers.Default) {
+                        buildGeneralEpgRows(cachedSchedules)
                     }
-            }
+                    withContext(Dispatchers.Main) {
+                        if (binding.epgGuideOverlay.visibility == View.VISIBLE) displayEpgGuideRows(rows)
+                    }
+                    if (cacheIsFresh) return@launch
+                }
 
-            withContext(Dispatchers.Main) {
-                epgGuideLoading = false
-                result.onSuccess { schedules ->
-                    epgSchedulesById = schedules
-                    epgSchedulesFetchedAt = SystemClock.elapsedRealtime()
-                    if (binding.epgGuideOverlay.visibility == View.VISIBLE) {
-                        renderEpgGuide()
+                binding.epgGuideStatus.post {
+                    if (binding.epgGuideOverlay.visibility == View.VISIBLE && epgGuideAdapter.itemCount == 0) {
+                        binding.epgGuideStatus.text = "Carregando programação..."
+                        binding.epgGuideStatus.visibility = View.VISIBLE
                     }
-                }.onFailure { error ->
-                    Log.e("TVBOX_EPG", "Falha ao carregar programação EmbedTV", error)
-                    if (
-                        binding.epgGuideOverlay.visibility == View.VISIBLE &&
-                        epgGuideAdapter.itemCount == 0
-                    ) {
-                        binding.epgGuideStatus.text = "Não foi possível carregar a programação."
+                }
+
+                val schedules = fetchAllEpgSchedules()
+                val rows = withContext(Dispatchers.Default) { buildGeneralEpgRows(schedules) }
+                saveCachedGeneralEpg(schedules)
+                withContext(Dispatchers.Main) {
+                    if (binding.epgGuideOverlay.visibility == View.VISIBLE) displayEpgGuideRows(rows)
+                }
+            } catch (error: kotlinx.coroutines.CancellationException) {
+                throw error
+            } catch (error: Exception) {
+                Log.e("TVBOX_EPG", "Falha ao carregar o guia geral de programação", error)
+                withContext(Dispatchers.Main) {
+                    if (binding.epgGuideOverlay.visibility == View.VISIBLE && epgGuideAdapter.itemCount == 0) {
+                        binding.epgGuideStatus.text = "Falha ao carregar programação: ${error.message ?: "erro desconhecido"}"
                         binding.epgGuideStatus.visibility = View.VISIBLE
                         binding.epgGuideRetry.visibility = View.VISIBLE
                         binding.epgGuideRetry.requestFocus()
                     }
                 }
+            } finally {
+                withContext(NonCancellable + Dispatchers.Main) {
+                    epgGuideLoading = false
+                }
             }
         }
     }
 
-    private fun renderEpgGuide() {
-        val now = System.currentTimeMillis()
-        val rows = allChannels.asSequence()
+    private fun fetchAllEpgSchedules(): List<EpgScheduleChannel> {
+        val request = Request.Builder()
+            .url("$TVBOX_API_BASE/embedtv/epg")
+            .header("Accept", "application/json")
+            .header("User-Agent", "Mozilla/5.0 (Android; TVBox)")
+            .build()
+        return epgClient.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw java.io.IOException("EPG retornou HTTP ${response.code}")
+            val body = response.body?.string()?.takeIf { it.isNotBlank() }
+                ?: throw java.io.IOException("Resposta vazia do EPG")
+            Gson().fromJson<List<EpgScheduleChannel>>(
+                body,
+                object : TypeToken<List<EpgScheduleChannel>>() {}.type
+            ) ?: throw java.io.IOException("Formato do EPG inválido")
+        }
+    }
+
+    private fun fetchEpgSchedule(channelId: String): EpgScheduleChannel {
+        val channelRequest = Request.Builder()
+            .url("$TVBOX_API_BASE/embedtv/epg/${Uri.encode(channelId)}")
+            .header("Accept", "application/json")
+            .header("User-Agent", "Mozilla/5.0 (Android; TVBox)")
+            .build()
+        val channelResponse = epgClient.newCall(channelRequest).execute()
+        if (channelResponse.code != 404) {
+            return channelResponse.use { response ->
+                if (!response.isSuccessful) {
+                    throw java.io.IOException("EPG retornou HTTP ${response.code}")
+                }
+                val body = response.body?.string()
+                    ?.takeIf { it.isNotBlank() }
+                    ?: throw java.io.IOException("Resposta vazia do EPG")
+                Gson().fromJson(body, EpgScheduleChannel::class.java)
+                    ?: throw java.io.IOException("Formato do EPG inválido")
+            }
+        }
+        channelResponse.close()
+
+        Log.w("TVBOX_EPG", "Endpoint filtrado retornou 404; usando compatibilidade com EPG completo")
+        val allRequest = Request.Builder()
+            .url("$TVBOX_API_BASE/embedtv/epg")
+            .header("Accept", "application/json")
+            .header("User-Agent", "Mozilla/5.0 (Android; TVBox)")
+            .build()
+        return epgClient.newCall(allRequest).execute().use { response ->
+            if (!response.isSuccessful) {
+                throw java.io.IOException("EPG completo retornou HTTP ${response.code}")
+            }
+            val body = response.body?.string()
+                ?.takeIf { it.isNotBlank() }
+                ?: throw java.io.IOException("Resposta vazia do EPG completo")
+            val schedules = Gson().fromJson<List<EpgScheduleChannel>>(
+                body,
+                object : TypeToken<List<EpgScheduleChannel>>() {}.type
+            ) ?: throw java.io.IOException("Formato do EPG completo inválido")
+            schedules.firstOrNull { normalizeEpgChannelId(it.id) == channelId }
+                ?: throw java.io.IOException("Canal $channelId não encontrado no EPG completo")
+        }
+    }
+
+    private fun normalizeEpgChannelId(value: String?): String =
+        Normalizer.normalize(value.orEmpty(), Normalizer.Form.NFD)
+            .replace("\\p{Mn}+".toRegex(), "")
+            .lowercase(Locale.ROOT)
+            .replace("[^a-z0-9-]+".toRegex(), "-")
+            .trim('-')
+            .take(70)
+
+    private fun loadCurrentChannelEpg(channel: Channel) {
+        if (!isEmbedTvLiveChannel(channel)) {
+            playerEpgOverlay.text = ""
+            playerEpgOverlay.visibility = View.GONE
+            return
+        }
+        val channelId = normalizeEpgChannelId(channel.id?.removePrefix("embedtv-channel-"))
+        if (channelId.isBlank() || !loadingChannelEpgIds.add(channelId)) return
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val cached = readCachedEpgSchedule(channelId)
+                val updatedAt = epgCachePreferences.getLong("$channelId:updatedAt", 0L)
+                val fresh = updatedAt > 0L && System.currentTimeMillis() - updatedAt in 0 until EPG_CACHE_INTERVAL_MS
+                if (cached != null) {
+                    withContext(Dispatchers.Default) { buildEpgGuideItem(channel, cached) }
+                        .also { row -> withContext(Dispatchers.Main) { showPlayerEpg(channel, row) } }
+                    if (fresh) return@launch
+                }
+                val schedule = fetchEpgSchedule(channelId)
+                val row = withContext(Dispatchers.Default) { buildEpgGuideItem(channel, schedule) }
+                saveCachedEpgSchedule(channelId, schedule)
+                withContext(Dispatchers.Main) { showPlayerEpg(channel, row) }
+            } catch (error: kotlinx.coroutines.CancellationException) {
+                throw error
+            } catch (error: Exception) {
+                Log.w("TVBOX_EPG", "Falha ao atualizar programação inline de $channelId", error)
+            } finally {
+                withContext(NonCancellable + Dispatchers.Main) {
+                    loadingChannelEpgIds.remove(channelId)
+                }
+            }
+        }
+    }
+
+    private fun showPlayerEpg(channel: Channel, row: EpgGuideItem?) {
+        if (currentChannel?.id != channel.id) return
+        playerEpgOverlay.text = row?.let {
+            buildString {
+                append(it.currentTime?.let { time -> "$time  " } ?: "")
+                append(it.currentProgram ?: "Sem programa no ar")
+                it.nextProgram?.let { next ->
+                    append("     •     ${it.nextTime ?: ""}  A seguir: $next")
+                }
+            }
+        }.orEmpty()
+        playerEpgOverlay.visibility = if (
+            binding.playerView.isControllerFullyVisible && row != null
+        ) View.VISIBLE else View.GONE
+    }
+
+    private fun readCachedEpgSchedule(channelId: String): EpgScheduleChannel? {
+        val json = epgCachePreferences.getString(channelId, null) ?: return null
+        return runCatching {
+            Gson().fromJson(json, EpgScheduleChannel::class.java)
+        }.onFailure { error ->
+            Log.w("TVBOX_EPG", "Cache inválido para o canal $channelId", error)
+            epgCachePreferences.edit().remove(channelId).remove("$channelId:updatedAt").apply()
+        }.getOrNull()
+    }
+
+    private fun saveCachedEpgSchedule(channelId: String, schedule: EpgScheduleChannel) {
+        epgCachePreferences.edit()
+            .putString(channelId, Gson().toJson(schedule))
+            .putLong("$channelId:updatedAt", System.currentTimeMillis())
+            .apply()
+    }
+
+    private fun readCachedGeneralEpg(): List<EpgScheduleChannel>? {
+        val json = epgCachePreferences.getString("all:schedules", null) ?: return null
+        return runCatching {
+            Gson().fromJson<List<EpgScheduleChannel>>(
+                json,
+                object : TypeToken<List<EpgScheduleChannel>>() {}.type
+            )
+        }.onFailure { error ->
+            Log.w("TVBOX_EPG", "Cache do guia geral inválido", error)
+            epgCachePreferences.edit().remove("all:schedules").remove("all:updatedAt").apply()
+        }.getOrNull()
+    }
+
+    private fun saveCachedGeneralEpg(schedules: List<EpgScheduleChannel>) {
+        epgCachePreferences.edit()
+            .putString("all:schedules", Gson().toJson(schedules))
+            .putLong("all:updatedAt", System.currentTimeMillis())
+            .apply()
+    }
+
+    private fun displayCachedGeneralEpg() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val schedules = readCachedGeneralEpg() ?: return@launch
+            val rows = withContext(Dispatchers.Default) { buildGeneralEpgRows(schedules) }
+            withContext(Dispatchers.Main) {
+                if (binding.epgGuideOverlay.visibility == View.VISIBLE) displayEpgGuideRows(rows)
+            }
+        }
+    }
+
+    private fun buildGeneralEpgRows(schedules: List<EpgScheduleChannel>): List<EpgGuideItem> {
+        val channelsById = allChannels.asSequence()
             .filter(::isEmbedTvLiveChannel)
             .mapNotNull { channel ->
-                val sourceId = channel.id
-                    ?.removePrefix("embedtv-channel-")
-                    ?.lowercase(Locale.ROOT)
-                    ?: return@mapNotNull null
-                val programs = epgSchedulesById[sourceId]
-                    .orEmpty()
-                    .mapNotNull { program ->
-                        parseEpgStartTime(program.startDate)?.let { start -> program to start }
-                    }
-                    .sortedBy { it.second }
-                val current = programs.lastOrNull { it.second <= now }
-                val next = programs.firstOrNull { it.second > now }
-                if (current == null && next == null) return@mapNotNull null
-                EpgGuideItem(
-                    channel = channel,
-                    currentProgram = current?.first?.title?.takeIf { it.isNotBlank() },
-                    currentTime = current?.second?.let(::formatEpgTime),
-                    nextProgram = next?.first?.title?.takeIf { it.isNotBlank() },
-                    nextTime = next?.second?.let(::formatEpgTime)
-                )
+                normalizeEpgChannelId(channel.id?.removePrefix("embedtv-channel-"))
+                    .takeIf { it.isNotBlank() }
+                    ?.let { it to channel }
             }
-            .toList()
+            .toMap()
+        return schedules.mapNotNull { schedule ->
+            val channel = channelsById[normalizeEpgChannelId(schedule.id)] ?: return@mapNotNull null
+            buildEpgGuideItem(channel, schedule)
+        }
+    }
 
+    private fun displayEpgGuideRows(rows: List<EpgGuideItem>) {
         epgGuideAdapter.submitList(rows)
         binding.epgGuideStatus.visibility = if (rows.isEmpty()) View.VISIBLE else View.GONE
         if (rows.isEmpty()) {
-            binding.epgGuideStatus.text = "Nenhuma programação disponível para estes canais."
+            binding.epgGuideStatus.text = "Nenhuma programação disponível."
+        } else if (binding.epgGuideOverlay.visibility == View.VISIBLE) {
+            binding.epgGuideList.post {
+                binding.epgGuideList.findViewHolderForAdapterPosition(0)?.itemView?.requestFocus()
+            }
+        }
+    }
+
+    private fun buildEpgGuideItem(
+        channel: Channel,
+        schedule: EpgScheduleChannel
+    ): EpgGuideItem? {
+        val now = System.currentTimeMillis()
+        val programs = schedule.data.orEmpty()
+            .mapNotNull { program ->
+                parseEpgStartTime(program.startDate)?.let { start -> program to start }
+            }
+            .sortedBy { it.second }
+        val current = programs.lastOrNull { it.second <= now }
+        val next = programs.firstOrNull { it.second > now }
+        if (current == null && next == null) return null
+        return EpgGuideItem(
+            channel = channel,
+            currentProgram = current?.first?.title?.takeIf { it.isNotBlank() },
+            currentTime = current?.second?.let(::formatEpgTime),
+            nextProgram = next?.first?.title?.takeIf { it.isNotBlank() },
+            nextTime = next?.second?.let(::formatEpgTime)
+        )
+    }
+
+    private fun displayEpgGuideItem(row: EpgGuideItem?) {
+        epgGuideAdapter.submitList(listOfNotNull(row))
+        binding.epgGuideStatus.visibility = if (row == null) View.VISIBLE else View.GONE
+        if (row == null) {
+            binding.epgGuideStatus.text = "Nenhuma programação disponível para este canal."
         } else if (binding.epgGuideOverlay.visibility == View.VISIBLE) {
             binding.epgGuideList.post {
                 binding.epgGuideList.findViewHolderForAdapterPosition(0)?.itemView?.requestFocus()
@@ -819,6 +1169,20 @@ binding.episodesGrid.adapter = episodesGridAdapter
     private fun setupHomeMenu() {
         binding.homeVersion.text = "Micael Farias  •  Versão ${BuildConfig.VERSION_NAME}"
         binding.homeHome.setOnClickListener { showHomeMenu() }
+        binding.homeSearch.setOnClickListener {
+            if (allChannels.isEmpty() && !initialCatalogLoaded) {
+                loadChannels { showSearchPage() }
+            } else {
+                showSearchPage()
+            }
+        }
+        binding.searchQueryInput.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+            override fun afterTextChanged(s: android.text.Editable?) {
+                updateSearchResults(s?.toString().orEmpty())
+            }
+        })
         binding.homeFootball.setOnClickListener { refreshAndOpenCategory("futebol") }
         binding.homeKick.setOnClickListener { refreshAndOpenCategory("kick") }
         binding.homeMovies.setOnClickListener { refreshAndOpenCategory("filmes") }
@@ -872,6 +1236,142 @@ binding.episodesGrid.adapter = episodesGridAdapter
             } else false
         }
     }
+
+    private fun showSearchPage() {
+        searchPageOpen = true
+        binding.homeMenu.visibility = View.GONE
+        binding.channelPanel.visibility = View.GONE
+        binding.seriesGridPanel.visibility = View.GONE
+        binding.episodesGridPanel.visibility = View.GONE
+        binding.sidebar.visibility = View.GONE
+        binding.catalogGridTitle.text = "Buscar"
+        binding.searchQueryInput.visibility = View.VISIBLE
+        binding.searchQueryInput.setText("")
+        binding.searchKeyboardHost.visibility = if (isMobileDevice()) View.GONE else View.VISIBLE
+        catalogGridAdapter.submit(emptyList())
+        binding.catalogGridPanel.visibility = View.VISIBLE
+
+        if (isMobileDevice()) {
+            binding.searchQueryInput.showSoftInputOnFocus = true
+            binding.searchQueryInput.post {
+                binding.searchQueryInput.requestFocus()
+                val inputMethodManager = getSystemService(android.content.Context.INPUT_METHOD_SERVICE)
+                    as android.view.inputmethod.InputMethodManager
+                inputMethodManager.showSoftInput(binding.searchQueryInput, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
+            }
+        } else {
+            binding.searchQueryInput.showSoftInputOnFocus = false
+            buildSearchKeyboard()
+            binding.searchKeyboardHost.post {
+                val firstKey = (binding.searchKeyboardHost.getChildAt(0) as? LinearLayout)
+                    ?.getChildAt(0) as? LinearLayout
+                firstKey?.getChildAt(0)?.requestFocus()
+            }
+        }
+    }
+
+    private fun buildSearchKeyboard() {
+        val host = binding.searchKeyboardHost
+        host.removeAllViews()
+        val keyboard = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+        }
+        val rows = listOf(
+            listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0"),
+            listOf("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"),
+            listOf("A", "S", "D", "F", "G", "H", "J", "K", "L"),
+            listOf("Z", "X", "C", "V", "B", "N", "M", "⌫"),
+            listOf("ESPAÇO", "LIMPAR")
+        )
+        rows.forEach { keys ->
+            val row = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+            }
+            keys.forEach { key ->
+                val button = android.widget.Button(this).apply {
+                    text = key
+                    isFocusable = true
+                    isFocusableInTouchMode = true
+                    minWidth = 0
+                    minHeight = 0
+                    setPadding(dp(2), dp(2), dp(2), dp(2))
+                    textSize = if (key.length > 1) 10f else 13f
+                    setOnClickListener { handleSearchKeyboardKey(key) }
+                    setOnKeyListener { _, keyCode, event ->
+                        if (event.action == KeyEvent.ACTION_DOWN &&
+                            keyCode == KeyEvent.KEYCODE_DPAD_RIGHT &&
+                            keys.lastOrNull() == key
+                        ) {
+                            focusSearchResults()
+                            true
+                        } else false
+                    }
+                }
+                row.addView(button, LinearLayout.LayoutParams(0, dp(42), 1f).apply {
+                    setMargins(dp(2), dp(2), dp(2), dp(2))
+                })
+            }
+            keyboard.addView(row, LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ))
+        }
+        host.addView(keyboard)
+    }
+
+    private fun handleSearchKeyboardKey(key: String) {
+        val input = binding.searchQueryInput
+        val value = input.text?.toString().orEmpty()
+        when (key) {
+            "⌫" -> if (value.isNotEmpty()) input.setText(value.dropLast(1))
+            "ESPAÇO" -> input.append(" ")
+            "LIMPAR" -> input.setText("")
+            else -> input.append(key)
+        }
+        input.setSelection(input.text?.length ?: 0)
+    }
+
+    private fun focusSearchResults() {
+        val firstResult = binding.catalogGrid.findViewHolderForAdapterPosition(0)?.itemView
+        (firstResult ?: binding.catalogGrid).requestFocus()
+    }
+
+    private fun updateSearchResults(query: String) {
+        if (!searchPageOpen) return
+        val normalizedQuery = normalizeSearchText(query.trim())
+        if (normalizedQuery.isBlank()) {
+            catalogGridAdapter.submit(emptyList())
+            return
+        }
+
+        val series = seriesCatalogEntries.mapNotNull { entry ->
+            val endpoint = entry.endpoint ?: entry.url ?: return@mapNotNull null
+            val title = entry.title ?: entry.name ?: entry.id ?: return@mapNotNull null
+            Channel(
+                name = title,
+                url = endpoint,
+                type = "series-group",
+                category = "series",
+                series = title,
+                poster = entry.poster
+            )
+        }
+        val results = (allChannels + series)
+            .distinctBy { "${it.type}:${it.url}" }
+            .filter { channel ->
+                normalizeSearchText(
+                    listOfNotNull(channel.name, channel.category, channel.group).joinToString(" ")
+                ).contains(normalizedQuery)
+            }
+            .sortedBy { it.name.lowercase(Locale.ROOT) }
+        catalogGridAdapter.submit(results)
+        binding.catalogGrid.scrollToPosition(0)
+    }
+
+    private fun normalizeSearchText(value: String): String =
+        Normalizer.normalize(value, Normalizer.Form.NFD)
+            .replace("\\p{Mn}+".toRegex(), "")
+            .lowercase(Locale.ROOT)
 
     private fun focusFirstHomeContent() {
         if (binding.homeHeroBanner.visibility == View.VISIBLE) {
@@ -1132,6 +1632,9 @@ binding.episodesGrid.adapter = episodesGridAdapter
 
     /** Catálogos em tela cheia: filmes, canais e grupos usam o mesmo grid das séries. */
     private fun showCatalogGrid(title: String, items: List<Channel>) {
+        searchPageOpen = false
+        binding.searchQueryInput.visibility = View.GONE
+        binding.searchKeyboardHost.visibility = View.GONE
         binding.homeMenu.visibility = View.GONE
         binding.channelPanel.visibility = View.GONE
         binding.seriesGridPanel.visibility = View.GONE
@@ -1148,6 +1651,9 @@ binding.episodesGrid.adapter = episodesGridAdapter
     }
 
     private fun showHomeMenu() {
+        searchPageOpen = false
+        binding.searchQueryInput.visibility = View.GONE
+        binding.searchKeyboardHost.visibility = View.GONE
         exoPlayer.pause()
         binding.iframeWebView.stopLoading()
         binding.iframeWebView.visibility = View.GONE
@@ -1869,6 +2375,10 @@ private fun openSeriesEpisodes(
             if (binding.homeMenu.visibility == View.VISIBLE) {
                 return super.dispatchKeyEvent(event)
             }
+            if (binding.playerView.isShown && binding.playerView.isControllerFullyVisible &&
+                event.keyCode != KeyEvent.KEYCODE_BACK) {
+                return super.dispatchKeyEvent(event)
+            }
             if (event.keyCode == KeyEvent.KEYCODE_DPAD_LEFT &&
                 binding.playerView.isShown &&
                 isEmbedTvLiveChannel(currentChannel)
@@ -1878,10 +2388,6 @@ private fun openSeriesEpisodes(
             }
             // Quando os controles estão abertos, as setas e o OK pertencem
             // aos botões e à barra de progresso, inclusive tela cheia.
-            if (binding.playerView.isShown && binding.playerView.isControllerFullyVisible &&
-                event.keyCode != KeyEvent.KEYCODE_BACK) {
-                return super.dispatchKeyEvent(event)
-            }
             if (
                 binding.iframeWebView.visibility == View.VISIBLE &&
                 binding.channelPanel.visibility != View.VISIBLE &&
@@ -1894,7 +2400,7 @@ private fun openSeriesEpisodes(
                 tapIFrameCenter()
                 return true
             }
-            if (isMoviePlaying() && event.keyCode in setOf(
+            if (binding.playerView.isShown && event.keyCode in setOf(
                     KeyEvent.KEYCODE_DPAD_CENTER,
                     KeyEvent.KEYCODE_ENTER,
                     KeyEvent.KEYCODE_NUMPAD_ENTER,
@@ -1903,19 +2409,18 @@ private fun openSeriesEpisodes(
                     KeyEvent.KEYCODE_MEDIA_PAUSE
                 )
             ) {
-                val shouldPlay = when (event.keyCode) {
-                    KeyEvent.KEYCODE_MEDIA_PLAY -> true
-                    KeyEvent.KEYCODE_MEDIA_PAUSE -> false
-                    else -> !exoPlayer.isPlaying
+                when (event.keyCode) {
+                    KeyEvent.KEYCODE_MEDIA_PLAY -> exoPlayer.playWhenReady = true
+                    KeyEvent.KEYCODE_MEDIA_PAUSE -> exoPlayer.playWhenReady = false
+                    KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> exoPlayer.playWhenReady = !exoPlayer.isPlaying
+                    else -> Unit
                 }
-                exoPlayer.playWhenReady = shouldPlay
                 binding.playerView.showController()
-                Toast.makeText(this, if (shouldPlay) "Reproduzindo" else "Pausado", Toast.LENGTH_SHORT).show()
                 return true
             }
             when (event.keyCode) {
                 KeyEvent.KEYCODE_DPAD_LEFT -> {
-                    if (binding.channelPanel.visibility != View.VISIBLE && seekMovie(-10_000)) {
+                    if (binding.channelPanel.visibility != View.VISIBLE && seekSeekablePlayback(-10_000)) {
                         binding.playerView.showController()
                         return true
                     }
@@ -1925,7 +2430,11 @@ private fun openSeriesEpisodes(
                     return super.dispatchKeyEvent(event)
                 }
                 KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                    if (binding.channelPanel.visibility != View.VISIBLE && seekMovie(10_000)) {
+                    if (binding.channelPanel.visibility != View.VISIBLE && seekSeekablePlayback(10_000)) {
+                        binding.playerView.showController()
+                        return true
+                    }
+                    if (binding.playerView.isShown && !binding.playerView.isControllerFullyVisible) {
                         binding.playerView.showController()
                         return true
                     }
@@ -2038,7 +2547,10 @@ private fun openSeriesEpisodes(
         capturePlayerReturnScreen()
         activeMatchGroupId = null
         currentChannel = channel
+        playerEpgOverlay.text = ""
+        playerEpgOverlay.visibility = View.GONE
         showPlayerTitle(channel)
+        loadCurrentChannelEpg(channel)
         recordRecentlyWatched(channel)
         if (activeSeriesEpisodes.isNotEmpty()) {
             activeSeriesEpisodeIndex = activeSeriesEpisodes.indexOfFirst { it.url == channel.url }
@@ -2051,7 +2563,10 @@ private fun openSeriesEpisodes(
         hlsRecoveryAttempts = 0
         hlsStartedAt = SystemClock.elapsedRealtime()
         when (channel.type.lowercase()) {
-            "hls" -> playStream(channel.url)
+            "hls" -> {
+                if (isResumableMovie(channel)) playMovieWithResumeChoice(channel)
+                else playStream(channel.url)
+            }
             "mp4" -> playMovieWithResumeChoice(channel)
             "kick" -> resolveAndPlayKick(channel.url)
             "embed" -> playEmbedInExternalBrowser(channel.url)
@@ -2169,8 +2684,9 @@ private fun openSeriesEpisodes(
         } else {
             hlsMediaSourceFactory.createMediaSource(mediaItem).let(exoPlayer::setMediaSource)
         }
-        if (resumePositionMs > 0) exoPlayer.seekTo(resumePositionMs)
+        pendingResumePositionMs = resumePositionMs.coerceAtLeast(0L)
         exoPlayer.prepare()
+        applyPendingResumePosition()
         exoPlayer.playWhenReady = true
         if (showController && !hlsRecovering) binding.playerView.showController()
         hlsRecovering = false
@@ -2184,11 +2700,14 @@ private fun openSeriesEpisodes(
         playerTitleOverlay.visibility = View.VISIBLE
     }
 
-    private fun isMoviePlaying(): Boolean = (currentChannel?.type ?: "").equals("mp4", ignoreCase = true) &&
-        binding.playerView.visibility == View.VISIBLE
-
-    private fun seekMovie(deltaMs: Long): Boolean {
-        if (!isMoviePlaying()) return false
+    private fun seekSeekablePlayback(deltaMs: Long): Boolean {
+        val channelType = currentChannel?.type?.lowercase(Locale.ROOT)
+        if (
+            binding.playerView.visibility != View.VISIBLE ||
+            channelType !in setOf("mp4", "hls") ||
+            (channelType == "hls" && exoPlayer.isCurrentMediaItemLive) ||
+            !exoPlayer.isCurrentMediaItemSeekable
+        ) return false
         val duration = exoPlayer.duration.takeIf { it > 0 } ?: return false
         val target = min(max(exoPlayer.currentPosition + deltaMs, 0L), duration)
         exoPlayer.seekTo(target)
@@ -2201,8 +2720,36 @@ private fun openSeriesEpisodes(
             .getLong("position_${channel.url.hashCode()}", 0L)
     }
 
+    private fun isResumableMovie(channel: Channel?): Boolean {
+        if (channel == null) return false
+        if (channel.type.equals("mp4", ignoreCase = true)) return true
+        if (!channel.type.equals("hls", ignoreCase = true)) return false
+        return channelCategory(channel) == "filmes" || itemCategories(channel).any {
+            it.trim().lowercase(Locale.ROOT) in setOf("filme", "filmes", "movie", "movies")
+        }
+    }
+
+    private fun applyPendingResumePosition() {
+        val requestedPosition = pendingResumePositionMs
+        if (
+            requestedPosition <= 0L ||
+            !exoPlayer.isCurrentMediaItemSeekable ||
+            exoPlayer.isCurrentMediaItemLive
+        ) return
+
+        val duration = exoPlayer.duration
+        val position = if (duration > 0L) {
+            requestedPosition.coerceAtMost((duration - 1_000L).coerceAtLeast(0L))
+        } else {
+            requestedPosition
+        }
+        pendingResumePositionMs = 0L
+        exoPlayer.seekTo(position)
+        Log.i("TVBOX_PLAYER", "Retomando reprodução em ${position}ms")
+    }
+
     private fun cardProgress(channel: Channel): Int {
-        if (!channel.type.equals("mp4", true) || channel.url.isBlank()) return 0
+        if (!isResumableMovie(channel) || channel.url.isBlank()) return 0
         val p = getSharedPreferences("movie_progress", MODE_PRIVATE)
         val position = p.getLong("position_${channel.url.hashCode()}", 0L)
         val duration = p.getLong("duration_${channel.url.hashCode()}", 0L)
@@ -2220,8 +2767,21 @@ private fun openSeriesEpisodes(
             .setTitle(channel.name)
             .setMessage("Você parou em ${resume / 1000}s. Deseja continuar de onde parou?")
             .setPositiveButton("Continuar") { _, _ -> playStream(channel.url, resume) }
-            .setNegativeButton("Começar do início") { _, _ -> playStream(channel.url, 0L) }
+            .setNegativeButton("Começar do início") { _, _ ->
+                clearMovieProgress(channel)
+                playStream(channel.url, 0L)
+            }
             .show()
+    }
+
+    private fun clearMovieProgress(channel: Channel) {
+        val suffix = channel.url.hashCode().toString()
+        getSharedPreferences("movie_progress", MODE_PRIVATE)
+            .edit()
+            .remove("position_$suffix")
+            .remove("duration_$suffix")
+            .remove("saved_at_$suffix")
+            .apply()
     }
 
     private fun seriesProgressKey(seriesName: String): String =
@@ -2243,16 +2803,24 @@ private fun openSeriesEpisodes(
 
     private fun saveMovieProgress() {
         val movie = currentChannel ?: return
-        if (!movie.type.equals("mp4", ignoreCase = true)) return
+        if (!isResumableMovie(movie)) return
+        if (
+            movie.type.equals("hls", ignoreCase = true) &&
+            (!exoPlayer.isCurrentMediaItemSeekable || exoPlayer.isCurrentMediaItemLive)
+        ) return
         val position = exoPlayer.currentPosition
         val duration = exoPlayer.duration
+        if (duration <= 0L) return
         val preferences = getSharedPreferences("movie_progress", MODE_PRIVATE)
-        val key = "position_${movie.url.hashCode()}"
+        val suffix = movie.url.hashCode().toString()
+        val key = "position_$suffix"
         if (position < 5_000 || (duration > 0 && position >= duration - 10_000)) {
-            preferences.edit().remove(key).remove("duration_${movie.url.hashCode()}").apply()
+            clearMovieProgress(movie)
         } else {
             preferences.edit().putLong(key, position)
-                .putLong("duration_${movie.url.hashCode()}", duration.coerceAtLeast(0L)).apply()
+                .putLong("duration_$suffix", duration)
+                .putLong("saved_at_$suffix", System.currentTimeMillis())
+                .apply()
         }
     }
 
@@ -2405,6 +2973,7 @@ private fun exitPlayerToCurrentMenu() {
         mainHandler.removeCallbacks(hlsFreezeMonitor)
         mainHandler.removeCallbacks(kickLiveRefresh)
         mainHandler.removeCallbacks(bannerRotation)
+        mainHandler.removeCallbacks(movieProgressSaver)
         binding.iframeWebView.destroy()
         exoPlayer.release()
         binding.recyclerView.adapter = null

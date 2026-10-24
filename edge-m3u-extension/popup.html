@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TVBox M3U Collector</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main>
+      <h1>Coletor M3U</h1>
+      <p class="hint">Captura automaticamente URLs com “m3u” em todas as abas. Guarda URL e método.</p>
+      <button id="refresh" type="button">Atualizar lista</button>
+      <label for="playlists">Requisições com m3u</label>
+      <select id="playlists">
+        <option value="">Nenhuma requisição capturada ainda</option>
+      </select>
+      <label for="manual-url">URL da playlist (opcional)</label>
+      <input id="manual-url" type="url" placeholder="Cole aqui a URL master.txt ou .m3u8">
+      <button id="use-manual-url" type="button">Usar URL colada</button>
+
+      <label for="server">Servidor (URL base)</label>
+      <input id="server" type="url" value="http://164.152.62.129" readonly>
+      <label for="token">Token da extensão</label>
+      <input id="token" type="password" autocomplete="off" placeholder="Configure no servidor">
+
+      <label for="kind">Adicionar como</label>
+      <select id="kind">
+        <option value="channel">Canal</option>
+        <option value="movie">Filme</option>
+        <option value="series">Série / episódio</option>
+      </select>
+
+      <section id="item-fields">
+        <label for="title">Nome do canal, filme ou episódio</label>
+        <input id="title" type="text" maxlength="200" placeholder="Título">
+        <div id="category-field">
+          <label for="category">Categoria</label>
+          <input id="category" type="text" maxlength="100" value="m3u" placeholder="m3u">
+        </div>
+        <div id="series-fields" hidden>
+          <label for="series-select">Série cadastrada no servidor</label>
+          <select id="series-select">
+            <option value="">Carregando séries...</option>
+          </select>
+          <button id="refresh-series" type="button">Atualizar séries</button>
+          <div id="new-series-fields" hidden>
+            <label for="series-title">Nome da nova série</label>
+            <input id="series-title" type="text" maxlength="200" placeholder="Nome da série">
+            <label for="series-id">ID da nova série</label>
+            <input id="series-id" type="text" maxlength="80" placeholder="nome-da-serie">
+          </div>
+          <div class="row">
+            <div>
+              <label for="season">Temporada</label>
+              <input id="season" type="number" min="1" max="999" value="1">
+            </div>
+            <div>
+              <label for="episode">Episódio</label>
+              <input id="episode" type="number" min="1" max="9999" value="1">
+            </div>
+          </div>
+        </div>
+      </section>
+      <button id="save" class="primary" type="button">Adicionar ao servidor</button>
+      <p id="status" role="status" aria-live="polite"></p>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

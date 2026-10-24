@@ -362,6 +362,21 @@
             android:textColor="#64748B"
             android:textSize="14sp" />
 
+        <EditText
+            android:id="@+id/search_query_input"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/spinner_background"
+            android:hint="Digite para buscar"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:paddingHorizontal="16dp"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#8B849D"
+            android:visibility="gone" />
+
         <LinearLayout android:id="@+id/catalog_content" android:layout_width="match_parent"
             android:layout_height="0dp" android:layout_weight="1" android:layout_marginTop="12dp"
             android:orientation="horizontal">
@@ -547,10 +562,11 @@
                 android:textSize="24sp" />
 
             <TextView
+                android:id="@+id/epg_guide_channel_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Programação dos canais"
+                android:text="Programação do canal"
                 android:textColor="#B79AFF"
                 android:textSize="14sp" />
 
