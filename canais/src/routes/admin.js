@@ -1230,6 +1230,17 @@ router.get(
 );
 
 // API de todos os eventos
+router.get("/api/embedtv/epg", async (_req, res) => {
+  try {
+    const epg = await embedtv.epgAll();
+    res.setHeader("Cache-Control", "no-store");
+    return res.json(epg);
+  } catch (error) {
+    console.error("[EMBEDTV] Falha ao servir EPG:", error.message);
+    return res.status(502).json({ error: "Falha ao consultar programação EmbedTV" });
+  }
+});
+
 router.get(
   "/api/embedtv/events",
   async (req, res) => {

@@ -46,6 +46,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvbox.databinding.ActivityMainBinding
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -60,6 +61,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import kotlin.math.max
 import kotlin.math.min
 import android.graphics.Rect
@@ -169,21 +171,45 @@ private data class HomeSection(
 
 private data class GithubRelease(val tag_name: String?, val assets: List<GithubReleaseAsset>?)
 private data class GithubReleaseAsset(val name: String?, val browser_download_url: String?)
+private data class EpgScheduleChannel(val id: String?, val data: List<EpgProgram>?)
+private data class EpgProgram(
+    val title: String?,
+    val desc: String?,
+    @SerializedName("start_date") val startDate: String?
+)
 
 class MainActivity : AppCompatActivity() {
 
     private companion object {
         const val TVBOX_API_BASE = "http://164.152.62.129/tvbox/api"
+        const val EPG_CACHE_INTERVAL_MS = 10 * 60 * 1000L
 }
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var exoPlayer: ExoPlayer
     private lateinit var hlsMediaSourceFactory: HlsMediaSource.Factory
+    private lateinit var epgGuideAdapter: EpgGuideAdapter
     private lateinit var playerTitleOverlay: TextView
     private lateinit var fullscreenButton: android.widget.Button
     private lateinit var kickLiveAdapter: KickLiveAdapter
     private var kickLiveLoading = false
     private val kickLiveClient = OkHttpClient()
+    private val epgClient by lazy {
+        OkHttpClient.Builder()
+            .callTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
+            .build()
+    }
+    private val dnsOverHttps: Dns by lazy {
+        val bootstrapClient = OkHttpClient.Builder().build()
+        DnsOverHttps.Builder()
+            .client(bootstrapClient)
+            .url("https://dns.google/dns-query".toHttpUrl())
+            .bootstrapDnsHosts(
+                InetAddress.getByName("8.8.8.8"),
+                InetAddress.getByName("8.8.4.4")
+            )
+            .build()
+    }
     private val kickLiveRefresh = object : Runnable {
         override fun run() {
             if (binding.homeMenu.visibility == View.VISIBLE) {
@@ -202,6 +228,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var episodesGridAdapter: MediaCardAdapter
     private lateinit var catalogGridAdapter: MediaCardAdapter
     private var allChannels: List<Channel> = emptyList()
+    private var epgSchedulesById: Map<String, List<EpgProgram>> = emptyMap()
+    private var epgSchedulesFetchedAt = 0L
+    private var epgGuideLoading = false
     private var channelsLoading = false
     private var initialCatalogLoaded = false
     private var sidebarExpanded: Boolean? = null
@@ -341,6 +370,7 @@ class MainActivity : AppCompatActivity() {
         mainHandler.post(hlsFreezeMonitor)
         setupIFrameWebView()
         setupRecyclerView()
+        setupEpgGuide()
         setupHomeMenu()
         setupSidebar()
         binding.startupRetry.setOnClickListener { loadChannels() }
@@ -372,17 +402,8 @@ class MainActivity : AppCompatActivity() {
         5_000   // Para retomar após travar: 5 segundos
     )
     .build()
-        val bootstrapClient = OkHttpClient.Builder().build()
-        val doh = DnsOverHttps.Builder()
-            .client(bootstrapClient)
-            .url("https://dns.google/dns-query".toHttpUrl())
-            .bootstrapDnsHosts(
-                InetAddress.getByName("8.8.8.8"),
-                InetAddress.getByName("8.8.4.4")
-            )
-            .build()
         val httpClient = OkHttpClient.Builder()
-            .dns(doh)
+            .dns(dnsOverHttps)
             .connectTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
             .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
             .callTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
@@ -519,6 +540,177 @@ class MainActivity : AppCompatActivity() {
             playChannel(channel)
         }
         binding.recyclerView.adapter = channelAdapter
+    }
+
+    private fun setupEpgGuide() {
+        binding.epgGuideList.layoutManager = LinearLayoutManager(this)
+        epgGuideAdapter = EpgGuideAdapter { channel ->
+            hideEpgGuide()
+            playChannel(channel)
+        }
+        binding.epgGuideList.adapter = epgGuideAdapter
+        binding.epgGuideRetry.setOnClickListener { loadEpgGuide() }
+    }
+
+    private fun isEmbedTvLiveChannel(channel: Channel?): Boolean =
+        channel?.type.equals("hls", ignoreCase = true) &&
+            channel?.id?.startsWith("embedtv-channel-", ignoreCase = true) == true
+
+    private fun showEpgGuide() {
+        if (!binding.playerView.isShown || !isEmbedTvLiveChannel(currentChannel)) return
+
+        binding.playerView.hideController()
+        binding.epgGuideOverlay.visibility = View.VISIBLE
+        binding.epgGuideRetry.visibility = View.GONE
+        if (epgSchedulesById.isNotEmpty()) renderEpgGuide()
+        loadEpgGuide()
+        binding.epgGuideList.post {
+            if (binding.epgGuideOverlay.visibility == View.VISIBLE) {
+                if (epgGuideAdapter.itemCount > 0) {
+                    binding.epgGuideList.findViewHolderForAdapterPosition(0)?.itemView?.requestFocus()
+                        ?: binding.epgGuideList.requestFocus()
+                }
+                else if (binding.epgGuideRetry.visibility == View.VISIBLE) binding.epgGuideRetry.requestFocus()
+            }
+        }
+    }
+
+    private fun loadEpgGuide() {
+        if (
+            epgSchedulesFetchedAt > 0L &&
+            SystemClock.elapsedRealtime() - epgSchedulesFetchedAt < EPG_CACHE_INTERVAL_MS
+        ) return
+        if (epgGuideLoading) return
+
+        epgGuideLoading = true
+        binding.epgGuideRetry.visibility = View.GONE
+        if (epgGuideAdapter.itemCount == 0) {
+            binding.epgGuideStatus.text = "Carregando programação..."
+            binding.epgGuideStatus.visibility = View.VISIBLE
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val result = runCatching {
+                val request = Request.Builder()
+                    .url("$TVBOX_API_BASE/embedtv/epg")
+                    .header("Accept", "application/json")
+                    .header("User-Agent", "Mozilla/5.0 (Android; TVBox)")
+                    .build()
+                epgClient.newCall(request)
+                    .execute()
+                    .use { response ->
+                        if (!response.isSuccessful) {
+                            throw java.io.IOException("EPG retornou HTTP ${response.code}")
+                        }
+                        val body = response.body?.string()
+                            ?.takeIf { it.isNotBlank() }
+                            ?: throw java.io.IOException("Resposta vazia do EPG")
+                        val schedules = Gson().fromJson<List<EpgScheduleChannel>>(
+                            body,
+                            object : TypeToken<List<EpgScheduleChannel>>() {}.type
+                        ) ?: throw java.io.IOException("Formato do EPG inválido")
+                        if (schedules.isEmpty()) throw java.io.IOException("EPG sem programação")
+                        schedules.mapNotNull { schedule ->
+                            schedule.id?.trim()?.lowercase(Locale.ROOT)?.takeIf { it.isNotEmpty() }
+                                ?.let { id -> id to schedule.data.orEmpty() }
+                        }.toMap()
+                    }
+            }
+
+            withContext(Dispatchers.Main) {
+                epgGuideLoading = false
+                result.onSuccess { schedules ->
+                    epgSchedulesById = schedules
+                    epgSchedulesFetchedAt = SystemClock.elapsedRealtime()
+                    if (binding.epgGuideOverlay.visibility == View.VISIBLE) {
+                        renderEpgGuide()
+                    }
+                }.onFailure { error ->
+                    Log.e("TVBOX_EPG", "Falha ao carregar programação EmbedTV", error)
+                    if (
+                        binding.epgGuideOverlay.visibility == View.VISIBLE &&
+                        epgGuideAdapter.itemCount == 0
+                    ) {
+                        binding.epgGuideStatus.text = "Não foi possível carregar a programação."
+                        binding.epgGuideStatus.visibility = View.VISIBLE
+                        binding.epgGuideRetry.visibility = View.VISIBLE
+                        binding.epgGuideRetry.requestFocus()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun renderEpgGuide() {
+        val now = System.currentTimeMillis()
+        val rows = allChannels.asSequence()
+            .filter(::isEmbedTvLiveChannel)
+            .mapNotNull { channel ->
+                val sourceId = channel.id
+                    ?.removePrefix("embedtv-channel-")
+                    ?.lowercase(Locale.ROOT)
+                    ?: return@mapNotNull null
+                val programs = epgSchedulesById[sourceId]
+                    .orEmpty()
+                    .mapNotNull { program ->
+                        parseEpgStartTime(program.startDate)?.let { start -> program to start }
+                    }
+                    .sortedBy { it.second }
+                val current = programs.lastOrNull { it.second <= now }
+                val next = programs.firstOrNull { it.second > now }
+                if (current == null && next == null) return@mapNotNull null
+                EpgGuideItem(
+                    channel = channel,
+                    currentProgram = current?.first?.title?.takeIf { it.isNotBlank() },
+                    currentTime = current?.second?.let(::formatEpgTime),
+                    nextProgram = next?.first?.title?.takeIf { it.isNotBlank() },
+                    nextTime = next?.second?.let(::formatEpgTime)
+                )
+            }
+            .toList()
+
+        epgGuideAdapter.submitList(rows)
+        binding.epgGuideStatus.visibility = if (rows.isEmpty()) View.VISIBLE else View.GONE
+        if (rows.isEmpty()) {
+            binding.epgGuideStatus.text = "Nenhuma programação disponível para estes canais."
+        } else if (binding.epgGuideOverlay.visibility == View.VISIBLE) {
+            binding.epgGuideList.post {
+                binding.epgGuideList.findViewHolderForAdapterPosition(0)?.itemView?.requestFocus()
+            }
+        }
+    }
+
+    private fun parseEpgStartTime(value: String?): Long? {
+        val match = value?.let {
+            Regex("""^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.(\d+))?(Z|[+-]\d{2}:?\d{2})$""")
+                .matchEntire(it.trim())
+        } ?: return null
+        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).apply {
+            isLenient = false
+            timeZone = TimeZone.getTimeZone("UTC")
+        }
+        val localTime = parser.parse(match.groupValues[1])?.time ?: return null
+        val fraction = match.groupValues[2].take(3).padEnd(3, '0').toLongOrNull() ?: 0L
+        val offset = match.groupValues[3]
+        val offsetMinutes = if (offset == "Z") {
+            0
+        } else {
+            val compact = offset.replace(":", "")
+            val sign = if (compact[0] == '-') -1 else 1
+            val hours = compact.substring(1, 3).toIntOrNull() ?: return null
+            val minutes = compact.substring(3, 5).toIntOrNull() ?: return null
+            sign * (hours * 60 + minutes)
+        }
+        return localTime + fraction - offsetMinutes * 60_000L
+    }
+
+    private fun formatEpgTime(timestamp: Long): String =
+        SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(timestamp))
+
+    private fun hideEpgGuide() {
+        if (binding.epgGuideOverlay.visibility != View.VISIBLE) return
+        binding.epgGuideOverlay.visibility = View.GONE
+        binding.playerView.requestFocus()
     }
 
     private fun setupHomeCatalogs() {
@@ -1147,7 +1339,8 @@ private fun openSeriesEpisodes(
 
     private fun setupSidebar() {
         val labels = listOf(
-            Triple(binding.homeHome, "⌂", "Início"), Triple(binding.homeMovies, "▣", "Filmes"),
+            Triple(binding.homeHome, "⌂", "Início"), Triple(binding.homeSearch, "⌕", "Buscar"),
+            Triple(binding.homeMovies, "▣", "Filmes"),
             Triple(binding.homeSeries, "▤", "Séries"), Triple(binding.homeFootball, "●", "Ao vivo"),
             Triple(binding.homeKick, "▶", "Kick"), Triple(binding.homeUpdate, "↻", "Atualizar")
         )
@@ -1169,7 +1362,8 @@ private fun openSeriesEpisodes(
         binding.homeVersion.visibility = if (expanded) View.VISIBLE else View.GONE
         binding.sidebarLogo.layoutParams = binding.sidebarLogo.layoutParams.apply { height = dp(if (expanded) 76 else 48) }
         listOf(
-            Triple(binding.homeHome, "⌂", "Início"), Triple(binding.homeMovies, "▣", "Filmes"),
+            Triple(binding.homeHome, "⌂", "Início"), Triple(binding.homeSearch, "⌕", "Buscar"),
+            Triple(binding.homeMovies, "▣", "Filmes"),
             Triple(binding.homeSeries, "▤", "Séries"), Triple(binding.homeFootball, "●", "Ao vivo"),
             Triple(binding.homeKick, "▶", "Kick"), Triple(binding.homeUpdate, "↻", "Atualizar")
         ).forEach { (view, icon, label) ->
@@ -1662,8 +1856,25 @@ private fun openSeriesEpisodes(
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (event.action == KeyEvent.ACTION_DOWN) {
+            if (binding.epgGuideOverlay.visibility == View.VISIBLE) {
+                when (event.keyCode) {
+                    KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_DPAD_LEFT -> {
+                        hideEpgGuide()
+                        return true
+                    }
+                    KeyEvent.KEYCODE_DPAD_RIGHT -> return true
+                    else -> return super.dispatchKeyEvent(event)
+                }
+            }
             if (binding.homeMenu.visibility == View.VISIBLE) {
                 return super.dispatchKeyEvent(event)
+            }
+            if (event.keyCode == KeyEvent.KEYCODE_DPAD_LEFT &&
+                binding.playerView.isShown &&
+                isEmbedTvLiveChannel(currentChannel)
+            ) {
+                showEpgGuide()
+                return true
             }
             // Quando os controles estão abertos, as setas e o OK pertencem
             // aos botões e à barra de progresso, inclusive tela cheia.
@@ -1744,6 +1955,7 @@ private fun openSeriesEpisodes(
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         when {
+            binding.epgGuideOverlay.visibility == View.VISIBLE -> hideEpgGuide()
             binding.homeMenu.visibility == View.VISIBLE -> super.onBackPressed()
             binding.episodesGridPanel.visibility == View.VISIBLE -> {
     binding.episodesGridPanel.visibility = View.GONE
@@ -2116,6 +2328,7 @@ private fun openSeriesEpisodes(
     /** Sai sem nova requisição e reaproveita exatamente a lista já aberta. */
    
 private fun exitPlayerToCurrentMenu() {
+    binding.epgGuideOverlay.visibility = View.GONE
     saveMovieProgress()
     exoPlayer.pause()
     window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -2178,9 +2391,6 @@ private fun exitPlayerToCurrentMenu() {
         binding.iframeWebView.pauseTimers()
         saveMovieProgress()
         super.onStop()
-        // Não manter o TVBox em segundo plano quando o usuário abre outro app.
-        // O progresso já foi salvo acima; ao retornar, a Activity será criada
-        // novamente sem deixar áudio ou WebView ativos.
         if (!isChangingConfigurations && !isFinishing) {
             finishAndRemoveTask()
         }

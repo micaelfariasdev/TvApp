@@ -13,6 +13,11 @@ const CHANNEL_API_URLS = [
   "http://embedtv.cc/api/channels",
 ];
 const CHANNEL_SYNC_INTERVAL_MS = 12 * 60 * 60 * 1000;
+const EPG_ALL_API_URLS = [
+  "https://embedtv.cc/api/epg_all",
+  "http://embedtv.cc/api/epg_all",
+];
+const EPG_ALL_SYNC_INTERVAL_MS = 10 * 60 * 1000;
 
 let cache = null;
 let updatedAt = 0;
@@ -24,6 +29,9 @@ let syncing = null;
 let channelsCache = null;
 let channelsUpdatedAt = 0;
 let channelsPending = null;
+let epgAllCache = null;
+let epgAllUpdatedAt = 0;
+let epgAllPending = null;
 
 function normalize(value) {
   return String(value || "")
@@ -157,9 +165,56 @@ async function loadChannels(force = false) {
         return channelsCache;
       } catch (error) { failure = error; }
     }
+
     throw failure || new Error("Não foi possível consultar os canais EmbedTV");
   })();
   try { return await channelsPending; } finally { channelsPending = null; }
+}
+
+async function epgAll(force = false) {
+  if (!force && epgAllCache && Date.now() - epgAllUpdatedAt < EPG_ALL_SYNC_INTERVAL_MS) {
+    return epgAllCache;
+  }
+  if (epgAllPending) return epgAllPending;
+
+  epgAllPending = (async () => {
+    let lastFailure = null;
+    for (const apiUrl of EPG_ALL_API_URLS) {
+      try {
+        const response = await fetch(apiUrl, {
+          headers: {
+            Accept: "application/json",
+            "User-Agent": "Mozilla/5.0",
+          },
+          signal: AbortSignal.timeout(20000),
+        });
+        if (!response.ok) throw new Error(`EmbedTV EPG retornou HTTP ${response.status}`);
+
+        const payload = await response.json();
+        if (!Array.isArray(payload)) throw new Error("Formato do EPG EmbedTV inválido");
+
+        epgAllCache = payload;
+        epgAllUpdatedAt = Date.now();
+        console.log(`[EMBEDTV] EPG atualizado: ${payload.length} canais`);
+        return epgAllCache;
+      } catch (error) {
+        lastFailure = error;
+        console.error("[EMBEDTV] Falha ao atualizar EPG:", apiUrl, error.message);
+      }
+    }
+
+    if (epgAllCache) {
+      console.warn("[EMBEDTV] Mantendo EPG em cache após falha na atualização.");
+      return epgAllCache;
+    }
+    throw lastFailure || new Error("Não foi possível consultar o EPG EmbedTV");
+  })();
+
+  try {
+    return await epgAllPending;
+  } finally {
+    epgAllPending = null;
+  }
 }
 
 async function syncChannels(force = false) {
@@ -409,6 +464,7 @@ function status() {
 
 module.exports = {
   events,
+  epgAll,
   channels: loadChannels,
   syncChannels,
   resetChannels,
@@ -419,6 +475,12 @@ module.exports = {
 
 // Consulta inicial e sincronização dos canais.
 setImmediate(async () => {
+  try {
+    await epgAll(true);
+  } catch (error) {
+    console.error("[EMBEDTV] Erro na carga inicial do EPG:", error.message);
+  }
+
   try {
     console.log("[EMBEDTV] Iniciando consulta automática...");
 
@@ -442,6 +504,11 @@ const timer = setInterval(async () => {
 }, CHANNEL_SYNC_INTERVAL_MS);
 
 timer.unref?.();
+setInterval(() => {
+  epgAll(true).catch(error => {
+    console.error("[EMBEDTV] Erro na sincronização do EPG:", error.message);
+  });
+}, EPG_ALL_SYNC_INTERVAL_MS).unref?.();
 setInterval(() => {
   refreshEventCatalog(false).catch(error => {
     console.error("[EMBEDTV] Erro na sincronização de jogos:", error.message);
