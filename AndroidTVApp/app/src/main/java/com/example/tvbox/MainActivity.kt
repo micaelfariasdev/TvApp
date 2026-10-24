@@ -30,10 +30,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MimeTypes
 import androidx.media3.common.Player
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.hls.DefaultHlsExtractorFactory
+import androidx.media3.exoplayer.hls.HlsExtractorFactory
+import androidx.media3.exoplayer.hls.HlsMediaChunkExtractor
+import androidx.media3.exoplayer.hls.HlsMediaSource
 import androidx.media3.ui.PlayerView
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -173,6 +178,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var exoPlayer: ExoPlayer
+    private lateinit var hlsMediaSourceFactory: HlsMediaSource.Factory
     private lateinit var playerTitleOverlay: TextView
     private lateinit var fullscreenButton: android.widget.Button
     private lateinit var kickLiveAdapter: KickLiveAdapter
@@ -386,6 +392,35 @@ class MainActivity : AppCompatActivity() {
             .build()
         val httpDataSourceFactory = OkHttpDataSource.Factory(httpClient)
             .setUserAgent("Mozilla/5.0 (Android; TVBox) AppleWebKit/537.36")
+        val defaultHlsExtractorFactory = DefaultHlsExtractorFactory()
+        hlsMediaSourceFactory = HlsMediaSource.Factory(httpDataSourceFactory)
+            .setExtractorFactory(object : HlsExtractorFactory {
+                override fun createExtractor(
+                    uri: Uri,
+                    format: androidx.media3.common.Format,
+                    muxedCaptionFormats: List<androidx.media3.common.Format>?,
+                    timestampAdjuster: androidx.media3.common.util.TimestampAdjuster,
+                    responseHeaders: Map<String, List<String>>,
+                    extractorInput: androidx.media3.extractor.ExtractorInput,
+                    playerId: androidx.media3.exoplayer.analytics.PlayerId
+                ): HlsMediaChunkExtractor {
+                    val path = uri.path.orEmpty()
+                    val extractorUri = if (path.endsWith(".png", ignoreCase = true)) {
+                        uri.buildUpon().path(path.replace(Regex("(?i)\\.png$"), ".ts")).build()
+                    } else {
+                        uri
+                    }
+                    return defaultHlsExtractorFactory.createExtractor(
+                        extractorUri,
+                        format,
+                        muxedCaptionFormats,
+                        timestampAdjuster,
+                        responseHeaders,
+                        extractorInput,
+                        playerId
+                    )
+                }
+            })
        exoPlayer = ExoPlayer.Builder(this)
     .setMediaSourceFactory(DefaultMediaSourceFactory(httpDataSourceFactory))
     .setLoadControl(loadControl)
@@ -413,14 +448,29 @@ class MainActivity : AppCompatActivity() {
         mainHandler.post(playbackWatchdog)
         exoPlayer.addListener(object : Player.Listener {
             override fun onPlayerError(error: androidx.media3.common.PlaybackException) {
-                if (currentChannel?.type?.equals("hls", ignoreCase = true) == true) {
-                    recoverFrozenHls("erro do player: ${error.errorCodeName}")
-                } else {
-                    refreshCurrentStream("erro do player: ${error.errorCodeName}", error)
-                }
+    Log.e(
+        "TVBOX_PLAYER",
+        "Falha no player: codigo=${error.errorCodeName}, mensagem=${error.message}",
+        error
+    )
+    if (currentChannel?.type?.equals("hls", ignoreCase = true) == true) {
+        recoverFrozenHls("erro do player: ${error.errorCodeName}")
+    } else {
+        refreshCurrentStream("erro do player: ${error.errorCodeName}", error)
+    }
             }
 
             override fun onPlaybackStateChanged(playbackState: Int) {
+    if (currentChannel?.type?.equals("hls", ignoreCase = true) == true) {
+        val state = when (playbackState) {
+            Player.STATE_IDLE -> "IDLE"
+            Player.STATE_BUFFERING -> "BUFFERING"
+            Player.STATE_READY -> "READY"
+            Player.STATE_ENDED -> "ENDED"
+            else -> "UNKNOWN($playbackState)"
+        }
+        Log.i("TVBOX_HLS", "Estado do player: $state")
+    }
     when (playbackState) {
         Player.STATE_BUFFERING -> {
             bufferingStartedAt = SystemClock.elapsedRealtime()
@@ -1892,8 +1942,21 @@ private fun openSeriesEpisodes(
         if (url.isBlank()) return
         enterPlayerMode()
         hideIFramePlayer()
-        val mediaItem = MediaItem.fromUri(hlsPlaybackUrl(url))
-        exoPlayer.setMediaItem(mediaItem)
+        val isMp4 = Uri.parse(url).path.orEmpty().endsWith(".mp4", ignoreCase = true) ||
+            currentChannel?.type.equals("mp4", ignoreCase = true)
+        Log.i(
+            if (isMp4) "TVBOX_PLAYER" else "TVBOX_HLS",
+            "Iniciando ${if (isMp4) "MP4" else "HLS"} (host=${Uri.parse(url).host ?: "desconhecido"})"
+        )
+        val mediaItem = MediaItem.Builder()
+            .setUri(hlsPlaybackUrl(url))
+            .setMimeType(if (isMp4) MimeTypes.VIDEO_MP4 else MimeTypes.APPLICATION_M3U8)
+            .build()
+        if (isMp4) {
+            exoPlayer.setMediaItem(mediaItem)
+        } else {
+            hlsMediaSourceFactory.createMediaSource(mediaItem).let(exoPlayer::setMediaSource)
+        }
         if (resumePositionMs > 0) exoPlayer.seekTo(resumePositionMs)
         exoPlayer.prepare()
         exoPlayer.playWhenReady = true
