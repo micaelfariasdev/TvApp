@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { db } from './database.js';
+import { importChannels, parseM3u } from './m3u-import.js';
 
 const app = express();
 const root = path.dirname(fileURLToPath(import.meta.url));
@@ -23,6 +24,26 @@ function filtersFromQuery(query) {
 }
 
 app.use(express.static(path.join(root, 'public')));
+
+app.post('/api/import', express.text({ type: 'text/plain', limit: '50mb' }), (req, res) => {
+  if (typeof req.body !== 'string') {
+    res.status(400).json({ error: 'Envie o conteúdo de um arquivo M3U.' });
+    return;
+  }
+
+  const channels = parseM3u(req.body);
+  if (channels.length === 0) {
+    res.status(400).json({ error: 'O arquivo não contém canais M3U válidos.' });
+    return;
+  }
+
+  try {
+    res.json(importChannels(channels));
+  } catch (error) {
+    console.error('Erro ao importar arquivo M3U:', error);
+    res.status(500).json({ error: 'Não foi possível importar o arquivo M3U.' });
+  }
+});
 
 app.get('/api/stats', (_req, res) => {
   res.json(db.prepare('SELECT COUNT(*) AS total FROM channels').get());
@@ -116,6 +137,6 @@ app.get('/api/export/tvbox.json', (req, res) => {
   res.end('\n  ]\n}\n');
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Catálogo disponível em http://localhost:${process.env.PORT || 3000}`);
+app.listen(process.env.PORT || 3001, () => {
+  console.log(`Catálogo disponível em http://localhost:${process.env.PORT || 3001}`);
 });

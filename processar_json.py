@@ -57,7 +57,7 @@ def main():
             final_url = get_final_url(old_url)
             if final_url != old_url:
                 print(f"  Redirecionado para: {final_url}")
-            channel["url"] = final_url
+            channel["url"] = f'http://164.152.62.129/api/hls-proxy?url={final_url}'
 
         if i < total:
             print("Aguardando 10 segundos para a próxima requisição...")

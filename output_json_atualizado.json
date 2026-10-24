@@ -1,81 +1,81 @@
 {
   "format": "tvbox-import/v1",
-  "exportedAt": "2026-10-17T22:13:03.576Z",
+  "exportedAt": "2026-10-19T00:19:24.047Z",
   "filters": {
     "group": "",
-    "query": "amor da minha vida s"
+    "query": "crystal"
   },
   "channels": [
     {
-      "name": "Amor da Minha Vida",
-      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E01.mp4",
+      "name": "Crystal Lake",
+      "url": "http://164.152.62.129/api/hls-proxy?url=http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/mystery/crystal-lake-2026/S01/crystal-lake-2026-S01E01.mp4",
       "type": "mp4",
-      "category": "Series | Disney+",
-      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
-      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "category": "Series | Outros Streamings",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
       "tvgId": ""
     },
     {
-      "name": "Amor da Minha Vida",
-      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E02.mp4",
+      "name": "Crystal Lake",
+      "url": "http://164.152.62.129/api/hls-proxy?url=http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/mystery/crystal-lake-2026/S01/crystal-lake-2026-S01E02.mp4",
       "type": "mp4",
-      "category": "Series | Disney+",
-      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
-      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "category": "Series | Outros Streamings",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
       "tvgId": ""
     },
     {
-      "name": "Amor da Minha Vida",
-      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E03.mp4",
+      "name": "Crystal Lake",
+      "url": "http://164.152.62.129/api/hls-proxy?url=http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/mystery/crystal-lake-2026/S01/crystal-lake-2026-S01E03.mp4",
       "type": "mp4",
-      "category": "Series | Disney+",
-      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
-      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "category": "Series | Outros Streamings",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
       "tvgId": ""
     },
     {
-      "name": "Amor da Minha Vida",
-      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E04.mp4",
+      "name": "Crystal Lake",
+      "url": "http://164.152.62.129/api/hls-proxy?url=http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/mystery/crystal-lake-2026/S01/crystal-lake-2026-S01E04.mp4",
       "type": "mp4",
-      "category": "Series | Disney+",
-      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
-      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "category": "Series | Outros Streamings",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
       "tvgId": ""
     },
     {
-      "name": "Amor da Minha Vida",
-      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E05.mp4",
+      "name": "Crystal Lake",
+      "url": "http://164.152.62.129/api/hls-proxy?url=http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/mystery/crystal-lake-2026/S01/crystal-lake-2026-S01E05.mp4",
       "type": "mp4",
-      "category": "Series | Disney+",
-      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
-      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "category": "Series | Outros Streamings",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
       "tvgId": ""
     },
     {
-      "name": "Amor da Minha Vida",
-      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E06.mp4",
+      "name": "Crystal Lake",
+      "url": "http://164.152.62.129/api/hls-proxy?url=http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/mystery/crystal-lake-2026/S01/crystal-lake-2026-S01E06.mp4",
       "type": "mp4",
-      "category": "Series | Disney+",
-      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
-      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "category": "Series | Outros Streamings",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
       "tvgId": ""
     },
     {
-      "name": "Amor da Minha Vida",
-      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E07.mp4",
+      "name": "Crystal Lake",
+      "url": "http://164.152.62.129/api/hls-proxy?url=http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/mystery/crystal-lake-2026/S01/crystal-lake-2026-S01E07.mp4",
       "type": "mp4",
-      "category": "Series | Disney+",
-      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
-      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "category": "Series | Outros Streamings",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
       "tvgId": ""
     },
     {
-      "name": "Amor da Minha Vida",
-      "url": "http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/uncategorized/amor-da-minha-vida-2024/S02/amor-da-minha-vida-2024-S02E08.mp4",
+      "name": "Crystal Lake",
+      "url": "http://164.152.62.129/api/hls-proxy?url=http://195.181.163.138:8880/sv/direct/10.17.9.101:34871/s3v3/tv-shows/mystery/crystal-lake-2026/S01/crystal-lake-2026-S01E08.mp4",
       "type": "mp4",
-      "category": "Series | Disney+",
-      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
-      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3dFVr9cMVVBuVKZTQWqBUGf3Phz.jpg",
+      "category": "Series | Outros Streamings",
+      "poster": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
+      "logo": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sIj9WcA1LkcjGbYjrbfV3pGegbF.jpg",
       "tvgId": ""
     }
   ]

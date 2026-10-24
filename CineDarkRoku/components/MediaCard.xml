@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="MediaCard" extends="Group">
+    <interface>
+        <field id="itemContent" type="node" onChange="onContent" />
+        <field id="focusPercent" type="float" onChange="onFocus" />
+    </interface>
+    <script type="text/brightscript" uri="pkg:/components/MediaCard.brs" />
+    <children>
+        <Rectangle id="surface" width="195" height="216" color="0x1B2030FF" />
+        <Poster id="fallback" uri="pkg:/images/logo.png" width="195" height="158" loadDisplayMode="scaleToFit" />
+        <Poster id="cover" width="195" height="158" loadDisplayMode="scaleToFit" />
+        <Label id="title" translation="[8,164]" width="179" height="48" wrap="true" maxLines="2" font="font:SmallSystemFont" color="0xFFFFFFFF" />
+    </children>
+</component>

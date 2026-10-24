@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="MainScene" extends="Scene">
+    <script type="text/brightscript" uri="pkg:/source/api.brs" />
+    <script type="text/brightscript" uri="pkg:/components/MainScene.brs" />
+    <children>
+        <Rectangle id="background" color="0x0B0D16FF" width="1280" height="720" />
+        <Label id="brand" text="CINEDARK" color="0xFFFFFFFF" translation="[70,45]" font="font:LargeBoldSystemFont" />
+        <Label id="status" text="Carregando catálogo..." color="0x9AA7C0FF" translation="[72,115]" />
+        <LabelList id="categoryList" translation="[60,175]" itemSize="[270,48]" numRows="9" />
+        <MarkupGrid id="categoryGrid" translation="[365,175]" itemSize="[195,216]" itemSpacing="[14,18]" numColumns="4" numRows="2" itemComponentName="MediaCard" />
+        <Label id="selectedTitle" text="" color="0xFFFFFFFF" translation="[365,650]" width="840" font="font:SmallSystemFont" />
+        <Label id="empty" text="Nenhum conteúdo disponível" visible="false" color="0x9AA7C0FF" translation="[72,260]" />
+    </children>
+</component>
+

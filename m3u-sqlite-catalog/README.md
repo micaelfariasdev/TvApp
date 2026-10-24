@@ -9,7 +9,7 @@ npm run import -- "F:\tvbox\tv_channels_7999833244_plus.m3u"
 npm start
 ```
 
-Abra `http://localhost:3000`. Para importar outra lista, repita o comando `npm run import`; ele substitui o catálogo atual.
+Abra `http://localhost:3001` e use **Importar novo M3U** para selecionar outra lista diretamente na página. Somente canais novos serão adicionados; os já cadastrados são preservados e URLs repetidas são ignoradas. Também é possível importar pelo terminal com `npm run import`.
 
 Também aceita URL:
 
