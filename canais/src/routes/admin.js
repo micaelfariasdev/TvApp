@@ -3,18 +3,25 @@ const crypto = require("crypto");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const { EXTENSION_API_TOKEN, PASSWORD } = require("../config/env");
+const {
+  EXTENSION_API_TOKEN,
+  PASSWORD,
+  SESSION_SECRET,
+} = require("../config/env");
 const {
   loadDB,
   saveDB,
   loadSeriesCatalog,
   saveSeriesCatalog,
+  getNewReleaseOrder,
+  getNewReleaseKeys,
 } = require("../services/db");
 const { loadCategoriesMeta, saveCategoriesMeta } = require("../services/db");
 const { loadHomeConfig, saveHomeConfig } = require("../services/db");
 
 const { findPoster } = require("../services/poster");
 const {
+  SESSION_COOKIE,
   hasTvboxSession,
   requireTvboxAccess,
   clearSession,
@@ -22,7 +29,6 @@ const {
   passwordMatches,
   safeText,
   removeLegacyPasswordFromHtml,
-  SESSION_COOKIE,
 } = require("../utils/helpers");
 
 const {
@@ -40,11 +46,27 @@ function categoryFields(items, selected = []) {
     )
     .join("");
 }
+function inferredContentType(item) {
+  if (["movie", "live"].includes(item.contentType)) return item.contentType;
+  const movieCategories = itemCategories(item).map((category) =>
+    category.split("|")[0].trim().toLocaleLowerCase("pt-BR"),
+  );
+  return movieCategories.some((category) =>
+    ["filme", "filmes", "movie", "movies"].includes(category),
+  )
+    ? "movie"
+    : null;
+}
+
+function contentTypeFromForm(value) {
+  return ["movie", "live"].includes(value) ? value : null;
+}
 const router = express.Router();
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 100 * 1024 * 1024 },
 });
+
 const extensionRequestNonces = new Map();
 const EXTENSION_REQUEST_WINDOW_MS = 2 * 60 * 1000;
 
@@ -133,7 +155,10 @@ router.use((req, res, next) => {
 
 function setExtensionCors(req, res) {
   const origin = String(req.headers.origin || "");
-  if (origin.startsWith("chrome-extension://") || origin.startsWith("moz-extension://")) {
+  if (
+    origin.startsWith("chrome-extension://") ||
+    origin.startsWith("moz-extension://")
+  ) {
     res.setHeader("Access-Control-Allow-Origin", origin);
     res.setHeader("Vary", "Origin");
     res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -170,7 +195,10 @@ function validExtensionRequest(req) {
     .update(signedPayload)
     .digest();
   const received = Buffer.from(signature, "hex");
-  if (received.length !== expected.length || !crypto.timingSafeEqual(received, expected)) {
+  if (
+    received.length !== expected.length ||
+    !crypto.timingSafeEqual(received, expected)
+  ) {
     return false;
   }
 
@@ -188,7 +216,8 @@ router.post("/api/extension/import", (req, res) => {
   setExtensionCors(req, res);
   if (!validExtensionRequest(req)) {
     return res.status(401).json({
-      error: "Assinatura inválida, expirada ou repetida. Verifique a chave da extensão no servidor.",
+      error:
+        "Assinatura inválida, expirada ou repetida. Verifique a chave da extensão no servidor.",
     });
   }
 
@@ -199,8 +228,15 @@ router.post("/api/extension/import", (req, res) => {
   if (!["channel", "movie", "series"].includes(kind)) {
     return res.status(400).json({ error: "Tipo de conteúdo inválido." });
   }
-  if (!title || title.length > 200 || !/^https?:\/\//i.test(url) || url.length > 4096) {
-    return res.status(400).json({ error: "Informe título e URL HTTP(S) válidos." });
+  if (
+    !title ||
+    title.length > 200 ||
+    !/^https?:\/\//i.test(url) ||
+    url.length > 4096
+  ) {
+    return res
+      .status(400)
+      .json({ error: "Informe título e URL HTTP(S) válidos." });
   }
   if (!["hls", "mp4"].includes(type)) {
     return res.status(400).json({ error: "Formato de mídia inválido." });
@@ -213,10 +249,16 @@ router.post("/api/extension/import", (req, res) => {
     const episodeNumber = Number(req.body.episodeNumber);
     if (
       !/^[A-Za-z0-9_-]{1,80}$/.test(seriesId) ||
-      !Number.isInteger(seasonNumber) || seasonNumber < 1 || seasonNumber > 999 ||
-      !Number.isInteger(episodeNumber) || episodeNumber < 1 || episodeNumber > 9999
+      !Number.isInteger(seasonNumber) ||
+      seasonNumber < 1 ||
+      seasonNumber > 999 ||
+      !Number.isInteger(episodeNumber) ||
+      episodeNumber < 1 ||
+      episodeNumber > 9999
     ) {
-      return res.status(400).json({ error: "Série, temporada ou episódio inválido." });
+      return res
+        .status(400)
+        .json({ error: "Série, temporada ou episódio inválido." });
     }
 
     const seriesFile = path.join(SERIES_DIRECTORY, `${seriesId}.json`);
@@ -227,31 +269,51 @@ router.post("/api/extension/import", (req, res) => {
       seriesData = JSON.parse(fs.readFileSync(seriesFile, "utf-8"));
     } else {
       if (!seriesTitle || seriesTitle.length > 200) {
-        return res.status(400).json({ error: "Informe o título da nova série." });
+        return res
+          .status(400)
+          .json({ error: "Informe o título da nova série." });
       }
       if (existingEntry) {
-        return res.status(409).json({ error: "O catálogo da série está inconsistente." });
+        return res
+          .status(409)
+          .json({ error: "O catálogo da série está inconsistente." });
       }
-      seriesData = { title: seriesTitle, poster: null, seasons: [] };
+      seriesData = {
+        title: seriesTitle,
+        poster: null,
+        createdAt: Date.now(),
+        seasons: [],
+      };
       catalog.push({
         id: seriesId,
         title: seriesTitle,
         endpoint: `series/${seriesId}.json`,
         poster: null,
+        createdAt: seriesData.createdAt,
       });
     }
 
-    seriesData.seasons = Array.isArray(seriesData.seasons) ? seriesData.seasons : [];
-    let season = seriesData.seasons.find((item) => Number(item.number) === seasonNumber);
+    seriesData.seasons = Array.isArray(seriesData.seasons)
+      ? seriesData.seasons
+      : [];
+    let season = seriesData.seasons.find(
+      (item) => Number(item.number) === seasonNumber,
+    );
     if (!season) {
       season = { number: seasonNumber, episodes: [] };
       seriesData.seasons.push(season);
     }
     season.episodes = Array.isArray(season.episodes) ? season.episodes : [];
-    if (season.episodes.some((item) =>
-      Number(item.number) === episodeNumber || String(item.url || "") === url
-    )) {
-      return res.status(409).json({ error: "Esse episódio ou URL já está cadastrado." });
+    if (
+      season.episodes.some(
+        (item) =>
+          Number(item.number) === episodeNumber ||
+          String(item.url || "") === url,
+      )
+    ) {
+      return res
+        .status(409)
+        .json({ error: "Esse episódio ou URL já está cadastrado." });
     }
 
     season.episodes.push({ number: episodeNumber, title, url, type });
@@ -259,16 +321,19 @@ router.post("/api/extension/import", (req, res) => {
     fs.mkdirSync(SERIES_DIRECTORY, { recursive: true });
     fs.writeFileSync(seriesFile, JSON.stringify(seriesData, null, 2), "utf-8");
     saveSeriesCatalog(catalog);
-    return res.status(201).json({ ok: true, message: "Episódio adicionado à série." });
+    return res
+      .status(201)
+      .json({ ok: true, message: "Episódio adicionado à série." });
   }
 
   const dbData = loadDB();
   if (dbData.some((item) => String(item.url || "") === url)) {
     return res.status(409).json({ error: "Essa URL já está cadastrada." });
   }
-  const category = String(req.body.category || (kind === "movie" ? "filmes" : "m3u"))
-    .trim()
-    .slice(0, 100) || (kind === "movie" ? "filmes" : "m3u");
+  const category =
+    String(req.body.category || (kind === "movie" ? "filmes" : "m3u"))
+      .trim()
+      .slice(0, 100) || (kind === "movie" ? "filmes" : "m3u");
   dbData.push({
     id: Date.now(),
     name: title,
@@ -276,21 +341,38 @@ router.post("/api/extension/import", (req, res) => {
     type,
     category,
     categories: [category],
+    contentType: kind === "movie" ? "movie" : "live",
+    createdAt: Date.now(),
   });
   saveDB(dbData);
-  return res.status(201).json({ ok: true, message: "Item adicionado ao catálogo." });
+  return res
+    .status(201)
+    .json({ ok: true, message: "Item adicionado ao catálogo." });
 });
 
 router.get("/api/channels", (req, res) => {
   const dbData = loadDB();
   const categoriesMeta = loadCategoriesMeta();
+  const newReleaseOrder = getNewReleaseOrder();
+  const newReleaseKeys = new Set(newReleaseOrder);
   const forwardedProto = String(req.headers["x-forwarded-proto"] || "").split(
     ",",
   )[0];
   const baseUrl = `${forwardedProto || req.protocol}://${req.get("host")}`;
 
   const cleanData = dbData.map(
-    ({ id, name, url, type, category, categories, poster, source }) => {
+    ({
+      id,
+      name,
+      url,
+      type,
+      category,
+      categories,
+      poster,
+      source,
+      contentType,
+      createdAt,
+    }) => {
       const categoryKey = String(category || "outros").trim();
       const categoryPoster = categoriesMeta[categoryKey]?.poster || null;
 
@@ -305,13 +387,857 @@ router.get("/api/channels", (req, res) => {
         type,
         category,
         categories: itemCategories({ category, categories }),
+        contentType:
+          contentTypeFromForm(contentType) ||
+          inferredContentType({ category, categories, contentType }),
         poster: poster || categoryPoster,
+        newRelease: newReleaseKeys.has(`movie:${id}`),
+        newReleaseOrder: newReleaseOrder.indexOf(`movie:${id}`),
+        createdAt:
+          createdAt || (Number(id) > 1_000_000_000_000 ? Number(id) : null),
       };
     },
   );
 
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.json(cleanData);
+});
+
+router.get("/api/v2/catalog", (req, res) => {
+  try {
+    const channels = loadDB();
+    const seriesCatalog = loadSeriesCatalog();
+    const items = [];
+    const movieCategoryNames = new Set(["filme", "filmes", "movie", "movies"]);
+    const dateLabel = (value) => {
+      const timestamp = Number.isFinite(Number(value))
+        ? Number(value)
+        : Date.parse(value);
+      if (!Number.isFinite(timestamp) || timestamp <= 0) return "—";
+      return new Intl.DateTimeFormat("pt-BR", {
+        day: "2-digit",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(timestamp);
+    };
+    const creationTime = (item) => {
+      const value = item.createdAt;
+      if (typeof value === "number" && Number.isFinite(value)) return value;
+      if (typeof value === "string" && value.trim()) {
+        const numeric = Number(value);
+        if (Number.isFinite(numeric) && numeric > 1_000_000_000_000)
+          return numeric;
+        const parsed = Date.parse(value);
+        if (Number.isFinite(parsed)) return parsed;
+      }
+      const id = Number(item.id);
+      return Number.isFinite(id) && id > 1_000_000_000_000 ? id : null;
+    };
+    const mapChannel = (item, index) => {
+      const categories = [
+        ...new Set(
+          itemCategories(item).flatMap((value) =>
+            value
+              .split("|")
+              .map((category) => category.trim())
+              .filter(Boolean),
+          ),
+        ),
+      ];
+      const normalizedCategories = categories.map((value) =>
+        value
+          .split("|")[0]
+          .trim()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLocaleLowerCase("pt-BR"),
+      );
+      const itemType = String(item.type || "").toLocaleLowerCase("pt-BR");
+      const itemUrl = String(item.url || "");
+      const isKick =
+        itemType === "kick" ||
+        /(?:^|\/\/)(?:www\.)?kick\.com(?:\/|$)/i.test(itemUrl);
+      const isMovie =
+        item.contentType === "movie" ||
+        (item.contentType !== "live" &&
+          normalizedCategories.some((category) =>
+            movieCategoryNames.has(category),
+          ));
+      const kind = isKick ? "kick" : isMovie ? "movie" : "live";
+      const category =
+        categories.find(
+          (value) =>
+            !movieCategoryNames.has(
+              value
+                .split("|")[0]
+                .trim()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLocaleLowerCase("pt-BR"),
+            ),
+        ) ||
+        categories[0] ||
+        "Sem categoria";
+      const title = String(item.name || item.id || "Sem título");
+      const createdAt = creationTime(item);
+      const kindLabel =
+        kind === "movie" ? "Filme" : kind === "kick" ? "Kick" : "Ao vivo";
+      const description =
+        kind === "kick"
+          ? "Canal da Kick"
+          : kind === "live"
+            ? "Canal ao vivo"
+            : "Filme";
+      const kickUsername =
+        kind === "kick"
+          ? itemUrl.match(/\/channels\/([^/?#]+)(?:\/playback-url)?/i)?.[1] ||
+            itemUrl.match(/^https?:\/\/(?:www\.)?kick\.com\/([^/?#]+)/i)?.[1] ||
+            ""
+          : "";
+
+      return {
+        id: `${kind}:${item.id ?? index}`,
+        title,
+        subtitle: `${description} · ${category}`,
+        kind,
+        kindLabel,
+        category,
+        addedLabel: dateLabel(createdAt),
+        createdAt,
+        posterMark: title.charAt(0).toLocaleUpperCase("pt-BR"),
+        posterTone: [
+          "sand",
+          "red",
+          "blue",
+          "teal",
+          "green",
+          "violet",
+          "orange",
+          "navy",
+          "pink",
+          "purple",
+          "yellow",
+        ][index % 11],
+        posterUrl: item.poster || null,
+        url: item.url || "",
+        mediaType: item.type || "hls",
+        ...(kickUsername ? { username: kickUsername } : {}),
+        ...(kind === "live" || kind === "kick"
+          ? {
+              status:
+                item.isLive === true || item.status === "online"
+                  ? "online"
+                  : item.isLive === false || item.status === "offline"
+                    ? "offline"
+                    : "unknown",
+            }
+          : {}),
+      };
+    };
+
+    channels.forEach((item, index) => items.push(mapChannel(item, index)));
+
+    seriesCatalog.forEach((item, index) => {
+      const id = String(item.id || "");
+      if (!/^[a-zA-Z0-9_-]+$/.test(id)) {
+        throw new Error(`ID de série inválido no catálogo: ${id || "(vazio)"}`);
+      }
+      const detailsFile = path.join(SERIES_DIRECTORY, `${id}.json`);
+      const details = fs.existsSync(detailsFile)
+        ? JSON.parse(fs.readFileSync(detailsFile, "utf-8"))
+        : {};
+      const seasons = Array.isArray(details.seasons) ? details.seasons : [];
+      const episodes = seasons.reduce(
+        (total, season) =>
+          total + (Array.isArray(season.episodes) ? season.episodes.length : 0),
+        0,
+      );
+      const title = String(item.title || item.name || details.title || id);
+      const createdAt = creationTime(item);
+      items.push({
+        id: `series:${id}`,
+        title,
+        subtitle: `Série · ${seasons.length} ${seasons.length === 1 ? "temporada" : "temporadas"}`,
+        kind: "series",
+        kindLabel: "Série",
+        category: String(item.category || "Séries"),
+        addedLabel: dateLabel(createdAt),
+        createdAt,
+        posterMark: title.charAt(0).toLocaleUpperCase("pt-BR"),
+        posterTone: ["blue", "green", "violet", "orange", "navy"][index % 5],
+        posterUrl: item.poster || details.poster || null,
+        episodes,
+        seasons: seasons.length,
+      });
+    });
+
+    items.sort((left, right) => {
+      if (left.createdAt != null && right.createdAt != null) {
+        return right.createdAt - left.createdAt;
+      }
+      if (left.createdAt != null) return -1;
+      if (right.createdAt != null) return 1;
+      return 0;
+    });
+    const counts = {
+      movies: items.filter((item) => item.kind === "movie").length,
+      series: items.filter((item) => item.kind === "series").length,
+      live: items.filter((item) => item.kind === "live").length,
+      kick: items.filter((item) => item.kind === "kick").length,
+    };
+
+    return res.json({
+      version: 2,
+      generatedAt: new Date().toISOString(),
+      counts,
+      items,
+    });
+  } catch (error) {
+    console.error("Falha ao montar catálogo da API v2:", error);
+    return res
+      .status(500)
+      .json({ error: "Não foi possível carregar o catálogo do servidor." });
+  }
+});
+
+router.get("/api/v2/catalog/series/:id", (req, res) => {
+  const id = String(req.params.id || "");
+  if (!/^[a-zA-Z0-9_-]{1,80}$/.test(id)) {
+    return res.status(400).json({ error: "ID de série inválido." });
+  }
+
+  try {
+    const series = loadSeriesCatalog().find((item) => String(item.id) === id);
+    if (!series)
+      return res.status(404).json({ error: "Série não encontrada." });
+
+    const detailsFile = path.join(SERIES_DIRECTORY, `${id}.json`);
+    const details = fs.existsSync(detailsFile)
+      ? JSON.parse(fs.readFileSync(detailsFile, "utf-8"))
+      : {};
+    const seasons = Array.isArray(details.seasons) ? details.seasons : [];
+
+    return res.json({
+      id,
+      title: String(series.title || series.name || details.title || id),
+      poster: series.poster || details.poster || null,
+      seasons: seasons.map((season) => ({
+        number: Number(season.number) || 0,
+        episodes: Array.isArray(season.episodes)
+          ? season.episodes.map((episode, index) => ({
+              number: Number(episode.number) || index + 1,
+              title: String(
+                episode.title ||
+                  `Episódio ${Number(episode.number) || index + 1}`,
+              ),
+              url: String(episode.url || ""),
+              type: episode.type === "mp4" ? "mp4" : "hls",
+            }))
+          : [],
+      })),
+    });
+  } catch (error) {
+    console.error("Falha ao carregar episódios da série:", error);
+    return res
+      .status(500)
+      .json({ error: "Não foi possível carregar os episódios da série." });
+  }
+});
+
+router.post("/api/v2/catalog/series/:id/seasons", (req, res) => {
+  if (!requireTvboxAccess(req, res)) return;
+  const id = String(req.params.id || "");
+  const number = Number(req.body.number);
+  if (
+    !/^[a-zA-Z0-9_-]{1,80}$/.test(id) ||
+    !Number.isInteger(number) ||
+    number < 1 ||
+    number > 999
+  ) {
+    return res
+      .status(400)
+      .json({ error: "ID ou número de temporada inválido." });
+  }
+
+  try {
+    const file = path.join(SERIES_DIRECTORY, `${id}.json`);
+    const catalog = loadSeriesCatalog();
+    if (
+      !catalog.some((item) => String(item.id) === id) ||
+      !fs.existsSync(file)
+    ) {
+      return res.status(404).json({ error: "Série não encontrada." });
+    }
+    const details = JSON.parse(fs.readFileSync(file, "utf-8"));
+    details.seasons = Array.isArray(details.seasons) ? details.seasons : [];
+    if (details.seasons.some((season) => Number(season.number) === number)) {
+      return res.status(409).json({ error: "Essa temporada já existe." });
+    }
+    details.seasons.push({ number, episodes: [] });
+    details.seasons.sort(
+      (left, right) => Number(left.number) - Number(right.number),
+    );
+    fs.writeFileSync(file, JSON.stringify(details, null, 2), "utf-8");
+    return res.status(201).json({ ok: true, number });
+  } catch (error) {
+    console.error("Falha ao criar temporada:", error);
+    return res
+      .status(500)
+      .json({ error: "Não foi possível criar a temporada." });
+  }
+});
+
+router.post("/api/v2/catalog/series/:id/episodes", (req, res) => {
+  if (!requireTvboxAccess(req, res)) return;
+  const id = String(req.params.id || "");
+  const seasonNumber = Number(req.body.seasonNumber);
+  const number = Number(req.body.number);
+  const title = String(req.body.title || "").trim();
+  const url = String(req.body.url || "").trim();
+  const type = String(req.body.type || "");
+  if (
+    !/^[a-zA-Z0-9_-]{1,80}$/.test(id) ||
+    !Number.isInteger(seasonNumber) ||
+    seasonNumber < 1 ||
+    seasonNumber > 999 ||
+    !Number.isInteger(number) ||
+    number < 1 ||
+    number > 9999 ||
+    !title ||
+    title.length > 200 ||
+    !/^https?:\/\//i.test(url) ||
+    url.length > 4096 ||
+    !["hls", "mp4"].includes(type)
+  ) {
+    return res
+      .status(400)
+      .json({
+        error: "Informe temporada, número, título, URL e formato válidos.",
+      });
+  }
+
+  try {
+    const file = path.join(SERIES_DIRECTORY, `${id}.json`);
+    const catalog = loadSeriesCatalog();
+    if (
+      !catalog.some((item) => String(item.id) === id) ||
+      !fs.existsSync(file)
+    ) {
+      return res.status(404).json({ error: "Série não encontrada." });
+    }
+    const details = JSON.parse(fs.readFileSync(file, "utf-8"));
+    const season = (details.seasons || []).find(
+      (item) => Number(item.number) === seasonNumber,
+    );
+    if (!season)
+      return res.status(404).json({ error: "Temporada não encontrada." });
+    season.episodes = Array.isArray(season.episodes) ? season.episodes : [];
+    if (season.episodes.some((episode) => Number(episode.number) === number)) {
+      return res
+        .status(409)
+        .json({ error: "Esse número de episódio já existe na temporada." });
+    }
+    season.episodes.push({ number, title, url, type });
+    season.episodes.sort(
+      (left, right) => Number(left.number) - Number(right.number),
+    );
+    fs.writeFileSync(file, JSON.stringify(details, null, 2), "utf-8");
+    return res.status(201).json({ ok: true, seasonNumber, number });
+  } catch (error) {
+    console.error("Falha ao adicionar episódio:", error);
+    return res
+      .status(500)
+      .json({ error: "Não foi possível adicionar o episódio." });
+  }
+});
+
+router.patch(
+  "/api/v2/catalog/series/:id/seasons/:seasonNumber/episodes/:episodeNumber",
+  (req, res) => {
+    if (!requireTvboxAccess(req, res)) return;
+    const id = String(req.params.id || "");
+    const sourceSeasonNumber = Number(req.params.seasonNumber);
+    const sourceEpisodeNumber = Number(req.params.episodeNumber);
+    const targetSeasonNumber = Number(
+      req.body.seasonNumber ?? sourceSeasonNumber,
+    );
+    const number = Number(req.body.number);
+    const title = String(req.body.title || "").trim();
+    const url = String(req.body.url || "").trim();
+    const type = String(req.body.type || "");
+    if (
+      !/^[a-zA-Z0-9_-]{1,80}$/.test(id) ||
+      !Number.isInteger(sourceSeasonNumber) ||
+      sourceSeasonNumber < 1 ||
+      !Number.isInteger(sourceEpisodeNumber) ||
+      sourceEpisodeNumber < 1 ||
+      !Number.isInteger(targetSeasonNumber) ||
+      targetSeasonNumber < 1 ||
+      targetSeasonNumber > 999 ||
+      !Number.isInteger(number) ||
+      number < 1 ||
+      number > 9999 ||
+      !title ||
+      title.length > 200 ||
+      !/^https?:\/\//i.test(url) ||
+      url.length > 4096 ||
+      !["hls", "mp4"].includes(type)
+    ) {
+      return res
+        .status(400)
+        .json({ error: "Informe dados válidos para o episódio." });
+    }
+
+    try {
+      const file = path.join(SERIES_DIRECTORY, `${id}.json`);
+      const catalog = loadSeriesCatalog();
+      if (
+        !catalog.some((item) => String(item.id) === id) ||
+        !fs.existsSync(file)
+      ) {
+        return res.status(404).json({ error: "Série não encontrada." });
+      }
+      const details = JSON.parse(fs.readFileSync(file, "utf-8"));
+      const seasons = Array.isArray(details.seasons) ? details.seasons : [];
+      const sourceSeason = seasons.find(
+        (season) => Number(season.number) === sourceSeasonNumber,
+      );
+      const targetSeason = seasons.find(
+        (season) => Number(season.number) === targetSeasonNumber,
+      );
+      if (!sourceSeason || !targetSeason) {
+        return res.status(404).json({ error: "Temporada não encontrada." });
+      }
+      sourceSeason.episodes = Array.isArray(sourceSeason.episodes)
+        ? sourceSeason.episodes
+        : [];
+      targetSeason.episodes = Array.isArray(targetSeason.episodes)
+        ? targetSeason.episodes
+        : [];
+      const episode = sourceSeason.episodes.find(
+        (item) => Number(item.number) === sourceEpisodeNumber,
+      );
+      if (!episode)
+        return res.status(404).json({ error: "Episódio não encontrado." });
+      if (
+        targetSeason.episodes.some(
+          (item) => item !== episode && Number(item.number) === number,
+        )
+      ) {
+        return res
+          .status(409)
+          .json({ error: "Esse número de episódio já existe na temporada." });
+      }
+
+      sourceSeason.episodes = sourceSeason.episodes.filter(
+        (item) => item !== episode,
+      );
+      episode.number = number;
+      episode.title = title;
+      episode.url = url;
+      episode.type = type;
+      targetSeason.episodes.push(episode);
+      sourceSeason.episodes.sort(
+        (left, right) => Number(left.number) - Number(right.number),
+      );
+      if (sourceSeason !== targetSeason) {
+        targetSeason.episodes.sort(
+          (left, right) => Number(left.number) - Number(right.number),
+        );
+      }
+      fs.writeFileSync(file, JSON.stringify(details, null, 2), "utf-8");
+      return res.json({ ok: true, seasonNumber: targetSeasonNumber, number });
+    } catch (error) {
+      console.error("Falha ao editar episódio:", error);
+      return res
+        .status(500)
+        .json({ error: "Não foi possível editar o episódio." });
+    }
+  },
+);
+
+router.post("/api/v2/catalog/posters/search", async (req, res) => {
+  if (!requireTvboxAccess(req, res)) return;
+  const title = String(req.body.title || "").trim();
+  const kind = String(req.body.kind || "");
+  if ((!title && kind !== "kick") || title.length > 200) {
+    return res
+      .status(400)
+      .json({ error: "Informe um título de até 200 caracteres." });
+  }
+  if (kind === "kick") {
+    const username = String(req.body.username || "")
+      .trim()
+      .replace(/^@/, "");
+    if (!/^[a-zA-Z0-9_.-]{2,80}$/.test(username)) {
+      return res
+        .status(400)
+        .json({ error: "Informe um usuário válido da Kick." });
+    }
+
+    try {
+      const response = await fetch(
+        `https://kick.com/api/v2/channels/${encodeURIComponent(username)}`,
+        {
+          headers: {
+            Accept: "application/json",
+            "User-Agent": "Mozilla/5.0",
+            Referer: "https://kick.com/",
+          },
+          signal: AbortSignal.timeout(15000),
+        },
+      );
+      if (!response.ok) {
+        return res.status(response.status === 404 ? 404 : 502).json({
+          error:
+            response.status === 404
+              ? "Não foi encontrado um canal da Kick com esse usuário."
+              : "Não foi possível consultar o perfil da Kick agora.",
+        });
+      }
+      const data = await response.json();
+      const poster =
+        data.user?.profile_pic ||
+        data.user?.profile_picture ||
+        data.profile_pic ||
+        data.profile_picture ||
+        data.banner_picture ||
+        "";
+      if (!poster) {
+        return res
+          .status(404)
+          .json({ error: "Esse canal da Kick não possui uma foto de perfil." });
+      }
+      return res.json({
+        poster,
+        title: data.user?.username || data.slug || username,
+        source: "Kick",
+      });
+    } catch (error) {
+      console.error("Falha ao buscar capa de canal da Kick:", error);
+      return res
+        .status(502)
+        .json({ error: "Não foi possível buscar a capa na Kick agora." });
+    }
+  }
+
+  if (!["movie", "series"].includes(kind)) {
+    return res
+      .status(400)
+      .json({
+        error: "A busca de capas aceita filmes, séries e canais da Kick.",
+      });
+  }
+
+  try {
+    const result = await findPoster(title, kind === "series" ? "tv" : "movie");
+    if (!result?.poster) {
+      return res
+        .status(404)
+        .json({ error: "Nenhuma capa encontrada para esse título." });
+    }
+    return res.json(result);
+  } catch (error) {
+    console.error("Falha ao buscar capa do catálogo:", error);
+    return res
+      .status(502)
+      .json({ error: "Não foi possível buscar a capa agora." });
+  }
+});
+
+router.post("/api/v2/session", (req, res) => {
+  if (!PASSWORD || !SESSION_SECRET) {
+    return res
+      .status(503)
+      .json({
+        error: "O login administrativo não está configurado no servidor.",
+      });
+  }
+  if (!passwordMatches(req.body.password)) {
+    return res.status(401).json({ error: "Senha incorreta." });
+  }
+  const expiresAt = Date.now() + SESSION_DURATION_MS;
+  return res.json({ token: signSession({ expiresAt }), expiresAt });
+});
+
+router.get("/api/v2/session", (req, res) => {
+  if (!requireTvboxAccess(req, res)) return;
+  return res.json({ authenticated: true });
+});
+
+router.post("/api/v2/catalog/items", (req, res) => {
+  if (!requireTvboxAccess(req, res)) return;
+  const kind = String(req.body.kind || "");
+  const title = String(req.body.title || "").trim();
+  const category = String(req.body.category || "").trim();
+  const poster = String(req.body.poster || "").trim();
+  if (!["movie", "series", "live", "kick"].includes(kind)) {
+    return res.status(400).json({ error: "Tipo de conteúdo inválido." });
+  }
+  if (!title || title.length > 200) {
+    return res
+      .status(400)
+      .json({ error: "Informe um título de até 200 caracteres." });
+  }
+  if (category.length > 100) {
+    return res
+      .status(400)
+      .json({ error: "A categoria deve ter até 100 caracteres." });
+  }
+  if (poster && (!/^https?:\/\//i.test(poster) || poster.length > 4096)) {
+    return res
+      .status(400)
+      .json({ error: "Informe uma URL HTTP(S) válida para a capa." });
+  }
+
+  if (kind === "series") {
+    const baseId =
+      title
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLocaleLowerCase("pt-BR")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "")
+        .slice(0, 60) || "serie";
+    const catalog = loadSeriesCatalog();
+    let id = baseId;
+    let suffix = 2;
+    while (
+      catalog.some((item) => item.id === id) ||
+      fs.existsSync(path.join(SERIES_DIRECTORY, `${id}.json`))
+    ) {
+      id = `${baseId}-${suffix++}`;
+    }
+    const createdAt = Date.now();
+    const validPoster = poster || null;
+    fs.mkdirSync(SERIES_DIRECTORY, { recursive: true });
+    catalog.push({
+      id,
+      title,
+      category: category || "Séries",
+      endpoint: `series/${id}.json`,
+      poster: validPoster,
+      createdAt,
+    });
+    fs.writeFileSync(
+      path.join(SERIES_DIRECTORY, `${id}.json`),
+      JSON.stringify(
+        {
+          title,
+          category: category || "Séries",
+          poster: validPoster,
+          createdAt,
+          seasons: [],
+        },
+        null,
+        2,
+      ),
+      "utf-8",
+    );
+    saveSeriesCatalog(catalog);
+    return res.status(201).json({ ok: true, id: `series:${id}` });
+  }
+
+  if (kind === "kick") {
+    const username = String(req.body.username || "")
+      .trim()
+      .replace(/^@/, "");
+    if (!/^[a-zA-Z0-9_.-]{2,80}$/.test(username)) {
+      return res
+        .status(400)
+        .json({ error: "Informe um usuário válido da Kick." });
+    }
+    const channels = loadDB();
+    if (
+      channels.some((item) =>
+        String(item.url || "")
+          .toLowerCase()
+          .includes(`/channels/${username.toLowerCase()}/playback-url`),
+      )
+    ) {
+      return res
+        .status(409)
+        .json({ error: "Esse canal da Kick já está cadastrado." });
+    }
+    let id = Date.now();
+    while (channels.some((item) => String(item.id) === String(id))) id++;
+    channels.push({
+      id,
+      name: title,
+      url: `https://kick.com/api/v2/channels/${encodeURIComponent(username)}/playback-url`,
+      type: "kick",
+      category: "kick",
+      createdAt: id,
+      ...(poster ? { poster } : {}),
+    });
+    saveDB(channels);
+    return res.status(201).json({ ok: true, id: `kick:${id}` });
+  }
+
+  const url = String(req.body.url || "").trim();
+  const mediaType = String(req.body.mediaType || "hls").toLowerCase();
+  if (!/^https?:\/\//i.test(url) || url.length > 4096) {
+    return res
+      .status(400)
+      .json({ error: "Informe uma URL HTTP(S) válida para o conteúdo." });
+  }
+  if (!["hls", "mp4", "embed"].includes(mediaType)) {
+    return res.status(400).json({ error: "Formato de mídia inválido." });
+  }
+
+  const channels = loadDB();
+  if (channels.some((item) => String(item.url || "") === url)) {
+    return res.status(409).json({ error: "Essa URL já está cadastrada." });
+  }
+  let id = Date.now();
+  while (channels.some((item) => String(item.id) === String(id))) id++;
+  channels.push({
+    id,
+    name: title,
+    url,
+    type: mediaType,
+    category: category || (kind === "movie" ? "filmes" : "m3u"),
+    categories: categoriesFromForm({
+      category: category || (kind === "movie" ? "filmes" : "m3u"),
+    }),
+    contentType: kind,
+    createdAt: id,
+    ...(poster ? { poster } : {}),
+  });
+  saveDB(channels);
+  return res.status(201).json({ ok: true, id: `${kind}:${id}` });
+});
+
+router.patch("/api/v2/catalog/categories", (req, res) => {
+  if (!requireTvboxAccess(req, res)) return;
+  const category = String(req.body.category || "").trim();
+  const kind = String(req.body.kind || "");
+  if (!category || category.length > 100 || !["movie", "live"].includes(kind)) {
+    return res
+      .status(400)
+      .json({ error: "Informe uma categoria e um tipo válido." });
+  }
+  const channels = loadDB();
+  const normalizedCategory = category.toLocaleLowerCase("pt-BR");
+  const matchingItems = channels.filter((item) => {
+    if (String(item.type || "").toLowerCase() === "kick") return false;
+    return itemCategories(item).some((value) =>
+      value
+        .split("|")
+        .some(
+          (part) =>
+            part.trim().toLocaleLowerCase("pt-BR") === normalizedCategory,
+        ),
+    );
+  });
+  if (!matchingItems.length) {
+    return res
+      .status(404)
+      .json({ error: "Nenhum filme ou canal encontrado nessa categoria." });
+  }
+  matchingItems.forEach((item) => {
+    item.contentType = kind;
+  });
+  saveDB(channels);
+  return res.json({ ok: true, updated: matchingItems.length });
+});
+
+router.patch("/api/v2/catalog/items/:id", (req, res) => {
+  if (!requireTvboxAccess(req, res)) return;
+  const [requestedKind, ...idParts] = String(req.params.id || "").split(":");
+  const id = idParts.join(":");
+  const kind = String(req.body.kind || requestedKind);
+  const title = String(req.body.title || "").trim();
+  const category = String(req.body.category || "").trim();
+  const poster = String(req.body.poster || "").trim();
+  if (!title || title.length > 200 || category.length > 100) {
+    return res.status(400).json({ error: "Título ou categoria inválidos." });
+  }
+  if (poster && (!/^https?:\/\//i.test(poster) || poster.length > 4096)) {
+    return res
+      .status(400)
+      .json({ error: "Informe uma URL HTTP(S) válida para a capa." });
+  }
+
+  if (requestedKind === "series") {
+    if (kind !== "series" || !/^[a-zA-Z0-9_-]+$/.test(id)) {
+      return res.status(400).json({ error: "Série inválida para edição." });
+    }
+    const series = loadSeriesCatalog();
+    const entry = series.find((item) => item.id === id);
+    const file = path.join(SERIES_DIRECTORY, `${id}.json`);
+    if (!entry || !fs.existsSync(file)) {
+      return res.status(404).json({ error: "Série não encontrada." });
+    }
+    const details = JSON.parse(fs.readFileSync(file, "utf-8"));
+    const updatedAt = Date.now();
+    entry.title = title;
+    entry.category = category || "Séries";
+    entry.poster = poster || null;
+    entry.updatedAt = updatedAt;
+    details.title = title;
+    details.category = entry.category;
+    details.poster = entry.poster;
+    details.updatedAt = updatedAt;
+    fs.writeFileSync(file, JSON.stringify(details, null, 2), "utf-8");
+    saveSeriesCatalog(series);
+    return res.json({ ok: true });
+  }
+
+  if (
+    !["movie", "live", "kick"].includes(requestedKind) ||
+    (requestedKind === "kick"
+      ? kind !== "kick"
+      : !["movie", "live"].includes(kind))
+  ) {
+    return res
+      .status(400)
+      .json({ error: "Não é possível alterar o tipo deste item." });
+  }
+  const channels = loadDB();
+  const item = channels.find((entry) => String(entry.id) === id);
+  if (!item) return res.status(404).json({ error: "Item não encontrado." });
+  if (
+    requestedKind === "kick" &&
+    String(item.type || "").toLowerCase() !== "kick"
+  ) {
+    return res.status(400).json({ error: "Canal da Kick inválido." });
+  }
+  item.name = title;
+  item.category =
+    category ||
+    (kind === "movie" ? "filmes" : kind === "kick" ? "kick" : "m3u");
+  item.categories = categoriesFromForm({ category: item.category });
+  item.poster = poster || null;
+  if (kind === "movie" || kind === "live") {
+    item.contentType = kind;
+    if (req.body.url !== undefined) {
+      const url = String(req.body.url || "").trim();
+      const mediaType = String(
+        req.body.mediaType || item.type || "",
+      ).toLowerCase();
+      if (!/^https?:\/\//i.test(url) || url.length > 4096) {
+        return res
+          .status(400)
+          .json({ error: "Informe uma URL HTTP(S) válida para o conteúdo." });
+      }
+      if (!["hls", "mp4", "embed"].includes(mediaType)) {
+        return res.status(400).json({ error: "Formato de mídia inválido." });
+      }
+      if (
+        channels.some(
+          (entry) => entry !== item && String(entry.url || "") === url,
+        )
+      ) {
+        return res.status(409).json({ error: "Essa URL já está cadastrada." });
+      }
+      item.url = url;
+      item.type = mediaType;
+    }
+  }
+  saveDB(channels);
+  return res.json({ ok: true });
 });
 
 // Configuração pública consumida pelo app Android. A edição continua protegida
@@ -408,7 +1334,6 @@ router.get("/home", (req, res) => {
   const hasSeries = config.sections.some(
     (section) => section.type === "series" && section.enabled !== false,
   );
-
   const categoryOptions =
     categories
       .map((category) => {
@@ -510,6 +1435,13 @@ router.post("/home", (req, res) => {
       ? [req.body.categories]
       : [];
   const sections = [];
+  sections.push({
+    id: "new-releases",
+    type: "new-releases",
+    title: "Recém lançados",
+    enabled: true,
+    limit: 10,
+  });
   if (req.body.showKick) {
     sections.push({
       id: "kick-live",
@@ -591,10 +1523,15 @@ router.post("/series/posters/fill", async (req, res) => {
 });
 
 router.get("/api/series", (req, res) => {
+  const newReleaseOrder = getNewReleaseOrder();
+  const newReleaseKeys = new Set(newReleaseOrder);
   const catalog = loadSeriesCatalog().map((item) => ({
     id: item.id,
     title: item.title || item.name || item.id,
     poster: item.poster || null,
+    newRelease: newReleaseKeys.has(`series:${item.id}`),
+    newReleaseOrder: newReleaseOrder.indexOf(`series:${item.id}`),
+    createdAt: item.createdAt || null,
     endpoint: `/tvbox/api/series/${encodeURIComponent(item.id)}`,
   }));
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -614,11 +1551,12 @@ router.get("/api/series/:id", (req, res) => {
 
 router.get("/series", (req, res) => {
   const series = loadSeriesCatalog();
+  const newReleaseKeys = getNewReleaseKeys();
   const cards = series.length
     ? series
         .map(
           (item) =>
-            `<article class="card"><div class="row"><span class="badge">SÉRIE</span><div class="actions"><a class="btn" href="/tvbox/series/${encodeURIComponent(item.id)}">Abrir</a><a class="btn danger" href="/tvbox/series/${encodeURIComponent(item.id)}/delete" onclick="return confirm('Excluir a série e todas as temporadas e episódios?')">Excluir</a></div></div><h2 style="margin-top:14px">${safeText(item.title)}</h2><p class="muted">ID: ${safeText(item.id)}<br>Endpoint: ${safeText(item.endpoint || `series/${item.id}.json`)}</p></article>`,
+            `<article class="card"><div class="row"><span class="badge">SÉRIE</span>${newReleaseKeys.has(`series:${item.id}`) ? '<span class="badge">RECÉM LANÇADO</span>' : ""}<div class="actions"><a class="btn" href="/tvbox/series/${encodeURIComponent(item.id)}">Abrir</a><a class="btn danger" href="/tvbox/series/${encodeURIComponent(item.id)}/delete" onclick="return confirm('Excluir a série e todas as temporadas e episódios?')">Excluir</a></div></div><h2 style="margin-top:14px">${safeText(item.title)}</h2><p class="muted">ID: ${safeText(item.id)}<br>Endpoint: ${safeText(item.endpoint || `series/${item.id}.json`)}</p></article>`,
         )
         .join("")
     : '<div class="empty">Nenhuma série cadastrada ainda.</div>';
@@ -670,11 +1608,21 @@ router.post("/series/add", (req, res) => {
     title,
     endpoint: `series/${id}.json`,
     poster: validPoster,
+    createdAt: Date.now(),
   });
   saveSeriesCatalog(catalog);
   fs.writeFileSync(
     file,
-    JSON.stringify({ title, poster: validPoster, seasons: [] }, null, 2),
+    JSON.stringify(
+      {
+        title,
+        poster: validPoster,
+        createdAt: catalog[catalog.length - 1].createdAt,
+        seasons: [],
+      },
+      null,
+      2,
+    ),
     "utf-8",
   );
   res.redirect(`/tvbox/series/${encodeURIComponent(id)}`);
@@ -948,6 +1896,7 @@ router.post("/import/m3u", upload.single("catalog"), (req, res) => {
       type: item.type === "mp4" ? "mp4" : "hls",
       category:
         String(item.category || item.groupName || "m3u").trim() || "m3u",
+      createdAt: Date.now() + added,
       ...(/^https?:\/\//i.test(imageUrl) ? { poster: imageUrl } : {}),
     });
     urls.add(url);
@@ -1017,6 +1966,7 @@ function importM3UCategory(req, res, incoming) {
       type: "mp4",
       category,
       categories: [category],
+      createdAt: Date.now() + added,
       ...(/^https?:\/\//i.test(poster) ? { poster } : {}),
     });
     added++;
@@ -1031,7 +1981,9 @@ function importM3UCategory(req, res, incoming) {
 }
 
 router.get("/categories", (req, res) => {
-  const categories = loadDB().reduce((groups, item) => {
+  const dbData = loadDB();
+  const newReleaseKeys = getNewReleaseKeys();
+  const categories = dbData.reduce((groups, item) => {
     for (const category of itemCategories(item).length
       ? itemCategories(item)
       : ["outros"]) {
@@ -1048,10 +2000,16 @@ router.get("/categories", (req, res) => {
           .sort((left, right) =>
             String(left.name).localeCompare(String(right.name), "pt-BR"),
           )
-          .map(
-            (item) =>
-              `<article class="category-item" data-name="${safeText(`${item.name}${item.type || ""}`)}"><div><strong>${safeText(item.name)}</strong><span class="badge">${safeText(item.type || "hls")}</span><p class="url">${safeText(item.url)}</p></div><div class="actions"><a class="btn" href="/tvbox/edit/${item.id}">Editar</a><a class="btn danger" href="/tvbox/delete/${item.id}" onclick="return confirm('Excluir este item?')">Excluir</a></div></article>`,
-          )
+          .map((item) => {
+            const contentType = inferredContentType(item);
+            const contentTypeBadge = contentType
+              ? `<span class="badge">${contentType === "movie" ? "FILME NO APP" : "AO VIVO NO APP"}</span>`
+              : "";
+            const newReleaseBadge = newReleaseKeys.has(`movie:${item.id}`)
+              ? '<span class="badge">RECÉM LANÇADO</span>'
+              : "";
+            return `<article class="category-item" data-name="${safeText(`${item.name}${item.type || ""}`)}"><div><strong>${safeText(item.name)}</strong><span class="badge">${safeText(item.type || "hls")}</span>${contentTypeBadge}${newReleaseBadge}<p class="url">${safeText(item.url)}</p></div><div class="actions"><a class="btn" href="/tvbox/edit/${item.id}">Editar</a><a class="btn danger" href="/tvbox/delete/${item.id}" onclick="return confirm('Excluir este item?')">Excluir</a></div></article>`;
+          })
           .join("");
         return `<details class="category-group" data-category="${safeText(category)}"><summary><div><span class="badge">CATEGORIA</span><strong>${safeText(category)}</strong></div><div class="summary-actions" onclick="event.stopPropagation()"><a class="btn" href="/tvbox/category/${encodeURIComponent(category)}">Gerenciar / Renomear</a><span class="count">${items.length} item(ns)</span></div></summary><div class="category-content"><div class="category-tools"><span class="muted">Abra somente a lista que quiser administrar.</span><form method="post" action="/tvbox/category/delete" onsubmit="return confirm('Excluir todos os ${items.length} itens da categoria?')"><input type="hidden" name="category" value="${safeText(category)}"><button class="btn danger" type="submit">Excluir categoria</button></form></div><div class="category-items">${rows}</div></div></details>`;
       })
@@ -1317,6 +2275,10 @@ router.post("/add", (req, res) => {
     type,
     category,
     categories,
+    ...(contentTypeFromForm(req.body.contentType)
+      ? { contentType: contentTypeFromForm(req.body.contentType) }
+      : {}),
+    createdAt: Date.now(),
     ...(/^https?:\/\//i.test(imageUrl) ? { poster: imageUrl } : {}),
   });
   saveDB(dbData);
@@ -1363,6 +2325,18 @@ router.get("/edit/:id", (req, res) => {
     .replace("{{type_hls}}", typeKey === "hls" ? "selected" : "")
     .replace("{{type_kick}}", typeKey === "kick" ? "selected" : "")
     .replace("{{type_embed}}", typeKey === "embed" ? "selected" : "")
+    .replace(
+      "{{content_type_auto}}",
+      !contentTypeFromForm(item.contentType) ? "selected" : "",
+    )
+    .replace(
+      "{{content_type_live}}",
+      contentTypeFromForm(item.contentType) === "live" ? "selected" : "",
+    )
+    .replace(
+      "{{content_type_movie}}",
+      contentTypeFromForm(item.contentType) === "movie" ? "selected" : "",
+    )
     .replace("{{categoryOptions}}", categoryOptions);
 
   res.send(tvboxPage("Editar item", body));
@@ -1395,6 +2369,9 @@ router.post("/edit/:id", (req, res) => {
     type,
     category,
     categories,
+    ...(contentTypeFromForm(req.body.contentType)
+      ? { contentType: contentTypeFromForm(req.body.contentType) }
+      : { contentType: undefined }),
     ...(/^https?:\/\//i.test(imageUrl)
       ? { poster: imageUrl }
       : { poster: null }),
@@ -1611,7 +2588,21 @@ router.get("/api/embedtv/events", async (req, res) => {
       sync: true,
     });
 
-    res.json(result);
+    const now = new Date();
+
+    const eventsAtuais = result.events.filter((event) => {
+      const timeEnd = new Date(event.time_end);
+      const limiteComFolga = new Date(timeEnd.getTime() + 30 * 60000);
+      return limiteComFolga >= now;
+    });
+
+    var resultFiltrado = {
+      ...result,
+      events: eventsAtuais,
+      total: eventsAtuais.length,
+    };
+
+    res.json(resultFiltrado);
   } catch (error) {
     console.error("[EMBEDTV] Todos os eventos:", error.message);
 

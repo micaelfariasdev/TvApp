@@ -17,5 +17,9 @@ data class Channel(
     val season: Int? = null,
     val episode: Int? = null,
     val id: String? = null,
-    val categories: List<String>? = null
+    val categories: List<String>? = null,
+    val contentType: String? = null,
+    val newRelease: Boolean? = null,
+    val createdAt: Long? = null,
+    val newReleaseOrder: Int? = null
 )

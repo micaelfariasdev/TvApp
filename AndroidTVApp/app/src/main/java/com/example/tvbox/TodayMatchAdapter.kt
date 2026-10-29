@@ -21,7 +21,8 @@ data class TodayMatch(
 
 class TodayMatchAdapter(
     private var items: List<TodayMatch>,
-    private val onClick: (TodayMatch) -> Unit
+    private val onClick: (TodayMatch) -> Unit,
+    private val gridMode: Boolean = false
 ) : RecyclerView.Adapter<TodayMatchAdapter.Holder>() {
 
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
@@ -34,9 +35,18 @@ class TodayMatchAdapter(
         val leagueImage: ImageView = view.findViewById(R.id.match_league_image)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_today_match, parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_today_match, parent, false)
+        if (gridMode) {
+            val density = parent.resources.displayMetrics.density
+            view.layoutParams = RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                (210 * density).toInt()
+            )
+        }
+        return Holder(view)
+    }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val item = items[position]

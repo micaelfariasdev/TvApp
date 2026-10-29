@@ -12,6 +12,7 @@ const {
   loadDB,
   loadSeriesCatalog,
   loadCategoriesMeta,
+  getNewReleaseOrder,
 } = require("../services/db");
 
 const router = express.Router();
@@ -67,11 +68,13 @@ const MAX_REDIRECTS = 5;
 router.get("/channels.json", (req, res) => {
   const dbData = loadDB();
   const categoriesMeta = loadCategoriesMeta();
+  const newReleaseOrder = getNewReleaseOrder();
+  const newReleaseKeys = new Set(newReleaseOrder);
   const forwardedProto = String(req.headers["x-forwarded-proto"] || "").split(",")[0];
   const baseUrl = `${forwardedProto || req.protocol}://${req.get("host")}`;
 
   const cleanData = dbData.map(
-    ({ id, name, url, type, category, poster, source }) => {
+    ({ id, name, url, type, category, poster, source, createdAt }) => {
       const categoryKey = String(category || "outros").trim();
       const categoryPoster =
         categoriesMeta[categoryKey]?.poster || null;
@@ -85,6 +88,9 @@ router.get("/channels.json", (req, res) => {
         type,
         category,
         poster: poster || categoryPoster,
+        newRelease: newReleaseKeys.has(`movie:${id}`),
+        newReleaseOrder: newReleaseOrder.indexOf(`movie:${id}`),
+        createdAt: createdAt || (Number(id) > 1_000_000_000_000 ? Number(id) : null),
       };
     }
   );

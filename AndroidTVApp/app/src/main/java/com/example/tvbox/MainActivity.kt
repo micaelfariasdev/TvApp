@@ -152,7 +152,8 @@ private data class WatchFootyStream(
 
 private data class SeriesCatalogEntry(
     val id: String?, val title: String?, val name: String?,
-    val endpoint: String?, val url: String?, val poster: String?
+    val endpoint: String?, val url: String?, val poster: String?,
+    val newRelease: Boolean?, val createdAt: Long?, val newReleaseOrder: Int?
 )
 
 private data class SeriesDetails(
@@ -193,6 +194,12 @@ class MainActivity : AppCompatActivity() {
         val label: String
     )
 
+    private data class VideoTrackChoice(
+        val group: TrackGroup,
+        val trackIndex: Int,
+        val label: String
+    )
+
     private companion object {
         const val TVBOX_API_BASE = "http://164.152.62.129/tvbox/api"
         const val EPG_CACHE_INTERVAL_MS = 10 * 60 * 1000L
@@ -207,6 +214,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fullscreenButton: android.widget.Button
     private lateinit var epgGuideButton: android.widget.Button
     private lateinit var audioTrackButton: android.widget.Button
+    private lateinit var videoQualityButton: android.widget.Button
+    private lateinit var todayMatchesPageAdapter: TodayMatchAdapter
+    private var todayMatches: List<TodayMatch> = emptyList()
+    private var todayMatchesLoading = false
+    private var todayMatchesReturnGridState: android.os.Parcelable? = null
+    private var todayMatchesReturnGridPosition = 0
     private lateinit var kickLiveAdapter: KickLiveAdapter
     private var kickLiveLoading = false
     private val kickLiveClient = OkHttpClient()
@@ -233,7 +246,7 @@ class MainActivity : AppCompatActivity() {
         override fun run() {
             if (binding.homeMenu.visibility == View.VISIBLE) {
                 loadKickLiveChannels()
-                loadTodayBrazilianMatches()
+                loadTodayMatches()
             }
             mainHandler.postDelayed(this, 60_000)
         }
@@ -398,11 +411,13 @@ class MainActivity : AppCompatActivity() {
         fullscreenButton = binding.playerView.findViewById(R.id.fullscreen_button)
         epgGuideButton = binding.playerView.findViewById(R.id.epg_guide_button)
         audioTrackButton = binding.playerView.findViewById(R.id.audio_track_button)
+        videoQualityButton = binding.playerView.findViewById(R.id.video_quality_button)
         setupPlayer()
         mainHandler.postDelayed(bannerRotation, 8_000)
         fullscreenButton.setOnClickListener { toggleMobileFullscreen() }
         epgGuideButton.setOnClickListener { showEpgGuide() }
         audioTrackButton.setOnClickListener { showAudioTrackSelector() }
+        videoQualityButton.setOnClickListener { showVideoQualitySelector() }
         mainHandler.post(hlsFreezeMonitor)
         setupIFrameWebView()
         setupRecyclerView()
@@ -505,6 +520,7 @@ class MainActivity : AppCompatActivity() {
                 isEmbedTvLiveChannel(currentChannel)
             ) View.VISIBLE else View.GONE
             updateAudioTrackButton(overlayVisible)
+            updateVideoQualityButton(overlayVisible)
         })
         exoPlayer.setAudioAttributes(
             AudioAttributes.Builder()
@@ -522,6 +538,7 @@ class MainActivity : AppCompatActivity() {
         exoPlayer.addListener(object : Player.Listener {
             override fun onTracksChanged(tracks: Tracks) {
                 updateAudioTrackButton(binding.playerView.isControllerFullyVisible)
+                updateVideoQualityButton(binding.playerView.isControllerFullyVisible)
             }
 
             override fun onTimelineChanged(timeline: Timeline, reason: Int) {
@@ -679,6 +696,78 @@ class MainActivity : AppCompatActivity() {
                     this,
                     if (selectedIndex == 0) "Áudio em português automático"
                     else "Áudio: ${choices[selectedIndex - 1].label}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            .show()
+    }
+
+    private fun videoTrackChoices(): List<VideoTrackChoice> =
+        exoPlayer.currentTracks.groups
+            .filter { it.type == C.TRACK_TYPE_VIDEO }
+            .flatMap { group ->
+                (0 until group.length)
+                    .filter(group::isTrackSupported)
+                    .map { index ->
+                        val format = group.getTrackFormat(index)
+                        val resolution = when {
+                            format.height > 0 -> "${format.height}p"
+                            format.width > 0 -> "${format.width}px"
+                            else -> "Qualidade disponível"
+                        }
+                        val bitrate = format.bitrate
+                            .takeIf { it > 0 }
+                            ?.let { String.format(Locale.getDefault(), "%.1f Mbps", it / 1_000_000f) }
+                        VideoTrackChoice(
+                            group.mediaTrackGroup,
+                            index,
+                            listOfNotNull(resolution, bitrate).joinToString(" · ")
+                        )
+                    }
+            }
+            .sortedWith(
+                compareByDescending<VideoTrackChoice> {
+                    val format = it.group.getFormat(it.trackIndex)
+                    format.height.takeIf { height -> height > 0 } ?: format.width
+                }.thenByDescending { it.group.getFormat(it.trackIndex).bitrate }
+            )
+
+    private fun updateVideoQualityButton(controllerVisible: Boolean) {
+        if (!::videoQualityButton.isInitialized) return
+        videoQualityButton.visibility = if (controllerVisible && videoTrackChoices().size > 1) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
+
+    private fun showVideoQualitySelector() {
+        val choices = videoTrackChoices()
+        if (choices.size < 2) {
+            Toast.makeText(this, "Não há outras qualidades disponíveis", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val options = listOf("Automático (recomendado)") + choices.map { it.label }
+        AlertDialog.Builder(this)
+            .setTitle("Qualidade do vídeo")
+            .setItems(options.toTypedArray()) { _, selectedIndex ->
+                val parameters = exoPlayer.trackSelectionParameters.buildUpon()
+                    .clearOverridesOfType(C.TRACK_TYPE_VIDEO)
+                if (selectedIndex > 0) {
+                    val choice = choices[selectedIndex - 1]
+                    parameters.addOverride(
+                        androidx.media3.common.TrackSelectionOverride(
+                            choice.group,
+                            listOf(choice.trackIndex)
+                        )
+                    )
+                }
+                exoPlayer.trackSelectionParameters = parameters.build()
+                Toast.makeText(
+                    this,
+                    if (selectedIndex == 0) "Qualidade automática"
+                    else "Qualidade: ${choices[selectedIndex - 1].label}",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -1078,23 +1167,21 @@ class MainActivity : AppCompatActivity() {
 }, progressProvider = ::cardProgress)
         binding.homeMoviesRow.adapter = homeMovieAdapter
         binding.homeSeriesRow.adapter = homeSeriesAdapter
-        homeMatchesAdapter = TodayMatchAdapter(emptyList()) { match ->
-            match.apiUrl?.takeIf { it.isNotBlank() }?.let { streamUrl ->
-                playChannel(
-                    Channel(
-                        name = "${match.homeName} x ${match.awayName}",
-                        url = streamUrl,
-                        type = "hls",
-                        category = "futebol",
-                        poster = match.homeImage ?: match.awayImage
-                    )
-                )
-            }
-        }
+        homeMatchesAdapter = TodayMatchAdapter(emptyList(), onClick = ::playTodayMatch)
         binding.homeRecentRow.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         homeRecentAdapter = MediaCardAdapter(emptyList(), onClick = { channel -> playChannel(channel) }, progressProvider = ::cardProgress)
         binding.homeRecentRow.adapter = homeRecentAdapter
         binding.homeMatchesRecycler.adapter = homeMatchesAdapter
+        todayMatchesPageAdapter = TodayMatchAdapter(
+            emptyList(),
+            onClick = ::playTodayMatch,
+            gridMode = true
+        )
+        binding.todayMatchesGrid.layoutManager =
+            GridLayoutManager(this, resources.getInteger(R.integer.catalog_columns))
+        binding.todayMatchesGrid.adapter = todayMatchesPageAdapter
+        binding.homeMatchesMore.setOnClickListener { openTodayMatchesPage() }
+        binding.todayMatchesRefresh.setOnClickListener { loadTodayMatches() }
 
        binding.seriesGrid.layoutManager = GridLayoutManager(this, resources.getInteger(R.integer.catalog_columns))
 
@@ -1184,6 +1271,7 @@ binding.episodesGrid.adapter = episodesGridAdapter
             }
         })
         binding.homeFootball.setOnClickListener { refreshAndOpenCategory("futebol") }
+        binding.homeTodayMatches.setOnClickListener { openTodayMatchesPage() }
         binding.homeKick.setOnClickListener { refreshAndOpenCategory("kick") }
         binding.homeMovies.setOnClickListener { refreshAndOpenCategory("filmes") }
         binding.homeSeries.setOnClickListener { refreshAndOpenCategory("series") }
@@ -1241,6 +1329,7 @@ binding.episodesGrid.adapter = episodesGridAdapter
         searchPageOpen = true
         binding.homeMenu.visibility = View.GONE
         binding.channelPanel.visibility = View.GONE
+        binding.todayMatchesPanel.visibility = View.GONE
         binding.seriesGridPanel.visibility = View.GONE
         binding.episodesGridPanel.visibility = View.GONE
         binding.sidebar.visibility = View.GONE
@@ -1617,7 +1706,15 @@ binding.episodesGrid.adapter = episodesGridAdapter
         (listOfNotNull(channel.category) + channel.categories.orEmpty()).filter { it.isNotBlank() }.distinct()
 
     private fun channelCategory(channel: Channel): String {
-        return when (channel.category?.trim()?.lowercase()) {
+        when (channel.contentType?.trim()?.lowercase(Locale.ROOT)) {
+            "movie" -> return "filmes"
+            "live" -> if (channel.type.equals("hls", ignoreCase = true)) return "futebol"
+        }
+        val category = channel.category
+            ?.substringBefore("|")
+            ?.trim()
+            ?.lowercase(Locale.ROOT)
+        return when (category) {
             "futebol", "football", "esporte", "esportes" -> "futebol"
             "kick" -> "kick"
             "filme", "filmes", "movie", "movies" -> "filmes"
@@ -1637,6 +1734,7 @@ binding.episodesGrid.adapter = episodesGridAdapter
         binding.searchKeyboardHost.visibility = View.GONE
         binding.homeMenu.visibility = View.GONE
         binding.channelPanel.visibility = View.GONE
+        binding.todayMatchesPanel.visibility = View.GONE
         binding.seriesGridPanel.visibility = View.GONE
         binding.episodesGridPanel.visibility = View.GONE
         binding.sidebar.visibility = View.GONE
@@ -1659,6 +1757,7 @@ binding.episodesGrid.adapter = episodesGridAdapter
         binding.iframeWebView.visibility = View.GONE
         binding.playerView.visibility = View.GONE
         binding.channelPanel.visibility = View.GONE
+        binding.todayMatchesPanel.visibility = View.GONE
         binding.catalogGridPanel.visibility = View.GONE
         binding.seriesGridPanel.visibility = View.GONE
         binding.sidebar.visibility = View.VISIBLE
@@ -1682,6 +1781,7 @@ binding.episodesGrid.adapter = episodesGridAdapter
         seriesEpisodeMenuOpen = false
         binding.homeMenu.visibility = View.GONE
         binding.channelPanel.visibility = View.GONE
+        binding.todayMatchesPanel.visibility = View.GONE
         binding.catalogGridPanel.visibility = View.GONE
         binding.sidebar.visibility = View.GONE
         val series = seriesCatalogEntries.mapNotNull { entry ->
@@ -1781,6 +1881,7 @@ private fun openSeriesEpisodes(
             binding.homeMenu.visibility = View.GONE
             binding.seriesGridPanel.visibility = View.GONE
             binding.channelPanel.visibility = View.GONE
+            binding.todayMatchesPanel.visibility = View.GONE
             binding.catalogGridPanel.visibility = View.GONE
             binding.sidebar.visibility = View.GONE
             binding.episodesGridPanel.visibility = View.VISIBLE
@@ -1848,6 +1949,7 @@ private fun openSeriesEpisodes(
             Triple(binding.homeHome, "⌂", "Início"), Triple(binding.homeSearch, "⌕", "Buscar"),
             Triple(binding.homeMovies, "▣", "Filmes"),
             Triple(binding.homeSeries, "▤", "Séries"), Triple(binding.homeFootball, "●", "Ao vivo"),
+            Triple(binding.homeTodayMatches, "⚽", "Jogos do dia"),
             Triple(binding.homeKick, "▶", "Kick"), Triple(binding.homeUpdate, "↻", "Atualizar")
         )
         labels.forEach { (view, _, label) ->
@@ -1871,6 +1973,7 @@ private fun openSeriesEpisodes(
             Triple(binding.homeHome, "⌂", "Início"), Triple(binding.homeSearch, "⌕", "Buscar"),
             Triple(binding.homeMovies, "▣", "Filmes"),
             Triple(binding.homeSeries, "▤", "Séries"), Triple(binding.homeFootball, "●", "Ao vivo"),
+            Triple(binding.homeTodayMatches, "⚽", "Jogos do dia"),
             Triple(binding.homeKick, "▶", "Kick"), Triple(binding.homeUpdate, "↻", "Atualizar")
         ).forEach { (view, icon, label) ->
             view.text = if (expanded) "$icon  $label" else icon
@@ -1970,7 +2073,7 @@ private fun openSeriesEpisodes(
 
         binding.homeKickLiveCarousel.visibility = View.GONE
         loadKickLiveChannels()
-        loadTodayBrazilianMatches()
+        loadTodayMatches()
 
     }
 
@@ -2131,7 +2234,13 @@ private fun openSeriesEpisodes(
         }
     }
 
-    private fun loadTodayBrazilianMatches() {
+    private fun loadTodayMatches() {
+        if (todayMatchesLoading) return
+        todayMatchesLoading = true
+        if (todayMatches.isEmpty()) {
+            binding.todayMatchesStatus.text = "Carregando jogos..."
+            binding.todayMatchesGrid.visibility = View.GONE
+        }
         lifecycleScope.launch(Dispatchers.IO) {
             val response = try {
                 val request = Request.Builder()
@@ -2144,18 +2253,13 @@ private fun openSeriesEpisodes(
                     else Gson().fromJson(body, EmbedEventsResponse::class.java)
                 }
             } catch (error: Exception) {
-                Log.w("TVBOX_EVENTS", "Falha ao consultar jogos do Brasileirão", error)
+                Log.w("TVBOX_EVENTS", "Falha ao consultar jogos do dia", error)
                 null
             }
 
             val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
             val games = response?.events.orEmpty()
                 .filter { it.time_start?.substringBefore("T") == today }
-                .filter {
-                    val league = it.league?.name.orEmpty().lowercase(Locale.ROOT)
-                    league.contains("brasileir") || league.contains("libertadores") ||
-                        league.contains("sul-americana") || league.contains("sulamericana")
-                }
                 .map { event ->
                     val home = event.teams?.home
                     val away = event.teams?.away
@@ -2173,10 +2277,65 @@ private fun openSeriesEpisodes(
                 }
 
             withContext(Dispatchers.Main) {
+                todayMatchesLoading = false
+                if (response == null) {
+                    if (todayMatches.isEmpty()) {
+                        binding.todayMatchesStatus.text =
+                            "Não foi possível carregar os jogos. Tente atualizar."
+                    }
+                    return@withContext
+                }
+                todayMatches = games
                 homeMatchesAdapter.submit(games)
+                todayMatchesPageAdapter.submit(games)
                 binding.homeMatchesCarousel.visibility = if (games.isEmpty()) View.GONE else View.VISIBLE
+                binding.todayMatchesTitle.text = "Jogos do dia (${games.size})"
+                binding.todayMatchesStatus.text = if (games.isEmpty()) {
+                    "Nenhum jogo encontrado para hoje."
+                } else {
+                    "Partidas de hoje · ${SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())}"
+                }
+                binding.todayMatchesGrid.visibility = if (games.isEmpty()) View.GONE else View.VISIBLE
             }
         }
+    }
+
+    private fun openTodayMatchesPage() {
+        searchPageOpen = false
+        binding.homeMenu.visibility = View.GONE
+        binding.channelPanel.visibility = View.GONE
+        binding.catalogGridPanel.visibility = View.GONE
+        binding.seriesGridPanel.visibility = View.GONE
+        binding.episodesGridPanel.visibility = View.GONE
+        binding.sidebar.visibility = View.GONE
+        binding.todayMatchesPanel.visibility = View.VISIBLE
+        todayMatchesPageAdapter.submit(todayMatches)
+        binding.todayMatchesTitle.text = "Jogos do dia (${todayMatches.size})"
+        binding.todayMatchesStatus.text = when {
+            todayMatches.isNotEmpty() -> "Partidas de hoje · ${SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())}"
+            todayMatchesLoading -> "Carregando jogos..."
+            else -> "Carregando jogos..."
+        }
+        binding.todayMatchesGrid.visibility = if (todayMatches.isEmpty()) View.GONE else View.VISIBLE
+        binding.todayMatchesRefresh.requestFocus()
+        loadTodayMatches()
+    }
+
+    private fun playTodayMatch(match: TodayMatch) {
+        val streamUrl = match.apiUrl?.takeIf(String::isNotBlank)
+        if (streamUrl == null) {
+            Toast.makeText(this, "Não há transmissão disponível para este jogo.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        playChannel(
+            Channel(
+                name = "${match.homeName} x ${match.awayName}",
+                url = streamUrl,
+                type = "hls",
+                category = "futebol",
+                poster = match.homeImage ?: match.awayImage
+            )
+        )
     }
 
     private fun renderConfiguredHomeSections() {
@@ -2190,16 +2349,34 @@ private fun openSeriesEpisodes(
         sections.filter { it.type != "kick-live" }.forEach { section ->
             val limit = (section.limit ?: 18).coerceIn(1, 40)
             val isSeries = section.type == "series"
-            val items = if (isSeries) {
-                seriesCatalogEntries.mapNotNull { entry ->
+            val items = when (section.type) {
+                "series" -> seriesCatalogEntries.mapNotNull { entry ->
                     val endpoint = entry.endpoint ?: entry.url ?: return@mapNotNull null
                     val title = entry.title ?: entry.name ?: entry.id ?: return@mapNotNull null
                     Channel(title, endpoint, "series-group", "series", poster = entry.poster, series = title)
-                }.take(limit)
-            } else {
-                val category = section.category.orEmpty().trim()
-                allChannels.filter { itemCategories(it).any { value -> value.equals(category, ignoreCase = true) } || channelCategory(it).equals(category, true) }.take(limit)
+                }
+                "new-releases" -> (allChannels.filter { it.newRelease == true } +
+                    seriesCatalogEntries.filter { it.newRelease == true }.mapNotNull { entry ->
+                        val endpoint = entry.endpoint ?: entry.url ?: return@mapNotNull null
+                        val title = entry.title ?: entry.name ?: entry.id ?: return@mapNotNull null
+                        Channel(
+                            title,
+                            endpoint,
+                            "series-group",
+                            "series",
+                            poster = entry.poster,
+                            series = title,
+                            newRelease = true,
+                            createdAt = entry.createdAt,
+                            newReleaseOrder = entry.newReleaseOrder
+                        )
+                    }).sortedBy { it.newReleaseOrder ?: Int.MAX_VALUE }
+                else -> {
+                    val category = section.category.orEmpty().trim()
+                    allChannels.filter { itemCategories(it).any { value -> value.equals(category, ignoreCase = true) } || channelCategory(it).equals(category, true) }
+                }
             }
+                .take(limit)
             if (items.isEmpty()) return@forEach
             val title = TextView(this).apply {
                 text = (section.title ?: section.category ?: if (isSeries) "SÉRIES" else "CATÁLOGO").uppercase()
@@ -2465,6 +2642,7 @@ private fun openSeriesEpisodes(
     override fun onBackPressed() {
         when {
             binding.epgGuideOverlay.visibility == View.VISIBLE -> hideEpgGuide()
+            binding.todayMatchesPanel.visibility == View.VISIBLE -> showHomeMenu()
             binding.homeMenu.visibility == View.VISIBLE -> super.onBackPressed()
             binding.episodesGridPanel.visibility == View.VISIBLE -> {
     binding.episodesGridPanel.visibility = View.GONE
@@ -2508,6 +2686,7 @@ private fun openSeriesEpisodes(
     private fun capturePlayerReturnScreen() {
         if (binding.playerView.isShown || binding.iframeWebView.isShown) return
         playerReturnScreen = when {
+            binding.todayMatchesPanel.isShown -> "today-matches"
             binding.catalogGridPanel.isShown -> "catalog"
             binding.episodesGridPanel.isShown -> "episodes"
             binding.channelPanel.isShown -> "channels"
@@ -2519,6 +2698,12 @@ private fun openSeriesEpisodes(
             playerReturnGridState = binding.catalogGrid.layoutManager?.onSaveInstanceState()
             val focused = binding.catalogGrid.findFocus()
             playerReturnGridPosition = focused?.let { binding.catalogGrid.findContainingViewHolder(it)?.bindingAdapterPosition }?.coerceAtLeast(0) ?: 0
+        } else if (playerReturnScreen == "today-matches") {
+            todayMatchesReturnGridState = binding.todayMatchesGrid.layoutManager?.onSaveInstanceState()
+            val focused = binding.todayMatchesGrid.findFocus()
+            todayMatchesReturnGridPosition = focused
+                ?.let { binding.todayMatchesGrid.findContainingViewHolder(it)?.bindingAdapterPosition }
+                ?.coerceAtLeast(0) ?: 0
         }
     }
 
@@ -2725,7 +2910,8 @@ private fun openSeriesEpisodes(
         if (channel.type.equals("mp4", ignoreCase = true)) return true
         if (!channel.type.equals("hls", ignoreCase = true)) return false
         return channelCategory(channel) == "filmes" || itemCategories(channel).any {
-            it.trim().lowercase(Locale.ROOT) in setOf("filme", "filmes", "movie", "movies")
+            it.substringBefore("|").trim().lowercase(Locale.ROOT) in
+                setOf("filme", "filmes", "movie", "movies")
         }
     }
 
@@ -2887,6 +3073,7 @@ private fun openSeriesEpisodes(
         binding.catalogGridPanel.visibility = View.GONE
         binding.homeMenu.visibility = View.GONE
         binding.channelPanel.visibility = View.GONE
+        binding.todayMatchesPanel.visibility = View.GONE
         binding.seriesGridPanel.visibility = View.GONE
         binding.sidebar.visibility = View.GONE
         binding.episodesGridPanel.visibility = View.GONE
@@ -2907,7 +3094,22 @@ private fun exitPlayerToCurrentMenu() {
     playerTitleOverlay.visibility = View.GONE
     fullscreenButton.visibility = View.GONE
 
-    if (playerReturnScreen == "catalog") {
+    if (playerReturnScreen == "today-matches") {
+        binding.homeMenu.visibility = View.GONE
+        binding.sidebar.visibility = View.GONE
+        binding.channelPanel.visibility = View.GONE
+        binding.seriesGridPanel.visibility = View.GONE
+        binding.episodesGridPanel.visibility = View.GONE
+        binding.catalogGridPanel.visibility = View.GONE
+        binding.todayMatchesPanel.visibility = View.VISIBLE
+        binding.todayMatchesGrid.layoutManager?.onRestoreInstanceState(todayMatchesReturnGridState)
+        binding.todayMatchesGrid.post {
+            val target = binding.todayMatchesGrid
+                .findViewHolderForAdapterPosition(todayMatchesReturnGridPosition)?.itemView
+                ?: binding.todayMatchesRefresh
+            target.requestFocus()
+        }
+    } else if (playerReturnScreen == "catalog") {
         binding.homeMenu.visibility = View.GONE
         binding.sidebar.visibility = View.GONE
         binding.channelPanel.visibility = View.GONE

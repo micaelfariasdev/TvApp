@@ -57,6 +57,12 @@
                 android:gravity="center" android:text="●  Ao vivo"
                 android:textSize="@dimen/nav_text_size"
                 android:textColor="#E2DDF1" android:fontFamily="sans-serif-medium" />
+            <TextView android:id="@+id/home_today_matches" android:layout_width="match_parent"
+                android:layout_height="56dp" android:layout_marginBottom="6dp"
+                android:background="@drawable/sidebar_item_background" android:focusable="true"
+                android:gravity="center" android:text="⚽  Jogos do dia"
+                android:textSize="@dimen/nav_text_size"
+                android:textColor="#E2DDF1" android:fontFamily="sans-serif-medium" />
             <TextView android:id="@+id/home_kick" android:layout_width="match_parent"
                 android:layout_height="56dp" android:layout_marginBottom="6dp"
                 android:background="@drawable/sidebar_item_background" android:focusable="true"
@@ -158,25 +164,40 @@
             <LinearLayout
                 android:id="@+id/home_matches_carousel"
                 android:layout_width="match_parent"
-                android:layout_height="210dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:layout_marginBottom="14dp"
-                    android:fontFamily="sans-serif-bold"
-                    android:text="⚽ Jogos Ao Vivo Hoje"
-                    android:textColor="#FBBF24"
-                    android:textSize="18sp" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="⚽ Jogos do dia"
+                        android:textColor="#FBBF24"
+                        android:textSize="18sp" />
+                    <Button
+                        android:id="@+id/home_matches_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:minWidth="0dp"
+                        android:paddingHorizontal="14dp"
+                        android:text="Ver todos"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/sidebar_item_background" />
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/home_matches_recycler"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="180dp"
                     android:clipToPadding="false"
                     android:nestedScrollingEnabled="false" />
             </LinearLayout>
@@ -391,6 +412,69 @@
                 android:layout_weight="1"
                 android:clipToPadding="false" />
         </LinearLayout>
+    </LinearLayout>
+
+    <!-- PÁGINA DE JOGOS DO DIA -->
+    <LinearLayout
+        android:id="@+id/today_matches_panel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#090910"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/page_padding"
+        android:paddingVertical="@dimen/page_padding"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/today_matches_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Jogos do dia"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/page_title_size" />
+                <TextView
+                    android:id="@+id/today_matches_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Carregando jogos..."
+                    android:textColor="#94A3B8"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <Button
+                android:id="@+id/today_matches_refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:minWidth="0dp"
+                android:paddingHorizontal="16dp"
+                android:text="Atualizar"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/sidebar_item_background" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/today_matches_grid"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:visibility="gone" />
     </LinearLayout>
 
     <!-- GRADE DE SÉRIES -->
